@@ -1,0 +1,14 @@
+{
+  "name": "nxs",
+  "description": "Marketplace for the nxs plugin",
+  "owner": {
+    "name": "Victor Ryabov"
+  },
+  "plugins": [
+    {
+      "name": "nxs",
+      "source": "./",
+      "description": "Nexus workflow skills for Claude Code"
+    }
+  ]
+}
