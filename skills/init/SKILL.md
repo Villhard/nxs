@@ -80,4 +80,4 @@ An overflowing file is a signal to cut detail, not to split into more files.
 
 ## NEXT
 
-Map written -> future agents read `docs/.ai/index.md` first. Re-run `/nxs:init` when the stack or structure changes. For a plain-language tour of the map -> `/nxs:std-explain`.
+Map written -> future agents read `docs/.ai/index.md` first. Re-run `/nxs:init` when the stack or structure changes. For a plain-language tour of the map -> `/nxs:explain`.

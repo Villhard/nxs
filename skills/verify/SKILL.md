@@ -5,7 +5,7 @@ user-invocable: false
 
 # VERIFY
 
-Load before or after checking a code change. Workflow knowledge, not a user-invocable command. Used by `/nxs:dev-exec` (after every task) and `/nxs:dev-review` (to check the diff).
+Load before or after checking a code change. Workflow knowledge, not a user-invocable command. Used by `/nxs:exec` (after every task) and `/nxs:review` (to check the diff).
 
 ## PROCEDURE
 
@@ -59,4 +59,4 @@ If RED cannot technically be confirmed (no infrastructure to run a single test, 
 
 ## GATE ROLE
 
-Verify is mandatory after every task in `/nxs:dev-exec` (both default and auto mode) and before any commit. A verify pass is a precondition of the auto commit gate: a commit is allowed only after verify passes and a zero-BLOCK review round on the task diff. Verify failing, or required checks missing, blocks the commit - the main context fixes the failure and re-runs verify before proceeding. The rest of the auto cycle (task loop, review-fix loop, stop conditions) lives in `/nxs:dev-exec`.
+Verify is mandatory after every task in `/nxs:exec` (both default and auto mode) and before any commit. A verify pass is a precondition of the auto commit gate: a commit is allowed only after verify passes and a zero-BLOCK review round on the task diff. Verify failing, or required checks missing, blocks the commit - the main context fixes the failure and re-runs verify before proceeding. The rest of the auto cycle (task loop, review-fix loop, stop conditions) lives in `/nxs:exec`.

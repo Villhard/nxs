@@ -12,7 +12,7 @@ nxs/
     plugin.json          # name: nxs (namespace всех команд)
     marketplace.json     # local dev marketplace (source "./")
   skills/
-    <flow>-<action>/     # tier 2, command skill -> /nxs:<flow>-<action>
+    <name>/              # tier 2, command skill -> /nxs:<name>
       SKILL.md
       reference/         # опционально, on-demand деталь
       scripts/           # опционально, детерминированная логика
@@ -34,20 +34,21 @@ Tier 1 (global `~/.claude/CLAUDE.md`) и `settings.json` - НЕ в репо пл
 
 ## NAMING
 
-- Формат команды: `/nxs:<flow>-<action>`.
-- Имя команды = имя ДИРЕКТОРИИ скилла. `skills/dev-plan/` -> `/nxs:dev-plan`.
-- Namespace `nxs` берётся из `plugin.json` поля `name: nxs`. Инвокация плагин-скилла всегда namespaced (`/nxs:...`), bare-алиаса нет.
-- Флоу: `dev`, `rnd`, `std`, `doc`, плюс meta (`init`, `help`).
+- Формат команды: `/nxs:<name>` - плоское имя, без флоу-префикса.
+- Имя команды = имя ДИРЕКТОРИИ скилла. `skills/plan/` -> `/nxs:plan`.
+- Namespace `nxs` берётся из `plugin.json` поля `name: nxs`. Инвокация плагин-скилла всегда namespaced (`/nxs:...`), bare-алиаса нет. Уникальность даёт `nxs:`, флоу-префикс не нужен.
 
-Текущий набор команд по флоу:
+Текущий набор команд (14, плоские имена):
 
-| flow | commands |
+| area | commands |
 |---|---|
-| dev | `dev-diagnose`, `dev-plan`, `dev-plan-review`, `dev-exec`, `dev-review`, `dev-recommit`, `dev-cleanup` |
-| rnd | `rnd-brainstorm`, `rnd-prototype`, `rnd-architecture`, `rnd-dialectic`, `rnd-rethink` |
-| std | `std-explain`, `std-walkthrough`, `std-onboard`, `std-source` |
-| doc | `doc-note`, `doc-summary`, `doc-guide`, `doc-handoff` |
-| meta | `init`, `help` |
+| build | `plan`, `exec`, `review`, `plancheck`, `bug` |
+| think | `rnd`, `dialectic`, `wrong` |
+| understand | `explain` |
+| document | `userdoc`, `techdoc` |
+| git / project | `recommit`, `clean`, `init` |
+
+Modes (редкие, по инференсу): `exec` (default / auto), `explain` (глубина). Остальные - один режим. `area` - только группировка для чтения, не префикс команды.
 
 Background skills не следуют схеме `<flow>-<action>`: у них ролевое имя (`commit-conventions`, `plan-conventions`, `review-protocol`), потому что command skills ссылаются на них по имени. Имя фиксируется при добавлении и не меняется без обновления всех потребителей.
 
@@ -120,7 +121,7 @@ Background skills не следуют схеме `<flow>-<action>`: у них р
 
 Подтверждено прототипом (claude 2.1.201).
 
-- Имя команды = имя ДИРЕКТОРИИ скилла. `skills/dev-plan/` -> `/nxs:dev-plan`.
+- Имя команды = имя ДИРЕКТОРИИ скилла. `skills/plan/` -> `/nxs:plan`.
 - НЕ ставить frontmatter `name` во вложенных скиллах: `name` - это display-label, он прячет namespace-префикс в `/` меню (показывает bare-имя). Без `name` меню показывает `nxs:<dir>`.
 - Тело `SKILL.md` - компактный English (runtime language). Язык вывода пользователю задаёт tier 1, не скилл.
 - Тело входит в контекст при вызове и остаётся на сессию: писать standing-инструкции (постоянные правила), не одноразовые шаги.
@@ -169,28 +170,22 @@ claude plugin marketplace update nxs-dev
 
 | command | artifact |
 |---|---|
-| `/nxs:rnd-brainstorm` | `docs/briefs/YYYYMMDD-<slug>.md` |
-| `/nxs:rnd-prototype` | chat; опционально `docs/briefs/YYYYMMDD-<slug>-prototype.md` после подтверждения |
-| `/nxs:rnd-architecture` | chat; опционально `docs/briefs/YYYYMMDD-<slug>-architecture-review.md` после подтверждения |
-| `/nxs:dev-diagnose` | `docs/briefs/YYYYMMDD-<slug>-root-cause.md` |
+| `/nxs:rnd` | `docs/briefs/YYYYMMDD-<slug>.md` |
+| `/nxs:bug` | `docs/briefs/YYYYMMDD-<slug>-root-cause.md` |
 | ADR (via decision-log) | `docs/adr/NNNN-<slug>.md` (project ADR convention, если она есть) |
-| `/nxs:dev-plan` | `docs/plans/YYYYMMDD-<slug>.md` |
-| `/nxs:dev-plan-review` | chat findings; опционально секция `## PLAN REVIEW NOTES` в плане |
-| `/nxs:dev-exec` | изменения кода + обновлённые чекбоксы плана |
-| `/nxs:dev-review` | chat report |
-| `/nxs:dev-cleanup` | перемещённые файлы (`docs/plans/completed/`, `docs/briefs/archive/`) |
-| `/nxs:std-source` | автономная заметка `~/Documents/notes/<slug>.md` |
-| `/nxs:doc-note` | vault finished-notes location, schema-driven (default `~/Documents/notes/_inbox/<slug>.md`) |
-| `/nxs:doc-summary` | `~/Documents/notes/_inbox/YYYY-MM-DD.task.[<id>].<slug>.md` |
-| `/nxs:doc-guide` | chat draft; опционально сохранённый doc после подтверждения |
-| `/nxs:doc-handoff` | chat output (файл не пишется) |
+| `/nxs:plan` | `docs/plans/YYYYMMDD-<slug>.md` |
+| `/nxs:plancheck` | chat findings; опционально секция `## PLAN REVIEW NOTES` в плане |
+| `/nxs:exec` | изменения кода + обновлённые чекбоксы плана |
+| `/nxs:review` | chat report |
+| `/nxs:clean` | перемещённые файлы (`docs/plans/completed/`, `docs/briefs/archive/`) |
+| `/nxs:techdoc` | `docs/techdoc/<slug>.md` (локальный черновик, `docs/` gitignored; durable - Confluence) |
+| `/nxs:userdoc` | `docs/userdoc/<slug>.md` (локальный черновик, `docs/` gitignored; durable - Confluence) |
 | `/nxs:init` | `docs/.ai/` |
-| `/nxs:help` | chat output |
 
 Правила путей:
 
 - `docs/briefs/`, `docs/plans/`, `docs/plans/completed/`, `docs/briefs/archive/` - в текущем рабочем репозитории (source-of-truth локации).
-- Vault-заметки (`std-source`, `doc-note`, `doc-summary`) идут в Obsidian vault; default корень `~/Documents/notes`. Если корневой `AGENTS.md` / `CLAUDE.md` vault-а объявляет свою схему `type` и finished-notes location - следовать ей; `_inbox/<slug>.md` - fallback.
+- Doc-артефакты (`techdoc`, `userdoc`) пишутся в `docs/<kind>/` рабочего репо; `docs/` gitignored, это локальный черновик, durable-дом - Confluence. В код доки не коммитятся.
 - Молча создавать файлы вне этих шаблонов запрещено.
 
 ### PUBLIC SAFETY

@@ -5,13 +5,13 @@ user-invocable: false
 
 # PLAN CONVENTIONS
 
-Load when writing or checking an implementation plan. Workflow rules, not a user-invocable command. Shared by `/nxs:dev-plan`, `/nxs:dev-plan-review`, `/nxs:dev-exec`, `/nxs:rnd-brainstorm`, `/nxs:rnd-prototype`.
+Load when writing or checking an implementation plan. Workflow rules, not a user-invocable command. Shared by `/nxs:plan`, `/nxs:plancheck`, `/nxs:exec`, `/nxs:rnd`.
 
 A plan is the source of truth for execution: it has a concrete structure, is updated when scope changes, and must be reviewable. If a plan is not reviewable (unclear task scope, missing files, missing tests, missing verification), it is not ready.
 
 ## DEVELOPMENT APPROACH
 
-The plan records the approach in one line right after Acceptance Criteria. `/nxs:dev-exec` branches on it. Allowed values:
+The plan records the approach in one line right after Acceptance Criteria. `/nxs:exec` branches on it. Allowed values:
 
 - **default** - ordinary implementation; tests are written together with the code for each task.
 - **TDD** - for each narrow behavior write a failing test first, then minimal code, then refactor while green. See `reference/tdd.md`.
@@ -34,7 +34,7 @@ Required sections, in order:
 
 - **Overview** - what the plan does and why.
 - **Context / source artifacts** - the brief, ticket, or diagnosis this plan derives from, so review can trace scope.
-- **ACCEPTANCE CRITERIA** - verifiable readiness criteria for the whole plan, right after Overview. Separate from per-task verification: task verification checks a step, AC checks the plan as a whole. `/nxs:dev-exec` auto checks against AC, not only checkboxes.
+- **ACCEPTANCE CRITERIA** - verifiable readiness criteria for the whole plan, right after Overview. Separate from per-task verification: task verification checks a step, AC checks the plan as a whole. `/nxs:exec` auto checks against AC, not only checkboxes.
 - **DEVELOPMENT APPROACH** - one line, right after Acceptance Criteria (see above).
 - **Implementation tasks** - each task well-formed (see below).
 - **COMPLEXITY TRACKING** - only when the plan deviates from these conventions (see below); no deviations, no section.
@@ -73,7 +73,7 @@ An open decision is marked in the artifact itself instead of a plausible guess:
 
 - Mark only if the answer changes the decision; do not mark trivia.
 - A marker resolved in conversation is edited out of the file in the same turn - a stale marker causes a false auto block.
-- A plan with open markers is valid but not ready for auto execution: `/nxs:dev-plan-review` flags open markers as BLOCK for auto modes, and `/nxs:dev-exec` auto runs `rg "NEEDS CLARIFICATION" <plan>` before starting.
+- A plan with open markers is valid but not ready for auto execution: `/nxs:plancheck` flags open markers as BLOCK for auto modes, and `/nxs:exec` auto runs `rg "NEEDS CLARIFICATION" <plan>` before starting.
 
 ## TDD LOOP (essence)
 
@@ -81,7 +81,7 @@ When the approach is TDD, per narrow behavior: **RED** (one failing test through
 
 ## VERTICAL SLICE (essence)
 
-A task is by default a vertical slice: one narrow observable behavior across all the layers it needs and only those, independently verifiable, delivering a working end-to-end path. Prefer many thin slices to a few thick ones; the Files block usually touches several layers at once, which is normal. Horizontal-by-layer tasks ("create all models", then "all services", then "all tests") are an exception, allowed only for pure scaffolding, a migration / refactor with a non-functional intermediate state, or shared groundwork without which no slice runs - and each such exception is justified in COMPLEXITY TRACKING. `/nxs:dev-plan-review` flags unjustified horizontal slicing as BLOCK. Detail and examples: `reference/vertical-slice.md`.
+A task is by default a vertical slice: one narrow observable behavior across all the layers it needs and only those, independently verifiable, delivering a working end-to-end path. Prefer many thin slices to a few thick ones; the Files block usually touches several layers at once, which is normal. Horizontal-by-layer tasks ("create all models", then "all services", then "all tests") are an exception, allowed only for pure scaffolding, a migration / refactor with a non-functional intermediate state, or shared groundwork without which no slice runs - and each such exception is justified in COMPLEXITY TRACKING. `/nxs:plancheck` flags unjustified horizontal slicing as BLOCK. Detail and examples: `reference/vertical-slice.md`.
 
 ## COMPLEXITY TRACKING
 

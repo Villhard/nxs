@@ -33,7 +33,7 @@ If at least one criterion fails, it is not an ADR. In doubt, default to the ligh
 |---|---|
 | all three gate criteria met | project ADR |
 | important for the current plan or brief, not for the future project | a section in the current plan / brief file |
-| personal takeaway about an approach, tool, or typical pitfall | offer a note (`/nxs:doc-note`) |
+| personal takeaway about an approach, tool, or typical pitfall | a personal note in your own vault |
 | ad-hoc reasoning of a single session, without consequences | write nothing |
 
 ### Plan- or brief-scoped section
@@ -52,7 +52,7 @@ Include context / options / tradeoffs only when needed for understanding. "Expli
 
 ### Personal takeaway
 
-Offer a note via `/nxs:doc-note` (gotcha / cheatsheet / howto). Such takeaways do not belong in the project repo.
+Offer to capture it as a personal note in your own vault (gotcha / cheatsheet / howto). Such takeaways do not belong in the project repo.
 
 ### Temporary reasoning
 
