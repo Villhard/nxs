@@ -93,7 +93,7 @@ In priority order, stop at the first one found:
 1. A command argument (`/nxs:review <path>` points to a plan / brief / spec).
 2. An active plan under `docs/plans/` (excluding `docs/plans/completed/`), the latest by date; inside it the `## SOURCE ARTIFACTS` section.
 3. A brief under `docs/briefs/` (including root-cause) mentioned in the plan or in the branch / PR description.
-4. A Jira / task URL - from the plan, the PR description, or specified by the user.
+4. A tracker / task URL - from the plan, the PR description, or specified by the user.
 5. A PRD / spec document in the repo referenced by the plan or PR.
 
 If no source artifact is found - report `Spec axis: skipped (no spec/source artifact available)` and continue without it.

@@ -18,7 +18,7 @@ Use before `/nxs:exec`, and especially before `/nxs:exec auto`, where the bar is
 ## RESOLVE THE PLAN
 
 - Plan under review: the argument path if given, otherwise the latest active plan under `docs/plans/`. If none is found or the choice is ambiguous, ask.
-- Source artifact for the scope lens: the plan's `## SOURCE ARTIFACTS` section (brief, root-cause brief, Jira key / URL). If no source artifact exists, the scope lens is skipped with a stated reason.
+- Source artifact for the scope lens: the plan's `## SOURCE ARTIFACTS` section (brief, root-cause brief, tracker key / URL). If no source artifact exists, the scope lens is skipped with a stated reason.
 
 ## LENSES
 

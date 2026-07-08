@@ -1,13 +1,13 @@
 ---
-description: Think a task through to a plan-ready brief via CLARIFY then EXPLORE - narrow an under-specified task, compare real approaches, record the decision - the Jira task entry point. Use to shape a fuzzy task, feature idea, or open question before planning.
-argument-hint: "[task | jira key | question]"
+description: Think a task through to a plan-ready brief via CLARIFY then EXPLORE - narrow an under-specified task, compare real approaches, record the decision - the tracked-task entry point. Use to shape a fuzzy task, feature idea, or open question before planning.
+argument-hint: "[task | tracker key | question]"
 ---
 
 # /nxs:rnd
 
-Think a task through to a plan-ready brief and stop. The Jira task entry point. Self-contained skill. Output language and response style come from global rules, not this file.
+Think a task through to a plan-ready brief and stop. The tracked-task entry point. Self-contained skill. Output language and response style come from global rules, not this file.
 
-Accepted input: a task description, a feature idea, a Jira key / URL / pasted ticket, or an open question. With nothing given, work with the current session context.
+Accepted input: a task description, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work with the current session context.
 
 ## STANCE (BRAINSTORM ONLY, HAND OFF)
 
@@ -17,7 +17,7 @@ Accepted input: a task description, a feature idea, a Jira key / URL / pasted ti
 
 ## INTAKE
 
-- If the input is a Jira key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
+- If the input is a tracker key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
 - Gather context before asking: read the relevant code, existing patterns, dependencies, integration points, and project memory (delegate to an explorer subagent (`nxs:explorer` or the built-in Explore) or inspect directly). Ask only about what the code does not answer. Do not over-read.
 - When a domain term is fuzzy or ambiguous, stop and clarify it before EXPLORE rather than guessing its meaning.
 
@@ -52,7 +52,7 @@ Write a brief:
 docs/briefs/YYYYMMDD-<slug>.md
 ```
 
-It captures: the task / question; context; options; trade-offs; the chosen approach; the next step; and a link to the Jira / task if there is one. A brief can be short for a simple task and detailed for a complex one.
+It captures: the task / question; context; options; trade-offs; the chosen approach; the next step; and a link to the tracker ticket / task if there is one. A brief can be short for a simple task and detailed for a complex one.
 
 Add a clarifications log only when at least one CLARIFY question was asked:
 

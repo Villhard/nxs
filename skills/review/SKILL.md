@@ -68,7 +68,7 @@ Does the diff implement the source artifact fully and without scope creep. Find 
 1. Command argument (`/nxs:review <path>` points to a plan / brief / spec).
 2. Active plan under `docs/plans/` (excluding `docs/plans/completed/`), the latest by date; inside it the `## SOURCE ARTIFACTS` section.
 3. Brief under `docs/briefs/` (including root-cause) named in the plan or in the branch / PR description.
-4. Jira / task URL from the plan, the PR description, or the user.
+4. Tracker / task URL from the plan, the PR description, or the user.
 5. PRD / spec document in the repo referenced by the plan or PR.
 
 If no source artifact is found, report the single line `Spec axis: skipped (no spec/source artifact available)` and continue. Every Spec finding carries a single citation line under `Fix:`: `Spec: <path>#<section> - "<verbatim requirement>"`. Without a citation - drop. Do not invent a spec from memory, git history, branch names, or the dialogue - if a requirement is absent from the found artifact, ask the user or drop.

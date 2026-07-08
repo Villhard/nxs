@@ -1,13 +1,13 @@
 ---
-description: Investigate a bug to a confirmed root cause via a cheap reproduction loop and a 5-Why chain - the Jira bug entry point. Use when handed a bug report, Jira bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
-argument-hint: "[jira key | bug description | path]"
+description: Investigate a bug to a confirmed root cause via a cheap reproduction loop and a 5-Why chain - the tracked-bug entry point. Use when handed a bug report, a tracker bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
+argument-hint: "[tracker key | bug description | path]"
 ---
 
 # /nxs:bug
 
 Bug investigation entry point. Reach a confirmed root cause, then stop. Self-contained skill. Output language and response style come from global rules, not this file.
 
-Accepted input: Jira key / URL, pasted bug text, observed behavior, stack trace / log, or a path.
+Accepted input: tracker key / URL, pasted bug text, observed behavior, stack trace / log, or a path.
 
 ## STANCE (READ-ONLY INVESTIGATION)
 
@@ -18,7 +18,7 @@ Accepted input: Jira key / URL, pasted bug text, observed behavior, stack trace 
 
 ## INTAKE
 
-- If the input is a Jira key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
+- If the input is a tracker key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
 - When a domain term in the bug report is fuzzy or ambiguous, stop and clarify it before running 5-Why rather than guessing its meaning.
 
 ## DIAGNOSIS LOOP
