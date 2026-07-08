@@ -1,115 +1,41 @@
 # REVIEW POLICY (reference)
 
-Loaded on demand from `/nxs:review`. Carries the full review verdict contract - BLOCK / NIT / DROP classification, the anti-hypothetical filter, the high-confidence threshold, the pre-emit check, ranking, the finding output format, and the Standards / Spec axis classification tables. The operational rules live in SKILL.md; this file is the detail.
+Loaded on demand from `/nxs:review`. Layers the review-specific detail on top of the shared `review-protocol` kernel: the Standards and Spec axes (sources, citation requirements, classification tables), the classification refinements (superfluous tests, test discipline, relative-complexity over-engineering), the orchestrator pass, and per-reviewer differentiation. The operational rules live in SKILL.md; this file is the detail.
 
-APPROVE with no findings is a valid result. Only confirmed findings. Do not invent issues.
+## BASE PROTOCOL
 
-## RULE
+The read-only stance, the anti-hypothetical / high-confidence threshold, the per-finding pre-emit check (intent read, context read, excerpt quote, counter-questions, mark-inference), the BLOCK / NIT / DROP definitions and tie-breaks, ranking without a numeric cap, the generic finding output format, and clean-approve validity all live once in `review-protocol` - follow it as the base. This file does not restate them; it adds only the sections below.
 
-- BLOCK = must be fixed before MR.
-- NIT = a useful improvement.
-- Better to skip a weak issue than to create a false positive.
-- No endless nitpicking.
+## OUTPUT CONTRACT (axis additions)
 
-## ANTI-HYPOTHETICAL FILTER
+The generic finding format - findings first with no preamble, the marked `<BLOCK|NIT> <file>:<line>` excerpt block, the concrete `Fix:`, the optional `Why:` / `Attack:` line - lives in `review-protocol` OUTPUT FORMAT; do not restate it. This section adds only the review-specific requirements:
 
-Reject:
-
-- "what if someone later..." without specifics;
-- useless DRY / style suggestions;
-- alternatives that are not clearly better;
-- remarks without a concrete file / context / scenario.
-
-## HIGH CONFIDENCE THRESHOLD
-
-Every remark must have:
-
-- a concrete file and line / area;
-- a quoted excerpt from the code (5-7 lines with the problem line marked `>`);
-- a real scenario in which it manifests;
-- a clear explanation of why it matters - but only if the point is not evident from the excerpt.
-
-Without this - drop.
-
-## PRE-EMIT CHECK
-
-Before emitting a finding, every reviewer must:
-
-1. Read 20-30 lines of context around `<file>:<line>`.
-2. Quote an excerpt (5-7 lines, the problem line marked `>`).
-3. Answer two counter-questions:
-   - Is this intentional design? Is there a sign in the code / comments / tests that it was done deliberately?
-   - Is it already handled under a different name in this same diff / in the project's existing helpers?
-
-If even one answer is "yes" - drop, do not emit. If you could not quote an excerpt - drop.
-
-## RANKING
-
-- No fixed numeric cap on the number of findings. Emit every finding that passes the high-confidence threshold and the pre-emit check.
-- Order findings by real impact, strongest first. Volume is held down by the confidence threshold, the anti-hypothetical filter, and the pre-emit check - not by a count limit.
-- No endless nitpicking: a weak or speculative candidate is dropped, never emitted to pad a list. Better to skip a weak issue than create a false positive.
-
-## OUTPUT CONTRACT
-
-- Findings first. No preamble, praise, or investigation diary.
-- Each finding in the format:
+- A single-line header printed before the findings: `Source artifact: <path or skipped> | Standards: <sources or skipped>`.
+- For an axis finding (Standards / Spec) - a mandatory single citation line under `Fix:`:
 
   ```
-  <BLOCK|NIT> <file>:<line> - <one-line issue>
-
-    <2-3 lines of context>
-  > <offending line>
-    <2-3 lines of context>
-
-    Fix: <concrete action, one phrase>
+  Standard: <path>#<section> - "<verbatim quote of the rule>"
+  Spec: <artifact-path>#<section> - "<verbatim quote of the requirement>"
   ```
 
-- The excerpt is 5-7 lines total, the problem line marked `>`. If the problem spans several lines - mark each one.
-- `Fix:` is a concrete action, not "consider X" / "think about Y".
-- An optional single `Why:` or `Attack:` line (for security) - only if the point is not obvious from the issue + excerpt. Omit by default.
-- For an axis finding (Standards / Spec) - a mandatory single citation line under `Fix:`: `Standard: <path>#<section> - "<rule>"` or `Spec: <path>#<section> - "<requirement>"`. Without a citation - drop.
+  Without a citation - drop.
 - No Category / Reason / Scenario as separate fields.
 - If there are no findings: `Verdict: APPROVE. Findings: none.`
-- A single-line header is printed before the findings: `Source artifact: <path or skipped> | Standards: <sources or skipped>`.
 
-## CLASSIFICATION
+## CLASSIFICATION REFINEMENTS
 
-### BLOCK
+Base BLOCK / NIT / DROP definitions and tie-breaks live in `review-protocol` - do not restate them. This file adds the review-specific refinements below; they layer on the base classification.
 
-Must fix before MR:
+### SUPERFLUOUS TEST REQUESTS
 
-- real bug;
-- broken requirement;
-- build break;
-- regression;
-- security / data risk;
-- missing important test;
-- serious maintainability issue.
+Beyond the base DROP list, do not demand:
 
-### NIT
-
-A useful improvement, optional:
-
-- a small readability improvement;
-- simpler debugging / maintenance;
-- test clarity;
-- user-visible quality.
-
-### NOT A FINDING (DROP)
-
-Do not publish as a remark:
-
-- pure style preference;
-- speculative future risk without a concrete scenario;
-- abstraction preference;
-- DRY suggestion without real benefit;
-- an alternative that is not clearly better;
-- a request for a test that duplicates an already-covered axis or verifies the same branch under a different name - test value over case-matrix completeness;
+- a test that duplicates an already-covered axis or verifies the same branch under a different name - test value over case-matrix completeness -> drop;
 - separate near-identical test requests when several same-shaped input variations are genuinely worth covering - suggest parameterizing one test (one NIT) instead.
 
 ### TEST DISCIPLINE
 
-Tests encode the contract, not a case matrix or refactoring scaffolding. Counterpart to the test items in NOT A FINDING above: those forbid demanding superfluous tests; these flag superfluous tests already added.
+Tests encode the contract, not a case matrix or refactoring scaffolding. Counterpart to SUPERFLUOUS TEST REQUESTS above: those forbid demanding superfluous tests; these flag superfluous tests already added.
 
 - A test whose meaningful verification rests only on absence / negation (`assert X not in logs`) and does not pin the positive contract -> BLOCK. Such a check is a transient implementation / refactor scaffold; the committed test asserts the positive observable form. Exception: a genuinely negative requirement (a secret / PII must never appear in output) is a valid contract - keep it framed as that requirement, not as a removal leftover.
 - A redundant absence assertion next to a real contract assertion -> NIT (remove the scaffold).
@@ -122,9 +48,9 @@ Over-engineering / premature abstraction is assessed relative to the simplicity 
 
 - Complex code proportional to the complexity of the task -> NOT A FINDING.
 - Code that solves a simple task in a complex way (a factory for a one-off call, an abstraction for a single case, a generic wrapper for a specific task) -> NIT; in clear cases with a real maintenance / readability cost -> BLOCK.
-- An abstraction that looks complex in absolute terms but is proportional to the task -> DROP (see "abstraction preference" in NOT A FINDING).
+- An abstraction that looks complex in absolute terms but is proportional to the task -> DROP (see "abstraction preference" in the base DROP list).
 
-The existing filters "abstraction preference -> drop" and "DRY suggestion without real benefit -> drop" remain and apply to absolute-complexity cases without relative context. The relative-complexity criterion supplements them, it does not replace them.
+The base filters "abstraction preference -> drop" and "DRY suggestion without real benefit -> drop" remain and apply to absolute-complexity cases without relative context. The relative-complexity criterion supplements them, it does not replace them.
 
 ## STANDARDS AXIS
 
@@ -215,8 +141,4 @@ After collecting findings from the agents:
 - `nxs:review-testing-reviewer` - coverage / assertions / fragile tests;
 - `nxs:review-simplification-reviewer` - over-engineering / premature abstraction / dead code.
 
-All follow this policy.
-
-## CLEAN APPROVE IS VALID
-
-If nothing was found - that is a valid result. Do not invent findings for the sake of a nice report. `Verdict: APPROVE` without findings is normal for a quality diff.
+All follow this policy on top of the `review-protocol` base.

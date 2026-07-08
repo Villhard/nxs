@@ -85,17 +85,12 @@ After collecting agent + axis findings:
 
 The orchestrator may run the `verify` skill on the diff when useful (project checks: tests / lint / format / typecheck / build), but do not duplicate what the reviewers or axes already cover.
 
-## CLASSIFICATION (inline)
+## CLASSIFICATION
 
-- BLOCK - must fix before MR: real bug, broken requirement, build break, regression, security / data risk, missing important test, serious maintainability issue.
-- NIT - a useful optional improvement: small readability gain, easier debugging / maintenance, test clarity, user-visible quality.
-- DROP (not a finding) - pure style preference, speculative future risk without a concrete scenario, abstraction preference, DRY without real benefit, an alternative not clearly better, a superfluous test.
+The orchestrator classifies findings on the same base as the lenses; do not restate the definitions here.
 
-Over-engineering is judged relative to the task, not in absolute terms: complexity proportional to the task -> DROP; a complex solution to a simple task (a factory for a one-off call, an abstraction for a single case, a generic wrapper for a specific task) -> NIT, or BLOCK when the maintenance / readability cost is real.
-
-Test discipline: an absence-only assertion that does not pin the positive contract -> BLOCK (unless it is a genuinely negative requirement, e.g. a secret / PII must never appear in output); a redundant absence assertion next to a real contract assertion -> NIT; a new test that duplicates an existing test's axis -> NIT (update / parametrize the existing test instead); assertions on incidental internals instead of the observable behavioral contract -> NIT.
-
-Full classification, the axis classification tables, the anti-hypothetical filter, the high-confidence threshold, the pre-emit check, and the finding output format are in `reference/review-policy.md`.
+- Base BLOCK / NIT / DROP and tie-breaks - `review-protocol` (the kernel injected into every lens; the orchestrator follows the same base).
+- Review-specific refinements - over-engineering relative to the task, test discipline, and the Standards / Spec axis classification tables - `reference/review-policy.md`, where they live once.
 
 ## OUTPUT
 
@@ -117,9 +112,9 @@ Findings body - only confirmed BLOCK / NIT, each with a quoted excerpt (5-7 line
 
 ## REFERENCE
 
-- `reference/review-policy.md` - full BLOCK / NIT / DROP classification, the Standards / Spec axis classification tables, the anti-hypothetical filter, the high-confidence threshold, the pre-emit check, and the finding output format.
+- `reference/review-policy.md` - the Standards / Spec axis classification tables and citation formats, the classification refinements (superfluous tests, test discipline, relative-complexity over-engineering), the orchestrator pass, and per-reviewer differentiation - layered on the `review-protocol` base.
 
-Reference skills used by name: `review-protocol` (the per-reviewer discipline each selected lens follows), `verify` (project checks on the diff when useful).
+Reference skills used by name: `review-protocol` (the shared base protocol each selected lens follows - stance, pre-emit check, BLOCK / NIT / DROP, ranking, output format - injected into each lens and followed by the orchestrator too), `verify` (project checks on the diff when useful).
 
 ## NEXT
 
