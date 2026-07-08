@@ -48,6 +48,7 @@ If the plan is headed for `/nxs:exec auto`:
 ## OUTPUT
 
 Findings first, to chat. No file is written by default.
+Wording of every finding follows the plain-wording rule of review-protocol.
 
 ```
 Plan review: <plan-file-path>

@@ -100,7 +100,7 @@ Header first (single line), then findings, no preamble / praise / process narrat
 Source artifact: <path or skipped> | Standards: <sources or skipped>
 ```
 
-Findings body - only confirmed BLOCK / NIT, each with a quoted excerpt (5-7 lines, the problem line marked `>`), a concrete `Fix:`, and the `Standard:` / `Spec:` citation for an axis finding. A clean approve is valid: `Verdict: APPROVE. Findings: none.`
+Findings body - only confirmed BLOCK / NIT, each with a quoted excerpt (5-7 lines, the problem line marked `>`), a concrete `Fix:`, and the `Standard:` / `Spec:` citation for an axis finding. A clean approve is valid: `Verdict: APPROVE. Findings: none.` Wording of every finding follows the plain-wording rule of review-protocol.
 
 ## RULES
 

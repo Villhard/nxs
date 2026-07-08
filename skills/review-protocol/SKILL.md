@@ -69,6 +69,13 @@ Prefer one strong finding over several weak ones. A concern without a concrete f
 
 Findings first - no praise, preamble, or process narration. If nothing passes the check, a clean APPROVE is a valid result.
 
+Plain wording (per finding):
+
+- one claim per sentence; a sentence names the subject, the action, and the consequence ("the check misses X"), never a compressed coined term ("the check does not operationalize X");
+- no nominalizations or compound terms invented on the spot - describe the concrete failure instead;
+- the fix is one phrase with at most one example command per finding; no lists of example commands;
+- readability test: a reader who has not seen the target understands the finding on first read.
+
 ```
 <Reviewer> review: <scope>
 
