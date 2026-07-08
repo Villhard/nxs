@@ -26,13 +26,13 @@ Accepted input: a task description, a feature idea, a tracker key / URL / pasted
 Remove misunderstanding before proposing approaches. Throughout, separate facts from assumptions - state what the input and code establish versus what you are inferring.
 
 - Internal coverage scan first: check the task across uncertainty categories - scope and explicit out-of-scope; data / model / migrations; integrations and external dependencies; edge cases and failure handling; terminology; testability / acceptance criteria. Mark each Clear / Partial / Missing. This is internal reasoning, not user-facing output, and it scales with complexity - a trivial task collapses it.
-- Pick questions from Partial / Missing categories by Impact * Uncertainty - spend the budget on the highest-value unknowns, not whatever comes to mind first.
-- Up to 3 questions total (hard limit), exactly one at a time. Do not dump a list. 0 questions is a normal and frequent outcome - if the task is clear from the input and the code, pass silently.
+- Pick questions from Partial / Missing categories by Impact * Uncertainty - prioritize the highest-value unknowns, not whatever comes to mind first.
+- Stop rule: ask while the next question changes the decision AND a Missing (or Partial) category with high Impact * Uncertainty remains; stop as soon as either fails. Exactly one at a time. Do not dump a list. 0 questions is a normal and frequent outcome - if the task is clear from the input and the code, pass silently.
 - Every question is hard-won: it changes the decision or removes a real ambiguity, not a routine survey for appearances. Prefer multiple choice (2-4 options) with a recommended answer and rationale; open-ended only when a choice is unnatural.
 - If the answer is visible in the code, read the code instead of asking.
 - After each answer, revise the understanding and derive the next question from the updated model - do not prepare a list in advance, do not reopen a closed point without new information.
 - Surface acceptance / readiness criteria: pull them from the input, or formulate and confirm them.
-- The limit of 3 is a budget for removing uncertainty, not a target to fill. Categories still Partial / Missing after the budget - record them in the brief as `[NEEDS CLARIFICATION: <specific question>]` markers (the same marker convention the `plan-conventions` background skill uses), not as prose; do not push further. Surface this remainder to the user only when it is non-empty; full coverage produces no summary.
+- Categories still Partial / Missing once the stop rule fires - axes deliberately left open - record them in the brief as `[NEEDS CLARIFICATION: <specific question>]` markers (the same marker convention the `plan-conventions` background skill uses), not as prose; do not push further. Surface this remainder to the user only when it is non-empty; full coverage produces no summary.
 
 ## EXPLORE
 
@@ -82,7 +82,7 @@ Optional durable writes - only after explicit user approval: an ADR via the `dec
 
 - Brainstorm produces the brief and stops - no plan, no code.
 - Separate facts from assumptions throughout.
-- Questions are hard-won and one at a time - 3 is a budget for removing uncertainty, not a target to fill; 0 is a normal outcome.
+- Questions are hard-won and one at a time - ask only while the next question still changes the decision; 0 is a normal outcome.
 - Show 2-4 real approaches with trade-offs before recommending one; do not stretch artificial alternatives.
 - Durable writes (ADR, note) happen only on explicit user approval.
 
