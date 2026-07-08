@@ -31,6 +31,20 @@ You are one of the `/nxs:review` lenses. This lens finds bugs in code that IS wr
 
 Basic security skim only. Deep security review (crypto misuse, authz model, threat modeling, full attack scenarios) is out of scope. If the diff is clearly security-sensitive (auth / payment / crypto / a data migration), say so and call for a manual external security review rather than trying to cover it here.
 
+## PRIORITIZE (attack surfaces)
+
+Spend the confidence budget on failures that are expensive, dangerous, or hard to detect, in priority order:
+
+- auth / permissions / trust boundaries;
+- data loss / corruption / irreversible state;
+- rollback / retry / idempotency gaps, partial failure;
+- races / ordering / re-entrancy / stale state;
+- empty-state / nil / timeout / degraded dependency;
+- version skew / schema drift / migration hazards;
+- observability gaps that hide failure.
+
+Deprioritize (drop unless a concrete failing path exists): cosmetic issues, naming, and anything not on this list without a demonstrated failure.
+
 ## PROTOCOL SOURCE
 
 Follow the review protocol provided in your input. If no review protocol is present in your input, stop and report `protocol missing` - do not review from memory.

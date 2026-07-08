@@ -65,6 +65,8 @@ No fixed numeric cap. Emit every finding that passes the pre-emit check, ordered
 
 Prefer one strong finding over several weak ones. A concern without a concrete failing path is not a finding - do not emit it to look thorough.
 
+For behavioral code review, direct the confidence budget to high-cost attack surfaces first (see the quality lens `PRIORITIZE (attack surfaces)` block).
+
 ## OUTPUT FORMAT
 
 Findings first - no praise, preamble, or process narration. If nothing passes the check, a clean APPROVE is a valid result.

@@ -141,4 +141,6 @@ After collecting findings from the agents:
 - `nxs:review-testing-reviewer` - coverage / assertions / fragile tests;
 - `nxs:review-simplification-reviewer` - over-engineering / premature abstraction / dead code.
 
+`nxs:review-quality-reviewer` prioritizes attack surfaces per its `PRIORITIZE (attack surfaces)` block - spend the budget on expensive / dangerous / hard-to-detect failures first.
+
 All follow this policy on top of the `review-protocol` base.
