@@ -125,14 +125,7 @@ Without a citation - drop.
 
 ## ORCHESTRATOR PASS
 
-After collecting findings from the agents:
-
-1. deduplicate - merge identical findings from different agents.
-2. format check - a finding without a quoted excerpt or without a concrete `Fix:` - drop without ceremony. It is unverified or unactionable.
-3. verify - check the remaining ones against the real code. Without evidence - drop.
-4. apply this policy - classification + filters.
-5. rank by impact - strongest first; no numeric cap, weak candidates dropped not capped.
-6. output - only confirmed BLOCK and useful NIT in the format above.
+The operational procedure lives in `skills/review/SKILL.md`'s own `## ORCHESTRATOR PASS` section - this file does not restate it. This section adds only the policy-layer refinements to the classification step: apply the classification refinements above (SUPERFLUOUS TEST REQUESTS, TEST DISCIPLINE, OVER-ENGINEERING - RELATIVE COMPLEXITY) and the Standards / Spec axis classification tables on top of the base `review-protocol` classification.
 
 ## DIFFERENCE FOR EACH REVIEWER
 

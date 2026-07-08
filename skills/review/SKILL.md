@@ -112,7 +112,7 @@ Findings body - only confirmed BLOCK / NIT, each with a quoted excerpt (5-7 line
 
 ## REFERENCE
 
-- `reference/review-policy.md` - the Standards / Spec axis classification tables and citation formats, the classification refinements (superfluous tests, test discipline, relative-complexity over-engineering), the orchestrator pass, and per-reviewer differentiation - layered on the `review-protocol` base.
+- `reference/review-policy.md` - the Standards / Spec axis classification tables and citation formats, the classification refinements (superfluous tests, test discipline, relative-complexity over-engineering), and per-reviewer differentiation - layered on the `review-protocol` base.
 
 Reference skills used by name: `review-protocol` (the shared base protocol each selected lens follows - stance, pre-emit check, BLOCK / NIT / DROP, ranking, output format - injected into each lens and followed by the orchestrator too), `verify` (project checks on the diff when useful).
 
