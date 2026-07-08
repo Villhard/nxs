@@ -31,7 +31,7 @@ Resolve to a concrete diff before anything else:
 
 ## REVIEWERS (adaptive selection)
 
-Select the reviewer set proportional to the resolved diff and run only the lenses the diff needs. Each selected reviewer is an isolated subagent following `review-protocol` (reference by name; do not restate the protocol). Parallel if the harness supports it, sequential fallback.
+Select the reviewer set proportional to the resolved diff and run only the lenses the diff needs. Each selected reviewer is an isolated subagent. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) once and include its full text in the prompt of every lens you spawn. The lens agents do not restate the protocol - they receive it via this injected prompt. Parallel if the harness supports it, sequential fallback.
 
 - `nxs:review-quality-reviewer` - any diff touching behavioral code: bugs / regressions / leaks / stale comments + a basic security skim;
 - `nxs:review-implementation-reviewer` - feature / multi-file / public-surface changes: missing implementation / stubs / forgotten config / public API;

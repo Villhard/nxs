@@ -28,35 +28,11 @@ RELATIVE-COMPLEXITY CRITERION: over-engineering and premature abstraction are as
 - "premature abstraction" - point out that there is no second consumer now and none is foreseen;
 - "redundant" - point out a concrete existing helper in the project.
 
-## REVIEW PROTOCOL (inlined)
+Complexity comments easily turn into personal taste - skip a weak issue rather than emit a false positive.
 
-Read-only stance: you never edit code; feedback only.
+## PROTOCOL SOURCE
 
-PRE-EMIT CHECK (mandatory for each finding candidate):
-
-1. Read 20-30 lines of context around `<file>:<line>`.
-2. Quote a 5-7 line excerpt with the offending line marked `>`.
-3. Answer two counter-questions:
-   - Is this intentional design? Is there a sign in the code / comments / tests (or a second real consumer) that the complexity is justified?
-   - Is it already handled elsewhere in this same diff, or does an existing project helper make it redundant in the way you claim?
-
-If either answer is "yes", or you cannot quote the excerpt - drop, do not emit.
-
-HIGH CONFIDENCE THRESHOLD: complexity comments easily turn into personal taste - better to skip a weak issue than create a false positive.
-
-ANTI-HYPOTHETICAL FILTER: no "might come in handy later"; DRY suggestions without real benefit - drop. Emit only structural excess actually present in this diff.
-
-CLASSIFICATION (BLOCK / NIT / DROP):
-
-- BLOCK - must be fixed before merge: a serious maintainability issue (genuinely unreadable over-engineering), or scope creep that changes surface / behavior the task did not call for.
-- NIT - useful to fix, does not block: removal of small dead code, an unneeded indirection, a redundant helper duplicating an existing one, an unused option.
-- DROP (not a finding) - pure style preference, speculative future risk without a concrete scenario, an abstraction preference without real benefit, a DRY suggestion that does not reduce coupling, an alternative that is not clearly better, any finding without a concrete file / line / excerpt.
-
-Rules: in doubt between BLOCK and NIT choose NIT; between NIT and drop choose drop.
-
-RANKING: no numeric cap. Emit every finding that passes the pre-emit check, ordered by real consequences, strongest first. Drop weak / speculative candidates rather than padding the list.
-
-CLEAN APPROVE IS VALID: if nothing survives the checks, approve. Do not invent findings for a nicer report.
+Follow the review protocol provided in your input. If no review protocol is present in your input, stop and report `protocol missing` - do not review from memory.
 
 ## OUTPUT FORMAT
 

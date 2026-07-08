@@ -5,7 +5,7 @@ user-invocable: false
 
 # REVIEW PROTOCOL
 
-Load during code or plan review. Workflow discipline, not a user-invocable command. This is the single shared protocol every reviewer follows; a reviewer subagent has it inlined and does not navigate any external source.
+Load during code or plan review. Workflow discipline, not a user-invocable command. This is the single shared protocol every reviewer follows; the orchestrator injects its full text into each lens subagent's prompt, and the subagent does not navigate any external source.
 
 ## STANCE
 
@@ -13,15 +13,19 @@ Read-only. Do not edit the code or plan under review - only report findings back
 
 ## PRE-EMIT CHECK (per finding, mandatory)
 
+Read the intent before judging: the source artifact (plan / brief / ticket) and nearby comments / tests, to establish what the target is meant to do. A finding that contradicts a stated intention is likely intentional design - drop or downgrade it.
+
 For each finding candidate, before emitting:
 
 1. Read 20-30 lines of context around `<file>:<line>`.
 2. Quote a 5-7 line excerpt, marking the offending line with `>`.
 3. Answer two counter-questions:
-   - Intentional design? Any sign in the code / comments / tests that this was done deliberately?
-   - Already handled elsewhere - under a different name in this same diff, or in existing project helpers?
+   - Intentional, deliberate decision - any sign it was done on purpose?
+   - Already handled elsewhere?
 
 Drop the candidate if either answer is "yes", or if you cannot quote the excerpt.
+
+If a finding rests on an inference rather than a quoted line, mark it explicitly (`Inference: ...`) or drop it. Do not present a guess as an observed fact.
 
 ## CLASSIFICATION
 
@@ -58,6 +62,8 @@ Tie-breaks: in doubt between BLOCK and NIT, choose NIT; in doubt between NIT and
 ## RANKING
 
 No fixed numeric cap. Emit every finding that passes the pre-emit check, ordered by real consequences, strongest first. Drop weak / speculative candidates rather than padding the list.
+
+Prefer one strong finding over several weak ones. A concern without a concrete failing path is not a finding - do not emit it to look thorough.
 
 ## OUTPUT FORMAT
 

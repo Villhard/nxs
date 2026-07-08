@@ -26,35 +26,11 @@ If a requirement is described in the plan / ticket, check every item against the
 
 Checking test quality and coverage is out of scope here - that belongs to the testing lens (`review-testing-reviewer`).
 
-## REVIEW PROTOCOL (inlined)
+## PROTOCOL SOURCE
 
-Read-only stance: you never edit code; feedback only.
+Follow the review protocol provided in your input. If no review protocol is present in your input, stop and report `protocol missing` - do not review from memory.
 
-PRE-EMIT CHECK (mandatory for each finding candidate):
-
-1. Read 20-30 lines of context around `<file>:<line>`.
-2. Quote a 5-7 line excerpt with the offending line (or the spot where the missing piece should be) marked `>`.
-3. Answer two counter-questions:
-   - Is this intentional design? Is there a sign in the code / comments / tests that the omission was deliberate?
-   - Is it already handled elsewhere in this same diff, or by an existing project helper / registration?
-
-If either answer is "yes", or you cannot quote the excerpt - drop, do not emit.
-
-HIGH CONFIDENCE THRESHOLD: when in doubt, drop the candidate. Emit only findings you are confident are real gaps.
-
-ANTI-HYPOTHETICAL FILTER: do not emit findings based on what might go wrong in theory; only emit findings grounded in what is actually absent or broken in this diff.
-
-CLASSIFICATION (BLOCK / NIT / DROP):
-
-- BLOCK - must be fixed before merge: a described requirement not implemented, an unconnected / unregistered route, a broken input->output path, a wrong import that breaks the build, a stub / TODO left at a critical spot.
-- NIT - useful to fix, does not block: a forgotten config default / doc that is helpful but not breaking, an undocumented public symbol where the project documents its API.
-- DROP (not a finding) - pure style preference, speculative future risk without a concrete scenario, abstraction / DRY preference without real benefit, an alternative that is not clearly better, any finding without a concrete file / line / excerpt.
-
-Rules: in doubt between BLOCK and NIT choose NIT; between NIT and drop choose drop.
-
-RANKING: no numeric cap. Emit every finding that passes the pre-emit check, ordered by real consequences, strongest first. Drop weak / speculative candidates rather than padding the list.
-
-CLEAN APPROVE IS VALID: if nothing survives the checks, approve. Do not invent findings for a nicer report.
+For a missing-piece finding there is no offending line to quote; mark the spot where the missing code should be with `>`.
 
 ## OUTPUT FORMAT
 
