@@ -31,7 +31,7 @@ Resolve to a concrete diff before anything else:
 
 ## REVIEWERS (adaptive selection)
 
-Select the reviewer set proportional to the resolved diff and run only the lenses the diff needs. Each selected reviewer is an isolated subagent. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) once and include its full text in the prompt of every lens you spawn. The lens agents do not restate the protocol - they receive it via this injected prompt. Parallel if the harness supports it, sequential fallback.
+Select the reviewer set proportional to the resolved diff and run only the lenses the diff needs. Each selected reviewer is an isolated subagent. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) once and include its full text in the prompt of every lens you spawn. The lens agents do not restate the protocol - they receive it via this injected prompt. For the quality and simplification lenses, also inject the full text of `reference/smell-baseline.md` - the fixed Fowler smell set those two lenses carry on top of documented standards. Parallel if the harness supports it, sequential fallback.
 
 - `nxs:review-quality-reviewer` - any diff touching behavioral code: bugs / regressions / leaks / stale comments + a basic security skim;
 - `nxs:review-implementation-reviewer` - feature / multi-file / public-surface changes: missing implementation / stubs / forgotten config / public API;
@@ -113,6 +113,7 @@ Findings body - only confirmed BLOCK / NIT, each with a quoted excerpt (5-7 line
 ## REFERENCE
 
 - `reference/review-policy.md` - the Standards / Spec axis classification tables and citation formats, the classification refinements (superfluous tests, test discipline, relative-complexity over-engineering), and per-reviewer differentiation - layered on the `review-protocol` base.
+- `reference/smell-baseline.md` - the fixed Fowler smell set (Refactoring ch.3) injected into the quality and simplification lenses, with the rules for how a smell enters the base classification.
 
 Reference skills used by name: `review-protocol` (the shared base protocol each selected lens follows - stance, pre-emit check, BLOCK / NIT / DROP, ranking, output format - injected into each lens and followed by the orchestrator too), `verify` (project checks on the diff when useful).
 

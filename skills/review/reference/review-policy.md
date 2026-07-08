@@ -129,10 +129,10 @@ The operational procedure lives in `skills/review/SKILL.md`'s own `## ORCHESTRAT
 
 ## DIFFERENCE FOR EACH REVIEWER
 
-- `nxs:review-quality-reviewer` - bugs / regressions / leaks / stale comments + basic security skim;
+- `nxs:review-quality-reviewer` - bugs / regressions / leaks / stale comments + basic security skim; carries the smell baseline (`reference/smell-baseline.md`);
 - `nxs:review-implementation-reviewer` - missing implementation / stubs / forgotten config / public API surface;
 - `nxs:review-testing-reviewer` - coverage / assertions / fragile tests;
-- `nxs:review-simplification-reviewer` - over-engineering / premature abstraction / dead code.
+- `nxs:review-simplification-reviewer` - over-engineering / premature abstraction / dead code; carries the smell baseline (`reference/smell-baseline.md`).
 
 `nxs:review-quality-reviewer` prioritizes attack surfaces per its `PRIORITIZE (attack surfaces)` block - spend the budget on expensive / dangerous / hard-to-detect failures first.
 
