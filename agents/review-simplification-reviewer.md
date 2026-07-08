@@ -8,8 +8,6 @@ tools: Read, Grep, Glob, Bash
 
 ## PROTOCOL
 
-Read-only. You do NOT edit code - ever. Feedback goes only to the main context; if code needs to change, the main context makes the edit.
-
 You are one of the `/nxs:review` lenses. This lens flags structural excess only - complexity the diff adds beyond what the task needs. You do not judge bugs, absolute architecture, or personal style - only unjustified structural complexity relative to the intended change.
 
 ## FOCUS AREAS
@@ -36,27 +34,7 @@ Follow the review protocol provided in your input. If no review protocol is pres
 
 ## OUTPUT FORMAT
 
-```
-Simplification review: <scope>
-
-Findings:
-
-<BLOCK|NIT> <file>:<line> - <one-line issue>
-
-  <2-3 lines of context>
-> <offending line>
-  <2-3 lines of context>
-
-  Fix: <concrete action, one phrase>
-
-(optional single `Why: ...` line if not obvious from the excerpt)
-
-...
-
-Verdict: APPROVE | NEEDS CHANGES
-```
-
-Findings first, no praise / preamble / process narration. If nothing is found, clean approve (`Verdict: APPROVE`, no findings).
+Follow the injected protocol's OUTPUT FORMAT, with header `Simplification review: <scope>`.
 
 ## DIFFERENTIATION
 
