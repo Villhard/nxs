@@ -6,9 +6,9 @@ Nexus workflow skills for Claude Code, packaged as a plugin: a minimal set of fl
 
 Three tiers:
 
-1. Global `~/.claude/CLAUDE.md` - tool-level always-on rules (output language, style, token economy, CLI tools, safety, pointer to project `docs/.ai/*`). Hand-authored by you, NOT shipped by this plugin - each user provides their own (see Setup). The plugin's skills rely on it for output style and for the safety rules some skills delegate to it: for example `commit-conventions` keeps its secret / force-push safety in your global rules, not in the skill.
-2. Command skills (`/nxs:<name>`) - 14 flat commands: `plan`, `exec`, `review`, `plancheck`, `bug`, `rnd`, `dialectic`, `explain`, `recommit`, `userdoc`, `techdoc`, `init`, `wrong`, `clean`. Modes are rare and inferred: `exec` (default / auto) and `explain` (depth). All others are single-mode.
-3. Background skills (`user-invocable: false`) - shared rules loaded by relevance, hidden from the `/` menu: `commit-conventions`, `plan-conventions`, `review-protocol`, `verify`, `domain-language`, `decision-log`, `intake`.
+1. Global `~/.claude/CLAUDE.md` - tool-level always-on rules (output language, style, token economy, CLI tools, safety). Hand-authored by you, NOT shipped by this plugin - each user provides their own (see Setup). The plugin's skills rely on it for output style and for the safety rules some skills delegate to it: for example `commit-conventions` keeps its secret / force-push safety in your global rules, not in the skill.
+2. Command skills (`/nxs:<name>`) - 13 flat commands: `plan`, `exec`, `review`, `plancheck`, `bug`, `rnd`, `dialectic`, `explain`, `recommit`, `userdoc`, `techdoc`, `wrong`, `clean`. Modes are rare and inferred: `exec` (default / auto) and `explain` (depth). All others are single-mode.
+3. Background skills (`user-invocable: false`) - shared rules loaded by relevance, hidden from the `/` menu: `commit-conventions`, `plan-conventions`, `review-protocol`, `verify`, `decision-log`, `intake`.
 
 Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`) and read-only subagents: `explorer`, `diagnose-investigator`, four `plan-*-reviewer` lenses (used by `plancheck`), four `review-*-reviewer` lenses (used by `review`).
 

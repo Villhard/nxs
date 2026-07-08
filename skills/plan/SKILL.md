@@ -18,7 +18,7 @@ Accepted input: a task description, a brainstorm brief (`docs/briefs/`), a root-
 ## INTAKE
 
 - If the input is a Jira key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
-- When a domain term in the task is fuzzy or ambiguous, use the `domain-language` background skill to resolve it before encoding it into the plan. Stop on an ambiguous term rather than guessing its meaning.
+- When a domain term in the task is fuzzy or ambiguous, stop and clarify it before encoding it into the plan rather than guessing its meaning.
 - Inspect project context before decomposing: read the relevant files, patterns, and dependencies (delegate to an explorer subagent (`nxs:explorer` or the built-in Explore) or inspect directly). Do not over-read.
 
 ## PROCEDURE

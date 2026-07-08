@@ -19,7 +19,7 @@ Accepted input: Jira key / URL, pasted bug text, observed behavior, stack trace 
 ## INTAKE
 
 - If the input is a Jira key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
-- When a domain term in the bug report is fuzzy or ambiguous, use the `domain-language` background skill to resolve it before running 5-Why. Stop on an ambiguous term rather than guessing its meaning.
+- When a domain term in the bug report is fuzzy or ambiguous, stop and clarify it before running 5-Why rather than guessing its meaning.
 
 ## DIAGNOSIS LOOP
 

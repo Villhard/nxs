@@ -132,8 +132,6 @@ Checks the diff against the project's documented standards. Active in every run;
 
 ### SOURCES
 
-- `docs/.ai/*` - project AI context;
-- `docs/.ai/domain-language.md` - ubiquitous language;
 - ADRs (`docs/adr/`, `docs/decisions/`, or wherever they live);
 - root `AGENTS.md` / `CLAUDE.md`;
 - `CONTRIBUTING.md`, `STANDARDS.md`, `STYLE.md`, `STYLE_GUIDE.md` and their variants in root or `docs/`;

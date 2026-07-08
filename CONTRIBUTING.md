@@ -38,7 +38,7 @@ Tier 1 (global `~/.claude/CLAUDE.md`) и `settings.json` - НЕ в репо пл
 - Имя команды = имя ДИРЕКТОРИИ скилла. `skills/plan/` -> `/nxs:plan`.
 - Namespace `nxs` берётся из `plugin.json` поля `name: nxs`. Инвокация плагин-скилла всегда namespaced (`/nxs:...`), bare-алиаса нет. Уникальность даёт `nxs:`, флоу-префикс не нужен.
 
-Текущий набор команд (14, плоские имена):
+Текущий набор команд (13, плоские имена):
 
 | area | commands |
 |---|---|
@@ -46,7 +46,7 @@ Tier 1 (global `~/.claude/CLAUDE.md`) и `settings.json` - НЕ в репо пл
 | think | `rnd`, `dialectic`, `wrong` |
 | understand | `explain` |
 | document | `userdoc`, `techdoc` |
-| git / project | `recommit`, `clean`, `init` |
+| git / project | `recommit`, `clean` |
 
 Modes (редкие, по инференсу): `exec` (default / auto), `explain` (глубина). Остальные - один режим. `area` - только группировка для чтения, не префикс команды.
 
@@ -180,7 +180,6 @@ claude plugin marketplace update nxs-dev
 | `/nxs:clean` | перемещённые файлы (`docs/plans/completed/`, `docs/briefs/archive/`) |
 | `/nxs:techdoc` | `docs/techdoc/<slug>.md` (локальный черновик, `docs/` gitignored; durable - Confluence) |
 | `/nxs:userdoc` | `docs/userdoc/<slug>.md` (локальный черновик, `docs/` gitignored; durable - Confluence) |
-| `/nxs:init` | `docs/.ai/` |
 
 Правила путей:
 

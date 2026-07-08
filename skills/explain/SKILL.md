@@ -36,9 +36,9 @@ Pick the smallest band that covers what the target points at; escalate or narrow
 
 - Understanding, not evaluation: never flag bugs / security / quality and never make review claims. Finding problems in a diff is `/nxs:review`.
 - Plain words; technical terms stay English where customary. One idea at a time. No architectural essays, no motivational endings.
-- Read-only, chat only; no durable file. If a band-3 map is worth persisting, suggest `/nxs:init` (`docs/.ai/`).
+- Read-only, chat only; no durable file.
 - The explanation saves time, not spends it. On doubt, prioritize clarity.
 
 ## NEXT
 
-Turn into a plan -> `/nxs:plan`. Find problems in a diff -> `/nxs:review`. Persist a subsystem map -> `/nxs:init`.
+Turn into a plan -> `/nxs:plan`. Find problems in a diff -> `/nxs:review`.

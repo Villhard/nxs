@@ -67,7 +67,7 @@ On the confirmed hypothesis only. For each observation ask "why is this happenin
 - If you could not reproduce it, mark it as an assumption and explicitly list the missing evidence.
 - If several plausible causes exist, describe them all and pick the most likely with justification; do not narrow to the first plausible one.
 - Cleanup before finishing: debug tools do not make it into main.
-- If `docs/.ai/domain-language.md` exists, read it before formulating hypotheses so you do not confuse project-specific terms from the bug report. If the bug report contains an ambiguous term, flag it in `Needs user input` before 5-Why.
+- If the bug report contains an ambiguous term, flag it in `Needs user input` before 5-Why rather than confusing project-specific terms.
 - Read-only.
 
 ## OUTPUT FORMAT

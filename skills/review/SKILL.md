@@ -54,7 +54,6 @@ Run in parallel with or after the agents, over the diff against the found source
 
 Does the diff conform to the project's documented standards. Read only sources that actually exist, do not invent them:
 
-- `docs/.ai/*` (including `docs/.ai/domain-language.md` - ubiquitous language);
 - ADRs (`docs/adr/`, `docs/decisions/`, or wherever they live in the project);
 - root `AGENTS.md` / `CLAUDE.md`;
 - `CONTRIBUTING.md`, `STANDARDS.md`, `STYLE.md`, `STYLE_GUIDE.md` and their variants in root or `docs/`;

@@ -19,7 +19,7 @@ Accepted input: a task description, a feature idea, a Jira key / URL / pasted ti
 
 - If the input is a Jira key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
 - Gather context before asking: read the relevant code, existing patterns, dependencies, integration points, and project memory (delegate to an explorer subagent (`nxs:explorer` or the built-in Explore) or inspect directly). Ask only about what the code does not answer. Do not over-read.
-- When a domain term is fuzzy or ambiguous, use the `domain-language` background skill to resolve it before EXPLORE. Stop on an ambiguous term rather than guessing its meaning.
+- When a domain term is fuzzy or ambiguous, stop and clarify it before EXPLORE rather than guessing its meaning.
 
 ## CLARIFY
 
@@ -66,7 +66,7 @@ Add a clarifications log only when at least one CLARIFY question was asked:
 
 The accepted answer is integrated into the main brief text; the log records decision traceability. An answer that invalidates earlier brief text replaces it - contradicting stale wording must not remain.
 
-Optional durable writes - only after explicit user approval: a new or clarified term in the project domain glossary via the `domain-language` init flow; an ADR via the `decision-log` gate; a personal note if the user asks. Nothing durable is written from CLARIFY without approval.
+Optional durable writes - only after explicit user approval: an ADR via the `decision-log` gate; a personal note if the user asks. Nothing durable is written from CLARIFY without approval.
 
 ## RULES
 
@@ -74,7 +74,7 @@ Optional durable writes - only after explicit user approval: a new or clarified 
 - Separate facts from assumptions throughout.
 - Questions are hard-won and one at a time - 3 is a budget for removing uncertainty, not a target to fill; 0 is a normal outcome.
 - Show 2-4 real approaches with trade-offs before recommending one; do not stretch artificial alternatives.
-- Durable writes (glossary term, ADR, note) happen only on explicit user approval.
+- Durable writes (ADR, note) happen only on explicit user approval.
 
 ## DIFFERENTIATION
 
