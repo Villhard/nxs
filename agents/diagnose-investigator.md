@@ -16,59 +16,13 @@ Used by /nxs:bug and when a tracked bug or description needs evidence-driven ana
 
 **May not:** edit production code, write a fix, delete files, push.
 
-## DIAGNOSIS LOOP
+## PROTOCOL
 
-Mandatory phase before the 5-Why chain and any fix direction. 5-Why runs on an evidence-backed hypothesis, not a guess. Guess-based fixes are the main source of regressions; without a reproducible symptom any fix is a lottery; without a minimized repro the investigation drowns in noise; without predictions hypotheses are a story, not a theory; parallel variable changes destroy the signal.
-
-**Feedback loop - choose the cheapest that reproduces the real symptom (not a "similar" one):**
-
-1. failing test - unit / integration reproducing the symptom;
-2. curl / HTTP script - for an HTTP API;
-3. CLI invocation with fixture - for CLI / job runner / batch;
-4. replay captured trace / log / payload - replaying a real request or event;
-5. throwaway harness - a short wrapper script around the suspect function;
-6. differential loop - good vs broken in parallel (different version, env, input);
-7. HITL structured script - last resort: a step-by-step scenario for the user, only when the runtime is not available to you.
-
-**Ordered phases:**
-
-0. Feedback loop - build a cheap cycle from the list above before any hypotheses.
-1. Reproduce - reproduce exactly the symptom reported, not an adjacent failure.
-2. Minimize - reduce the repro to a minimum of variables: fewer steps, less data, fewer dependencies.
-3. Hypotheses - formulate 3-5 ranked falsifiable hypotheses. No hypotheses, no probes.
-4. Predictions - for each: "if X is the cause, then change / observation Y will produce Z". No prediction, not falsifiable.
-5. Instrument - check one hypothesis at a time. One variable, one log, one probe.
-6. 5-Why - run it on the hypothesis that passed a probe, not on the first plausible idea.
-7. Confirm - root cause confirmed when predictions held and evidence is reproducible.
-8. Fix direction - only after a confirmed cause.
-9. Regression test - propose a test at the right seam: the nearest layer where the cause reproduces cheaply and stably.
-10. Cleanup - remove debug logs, delete or mark the throwaway harness, record evidence and probes.
-
-## 5-WHY
-
-On the confirmed hypothesis only. For each observation ask "why is this happening?" and get a cause from a deeper layer. Repeat ~5 times (typically 3-7) until you reach a layer that can actually be fixed. "5" is the typical depth; the real number is: until an actionable cause.
-
-- Each step must rely on evidence, not guesses.
-- If there is no evidence, mark it as an assumption and verify it.
-- Do not stop at the first bad answer - keep asking "why?".
-- Do not dig infinitely deep - stop at an actionable layer.
-- If it drifts toward "not our area of responsibility" (social / political / another team), record it as a known limitation and return to the layer above. For technical bugs, stop at the technical boundary.
-- Cross-check each step against facts; a "story" is not a chain.
-- Trivial bugs need only 1-2 steps.
+Follow the diagnosis protocol provided in your input (the DIAGNOSIS LOOP, FIVE-WHY, STOP CONDITIONS, and RULES sections of `skills/bug/SKILL.md`). If missing, stop and report `protocol missing` - do not investigate from memory.
 
 ## OPERATIONAL RULES
 
-- **Loop before hypotheses.** No hypotheses before a feedback loop (or, in evidence request mode, an explicit assumption + missing-evidence request).
-- **Reproduce the exact symptom.** Not a "similar" failure.
-- **Falsifiable or drop.** A hypothesis without a prediction is discarded.
-- **One probe at a time.** Parallel changes destroy the signal.
-- **Evidence-backed 5-Why.** Run it on the confirmed hypothesis only.
-- **No solution before root cause.** Held without exceptions.
-- If you could not reproduce it, mark it as an assumption and explicitly list the missing evidence.
-- If several plausible causes exist, describe them all and pick the most likely with justification; do not narrow to the first plausible one.
-- Cleanup before finishing: debug tools do not make it into main.
 - If the bug report contains an ambiguous term, flag it in `Needs user input` before 5-Why rather than confusing project-specific terms.
-- Read-only.
 
 ## OUTPUT FORMAT
 

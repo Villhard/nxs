@@ -12,7 +12,7 @@ Accepted input: tracker key / URL, pasted bug text, observed behavior, stack tra
 ## STANCE (READ-ONLY INVESTIGATION)
 
 - Diagnose confirms the root cause with reproducible evidence. It does not write the fix.
-- The read-only investigation may be delegated to the `nxs:diagnose-investigator` subagent: it runs the diagnosis loop and 5-Why read-only and returns the evidence, hypotheses, and confirmed root cause to the main context, which then writes the brief and routes the fix.
+- The read-only investigation may be delegated to the `nxs:diagnose-investigator` subagent: it runs the diagnosis loop and 5-Why read-only and returns the evidence, hypotheses, and confirmed root cause to the main context, which then writes the brief and routes the fix. The delegation prompt must include the full text of this skill's `## DIAGNOSIS LOOP`, `## FIVE-WHY`, `## STOP CONDITIONS`, and `## RULES` sections (injection, not restatement from memory).
 - No fix, patch, or code change here. No exceptions. The fix goes through `/nxs:plan` (fix plan) and `/nxs:exec` (execution).
 - No solution before the root cause is confirmed. Do not narrow to the first plausible explanation - stay skeptical.
 
@@ -40,7 +40,7 @@ Before any hypotheses, build the cheapest cycle that reproduces the real symptom
 ### Phases in order
 
 0. Feedback loop - build a cheap cycle from the list above before any hypotheses.
-1. Symptom - reproduce exactly the symptom the user reports, not an adjacent failure.
+1. Reproduce - reproduce exactly the symptom the user reports, not an adjacent failure.
 2. Minimize - reduce the repro to a minimum of steps, data, and dependencies.
 3. Hypotheses - formulate 3-5 ranked falsifiable hypotheses before any probes.
 4. Predictions - for each: "if X is the cause, then change / observation Y produces Z". A hypothesis without a prediction is dropped.
@@ -53,7 +53,7 @@ Before any hypotheses, build the cheapest cycle that reproduces the real symptom
 
 ## FIVE-WHY
 
-For each observation ask "why is this happening?" and get a cause from a deeper layer. Repeat ~5 times (typically 3-7) until reaching a layer that can actually be fixed. The real number is: until an actionable cause. Each step relies on evidence, not guesses; if no evidence, mark it an assumption and verify. Do not stop at the first bad answer, and do not dig past the actionable layer. If it drifts to "not our area" or to social/political causes, record it as a known limitation and return to the layer above.
+For each observation ask "why is this happening?" and get a cause from a deeper layer. Repeat ~5 times (typically 3-7) until reaching a layer that can actually be fixed. The real number is: until an actionable cause. Trivial bugs need only 1-2 steps. Each step relies on evidence, not guesses; if no evidence, mark it an assumption and verify. Cross-check each step against facts - a "story" is not a chain. Do not stop at the first bad answer, and do not dig past the actionable layer. If it drifts to "not our area" or to social/political causes, record it as a known limitation and return to the layer above. For technical bugs, stop at the technical boundary.
 
 Example - symptom: "API returns 500 on payment".
 
