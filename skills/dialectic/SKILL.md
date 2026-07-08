@@ -11,32 +11,16 @@ Accepted input: two concrete approaches ("A vs B"), or a single claim / thesis t
 
 ## MODES
 
-- Mode A - compare two approaches: two specific, already-formulated options weighed head to head against the same criteria.
-- Mode B - stress-test a claim: one thesis put under adversarial pressure. Build its strongest form (steelman), then build the strongest case against it (antithesis). Counters confirmation bias in a decision already leaning one way.
+- Mode A - compare two approaches: two specific, already-formulated options weighed head to head against the same criteria. Applies the `stress-test` kernel's compare subset (six criteria + risks-not-cons + fact/assumption + decisive criteria); premortem/kill-criteria stay out of its output.
+- Mode B - stress-test a claim: one thesis put under adversarial pressure. Build its strongest form (steelman), then build the strongest case against it (antithesis). Applies the full `stress-test` kernel. Counters confirmation bias in a decision already leaning one way.
 
 Pick the mode from the input. If only a fuzzy direction exists and the options are not yet concrete, this is not dialectic - route to `/nxs:rnd` first.
 
 ## PROCEDURE
 
 1. Pin down the positions precisely. Mode A: state both options fairly in one line each. Mode B: state the claim, then its sharpest antithesis. If the description is vague, clarify before analyzing.
-2. Steelman each side. Argue the strongest form of each position, never a straw man. In Mode B, make the case FOR the claim as strong as an advocate would, then make the case AGAINST as strong as a critic would.
-3. Analyze each side across the same criteria - do not skew them toward an initial preference:
-   - what is good;
-   - what is bad;
-   - what risks there are (risks are not cons: cons always apply, risks apply only in edge cases);
-   - what happens in edge cases / failure modes;
-   - hidden assumptions the side depends on;
-   - maintenance cost.
-4. Separate fact from assumption. Mark what is established vs what must hold for a side to win. Name the decisive criteria - the ones that actually tip the choice.
-5. Synthesize. Produce a recommendation (Mode A) or a verdict on the claim (Mode B), justified with concrete reasoning, not abstractions. If one side clearly wins, say so; if it is close, say it is close and name the tipping criteria. State the conditions under which each side wins, and what is explicitly NOT chosen and why.
-
-## DISCIPLINE
-
-- No straw-manning. Argue the strongest form of every side, including the one you expect to lose.
-- Be honest. If one option is clearly better, say so - do not pretend they are close. If they are close, say so and identify the tipping criteria.
-- Every pro and con needs a concrete justification, not an abstraction.
-- Separate risks from cons - they are different things.
-- Separate fact from assumption. Name the decisive criteria explicitly.
+2. Apply the `stress-test` background skill to the pinned positions - it owns the adversarial mechanics (steelman then antithesis, the same-criteria pass, fact-vs-assumption, decisive criteria) and the honesty / concrete-justification discipline. Wire the mode to the kernel per its SCALING mode-subset mapping: Mode A applies the compare subset and does NOT surface premortem/kill-criteria in its output; Mode B applies the full kernel.
+3. Synthesize into the mode-specific output. Produce a recommendation (Mode A) or a verdict on the claim (Mode B) from the kernel's analysis. Mode A: state the conditions under which each side wins, and what is explicitly NOT chosen and why. Mode B: land the verdict on the claim. The honesty and decisive-criteria discipline comes from the kernel, not from re-inlining it here.
 
 ## OUTPUT
 
@@ -77,3 +61,4 @@ Reason: <concrete why>
 
 - dialectic compares two ALREADY-CONCRETE approaches or tests one formulated claim. That is the entry condition.
 - Options not yet formulated, still exploring the shape of the solution -> `/nxs:rnd`.
+- dialectic and `rnd` STRESS share one adversarial kernel (the `stress-test` skill), not separate copies - editing the kernel updates both.
