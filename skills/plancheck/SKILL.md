@@ -22,7 +22,7 @@ Use before `/nxs:exec`, and especially before `/nxs:exec auto`, where the bar is
 
 ## LENSES
 
-Four independent read-only subagents, run proportional to the plan. Each checks the plan against `plan-conventions` and follows `review-protocol` for finding classification and discipline (do not restate either here - reference and apply).
+Four independent read-only subagents, run proportional to the plan. Each checks the plan against `plan-conventions`. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) once and include its full text in the prompt of every plan lens you spawn. The lens agents do not restate the protocol - they receive it via this injected prompt.
 
 - `nxs:plan-scope-reviewer` - Spec/Scope: the plan against its source artifact - coverage of acceptance criteria, no scope creep, no invented work.
 - `nxs:plan-structure-reviewer` - Decomposition: task sizing, vertical-slice slicing, dependency sequencing, and per-task well-formedness (title, Files block, checklist, success criteria, final verification step).

@@ -20,40 +20,21 @@ You are one of the `/nxs:plancheck` lenses. Source-of-truth for this lens: the a
 - **auto-mode risk** - a task that is unsafe to run unattended under `/nxs:exec auto`; review especially strictly when the plan is intended for auto;
 - **security skim** - the plan introduces a new attack surface, weakens authz, or puts secrets into the plan / steps.
 
+A dangerous / irreversible op without a guard or rollback, a security / data risk, an auto-unsafe step, or secrets in the plan is a BLOCK; a non-critical safety improvement (an added revert note, a clearer failure branch) is a NIT.
+
 ## SKIP CONDITION
 
 If the plan has no dangerous operations and is not intended for auto execution, this lens is skipped - report `Safety plan review: skipped (no risky ops, not auto)` and emit no verdict.
 
-## ANTI-SPECULATION PROTOCOL (inlined)
+## PROTOCOL SOURCE
 
-Read-only stance: you never edit the plan; feedback only.
+Follow the review protocol provided in your input. If no review protocol is present in your input, stop and report `protocol missing` - do not review from memory.
 
-PRE-EMIT CHECK (mandatory per finding candidate; the target is plan text, not code):
+Your target is plan text, not code. Pre-emit: quote the relevant plan excerpt (the task block or line the finding is about) - there is no code excerpt to read; drop if you cannot quote it. Counter-question readings for a plan: intentional = a decision justified by a filled `## COMPLEXITY TRACKING` row (non-empty "why simpler alternative rejected" cell); already-handled = covered by another task (a stated rollback / guard / confirmation) or explicitly deferred.
 
-1. Quote the relevant plan excerpt - the task block or line the finding is about.
-2. Answer two counter-questions:
-   - Is this an intentional plan decision, justified by a row in the plan's `## COMPLEXITY TRACKING` table (with a non-empty "why simpler alternative rejected" cell)?
-   - Is it already covered by another task in the plan (a stated rollback / guard / confirmation), or explicitly deferred / closed?
+## COMPLEXITY-TRACKING JUSTIFICATION
 
-If either answer is "yes", or you cannot quote a plan excerpt - drop, do not emit.
-
-HIGH CONFIDENCE THRESHOLD: better to skip a weak issue than create a false positive. Every finding needs a concrete task / line and a quoted plan excerpt; without them - drop.
-
-ANTI-HYPOTHETICAL FILTER: a concrete risky step, not "what if the data were huge". No speculative future risk without a concrete scenario.
-
-CLASSIFICATION (BLOCK / NIT / DROP):
-
-- BLOCK - must be fixed before execution: a destructive / irreversible op without a guard or rollback, a security / data risk, a step unsafe to run unattended in auto mode, secrets placed in the plan.
-- NIT - useful to fix, does not block: a smaller safety improvement (an added revert note, a clearer failure branch) that is not strictly required.
-- DROP (not a finding) - speculative future risk without a concrete scenario, a hypothetical about scale, an alternative that is not clearly safer, any finding without a concrete plan excerpt.
-
-Rules: in doubt between BLOCK and NIT choose NIT; between NIT and drop choose drop.
-
-RANKING: no numeric cap. Emit every finding that passes the pre-emit check, strongest first by real impact. Drop weak candidates rather than padding the list. No endless nitpicking.
-
-COMPLEXITY-TRACKING JUSTIFICATION: a policy deviation already justified by a filled `## COMPLEXITY TRACKING` row (with a non-empty "why simpler alternative rejected" cell) is justified - downgrade or drop per the justification. An unjustified deviation, or one whose "why simpler alternative rejected" cell is empty, stays a finding.
-
-CLEAN APPROVE IS VALID: if nothing survives the checks, approve. Do not invent findings for a nicer report.
+A policy deviation already justified by a filled `## COMPLEXITY TRACKING` row (with a non-empty "why simpler alternative rejected" cell) is justified - downgrade or drop per the justification. An unjustified deviation, or one whose "why simpler alternative rejected" cell is empty, stays a finding.
 
 ## OUTPUT FORMAT
 
