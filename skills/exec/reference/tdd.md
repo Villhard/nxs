@@ -1,26 +1,6 @@
 # TDD MODE (reference)
 
-Loaded on demand from `/nxs:exec` when the plan sets `Development approach: TDD`. The cycle is per behavior, not per task: one task / vertical slice = one or more short RED -> GREEN -> REFACTOR cycles. Common to default and auto modes.
-
-## PER-BEHAVIOR STEPS
-
-1. Choose exactly one behavior from the current vertical slice.
-2. Write one failing test (or set up one failing verification) through the public interface / observable behavior.
-3. Run the test and confirm **RED** - failure specifically due to the missing behavior, not a compile / setup / import / fixture error.
-4. Write the minimal code to make exactly this test pass.
-5. Run the test and confirm **GREEN**.
-6. **REFACTOR** - only when all tests are green; do not change behavior, do not start a new RED in this phase.
-7. Move on to the next behavior - a new RED.
-8. After completing the slice (all its behaviors) - run the relevant verification via the `verify` skill.
-
-## FORBIDDEN IN TDD MODE
-
-- writing all tests at the start of the task and then implementing everything (a test-first dump, not TDD);
-- holding several failing tests at once without an intermediate GREEN (no batched RED - between each RED there must be a GREEN);
-- speculative implementation "will come in handy for future tests";
-- refactor while RED;
-- tests through private internals / private methods instead of the public interface;
-- skipping the RED confirmation when RED is technically feasible.
+Loaded on demand from `/nxs:exec` when the plan sets `Development approach: TDD`. The cycle is per behavior, not per task: one task / vertical slice = one or more short RED -> GREEN -> REFACTOR cycles. Common to default and auto modes. This file covers exec-specific TDD execution detail only; the RED -> GREEN -> REFACTOR cycle and anti-patterns canon live in `skills/plan-conventions/reference/tdd.md`, already loaded by exec by name.
 
 ## MISSING TEST SEAM
 

@@ -26,7 +26,9 @@ One behavior at a time forces design through actual usage of the public interfac
 - tests coupled to the names of private methods / internal structures;
 - a big "GREEN" that implements 3 future tests at once "while we're at it";
 - refactoring at the same time as implementing a new behavior;
-- one fat test for the whole feature that "covers it anyway".
+- one fat test for the whole feature that "covers it anyway";
+- batched RED without an intermediate GREEN - holding several failing tests at once between cycles;
+- skipping the RED confirmation when RED is technically feasible.
 
 ## WHEN NOT TDD
 
