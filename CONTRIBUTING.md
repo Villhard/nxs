@@ -76,7 +76,9 @@ Background skills не следуют схеме `<flow>-<action>`: у них р
 - always-on (язык, стиль, безопасность, token economy) -> tier 1 (`~/.claude/CLAUDE.md`), вне плагина.
 - потребляется ОДНОЙ командой -> inline в её `SKILL.md` (или её `reference/`).
 - потребляется НЕСКОЛЬКИМИ командами -> tier 3 background skill.
-- нужно субагенту -> inline в файл агента. Субагент НЕ подхватывает background skills, поэтому нужный протокол копируется прямо в `agents/<name>.md` (напр. review-protocol в каждый review-агент).
+- контент делят несколько агентов -> живёт в single-source файле (background skill или `reference/`-файл оркестрирующего скилла). Оркестратор читает этот файл один раз и инжектит его полный текст в prompt каждого агента.
+- в файле самого агента остаётся только guard-строка ("Follow the protocol provided in your input; if missing, stop and report `protocol missing` - do not review from memory") и его domain-specific содержимое.
+- правило нужно ровно одному агенту -> inline прямо в файл этого агента (single-source файл не нужен для того, что использует только один потребитель).
 
 Правило критичности: security-критичное содержимое (never commit secrets, no force-push to main, confirm destructive) НЕ вешать на tier 3 - авто-load эвристичен, не гарантирован. Такое идёт в tier 1 (always-on, детерминированно). На tier 3 остаётся только workflow-деталь: формат сообщения, атомарность, mode-gating.
 
@@ -95,7 +97,7 @@ Background skills не следуют схеме `<flow>-<action>`: у них р
 
 - Command skill: создать `skills/<flow>-<action>/SKILL.md`. Имя команды = имя директории. Регистрации в манифесте не требуется - плагин обнаруживает скиллы по директориям.
 - Background skill: создать `skills/<name>/SKILL.md` с `user-invocable: false`. Имя фиксируется здесь; command skills ссылаются на него по имени в теле своего `SKILL.md`.
-- Agent: создать `agents/<name>.md`, автономный. Нужный протокол инлайнится в файл агента (см. PLACEMENT RULE).
+- Agent: создать `agents/<name>.md`, автономный. Общий протокол инжектится оркестратором в prompt агента (см. PLACEMENT RULE).
 
 ### MAPPING IS MANDATORY
 
@@ -189,4 +191,4 @@ claude plugin marketplace update nxs-dev
 
 ### PUBLIC SAFETY
 
-Durable-артефакты (`docs/plans/`, `docs/briefs/`, ADR, коммитнутые заметки) могут попасть в public-репозиторий. Перед коммитом убрать личный контекст: локальные пути `/Users/<name>`, приватные git-remote, реальные Jira-ключи и URL, secrets / tokens / `.env`, имена и почты коллег, сырой session/tool output. Использовать нейтральные плейсхолдеры (`<user_home>`, `<local_user>`, `<github_owner>/<repo>`, `PROJ-123`).
+Durable-артефакты (`docs/plans/`, `docs/briefs/`, ADR, коммитнутые заметки) могут попасть в public-репозиторий. Перед коммитом убрать личный контекст: локальные пути `/Users/<name>`, приватные git-remote, реальные tracker-ключи и URL, secrets / tokens / `.env`, имена и почты коллег, сырой session/tool output. Использовать нейтральные плейсхолдеры (`<user_home>`, `<local_user>`, `<github_owner>/<repo>`, `PROJ-123`).
