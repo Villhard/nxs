@@ -13,7 +13,7 @@ Accepted input: a task description, a feature idea, a tracker key / URL / pasted
 
 - Brainstorm produces the brief and stops. It does not write a plan or implementation code, run the build, or change behavior.
 - Three phases run in order: CLARIFY (remove misunderstanding), then EXPLORE (compare approaches), then STRESS (pressure-test the recommended approach). All scale by complexity - a clear task collapses CLARIFY to 0 questions, EXPLORE to the single obvious approach, and STRESS to ~0; a fuzzy / risky / architectural one expands all three.
-- The next step is `/nxs:plan` (turn the brief into a plan). For a bug rather than a task, route to `/nxs:bug` instead of brainstorming.
+- The next step is `/nxs:plan` (turn the brief into a plan). For a bug rather than a task, route to `/nxs:bug` instead of brainstorming. For an effort too big to shape in one session (decomposition unknown, spans many sessions), route to `/nxs:epic`, which charts it and feeds a shaped chunk back here.
 
 ## INTAKE
 
@@ -89,6 +89,7 @@ Optional durable writes - only after explicit user approval: an ADR via the `dec
 ## DIFFERENTIATION
 
 - `/nxs:rnd` - three phases, CLARIFY (remove scope / terminology ambiguity) + EXPLORE (compare approaches) + STRESS (pressure-test the recommendation) - open task shaping.
+- `/nxs:epic` - a foggy effort too big for one session; charts a map and resolves unknowns one per session, upstream of rnd.
 - `/nxs:dialectic` - compare two specific approaches head to head.
 - `/nxs:wrong` - stop the current approach and find an alternative.
 
