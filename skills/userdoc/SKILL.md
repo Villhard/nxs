@@ -1,5 +1,5 @@
 ---
-description: Produce end-user documentation for product users - a how-to-use guide for a feature or product area, at the depth a user-facing doc needs. A local repo draft whose durable home is Confluence.
+description: Produce end-user documentation for product users - a how-to-use guide for a feature or product area, at the depth a user-facing doc needs. A local draft published to Confluence per the `doc-draft` kernel.
 argument-hint: "[feature | topic]"
 ---
 
@@ -18,7 +18,7 @@ Input: an optional feature or topic in the argument; if absent, ask what to docu
 3. Choose the document shape: scale it to the subject (overview + steps + examples + troubleshooting). Omit sections that do not apply.
 4. Write for the audience: plain language, concrete examples, no internal jargon unless defined; describe observable behavior, not implementation.
 5. Show the full draft and the destination.
-6. Write only after the user confirms location and content.
+6. Write only after the user confirms location and content, then handle the draft per the `doc-draft` kernel: path scheme `docs/userdoc/<slug>.md`, Confluence as the durable home, pre-publish scrub.
 
 ## DOCUMENT SHAPE
 
@@ -38,15 +38,9 @@ Keep the format the destination needs. For a Confluence page, use headings, list
 - Describe observable behavior (what the user sees and does), not implementation.
 - No internal jargon unless it is defined in the doc.
 
-## ARTIFACT
+## ARTIFACT AND SAFETY
 
-`docs/userdoc/<slug>.md` - a local draft in the gitignored `docs/`, not committed into code. Durable / shared home is Confluence: you edit the draft and publish it there. Nothing is left in the codebase.
-
-## SAFETY
-
-- Read-only until the user approves the write.
-- Publishing to Confluence or a docs site is an outward-facing side effect. Produce the content for the user to publish; do not publish externally without an explicit, authorized mechanism and user confirmation.
-- Never write secrets, tokens, .env values, private keys, or passwords into a guide. Strip local paths, private remotes, real ticket ids, and colleague names before it is publishable.
+The draft contract - `docs/userdoc/<slug>.md` path scheme, Confluence as the durable home, read-only-until-approval, and the pre-publish scrub - comes from the `doc-draft` kernel. This skill does not restate it.
 
 ## NEXT
 

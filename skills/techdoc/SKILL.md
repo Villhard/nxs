@@ -1,5 +1,5 @@
 ---
-description: Write technical documentation of a solution for other programmers - problem, approach, how it works, interfaces - assembled from the branch / plan / diff. A local repo draft whose durable home is Confluence.
+description: Write technical documentation of a solution for other programmers - problem, approach, how it works, interfaces - assembled from the branch / plan / diff. A local draft published to Confluence per the `doc-draft` kernel.
 argument-hint: "[topic | task id]"
 ---
 
@@ -13,7 +13,7 @@ Produce technical documentation of a solution aimed at other programmers who wil
 2. Gather source: branch name, active plan path, commits since divergence, the diff or a diff summary. Read the code enough to describe the solution faithfully; no fabrication.
 3. Draft following DOCUMENT SHAPE, faithful to the source - only what is derivable from the code / plan / diff / commits.
 4. Show the draft and wait for approval or edits (doc mode always shows the draft before writing).
-5. On approval, write to `docs/techdoc/<slug>.md`.
+5. On approval, write and handle the draft per the `doc-draft` kernel: path scheme `docs/techdoc/<slug>.md`, Confluence as the durable home, pre-publish scrub.
 6. Tell the user the path and that it is a local draft to publish to Confluence.
 
 ## DOCUMENT SHAPE
@@ -33,13 +33,9 @@ Scale to the change: a small solution gets PROBLEM + APPROACH + HOW IT WORKS; om
 - Audience: a programmer who will maintain or extend this, not the author. Assume repo familiarity but not this solution.
 - Technical and precise; describe the real code, not an idealized version. Terms stay English where customary.
 
-## ARTIFACT
+## ARTIFACT AND SAFETY
 
-`docs/techdoc/<slug>.md` - a local draft in the gitignored `docs/`, not committed into code. Durable / shared home is Confluence: you edit the draft and publish it there. Nothing is left in the codebase.
-
-## SAFETY
-
-Durable write - show the draft, write only on approval. Strip local paths, private remotes, real ticket ids, secrets, and colleague names before the draft is publishable.
+The draft contract - `docs/techdoc/<slug>.md` path scheme, Confluence as the durable home, draft-before-write, and the pre-publish scrub - comes from the `doc-draft` kernel. This skill does not restate it.
 
 ## NEXT
 
