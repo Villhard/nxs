@@ -59,9 +59,6 @@ Root-cause brief: <path to root-cause brief>
 ## RULES
 
 - The plan is the source of truth for execution - keep it reviewable and current.
-- Default decomposition is thin vertical slices; horizontal layer tasks are a justified exception recorded in COMPLEXITY TRACKING.
-- Test cases describe observable behavior of the public interface, not private internals.
-- Every behavioral task carries a Files block and Test cases and ends with verification; config-only / declarative tasks are exempt from Test cases.
 - Do not invent tasks for the sake of count - DRY and YAGNI, cut the excess.
 - Produce the plan and stop; do not execute it.
 
