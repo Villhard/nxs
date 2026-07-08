@@ -1,5 +1,5 @@
 ---
-description: Think a task through to a plan-ready brief via CLARIFY then EXPLORE - narrow an under-specified task, compare real approaches, record the decision - the tracked-task entry point. Use to shape a fuzzy task, feature idea, or open question before planning.
+description: Think a task through to a plan-ready brief via CLARIFY, EXPLORE, then STRESS - narrow an under-specified task, compare real approaches, pressure-test the recommendation, record the decision - the tracked-task entry point. Use to shape a fuzzy task, feature idea, or open question before planning.
 argument-hint: "[task | tracker key | question]"
 ---
 
