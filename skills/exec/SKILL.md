@@ -25,9 +25,9 @@ Execute an existing implementation plan task by task. This is the one skill that
 
 ## MODES
 
-- **default** (no mode word) - one task per invocation; delegate the task to one `nxs:worker` subagent (single writer); review / explorer subagents read-only; verify; self-review the diff; AC check; then stop and propose a commit message. Does NOT run git add / commit / push.
+- **default** (no mode word) - one task per invocation; delegate the task to one `nxs:worker` subagent (single writer); review / explorer subagents read-only; verify; self-review the diff; AC check; then stop and propose a commit message. Git stays with the user; the git-mode gate (which modes may run git add / commit / push) is owned by `commit-conventions`.
 - **auto** - a reserved mode word, explicit only, never inferred from context. Executes all remaining low-risk tasks with verify + adaptive review + commit on each.
-- A natural-language **no commits** instruction in the invocation ("auto, no commits") skips only git add / commit / push and changes nothing else about the cycle.
+- A natural-language **no commits** instruction in the invocation ("auto, no commits") skips git per `commit-conventions` and changes nothing else about the cycle.
 
 ### DEFAULT MODE
 
@@ -38,10 +38,10 @@ One invocation = one task:
 3. Delegate this task to one `nxs:worker` subagent (single writer); it implements the task and returns a structured result.
 4. Subagents (explorer / reviewer) stay read-only.
 5. Run the `verify` skill scoped to the task change (format first in apply mode, then lint / typecheck / tests) so review sees a formatted, lint-clean diff.
-6. Self-review your own diff via adaptive review scoped to the task diff (the review lenses proportional to the change, not unconditionally the full set); report BLOCK / NIT.
+6. Self-review your own diff scoped to the task diff, applying `review`'s adaptive lens set (the lenses proportional to the change, not the full set) with `review-protocol`'s BLOCK / NIT classification; report the findings.
 7. Run AC verification (below), then stop. Review is already done - no separate `/nxs:review` run is needed.
 8. Report verify results and propose a commit message (see `commit-conventions` for the format).
-9. Do NOT run git add. Do NOT run git commit. Do NOT run git push. Do NOT move the plan to completed. The user reviews and commits.
+9. Do not run git (the mode gate is owned by `commit-conventions`); do not move the plan to completed. The user reviews and commits.
 
 ### AUTO MODE
 
@@ -57,14 +57,14 @@ Cycle for each remaining unchecked task:
 1. Delegate the task to one `nxs:worker` subagent.
 2. Update the plan (check the checkboxes).
 3. Run the `verify` skill (tests / lint / format / typecheck / build as relevant).
-4. Run adaptive review scoped to the task diff. On a BLOCK, fix it and re-review the same scope until a zero-BLOCK round (a zero-BLOCK round, not "I fixed what was found"). NIT findings are logged as follow-up and never gate the commit. Cap: 3 review rounds per task; cap exhausted with a BLOCK remaining -> stop, no commit, report.
+4. Review the task diff with `review`'s adaptive lens set (proportional to the change) and `review-protocol`'s BLOCK / NIT classification. On a BLOCK, fix it and re-review the same scope until a zero-BLOCK round (a zero-BLOCK round, not "I fixed what was found"). NIT findings are logged as follow-up and never gate the commit. Cap: 3 review rounds per task; cap exhausted with a BLOCK remaining -> stop, no commit, report.
 5. Run AC verification (below). AC not met is a stop condition.
-6. verify pass + zero-BLOCK review round + AC met -> commit via `commit-conventions` (a simple English message); under a no-commit instruction skip git add / commit / push instead.
+6. verify pass + zero-BLOCK review round + AC met -> commit via `commit-conventions` (a simple English message; no-commit skips git under the same gate).
 7. Move to the next task.
 
-Under no-commit, auto still executes the whole remaining low-risk plan, requires a clean worktree, and runs verify and adaptive review after each task - only git add / commit / push are skipped.
+Under no-commit, auto still executes the whole remaining low-risk plan, requires a clean worktree, and runs verify and adaptive review after each task - only git is skipped.
 
-The full stop-condition list, the exhaustive "what auto never does" list, no-commit override, out-of-scope handling, and stalemate / cap detection are in `reference/auto.md`. Summary of stop conditions: dirty worktree without approval, unclear requirement, missing plan or Files block, open NEEDS CLARIFICATION marker, destructive operation, unexpected large diff, unrelated files already changed (scope drift), failing or missing checks, AC not met, security / data risk, reviewer blocker, merge conflict, dependency install risk, unexpectedly large generated files, 3-round review cap exhausted with a BLOCK, stalemate (unchanged git fingerprint for 2 rounds), and the TDD-specific violations. Summary of what auto NEVER does: push, create MR / PR, delete files outside the plan, modify unrelated files, bypass review, commit on failing checks, continue after a blocker, apply a NIT as a silent edit, force-push, run destructive shell without approval; under no-commit also no git add / commit.
+The full stop-condition list, the exhaustive "what auto never does" list, no-commit override, out-of-scope handling, and stalemate / cap detection are in `reference/auto.md`.
 
 ## EXECUTION DISCIPLINE
 
@@ -75,7 +75,7 @@ The full stop-condition list, the exhaustive "what auto never does" list, no-com
   - **expanded-within-task label** - the task is locked by its goal, not a fixed file list. Touching a file or symbol beyond the task's initial set is allowed when necessary to complete the locked task, but must be labeled in the diff report: `expanded-within-task: <file/symbol> - <why it was necessary for the locked task>`. Mandatory for non-trivial expansion; work that does not serve the locked task is not "expanded-within-task", it is out of scope.
   - **out-of-scope -> follow-up (noticed only)** - when you only notice work in unrelated, still-untouched code (a bug, smell, refactor), do not edit it and do not stop; record `follow-up: <place> - <what> - out of scope` and continue. Emit the collected follow-up list at the end of the task. This applies in default and auto. It does NOT cover the case where the diff already contains changes to unrelated files - that stays a STOP condition.
 - **Simplicity first.** The simplest solution that works; complexity proportionate to the task, no abstraction / flexibility / configurability ahead of need.
-- **Phase handoff is a full stop.** dev-exec does not auto-call the next skill (no Skill tool, sub-prompt, or otherwise). Default mode does one task and stops; auto runs the plan to the end and stops. The user decides what runs next.
+- **Phase handoff is a full stop.** The orchestrator does not auto-call the next skill (no Skill tool, sub-prompt, or otherwise). Default mode does one task and stops; auto runs the plan to the end and stops. The user decides what runs next.
 - **Plan is the source of truth.** Keep checkboxes and discovered notes current; if the plan is outdated, update it rather than ignore it.
 
 ## EXECUTION VIA WORKER (standing model)
@@ -103,7 +103,7 @@ Active when the plan sets `Development approach: TDD`. The cycle is per behavior
 - `reference/tdd.md` - per-behavior RED -> GREEN -> REFACTOR discipline in execution, forbidden patterns, missing-seam handling, plan updates, default vs auto.
 - `reference/worker-mode.md` - the standing worker execution model: the Claude Code launch contract, single-writer, and context-isolation.
 
-Reference skills used by name: `verify` (after every task and before any commit), `commit-conventions` (before any git add / commit / push), `plan-conventions` (the Development approach and plan structure).
+Reference skills used by name: `verify` (after every task and before any commit), `review` (the adaptive lens set the self-review step applies to the task diff, proportional to the change), `review-protocol` (the BLOCK / NIT classification and finding format that self-review follows), `commit-conventions` (before any git add / commit / push, and the git-mode gate), `plan-conventions` (the Development approach and plan structure).
 
 ## NEXT
 
