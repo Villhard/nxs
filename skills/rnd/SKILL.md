@@ -12,7 +12,7 @@ Accepted input: a task description, a feature idea, a tracker key / URL / pasted
 ## STANCE (BRAINSTORM ONLY, HAND OFF)
 
 - Brainstorm produces the brief and stops. It does not write a plan or implementation code, run the build, or change behavior.
-- Two phases run in order: CLARIFY (remove misunderstanding) then EXPLORE (compare approaches). Both scale by complexity - a clear task collapses CLARIFY to 0 questions and EXPLORE to the single obvious approach; a fuzzy / risky / architectural one expands both.
+- Three phases run in order: CLARIFY (remove misunderstanding), then EXPLORE (compare approaches), then STRESS (pressure-test the recommended approach). All scale by complexity - a clear task collapses CLARIFY to 0 questions, EXPLORE to the single obvious approach, and STRESS to ~0; a fuzzy / risky / architectural one expands all three.
 - The next step is `/nxs:plan` (turn the brief into a plan). For a bug rather than a task, route to `/nxs:bug` instead of brainstorming.
 
 ## INTAKE
@@ -44,6 +44,14 @@ Compare approaches, do not jump into the first one.
 - Validate the design with the user and record the selected approach.
 - Record a significant design decision through the `decision-log` background skill - it applies the ADR gate and decides whether the decision is worth recording and where it lives (ADR / brief section / note / skip).
 
+## STRESS
+
+Pressure-test the approach EXPLORE recommended before writing it into the brief.
+
+- Apply the `stress-test` background skill to the recommended approach, running: assumptions inventory -> premortem -> kill-criteria -> verdict.
+- Scale by complexity like CLARIFY and EXPLORE: a trivial / clear idea collapses STRESS to ~0 (skip to ARTIFACT); a risky / architectural one runs the full kernel.
+- One bounded loop-back only: a fatal finding or a met kill-criterion returns once - to EXPLORE if the approach must change, or to CLARIFY if a new uncertainty axis opened. After that single iteration the brief is frozen; STRESS does not loop again. Preserve the standing stance - produce the brief and stop, the loop-back is one iteration, not open-ended.
+
 ## ARTIFACT
 
 Write a brief:
@@ -66,6 +74,8 @@ Add a clarifications log only when at least one CLARIFY question was asked:
 
 The accepted answer is integrated into the main brief text; the log records decision traceability. An answer that invalidates earlier brief text replaces it - contradicting stale wording must not remain.
 
+Add a STRESS block only when STRESS actually ran - a trivial task where STRESS collapsed to ~0 does not add it. Capture the assumptions inventory, the failure modes, the kill-criteria, and the verdict.
+
 Optional durable writes - only after explicit user approval: an ADR via the `decision-log` gate; a personal note if the user asks. Nothing durable is written from CLARIFY without approval.
 
 ## RULES
@@ -78,7 +88,7 @@ Optional durable writes - only after explicit user approval: an ADR via the `dec
 
 ## DIFFERENTIATION
 
-- `/nxs:rnd` - two phases, CLARIFY (remove scope / terminology ambiguity) + EXPLORE (compare approaches) - open task shaping.
+- `/nxs:rnd` - three phases, CLARIFY (remove scope / terminology ambiguity) + EXPLORE (compare approaches) + STRESS (pressure-test the recommendation) - open task shaping.
 - `/nxs:dialectic` - compare two specific approaches head to head.
 - `/nxs:wrong` - stop the current approach and find an alternative.
 
