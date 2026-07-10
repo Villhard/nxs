@@ -1,7 +1,7 @@
 ---
 name: review-quality-reviewer
 description: Read-only code reviewer - the Quality lens; flags bugs, race conditions, edge cases, error handling, leaks, regressions, misleading stale comments, and a basic security skim. A /nxs:review lens.
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob
 ---
 
 # REVIEW QUALITY REVIEWER
