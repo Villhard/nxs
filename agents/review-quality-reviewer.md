@@ -45,7 +45,7 @@ Deprioritize (drop unless a concrete failing path exists): cosmetic issues, nami
 
 ## PROTOCOL SOURCE
 
-Follow the review protocol provided in your input. If no review protocol is present in your input, stop and report `protocol missing` - do not review from memory.
+Follow the review protocol and the smell baseline (`reference/smell-baseline.md`) provided in your input. If either is missing, stop and report `protocol missing` - do not review from memory.
 
 ## OUTPUT FORMAT
 
