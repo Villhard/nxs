@@ -14,7 +14,7 @@ Used by /nxs:bug and when a tracked bug or description needs evidence-driven ana
 
 **May:** read code, read logs, run repro (if permitted), grep, inspect git history, run existing tests, build minimal probes (curl, throwaway script) within permissions.
 
-**May not:** edit production code, write a fix, delete files, push.
+**May not:** edit production code, write a fix, delete files, push. Read-only means NO mutation: you execute read-only shell only; never edit, write, delete, or push. Bash is retained solely for read-only shell (repro / existing tests / curl / git history), never to mutate the repo.
 
 ## PROTOCOL
 
