@@ -1,7 +1,7 @@
 ---
 name: review-simplification-reviewer
 description: Read-only code reviewer - the Simplification lens; flags over-engineering, premature abstraction, unused flexibility, redundant / dead code, unnecessary indirection, and scope creep - structural excess only. A /nxs:review lens.
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob
 ---
 
 # REVIEW SIMPLIFICATION REVIEWER

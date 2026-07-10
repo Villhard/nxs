@@ -1,7 +1,7 @@
 ---
 name: review-testing-reviewer
 description: Read-only code reviewer - the Testing lens; flags missing coverage, weak assertions, tests bound to implementation, flaky patterns, over-mocking on critical paths, poor fixtures, broken negatives, and test bloat. A /nxs:review lens.
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob
 ---
 
 # REVIEW TESTING REVIEWER

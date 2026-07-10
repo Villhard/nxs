@@ -1,7 +1,7 @@
 ---
 name: review-implementation-reviewer
 description: Read-only code reviewer - the Implementation lens; flags what is missing, unconnected, or unfinished - missing implementation, wrong imports, unregistered routes, stubs at critical spots, broken input->output flow, forgotten config. A /nxs:review lens.
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob
 ---
 
 # REVIEW IMPLEMENTATION REVIEWER
