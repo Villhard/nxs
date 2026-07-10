@@ -166,6 +166,12 @@ claude plugin marketplace update nxs-dev
 
 Инвокация обновлённого скилла в текущей сессии - только после рестарта сессии.
 
+### VERSIONING
+
+- Любая правка bundled-контента (skills / agents / manifests) - bump поля `version` в `plugin.json` по semver.
+- К каждому bump - запись в `CHANGELOG.md` (Keep a Changelog, секция новой версии сверху).
+- На релизе - git-тег `vX.Y.Z`, совпадающий с `version` из `plugin.json`.
+
 ## ARTIFACT PATHS
 
 Куда пишут выходы каждой команды. Human reference: каждый producing skill инлайнит СВОЮ строку пути; эта таблица - общий обзор. Пути относительны текущего рабочего репозитория, если не сказано иное.
