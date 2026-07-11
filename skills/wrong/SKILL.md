@@ -1,5 +1,5 @@
 ---
-description: Stop the current approach, diagnose why it is bad, abandon it, and search for a genuinely different alternative. Use when the current path is stuck, thrashing, fighting the grain, or accumulating complexity - a signal to stop rather than push harder.
+description: Stop a stuck approach and find a genuinely different alternative. Use when the current path is stuck, thrashing, fighting the grain, or accumulating complexity - a signal to stop rather than push harder.
 argument-hint: "[what is stuck | current approach]"
 ---
 
@@ -8,6 +8,8 @@ argument-hint: "[what is stuck | current approach]"
 Stop the current approach, diagnose why it is bad, abandon it, and find a genuinely different alternative. Self-contained skill: read-only, changes no code, writes no durable file by default. Output language and response style come from global rules, not this file.
 
 Accepted input: a description of what is stuck or the current approach, or nothing (pick up the current session context). If the input is vague, clarify which approach is in question before proceeding.
+
+Example: /nxs:wrong the caching layer keeps growing
 
 ## WHEN TO USE
 

@@ -1,5 +1,5 @@
 ---
-description: Investigate a bug to a confirmed root cause via a cheap reproduction loop and a 5-Why chain - the tracked-bug entry point. Use when handed a bug report, a tracker bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
+description: Investigate a bug to a confirmed root cause - the tracked-bug entry point. Use when handed a bug report, a tracker bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
 argument-hint: "[tracker key | bug description | path]"
 ---
 
@@ -8,6 +8,8 @@ argument-hint: "[tracker key | bug description | path]"
 Bug investigation entry point. Reach a confirmed root cause, then stop. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Accepted input: tracker key / URL, pasted bug text, observed behavior, stack trace / log, or a path.
+
+Example: /nxs:bug PROJ-4213
 
 ## STANCE (READ-ONLY INVESTIGATION)
 

@@ -1,11 +1,13 @@
 ---
-description: Code review of a diff - resolve the diff scope, select the reviewer lenses proportional to the change, run the Standards and Spec axes, and report confirmed BLOCK / NIT findings without editing code. Use to review staged changes, a branch vs base, a file, or a PR.
+description: Code review of a diff - reports confirmed BLOCK / NIT findings without editing code. Use to review staged changes, a branch vs base, a file, or a PR.
 argument-hint: "[scope: staged | path | PR url]"
 ---
 
 # /nxs:review
 
 Read-only code review of a diff. Resolve the scope, run an adaptive set of reviewer lenses plus the Standards and Spec axes, then report confirmed BLOCK / NIT findings or a clean approve and stop. This skill never edits code. Self-contained skill. Output language and response style come from global rules, not this file.
+
+Example: /nxs:review staged
 
 ## STANCE (READ-ONLY, HAND OFF)
 

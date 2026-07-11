@@ -9,6 +9,8 @@ Turn a task, brief, or tracker input into a well-formed implementation plan and 
 
 Accepted input: a task description, a brainstorm brief (`docs/briefs/`), a root-cause brief from `/nxs:bug`, a now-clear chunk handed off from an `/nxs:epic` map, or a tracker key / URL / pasted ticket. A plan can be made with or without a brief - with no input, gather it here first.
 
+Example: /nxs:plan docs/briefs/20260711-auth-refactor.md
+
 ## STANCE (PLAN ONLY, HAND OFF)
 
 - /nxs:plan produces the plan document and stops. It does not write implementation code, run the build, or change behavior.

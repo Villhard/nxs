@@ -7,6 +7,8 @@ argument-hint: "[topic | path | branch | flow | subsystem]"
 
 Explain the target in plain language, from zero. One command, one axis: depth. It scales from a single artifact to a whole subsystem by inference, no mode word. Understanding only - it never hunts bugs. Self-contained skill. Output language and response style come from global rules, not this file.
 
+Example: /nxs:explain src/payments/webhook.ts
+
 ## FROM ZERO
 
 Assume the reader has not read the plan, the diff, or the code, and is not familiar with this area - not because they are slow, but because they have not looked yet. Supply the missing context; never skip the introductory layer, never write as if they already reviewed it. Audience: a smart person outside this domain - no ELI5, no condescension.

@@ -1,5 +1,5 @@
 ---
-description: Read-only multi-lens review of an implementation plan before execution, especially before auto modes - up to four reviewer lenses, proportional to the plan, report BLOCK / NIT findings without editing the plan. Use after /nxs:plan and before /nxs:exec, and always before /nxs:exec auto.
+description: Read-only multi-lens review of an implementation plan before execution, especially before auto modes - reports BLOCK / NIT findings without editing the plan. Use after /nxs:plan and before /nxs:exec, and always before /nxs:exec auto.
 argument-hint: "[plan path]"
 ---
 
@@ -8,6 +8,8 @@ argument-hint: "[plan path]"
 Read-only review of an implementation plan before execution. Produce BLOCK / NIT / approve findings, then stop. This skill never edits the plan. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Use before `/nxs:exec`, and especially before `/nxs:exec auto`, where the bar is higher.
+
+Example: /nxs:plancheck docs/plans/20260711-auth-refactor.md
 
 ## STANCE (READ-ONLY, HAND OFF)
 

@@ -1,5 +1,5 @@
 ---
-description: Think a task through to a plan-ready brief via CLARIFY, EXPLORE, then STRESS - narrow an under-specified task, compare real approaches, pressure-test the recommendation, record the decision - the tracked-task entry point. Use to shape a fuzzy task, feature idea, or open question before planning.
+description: Think a task through to a plan-ready brief - the tracked-task entry point. Use to shape a fuzzy task, feature idea, or open question before planning.
 argument-hint: "[task | tracker key | question]"
 ---
 
@@ -8,6 +8,8 @@ argument-hint: "[task | tracker key | question]"
 Think a task through to a plan-ready brief and stop. The tracked-task entry point. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Accepted input: a task description, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work with the current session context.
+
+Example: /nxs:rnd add rate limiting to the public API
 
 ## STANCE (BRAINSTORM ONLY, HAND OFF)
 

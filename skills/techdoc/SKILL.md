@@ -1,11 +1,13 @@
 ---
-description: Write technical documentation of a solution for other programmers - problem, approach, how it works, interfaces - assembled from the branch / plan / diff. A local draft published to Confluence per the `doc-draft` kernel.
+description: Write technical documentation of a solution for other programmers who will read, extend, or operate it, assembled from the branch / plan / diff. Use when a solution needs a technical writeup for maintainers, not end users. A local draft published to Confluence per the `doc-draft` kernel.
 argument-hint: "[topic | task id]"
 ---
 
 # /nxs:techdoc
 
 Produce technical documentation of a solution aimed at other programmers who will read, extend, or operate it. Assembled from the current branch, active plan, and diff. Self-contained skill. Output language and response style come from global rules, not this file.
+
+Example: /nxs:techdoc payment webhook retry
 
 ## PROCEDURE
 

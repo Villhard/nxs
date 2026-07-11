@@ -9,6 +9,8 @@ Argue both sides at their strongest, surface the real trade-offs, and land a rea
 
 Accepted input: two concrete approaches ("A vs B"), or a single claim / thesis to stress-test ("is this really true", "stress test this", "argue both sides"). If the input is vague, clarify before proceeding.
 
+Example: /nxs:dialectic REST vs gRPC for the internal API
+
 ## MODES
 
 - Mode A - compare two approaches: two specific, already-formulated options weighed head to head against the same criteria. Applies the `stress-test` kernel's compare subset (six criteria + risks-not-cons + fact/assumption + decisive criteria); premortem/kill-criteria stay out of its output.
