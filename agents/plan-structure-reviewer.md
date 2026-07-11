@@ -12,9 +12,12 @@ You are one of the `/nxs:plancheck` lenses. Source-of-truth for this lens: plan 
 
 ## FOCUS AREAS
 
+- **missing or vague title** - a task without a concrete, specific title (a placeholder or a layer name is not a title);
 - **missing Files block** - a task without a Create / Modify block;
+- **missing checklist** - a task with no step checklist to work through;
 - **task too large** - more than 8 checkboxes (split); 1-2 checkboxes (merge);
-- **no result check** - a task has no verification / acceptance item;
+- **no success criteria** - a task has no verification / acceptance item;
+- **missing final verification step** - the task has no final step that confirms the increment works end to end;
 - **hidden dependencies** - a task depends on external steps that are not marked;
 - **horizontal slicing where vertical is feasible** - tasks organized by layers ("all models", "all services", "then wire up", "then tests") when a vertical slice is feasible; BLOCK if it clearly worsens demoability / incremental verification;
 - **task too broad to verify independently** - a task cannot be verified without other unfinished tasks (vertical-slice violation);
