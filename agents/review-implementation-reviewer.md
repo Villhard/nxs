@@ -26,7 +26,7 @@ Checking test quality and coverage is out of scope here - that belongs to the te
 
 ## PROTOCOL SOURCE
 
-Follow the review protocol provided in your input. If no review protocol is present in your input, stop and report `protocol missing` - do not review from memory.
+Follow the review protocol provided in your input. If it is missing, stop and report `protocol missing` - do not review from memory.
 
 For a missing-piece finding there is no offending line to quote; mark the spot where the missing code should be with `>`.
 
