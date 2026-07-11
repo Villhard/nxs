@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    name: House style + frontmatter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: House-style lint
+        run: bash .github/scripts/lint-house-style.sh
+
+      - name: Frontmatter lint
+        run: |
+          status=0
+          shopt -s nullglob
+          skills=(skills/*/SKILL.md)
+          if [ "${#skills[@]}" -eq 0 ]; then
+            echo "no skills/*/SKILL.md files found"
+            exit 1
+          fi
+          for f in "${skills[@]}"; do
+            if ! grep -Eq '^description:[[:space:]]*[^[:space:]]' "$f"; then
+              echo "$f: missing or empty description frontmatter field"
+              status=1
+            fi
+            # Background skills declare user-invocable; when present it must
+            # be a well-formed boolean.
+            if grep -q '^user-invocable:' "$f"; then
+              if ! grep -Eq '^user-invocable:[[:space:]]*(true|false)[[:space:]]*$' "$f"; then
+                echo "$f: malformed user-invocable field (expected true or false)"
+                status=1
+              fi
+            fi
+          done
+          exit $status
+
+  validate:
+    name: Plugin validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate plugin
+        run: claude plugin validate --strict .
