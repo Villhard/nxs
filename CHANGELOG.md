@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- MIT `LICENSE` and plugin manifest metadata (`license`, `repository`, `homepage`); removed the personal author email.
+- MIT `LICENSE` and plugin manifest metadata (`license`, `repository`, `homepage`).
 - `CHANGELOG.md` and a versioning convention in `CONTRIBUTING.md`.
 - CI workflow (`claude plugin validate --strict`, a frontmatter check, and a house-style lint for forbidden dashes / quotes) plus a pull-request template with a PUBLIC SAFETY reminder.
 - `examples/`: a `CLAUDE.md.sample` safety starter and sample plan / brief / ADR artifacts.
