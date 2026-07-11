@@ -1,11 +1,13 @@
 ---
-description: Execute an implementation plan task by task and write the code - default runs one task per invocation then stops for the user to commit; auto runs all remaining low-risk tasks with verify + adaptive review + commit on each. Use after a plan is ready and ideally plan-reviewed to implement it; add "no commits" to skip git.
+description: Execute an implementation plan task by task and write the code - default runs one task per invocation then stops for the user to commit; auto runs all remaining low-risk tasks. Use after a plan is ready and ideally plan-reviewed to implement it; add "no commits" to skip git.
 argument-hint: "[plan path] [auto] [no commits]"
 ---
 
 # /nxs:exec
 
 Execute an existing implementation plan task by task. This is the one skill that changes project code - the orchestrator does not write it itself but delegates each task to one write-capable `nxs:worker` subagent. Explorer / reviewer subagents stay read-only. Self-contained skill. Output language and response style come from global rules, not this file.
+
+Example: /nxs:exec docs/plans/20260711-auth-refactor.md auto
 
 ## STANCE
 

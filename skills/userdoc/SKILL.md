@@ -11,6 +11,8 @@ Audience is product users - the people who use the feature, plus support and onb
 
 Input: an optional feature or topic in the argument; if absent, ask what to document and for whom.
 
+Example: /nxs:userdoc bulk CSV import
+
 ## PROCEDURE
 
 1. Establish subject and audience: which feature / flow, and who reads it (end user, support, onboarding). Ask once if unclear.

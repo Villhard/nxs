@@ -1,11 +1,13 @@
 ---
-description: Chart a foggy effort too big for one session or one brief - name the destination, map its unknowns as investigation items, resolve them one at a time until the way is clear, then hand off to /nxs:rnd or /nxs:plan. The epic entry point. Use for a large multi-session feature, a greenfield area, or an open-ended effort where the decomposition itself is not yet visible.
+description: Chart a foggy effort too big for one session or one brief into a map of investigation items, then hand off to /nxs:rnd or /nxs:plan - the epic entry point. Use for a large multi-session feature, a greenfield area, or an open-ended effort where the decomposition itself is not yet visible.
 argument-hint: "[loose idea | tracker key | epic name | map path]"
 ---
 
 # /nxs:epic
 
 Chart a map of a foggy effort too big for one session, resolve its unknowns one at a time until the way to the destination is clear, then hand off to `/nxs:plan`. The epic entry point. Self-contained skill. Output language and response style come from global rules, not this file.
+
+Example: /nxs:epic multi-tenant billing platform
 
 Leading words used throughout: the **destination** (where the effort is heading), the **map** (the single index artifact), the **frontier** (items takeable now), the **fog of war** (what you can tell is coming but cannot yet specify).
 

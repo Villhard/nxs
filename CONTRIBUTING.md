@@ -136,10 +136,12 @@ Background skills не следуют схеме `<flow>-<action>`: у них р
 
 ```yaml
 ---
-description: <one line, drives model-invocation; say what and when to use>
+description: <one line, drives model-invocation; when-to-use trigger + short what-it-produces, not the process>
 argument-hint: "[...]"
 ---
 ```
+
+Правило SDO (`description` = when-to-use, не пересказ процесса): `description` называет ТОЛЬКО триггер (когда тянуться за скиллом) плюс короткий clause что скилл производит - не перечисляет фазы, шаги и механику тела. Пересказывающий workflow `description` заставляет модель действовать по этому пересказу и пропускать тело скилла, где и живёт процедура. Тело каждого command skill несёт одну строку `Example:` с реальной инвокацией сразу после intro - это помогает авто-вызову, не раздувая `description`.
 
 ### BACKGROUND SKILL FRONTMATTER
 

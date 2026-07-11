@@ -7,6 +7,8 @@ argument-hint: "[plans | briefs]"
 
 Move completed plans and outdated / superseded briefs into their archive folders, only after the user approves the proposed set. This is docs-hygiene, not git history. Self-contained skill; output language and response style come from global rules, not this file.
 
+Example: /nxs:clean plans
+
 ## SCOPE
 
 Relocate finished planning docs across two directories:

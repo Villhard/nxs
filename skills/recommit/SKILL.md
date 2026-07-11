@@ -7,6 +7,8 @@ argument-hint: "[base ref]"
 
 Rewrite the local-only commit history of the current branch into a clean, logical sequence of commits. Self-contained skill. Output language and response style come from global rules, not this file.
 
+Example: /nxs:recommit origin/main
+
 ## INVARIANT
 
 Reorganize the branch's commits into clean, atomic, logically-grouped commits while the final working tree stays byte-for-byte identical. The end state after the rewrite must produce the exact same tree as before it - only the commit history in between changes. Verify this: the new `git rev-parse HEAD^{tree}` MUST equal the tree hash saved before the rewrite, and `git diff --exit-code <old-head-sha> HEAD` must be empty with a clean working tree.
