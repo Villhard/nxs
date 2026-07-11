@@ -1,6 +1,6 @@
 # WORKER EXECUTION (reference)
 
-Loaded on demand from `/nxs:exec`. Worker delegation is the standing execution model of dev-exec: the orchestrator never writes code itself. For every task it launches one write-capable `nxs:worker` subagent at a time, reads the structured result, and runs the existing verify / review / fix gate before the next task. There is no non-worker path.
+Loaded on demand from `/nxs:exec`. Worker delegation is the standing execution model of /nxs:exec: the orchestrator never writes code itself. For every task it launches one write-capable `nxs:worker` subagent at a time, reads the structured result, and runs the existing verify / review / fix gate before the next task. There is no non-worker path.
 
 ## INVARIANTS
 

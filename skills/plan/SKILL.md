@@ -11,7 +11,7 @@ Accepted input: a task description, a brainstorm brief (`docs/briefs/`), a root-
 
 ## STANCE (PLAN ONLY, HAND OFF)
 
-- dev-plan produces the plan document and stops. It does not write implementation code, run the build, or change behavior.
+- /nxs:plan produces the plan document and stops. It does not write implementation code, run the build, or change behavior.
 - The plan is a proposal: read-only until the user approves it. Review is a separate step (`/nxs:plancheck`); execution is a separate step (`/nxs:exec`).
 - If the task is small and single-step, no plan is needed - route to `/nxs:exec` or a direct edit instead of ceremony.
 

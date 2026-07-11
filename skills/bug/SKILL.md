@@ -11,7 +11,7 @@ Accepted input: tracker key / URL, pasted bug text, observed behavior, stack tra
 
 ## STANCE (READ-ONLY INVESTIGATION)
 
-- Diagnose confirms the root cause with reproducible evidence. It does not write the fix.
+- /nxs:bug confirms the root cause with reproducible evidence. It does not write the fix.
 - The read-only investigation may be delegated to the `nxs:diagnose-investigator` subagent: it runs the diagnosis loop and 5-Why read-only and returns the evidence, hypotheses, and confirmed root cause to the main context, which then writes the brief and routes the fix. The delegation prompt must include the full text of this skill's `## DIAGNOSIS LOOP`, `## FIVE-WHY`, `## STOP CONDITIONS`, and `## RULES` sections (injection, not restatement from memory).
 - No fix, patch, or code change here. No exceptions. The fix goes through `/nxs:plan` (fix plan) and `/nxs:exec` (execution).
 - No solution before the root cause is confirmed. Do not narrow to the first plausible explanation - stay skeptical.

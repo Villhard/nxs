@@ -49,6 +49,6 @@ Why it avoids the same failure: <concrete reason it does not reproduce the old f
 
 ## NEXT
 
-- rethink stops and replaces a CURRENT stuck approach. That is the entry condition.
+- /nxs:wrong stops and replaces a CURRENT stuck approach. That is the entry condition.
 - Two already-formed approaches to weigh head to head -> `/nxs:dialectic`.
 - A not-yet-started task still being shaped -> `/nxs:rnd`.

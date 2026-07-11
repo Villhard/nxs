@@ -11,7 +11,7 @@ Accepted input: a task description, a feature idea, a tracker key / URL / pasted
 
 ## STANCE (BRAINSTORM ONLY, HAND OFF)
 
-- Brainstorm produces the brief and stops. It does not write a plan or implementation code, run the build, or change behavior.
+- /nxs:rnd produces the brief and stops. It does not write a plan or implementation code, run the build, or change behavior.
 - Three phases run in order: CLARIFY (remove misunderstanding), then EXPLORE (compare approaches), then STRESS (pressure-test the recommended approach). All scale by complexity - a clear task collapses CLARIFY to 0 questions, EXPLORE to the single obvious approach, and STRESS to ~0; a fuzzy / risky / architectural one expands all three.
 - The next step is `/nxs:plan` (turn the brief into a plan). For a bug rather than a task, route to `/nxs:bug` instead of brainstorming. For an effort too big to shape in one session (decomposition unknown, spans many sessions), route to `/nxs:epic`, which charts it and feeds a shaped chunk back here.
 
@@ -80,7 +80,7 @@ Optional durable writes - only after explicit user approval: an ADR via the `dec
 
 ## RULES
 
-- Brainstorm produces the brief and stops - no plan, no code.
+- /nxs:rnd produces the brief and stops - no plan, no code.
 - Separate facts from assumptions throughout.
 - Questions are hard-won and one at a time - ask only while the next question still changes the decision; 0 is a normal outcome.
 - Show 2-4 real approaches with trade-offs before recommending one; do not stretch artificial alternatives.
