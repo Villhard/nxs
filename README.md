@@ -1,16 +1,56 @@
 # nxs
 
-Nexus workflow skills for Claude Code, packaged as a plugin: a minimal set of flat `/nxs:*` commands for development end-to-end, background rule skills, and read-only reviewer / explorer agents plus one write-capable worker.
+An opinionated plan -> exec -> review loop for Claude Code, packaged as a plugin. You get a reviewable plan as the source of truth, task-by-task execution by a single write-capable worker, and multi-lens code review - with commit / plan / review conventions enforced from one place instead of re-explained in every prompt.
+
+Why install it over ad-hoc prompts: the workflow is fixed and named (`/nxs:plan`, `/nxs:exec`, `/nxs:review`), the conventions live in single-source background skills that every command shares, and human review gates stay in the loop - plan review before auto-exec, code review before commit.
+
+## Quickstart
+
+One task through the loop:
+
+```
+/nxs:rnd add rate limiting to the public API   # shape a fuzzy task into a plan-ready brief
+/nxs:plan                                        # turn the brief into sequenced, verifiable tasks
+/nxs:plancheck                                   # multi-lens read-only review of the plan
+/nxs:exec                                         # implement one task, then stop for you to commit
+#   ...or /nxs:exec auto                          # run all remaining low-risk tasks
+/nxs:review                                       # review the diff before you commit
+/nxs:clean                                        # archive the finished plan
+```
+
+## Commands
+
+14 flat `/nxs:<name>` commands:
+
+| command | when to use |
+| --- | --- |
+| `plan` | Decompose a task, brief, or tracker input into sequenced, verifiable vertical-slice tasks - the source of truth for execution. |
+| `exec` | Execute a plan task by task and write the code; default runs one task then stops, `auto` runs all remaining low-risk tasks. |
+| `review` | Review a diff (staged, branch vs base, file, or PR) and report confirmed BLOCK / NIT findings without editing code. |
+| `plancheck` | Multi-lens read-only review of a plan before execution; run after `plan` and always before `exec auto`. |
+| `bug` | Investigate a bug to a confirmed root cause before any fix - the tracked-bug entry point. |
+| `rnd` | Think a fuzzy task, feature idea, or open question through to a plan-ready brief - the tracked-task entry point. |
+| `dialectic` | Compare two concrete approaches head to head, or steelman-then-attack a single claim, for an honest trade-off verdict. |
+| `epic` | Chart a foggy multi-session effort into a map of investigation items, then hand off to `rnd` or `plan`. |
+| `wrong` | Stop a stuck or thrashing approach and find a genuinely different alternative. |
+| `explain` | Explain a diff, file, function, flow, or subsystem from zero, scaling depth to the target - understanding, not review. |
+| `userdoc` | Produce end-user how-to documentation for a feature, drafted locally and published to Confluence. |
+| `techdoc` | Write technical documentation for maintainers from the branch / plan / diff, drafted locally and published to Confluence. |
+| `recommit` | Rewrite the branch's local commits into clean atomic groups without changing the final tree - git-only, never pushes. |
+| `clean` | Archive completed plans and superseded briefs after you approve the moves - relocates docs only, never deletes. |
 
 ## Model
 
 Three tiers:
 
 1. Global `~/.claude/CLAUDE.md` - tool-level always-on rules (output language, style, token economy, CLI tools, safety). Hand-authored by you, NOT shipped by this plugin - each user provides their own (see Setup). The plugin's skills rely on it for output style and for the safety rules some skills delegate to it: for example `commit-conventions` keeps its secret / force-push safety in your global rules, not in the skill.
-2. Command skills (`/nxs:<name>`) - 13 flat commands: `plan`, `exec`, `review`, `plancheck`, `bug`, `rnd`, `dialectic`, `explain`, `recommit`, `userdoc`, `techdoc`, `wrong`, `clean`. Modes are rare and inferred: `exec` (default / auto) and `explain` (depth). All others are single-mode.
-3. Background skills (`user-invocable: false`) - shared rules loaded by relevance, hidden from the `/` menu: `commit-conventions`, `plan-conventions`, `review-protocol`, `verify`, `decision-log`, `intake`.
+2. Command skills (`/nxs:<name>`) - the 14 flat commands listed above. Modes are rare and inferred: `exec` (default / auto) and `explain` (depth). All others are single-mode.
+3. Background skills (`user-invocable: false`) - 8 shared rules loaded by relevance, hidden from the `/` menu: `commit-conventions`, `plan-conventions`, `review-protocol`, `verify`, `decision-log`, `intake`, `doc-draft`, `stress-test`.
 
-Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`) and read-only subagents: `explorer`, `diagnose-investigator`, four `plan-*-reviewer` lenses (used by `plancheck`), four `review-*-reviewer` lenses (used by `review`).
+Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`; the only agent that writes) plus read-only subagents in two classes:
+
+- Tool-enforced read-only - tools limited to Read / Grep / Glob, so they cannot write or run shell: the four `plan-*-reviewer` lenses (used by `plancheck`) and the four `review-*-reviewer` lenses (used by `review`).
+- Prompt-level read-only - keep Bash to run read-only shell (git history, repro) but write nothing: `explorer` and `diagnose-investigator`.
 
 ## Layout
 
