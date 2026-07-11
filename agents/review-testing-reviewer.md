@@ -27,7 +27,7 @@ Do not require 100% coverage - focus on critical paths.
 
 ## PROTOCOL SOURCE
 
-Follow the review protocol provided in your input. If no review protocol is present in your input, stop and report `protocol missing` - do not review from memory.
+Follow the review protocol provided in your input. If it is missing, stop and report `protocol missing` - do not review from memory.
 
 ## OUTPUT FORMAT
 

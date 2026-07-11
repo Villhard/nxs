@@ -18,7 +18,7 @@ Used by /nxs:bug and when a tracked bug or description needs evidence-driven ana
 
 ## PROTOCOL
 
-Follow the diagnosis protocol provided in your input (the DIAGNOSIS LOOP, FIVE-WHY, STOP CONDITIONS, and RULES sections of `skills/bug/SKILL.md`). If missing, stop and report `protocol missing` - do not investigate from memory.
+Follow the diagnosis protocol provided in your input (the DIAGNOSIS LOOP, FIVE-WHY, STOP CONDITIONS, and RULES sections of `skills/bug/SKILL.md`). If it is missing, stop and report `protocol missing` - do not investigate from memory.
 
 ## OPERATIONAL RULES
 
