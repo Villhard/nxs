@@ -38,12 +38,12 @@ Tier 1 (global `~/.claude/CLAUDE.md`) и `settings.json` - НЕ в репо пл
 - Имя команды = имя ДИРЕКТОРИИ скилла. `skills/plan/` -> `/nxs:plan`.
 - Namespace `nxs` берётся из `plugin.json` поля `name: nxs`. Инвокация плагин-скилла всегда namespaced (`/nxs:...`), bare-алиаса нет. Уникальность даёт `nxs:`, флоу-префикс не нужен.
 
-Текущий набор команд (13, плоские имена):
+Текущий набор команд (14, плоские имена):
 
 | area | commands |
 |---|---|
 | build | `plan`, `exec`, `review`, `plancheck`, `bug` |
-| think | `rnd`, `dialectic`, `wrong` |
+| think | `rnd`, `dialectic`, `epic`, `wrong` |
 | understand | `explain` |
 | document | `userdoc`, `techdoc` |
 | git / project | `recommit`, `clean` |
@@ -159,10 +159,10 @@ Install кэширует СНИМОК плагина, не читает репо
 ```
 # один раз - подключить локальный dev marketplace
 claude plugin marketplace add ~/nxs
-claude plugin install nxs@nxs-dev
+claude plugin install nxs@nxs
 
 # после каждой правки в репо
-claude plugin marketplace update nxs-dev
+claude plugin marketplace update nxs
 # затем reinstall плагина
 ```
 
@@ -193,7 +193,7 @@ claude plugin marketplace update nxs-dev
 
 Правила путей:
 
-- `docs/briefs/`, `docs/plans/`, `docs/plans/completed/`, `docs/briefs/archive/` - в текущем рабочем репозитории (source-of-truth локации).
+- `docs/briefs/`, `docs/plans/`, `docs/plans/completed/`, `docs/briefs/archive/` - в текущем рабочем репозитории, source-of-truth для workflow. Это локальные рабочие артефакты: `docs/` не трекается (gitignored), в код не коммитятся и в снимок плагина не входят.
 - Doc-артефакты (`techdoc`, `userdoc`) пишутся в `docs/<kind>/` рабочего репо; `docs/` gitignored, это локальный черновик, durable-дом - Confluence. В код доки не коммитятся.
 - Молча создавать файлы вне этих шаблонов запрещено.
 
