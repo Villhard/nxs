@@ -9,16 +9,13 @@ Load before any `git add` / `git commit` / `git push`. Workflow rules, not a use
 
 ## CORE
 
-- Commit format: `<type>(<scope>): <subject>` - single line, no body unless explicitly requested.
-- Subject fully lowercase (including abbreviations: "seo", not "SEO"), as short as possible.
-- A1-B1 verbs only: add, fix, remove, update, show, hide, validate. No B2+ verbs (tighten, refine, streamline, leverage, harden).
-- Types: `feat`, `fix`, `refactor`, `chore`, `docs`.
-- One commit = one logical change. Separate refactor from feat / fix.
+Mode gating - the operational gate before any git write:
+
 - Manual / default mode: do NOT run `git add` / `git commit` / `git push` - propose the message as text to copy.
 - auto mode: `git add` / `git commit` allowed only after verify + full review; push never.
 - auto under a no-commit instruction: no `git add` / `git commit` / `git push`.
 - `git push` only on explicit user request.
-- Do not commit unrelated files, large generated artifacts, foreign-branch files, or merge artifacts.
-- After a failed pre-commit hook: create a NEW commit with the fix, do not amend.
 
-Full mode matrix, branch naming, staging, and HEREDOC rules: read `reference/git-conventions.md` when the case needs it.
+One commit = one logical change. Separate refactor from feat / fix.
+
+Full rules live once in `reference/git-conventions.md` - commit format, the A1-B1 verb allow-list and B2+ ban-list, the type list, the full manual-vs-auto mode matrix, branch naming, staging, the never-commit list, the failed-hook rule, and HEREDOC usage. Read it when writing a message or when the case needs the detail.

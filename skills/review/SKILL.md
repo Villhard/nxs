@@ -52,24 +52,13 @@ Run in parallel with or after the agents, over the diff against the found source
 
 ### Standards axis
 
-Does the diff conform to the project's documented standards. Read only sources that actually exist, do not invent them:
-
-- ADRs (`docs/adr/`, `docs/decisions/`, or wherever they live in the project);
-- root `AGENTS.md` / `CLAUDE.md`;
-- `CONTRIBUTING.md`, `STANDARDS.md`, `STYLE.md`, `STYLE_GUIDE.md` and their variants in root or `docs/`;
-- project config as machine-enforced standards (lint / formatter / typecheck) - but do not duplicate what these tools already catch. Record a config-based violation only when the standard is explicitly documented and the tooling does not catch it (or was disabled in the diff).
+Does the diff conform to the project's documented standards. Read only sources that actually exist, do not invent them; the full list of standards sources lives once in `reference/review-policy.md` (STANDARDS AXIS / SOURCES).
 
 Every Standards finding carries a single citation line under `Fix:`: `Standard: <path>#<section> - "<verbatim rule>"`. Without a citation - drop. A standard "from memory" - drop.
 
 ### Spec axis
 
-Does the diff implement the source artifact fully and without scope creep. Find the source artifact in priority order, stop at the first one found:
-
-1. Command argument (`/nxs:review <path>` points to a plan / brief / spec).
-2. Active plan under `docs/plans/` (excluding `docs/plans/completed/`), the latest by date; inside it the `## SOURCE ARTIFACTS` section.
-3. Brief under `docs/briefs/` (including root-cause) named in the plan or in the branch / PR description.
-4. Tracker / task URL from the plan, the PR description, or the user.
-5. PRD / spec document in the repo referenced by the plan or PR.
+Does the diff implement the source artifact fully and without scope creep. Find the source artifact by the 5-step priority order (stop at the first one found) that lives once in `reference/review-policy.md` (SPEC AXIS / FINDING THE SOURCE ARTIFACT).
 
 If no source artifact is found, report the single line `Spec axis: skipped (no spec/source artifact available)` and continue. Every Spec finding carries a single citation line under `Fix:`: `Spec: <path>#<section> - "<verbatim requirement>"`. Without a citation - drop. Do not invent a spec from memory, git history, branch names, or the dialogue - if a requirement is absent from the found artifact, ask the user or drop.
 
