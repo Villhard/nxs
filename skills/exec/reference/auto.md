@@ -15,7 +15,7 @@ Before starting auto:
 
 For each remaining unchecked task:
 
-1. Edit code in the main context (worker mode: one `nxs:worker` subagent).
+1. Delegate the task to one `nxs:worker` subagent (single writer).
 2. Update the plan (check the checkboxes).
 3. Run the `verify` skill (tests / lint / format / typecheck / build as relevant).
 4. Run adaptive review scoped to the task diff (the review lenses proportional to the change, not unconditionally the full set). On a BLOCK, fix it and re-review the same scope. The loop exits only on a zero-BLOCK round, not "I fixed what was found". NIT findings are logged as follow-up and never gate the commit. Cap: 3 review rounds per task; cap exhausted with a BLOCK remaining -> stop, no commit, report.
@@ -97,7 +97,7 @@ Auto follows the noticed-only follow-up rule from execution discipline (DO NOT E
 
 ## SUBAGENTS READ-ONLY
 
-In auto mode subagents stay read-only. Code edits happen only in the main context - or, under worker mode, in a single `nxs:worker` subagent one at a time (see `reference/worker-mode.md`).
+In auto mode the orchestrator never writes code itself; it delegates writing to a single `nxs:worker` subagent, one at a time, and explorer / reviewer subagents stay read-only. There is no non-worker path - code edits happen only inside the `nxs:worker` (see `reference/worker-mode.md`).
 
 ## CAP AND STALEMATE DETECTION
 
