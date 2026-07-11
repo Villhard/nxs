@@ -12,12 +12,14 @@ Load when producing a documentation artifact meant to live in Confluence. Workfl
 A documentation artifact is a local draft, never the durable copy:
 
 - Write it to `docs/<kind>/<slug>.md`, where `<kind>` is the consuming skill's document kind (`techdoc`, `userdoc`).
-- The path is a local draft in the gitignored `docs/`, not committed into code.
-- Durable / shared home is Confluence: you edit the draft and publish it there. Nothing is left in the codebase.
+- `docs/<kind>/` is a local draft path, not code. nxs recommends the consumer gitignore `docs/`, but does not control the consumer's ignore rules and cannot guarantee the path is ignored.
+- Durable / shared home is Confluence: you edit the draft and publish it there. The local draft stays a working copy until you publish.
 
 ## DRAFT-BEFORE-WRITE
 
 A durable write. Show the full draft and the destination, and write only after the user approves the content and location. Read-only until then.
+
+Before writing, check whether the target `docs/` directory is gitignored in the current project. If it is NOT ignored, warn the user that this local draft is pre-scrub and may hold local paths, real ticket ids, or colleague names, so it is not ignore-protected and a `git add -A` could stage it. Offer to add `docs/` to the project `.gitignore`, and edit that file only after the user confirms - never touch the user's git config silently.
 
 ## PRE-PUBLISH SCRUB
 
