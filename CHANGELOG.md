@@ -7,9 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-07-11
+
 ### Added
 
-- Publishable hardening: MIT `LICENSE`, plugin metadata (license, repository, homepage), this `CHANGELOG.md`, and a versioning convention in `CONTRIBUTING.md`.
+- MIT `LICENSE` and plugin manifest metadata (`license`, `repository`, `homepage`); removed the personal author email.
+- `CHANGELOG.md` and a versioning convention in `CONTRIBUTING.md`.
+- CI workflow (`claude plugin validate --strict`, a frontmatter check, and a house-style lint for forbidden dashes / quotes) plus a pull-request template with a PUBLIC SAFETY reminder.
+- `examples/`: a `CLAUDE.md.sample` safety starter and sample plan / brief / ADR artifacts.
+- README value proposition, quickstart, and a command table for all 14 commands.
+- `doc-draft`: a pre-write check that warns and offers to gitignore `docs/` when the consumer project does not ignore it.
+
+### Changed
+
+- The four `review-*-reviewer` lenses are tool-enforced read-only (Bash removed); `explorer` and `diagnose-investigator` document that they run read-only shell only and write nothing.
+- README and CONTRIBUTING inventory corrected to 14 commands (adds `epic`) and 8 background skills (adds `doc-draft`, `stress-test`).
+- Skill descriptions tightened to when-to-use triggers, each command gains an `Example` line, and the agent guard strings are unified to one form.
+- Completed the `worker` destructive-op list (`git clean -f`, `git checkout -- <path>`).
+
+### Fixed
+
+- Removed duplicated commit and review rules that restated their reference files.
+- The `exec` auto reference no longer contradicts the single-writer worker model.
+- Legacy skill self-names (`dev-plan`, `dev-exec`, `Brainstorm`, `Diagnose`, `rethink`) replaced with the actual commands.
+- `doc-draft` no longer claims `docs/` is guaranteed gitignored.
+- The review quality and simplification lenses guard the injected smell baseline.
+- `plancheck` wording matches what it injects; `epic` marks `deep-research` as an optional external skill.
+- The CONTRIBUTING dev-loop uses the real marketplace name so the install command works.
 
 ## [0.3.0] - 2026-07-09
 
