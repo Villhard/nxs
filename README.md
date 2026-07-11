@@ -75,7 +75,7 @@ agents/
    claude plugin install nxs@nxs
    ```
 
-2. **Global rules (your own)**. The skills defer output language / style to your global `~/.claude/CLAUDE.md`, and `commit-conventions` delegates secret / force-push safety there. The plugin does not ship a block (plugins cannot write `~/.claude/CLAUDE.md`), so set up your own global conventions as you prefer. Without them the skills still run - just in the default output style and without those delegated safety rules.
+2. **Global rules (your own)**. The skills defer output language / style to your global `~/.claude/CLAUDE.md`, and `commit-conventions` delegates secret / force-push safety there. The plugin does not ship a block (plugins cannot write `~/.claude/CLAUDE.md`), so set up your own global conventions as you prefer. Without a tier-1 `~/.claude/CLAUDE.md` the skills still run, but they lose the delegated secret / force-push / destructive-op protections and fall back to the default output style. Copy `examples/CLAUDE.md.sample` to `~/.claude/CLAUDE.md` as a starting point - it carries the active safety block the skills assume, with the language / style / tooling extras commented out for you to enable.
 
 3. **Optional - permissions**. The skills prefer `rg` / `fd` / `jq`. Allow them in `~/.claude/settings.json` to avoid prompts, or just allow them on first use. Plugins cannot ship permissions.
 
