@@ -66,7 +66,7 @@ A single markdown file, the canonical artifact: `docs/epics/YYYYMMDD-<slug>.md`.
 Every item is HITL (worked with the user, who owns the decisions) or AFK (the agent drives it alone).
 
 - **decide** (HITL) - a decision the user owns. Resolve via `/nxs:rnd` (shape a sub-chunk to a brief) or `/nxs:dialectic` (two concrete options head to head); record a significant one through the `decision-log` gate. The default type.
-- **research** (AFK) - knowledge outside the working directory: docs, third-party APIs, prior art. Resolve via `deep-research` or an explorer subagent; the artifact is a findings note linked from the map.
+- **research** (AFK) - knowledge outside the working directory: docs, third-party APIs, prior art. Resolve via an explorer subagent (the in-plugin default), or the external `deep-research` skill if available (OPTIONAL EXTERNAL, not shipped with nxs); the artifact is a findings note linked from the map.
 - **spike** (HITL or AFK) - a design question best answered by throwaway code (does this state model or logic feel right). Build it per the spike approach in `plan-conventions`; keep the answer, delete the code.
 - **task** (HITL or AFK) - manual work that must happen before a decision can be made (provision access, move data so its shape is visible). It does rather than decides, and earns its place by unblocking a decision. The agent drives it alone where it can; otherwise it hands the user a precise checklist.
 

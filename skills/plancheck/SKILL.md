@@ -1,5 +1,5 @@
 ---
-description: Read-only multi-lens review of an implementation plan before execution, especially before auto modes - four reviewer lenses report BLOCK / NIT findings without editing the plan. Use after /nxs:plan and before /nxs:exec, and always before /nxs:exec auto.
+description: Read-only multi-lens review of an implementation plan before execution, especially before auto modes - up to four reviewer lenses, proportional to the plan, report BLOCK / NIT findings without editing the plan. Use after /nxs:plan and before /nxs:exec, and always before /nxs:exec auto.
 argument-hint: "[plan path]"
 ---
 
@@ -22,7 +22,7 @@ Use before `/nxs:exec`, and especially before `/nxs:exec auto`, where the bar is
 
 ## LENSES
 
-Four independent read-only subagents, run proportional to the plan. Each checks the plan against `plan-conventions`. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) and `reference/plan-protocol-addendum.md` once each, and include the full text of both in the prompt of every plan lens you spawn. The lens agents do not restate the protocol - they receive it via these injected texts.
+Up to four independent read-only subagents, run proportional to the plan. Each lens carries its `plan-conventions` criteria embedded in its own FOCUS AREAS - `plan-conventions` is orchestrator-side background (what you read to scope the review), not a text injected into the agents. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) and `reference/plan-protocol-addendum.md` once each, and include the full text of both in the prompt of every plan lens you spawn. The lens agents do not restate the protocol - they receive it via these injected texts.
 
 - `nxs:plan-scope-reviewer` - Spec/Scope: the plan against its source artifact - coverage of acceptance criteria, no scope creep, no invented work.
 - `nxs:plan-structure-reviewer` - Decomposition: task sizing, vertical-slice slicing, dependency sequencing, and per-task well-formedness (title, Files block, checklist, success criteria, final verification step).
