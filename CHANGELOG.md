@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-07-14
+
+### Added
+
+- `epic`: an implementation layer on the map - a `Tasks` section of goal-level chunks with `blocked -> ready -> planned -> done` statuses; a ready task hands off to `/nxs:plan`, which finds the concrete implementation against the current code. Hard rule: no plan while a blocker is open.
+- `epic`: map header (`Date` / `Status` / `Tracker`), a `Mode: HITL | AFK` line per Frontier item, invocation mode detection (map path / name / no argument), and a closure step - `Status: complete` when nothing is open and every task is done.
+- `epic`: a notes folder next to the map (`docs/epics/YYYYMMDD-<slug>/`) as the home for research / spike findings notes.
+- `clean`: archives completed epic maps (`docs/epics/` -> `docs/epics/archive/`, the notes folder moves along); the argument accepts `epics`.
+- `examples/epic-sample.md` - a filled sample map.
+
+### Changed
+
+- `epic`: the map name carries the epic's own tracker key (`YYYYMMDD-<EPIC-KEY>-<slug>.md`); the key names the map only and does not flow down to task briefs / plans - each task is named by its own key.
+- `epic`: the Frontier item type `task` is renamed to `prep` (manual unblock work), freeing the word for implementation tasks; `decide` items gain a direct-answer resolution path recorded as a gist-only map line.
+- `intake`: `/nxs:epic` listed as a consumer; the extracted identifier names the epic map and stops at the epic boundary.
+- `plan`: a guard for epic-map tasks - confirm all blockers are done before planning, else route back to `/nxs:epic`.
+- CONTRIBUTING artifact paths table covers `/nxs:epic` and the epics archive.
+
 ## [0.6.0] - 2026-07-13
 
 ### Changed
