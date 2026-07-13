@@ -48,6 +48,8 @@ Write the plan to:
 docs/plans/YYYYMMDD-<slug>.md
 ```
 
+When the input carries a tracker identifier (from `intake`, the brief name, or the ticket), include it - `docs/plans/YYYYMMDD-<KEY>-<slug>.md` - so the plan stays navigable by the key, as the `intake` contract promises.
+
 If source artifacts exist, add a `## SOURCE ARTIFACTS` section referencing only those that actually exist - no empty placeholders:
 
 ```markdown
