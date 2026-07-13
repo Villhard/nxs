@@ -106,6 +106,8 @@ Write a root-cause brief:
 docs/briefs/YYYYMMDD-<slug>-root-cause.md
 ```
 
+When intake extracted a tracker identifier, include it in the name - `docs/briefs/YYYYMMDD-<KEY>-<slug>-root-cause.md` - so the brief stays navigable by the key, as the `intake` contract promises.
+
 It captures: symptom; feedback loop / repro method; minimized repro; evidence; ranked hypotheses; tested probes; 5-Why chain; confirmed root cause; assumptions; fix direction; regression test idea; verification plan.
 
 ## RULES
