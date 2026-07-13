@@ -1,33 +1,35 @@
 ---
-description: Archive completed plans and outdated / superseded briefs into their archive folders after the user approves the proposed moves. Use when wrapping up a feature or clearing finished / stale planning docs - it relocates docs only, never touches git history and never deletes content.
-argument-hint: "[plans | briefs]"
+description: Archive completed plans, outdated / superseded briefs, and completed epic maps into their archive folders after the user approves the proposed moves. Use when wrapping up a feature or clearing finished / stale planning docs - it relocates docs only, never touches git history and never deletes content.
+argument-hint: "[plans | briefs | epics]"
 ---
 
 # /nxs:clean
 
-Move completed plans and outdated / superseded briefs into their archive folders, only after the user approves the proposed set. This is docs-hygiene, not git history. Self-contained skill; output language and response style come from global rules, not this file.
+Move completed plans, outdated / superseded briefs, and completed epic maps into their archive folders, only after the user approves the proposed set. This is docs-hygiene, not git history. Self-contained skill; output language and response style come from global rules, not this file.
 
 Example: /nxs:clean plans
 
 ## SCOPE
 
-Relocate finished planning docs across two directories:
+Relocate finished planning docs across three directories:
 - completed plans -> `docs/plans/completed/`
 - outdated / superseded briefs -> `docs/briefs/archive/`
+- completed epic maps -> `docs/epics/archive/`
 
-The argument selects scope: no argument processes both `docs/plans/` and `docs/briefs/`; `plans` processes only plans (skip the briefs step); `briefs` processes only briefs (skip the plans step).
+The argument selects scope: no argument processes `docs/plans/`, `docs/briefs/`, and `docs/epics/`; `plans` / `briefs` / `epics` processes only that kind (skip the other steps).
 
 ## GUARDS
 
 - APPROVAL-FIRST - propose the candidate moves and get the user's approval before moving anything. Never auto-archive.
 - NO AUTO-ARCHIVE BY DATE - age alone is never a reason to archive. Every candidate needs a concrete reason beyond "old".
 - MOVE, NOT DELETE - relocate files; never delete content.
-- DOCS-ONLY - touch only `docs/plans/` and `docs/briefs/`. This is not git history cleanup (that is `/nxs:recommit`) and not source-code cleanup.
+- DOCS-ONLY - touch only `docs/plans/`, `docs/briefs/`, and `docs/epics/`. This is not git history cleanup (that is `/nxs:recommit`) and not source-code cleanup.
 
 ## ARTIFACT PATHS
 
 - completed plan: `docs/plans/YYYYMMDD-<slug>.md` -> `docs/plans/completed/YYYYMMDD-<slug>.md`
 - archived brief: `docs/briefs/YYYYMMDD-<slug>.md` -> `docs/briefs/archive/YYYYMMDD-<slug>.md`
+- archived epic: `docs/epics/YYYYMMDD-<slug>.md` -> `docs/epics/archive/YYYYMMDD-<slug>.md`; the map's notes folder `docs/epics/YYYYMMDD-<slug>/` moves with it
 
 ## PROCEDURE
 
@@ -46,7 +48,13 @@ The argument selects scope: no argument processes both `docs/plans/` and `docs/b
    - Attach a reason the user can dispute to each candidate.
    - Hard to classify -> show it as unclear, do not guess, do not archive.
 
-3. Propose. Print the candidate moves as a list (plans, briefs, and what stays active), then ask for approval. Move nothing before approval.
+3. Detect completed epics.
+   - Read `docs/epics/*.md` (excluding `docs/epics/archive/`).
+   - Candidate: the header says `Status: complete`. Corroborate before proposing: Frontier and Not yet specified are empty, every task is done. `Status: complete` without that corroboration -> show it as unclear, do not archive.
+   - The map and its notes folder (`docs/epics/YYYYMMDD-<slug>/`) move together as one unit.
+   - Any open item, fog entry, or task -> keep as active, do not touch.
+
+4. Propose. Print the candidate moves as a list (plans, briefs, epics, and what stays active), then ask for approval. Move nothing before approval.
 
 ```
 Cleanup proposal:
@@ -58,20 +66,23 @@ Briefs -> docs/briefs/archive/:
 - 20260301-baz.md (plan 20260305-baz.md completed)
 - 20260201-qux.md (proposed fix merged, no further work planned)
 
+Epics -> docs/epics/archive/:
+- 20260210-checkout-v2.md + notes folder (Status: complete, all tasks done)
+
 Active (not touching):
 - 20260506-bar.md (brief awaiting grooming)
 
 Approve? (yes / partial / no)
 ```
 
-4. Approval.
+5. Approval.
    - `yes` -> perform all moves.
    - partial (file names / "only plans" / "only the first brief") -> perform only the selected ones.
    - `no` -> close the proposal, move nothing.
 
-5. Execute (only after approval).
-   - `mkdir -p docs/plans/completed/` and `docs/briefs/archive/` only if there is something to move into them.
-   - `git mv` when the file is tracked, otherwise `mv`.
+6. Execute (only after approval).
+   - `mkdir -p docs/plans/completed/`, `docs/briefs/archive/`, `docs/epics/archive/` only if there is something to move into them.
+   - `git mv` when the file is tracked, otherwise `mv`. An epic map moves together with its notes folder.
    - Report the moved files as a list.
    - If a plan's final task item is "move into `docs/plans/completed/`", mark it `[x]` after the move.
 
@@ -80,7 +91,7 @@ Approve? (yes / partial / no)
 - Read-mostly until approved; no move without approval.
 - No deletions - moves only.
 - Do not modify file contents (exception: a plan's final move-item gets `[x]` after its own move).
-- Do not touch files outside `docs/plans/` and `docs/briefs/`.
+- Do not touch files outside `docs/plans/`, `docs/briefs/`, and `docs/epics/`.
 - Do not recreate empty `completed/` / `archive/` when there is nothing to move.
 - A brief is NOT stale solely because it is old by date (without other signals), lacks a linking plan (the plan may live in another repo or not yet exist), or contains open questions / a draft. These are reasons to ask, not to archive silently.
 
