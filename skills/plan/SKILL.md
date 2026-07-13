@@ -7,7 +7,7 @@ argument-hint: "[task | brief path | tracker key]"
 
 Turn a task, brief, or tracker input into a well-formed implementation plan and stop. The plan becomes the source of truth for execution. Self-contained skill. Output language and response style come from global rules, not this file.
 
-Accepted input: a task description, a brainstorm brief (`docs/briefs/`), a root-cause brief from `/nxs:bug`, a now-clear chunk handed off from an `/nxs:epic` map, or a tracker key / URL / pasted ticket. A plan can be made with or without a brief - with no input, gather it here first.
+Accepted input: a task description, a brainstorm brief (`docs/briefs/`), a root-cause brief from `/nxs:bug`, a ready task handed off from an `/nxs:epic` map, or a tracker key / URL / pasted ticket. A plan can be made with or without a brief - with no input, gather it here first. For an epic-map task, read the map first and confirm every blocker of the task is done; an open blocker means the ground the plan would stand on is still changing - stop and route back to `/nxs:epic`.
 
 Example: /nxs:plan docs/briefs/20260711-auth-refactor.md
 

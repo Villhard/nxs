@@ -5,7 +5,7 @@ user-invocable: false
 
 # TASK INTAKE
 
-Load when a task carries an identifier (a tracker key or URL, e.g. `PROJ-1234`) or comes as a pasted ticket. Background knowledge, not a user-invocable command. Consumed by `/nxs:rnd` (task entry point) and `/nxs:bug` (bug entry point): when either receives an identified task or a pasted ticket, run this intake first, then hand control back to the flow. The extracted identifier also names the downstream plan / brief so they stay navigable by it.
+Load when a task carries an identifier (a tracker key or URL, e.g. `PROJ-1234`) or comes as a pasted ticket. Background knowledge, not a user-invocable command. Consumed by `/nxs:rnd` (task entry point), `/nxs:bug` (bug entry point), and `/nxs:epic` (foggy-effort entry point): when any of them receives an identified task or a pasted ticket, run this intake first, then hand control back to the flow. The extracted identifier also names the downstream plan / brief so they stay navigable by it. For `/nxs:epic` the identifier names the epic map only - an epic is a higher abstraction than its tasks, so the key does not flow down to the briefs / plans those tasks spawn; each is named by its own key, if any.
 
 ## INPUT DETECTION
 
