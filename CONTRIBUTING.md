@@ -179,10 +179,10 @@ claude plugin marketplace update nxs
 
 | command | artifact |
 |---|---|
-| `/nxs:rnd` | `docs/briefs/YYYYMMDD-<slug>.md` |
+| `/nxs:rnd` | `docs/briefs/YYYYMMDD-<slug>.md` (с ключом трекера: `YYYYMMDD-<KEY>-<slug>.md`) |
 | `/nxs:bug` | `docs/briefs/YYYYMMDD-<slug>-root-cause.md` |
 | ADR (via decision-log) | `docs/adr/NNNN-<slug>.md` (project ADR convention, если она есть) |
-| `/nxs:plan` | `docs/plans/YYYYMMDD-<slug>.md` |
+| `/nxs:plan` | `docs/plans/YYYYMMDD-<slug>.md` (с ключом трекера: `YYYYMMDD-<KEY>-<slug>.md`) |
 | `/nxs:plancheck` | chat findings; опционально секция `## PLAN REVIEW NOTES` в плане |
 | `/nxs:exec` | изменения кода + обновлённые чекбоксы плана |
 | `/nxs:review` | chat report |
