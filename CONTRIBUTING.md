@@ -172,7 +172,6 @@ claude plugin marketplace update nxs
 
 - Любая правка bundled-контента (skills / agents / manifests) - bump поля `version` в `plugin.json` по semver.
 - К каждому bump - запись в `CHANGELOG.md` (Keep a Changelog, секция новой версии сверху).
-- На релизе - git-тег `vX.Y.Z`, совпадающий с `version` из `plugin.json`.
 
 ## ARTIFACT PATHS
 
