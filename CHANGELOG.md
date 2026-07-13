@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-07-13
+
+### Changed
+
+- `bug`: the root-cause brief file name includes the tracker identifier (`YYYYMMDD-<KEY>-<slug>-root-cause.md`) when intake extracted one, matching `rnd` and `plan`.
+
 ## [0.5.0] - 2026-07-13
 
 ### Added
