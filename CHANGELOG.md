@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-07-13
+
+### Added
+
+- `rnd`: an inline brief skeleton with stable headings that `/nxs:plan` consumes, including a new `Acceptance criteria` section.
+- `rnd`: a full-collapse escape hatch - when all three phases collapse (CLARIFY 0 questions, EXPLORE one obvious approach, STRESS ~0), the user chooses between routing straight to `/nxs:plan` and a short brief for traceability.
+
+### Changed
+
+- Brief and plan file names include the tracker identifier (`YYYYMMDD-<KEY>-<slug>.md`) when intake extracted one, fulfilling the `intake` navigability contract in both consumers.
+- `examples/brief-sample.md` gains an `Acceptance criteria` section matching the new skeleton.
+
+### Fixed
+
+- Acceptance criteria surfaced in `rnd` CLARIFY now have a fixed home in the brief; the artifact spec omitted them while `/nxs:plan` expected to pull them from the brief.
+
 ## [0.4.0] - 2026-07-11
 
 ### Added
