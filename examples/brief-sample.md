@@ -18,6 +18,12 @@ time, without breaking existing callers.
   stable across calls.
 - Existing clients call `GET /items` with no query params and expect a list body.
 
+## Acceptance criteria
+
+- `GET /items?limit=&offset=` returns a bounded page and a `total` count.
+- `GET /items` with no params keeps today's first-page behavior; existing clients are
+  unaffected.
+
 ## Options
 
 ### O1. Offset / limit pagination - recommended

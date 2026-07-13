@@ -15,6 +15,7 @@ Example: /nxs:rnd add rate limiting to the public API
 
 - /nxs:rnd produces the brief and stops. It does not write a plan or implementation code, run the build, or change behavior.
 - Three phases run in order: CLARIFY (remove misunderstanding), then EXPLORE (compare approaches), then STRESS (pressure-test the recommended approach). All scale by complexity - a clear task collapses CLARIFY to 0 questions, EXPLORE to the single obvious approach, and STRESS to ~0; a fuzzy / risky / architectural one expands all three.
+- Full collapse (CLARIFY 0 questions, EXPLORE the single obvious approach, STRESS ~0) makes the brief ceremony. Do not write it silently and do not skip it silently - offer the user the choice: route straight to `/nxs:plan`, or write a short brief for decision traceability.
 - The next step is `/nxs:plan` (turn the brief into a plan). For a bug rather than a task, route to `/nxs:bug` instead of brainstorming. For an effort too big to shape in one session (decomposition unknown, spans many sessions), route to `/nxs:epic`, which charts it and feeds a shaped chunk back here.
 
 ## INTAKE
@@ -62,7 +63,35 @@ Write a brief:
 docs/briefs/YYYYMMDD-<slug>.md
 ```
 
-It captures: the task / question; context; options; trade-offs; the chosen approach; the next step; and a link to the tracker ticket / task if there is one. A brief can be short for a simple task and detailed for a complex one.
+When intake extracted a tracker identifier, include it in the name - `docs/briefs/YYYYMMDD-<KEY>-<slug>.md` - so the brief stays navigable by the key, as the `intake` contract promises.
+
+Keep the section skeleton stable - `/nxs:plan` consumes the brief by these headings:
+
+```markdown
+# Brief: <title>
+
+- Date: YYYY-MM-DD
+- Status: ready for `/nxs:plan`
+- Tracker: <key / URL - omit the line if none>
+
+## Task
+
+## Context (facts from the code)
+
+## Acceptance criteria
+
+## Options
+
+<2-4 options as `### O<n>. <name> - recommended | rejected: <reason>`, each with pros / cons>
+
+## Chosen approach
+
+<the selected approach with integrated answers, plus "Explicitly not doing: ..." for out-of-scope>
+
+## Next
+```
+
+A brief can be short for a simple task and detailed for a complex one: sections scale in depth, empty ones are dropped, headings are not renamed. Acceptance criteria surfaced in CLARIFY land in their own section - `/nxs:plan` pulls them from here. The CLARIFICATIONS and STRESS sections are appended only under their own conditions below.
 
 Add a clarifications log only when at least one CLARIFY question was asked:
 
@@ -82,7 +111,7 @@ Optional durable writes - only after explicit user approval: an ADR via the `dec
 
 ## RULES
 
-- /nxs:rnd produces the brief and stops - no plan, no code.
+- /nxs:rnd produces the brief and stops - no plan, no code. On full collapse the user chooses: route to `/nxs:plan` or a short brief.
 - Separate facts from assumptions throughout.
 - Questions are hard-won and one at a time - ask only while the next question still changes the decision; 0 is a normal outcome.
 - Show 2-4 real approaches with trade-offs before recommending one; do not stretch artificial alternatives.
