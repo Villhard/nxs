@@ -181,18 +181,19 @@ claude plugin marketplace update nxs
 |---|---|
 | `/nxs:rnd` | `docs/briefs/YYYYMMDD-<slug>.md` (с ключом трекера: `YYYYMMDD-<KEY>-<slug>.md`) |
 | `/nxs:bug` | `docs/briefs/YYYYMMDD-<slug>-root-cause.md` (с ключом трекера: `YYYYMMDD-<KEY>-<slug>-root-cause.md`) |
+| `/nxs:epic` | карта `docs/epics/YYYYMMDD-<slug>.md` (с ключом эпика: `YYYYMMDD-<EPIC-KEY>-<slug>.md`) + notes-папка `docs/epics/YYYYMMDD-<slug>/` |
 | ADR (via decision-log) | `docs/adr/NNNN-<slug>.md` (project ADR convention, если она есть) |
 | `/nxs:plan` | `docs/plans/YYYYMMDD-<slug>.md` (с ключом трекера: `YYYYMMDD-<KEY>-<slug>.md`) |
 | `/nxs:plancheck` | chat findings; опционально секция `## PLAN REVIEW NOTES` в плане |
 | `/nxs:exec` | изменения кода + обновлённые чекбоксы плана |
 | `/nxs:review` | chat report |
-| `/nxs:clean` | перемещённые файлы (`docs/plans/completed/`, `docs/briefs/archive/`) |
+| `/nxs:clean` | перемещённые файлы (`docs/plans/completed/`, `docs/briefs/archive/`, `docs/epics/archive/`) |
 | `/nxs:techdoc` | `docs/techdoc/<slug>.md` (локальный черновик, `docs/` gitignored; durable - Confluence) |
 | `/nxs:userdoc` | `docs/userdoc/<slug>.md` (локальный черновик, `docs/` gitignored; durable - Confluence) |
 
 Правила путей:
 
-- `docs/briefs/`, `docs/plans/`, `docs/plans/completed/`, `docs/briefs/archive/` - в текущем рабочем репозитории, source-of-truth для workflow. Это локальные рабочие артефакты: `docs/` не трекается (gitignored), в код не коммитятся и в снимок плагина не входят.
+- `docs/briefs/`, `docs/plans/`, `docs/epics/`, `docs/plans/completed/`, `docs/briefs/archive/`, `docs/epics/archive/` - в текущем рабочем репозитории, source-of-truth для workflow. Это локальные рабочие артефакты: `docs/` не трекается (gitignored), в код не коммитятся и в снимок плагина не входят.
 - Doc-артефакты (`techdoc`, `userdoc`) пишутся в `docs/<kind>/` рабочего репо; `docs/` gitignored, это локальный черновик, durable-дом - Confluence. В код доки не коммитятся.
 - Молча создавать файлы вне этих шаблонов запрещено.
 
