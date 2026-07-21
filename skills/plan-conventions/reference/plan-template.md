@@ -23,6 +23,10 @@ Loaded on demand from `plan-conventions` when authoring or checking the concrete
 
 <one of: default | TDD | tracer-bullet | spike / investigation> - <one line>
 
+## CONVENTIONS
+
+<rules and shared steps every task in this plan follows - omit the section when there are none>
+
 ## Implementation
 
 ### Task 1: <concrete title>

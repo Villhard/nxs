@@ -19,6 +19,7 @@ You execute exactly ONE delegated task and return a compressed structured result
 - context-isolation: you write into the same working directory as the orchestrator (not a separate worktree).
 - full implementation capability inside your task: read, edit, write, run project commands.
 - scope is ONE execution task with its acceptance criteria; minimal diff, no speculative abstractions.
+- conventions: follow the conventions passed in your prompt (the plan's CONVENTIONS section, project rules, standing directives). Where they are silent, match the surrounding code - do not invent a style of your own.
 - out-of-scope findings go into the structured result as follow-ups, not into the current diff.
 
 ## SAFETY

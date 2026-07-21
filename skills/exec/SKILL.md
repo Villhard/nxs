@@ -82,9 +82,9 @@ The full stop-condition list, the exhaustive "what auto never does" list, no-com
 
 ## EXECUTION VIA WORKER (standing model)
 
-The orchestrator never writes code itself. For every task - default and auto - it launches exactly one `nxs:worker` subagent (single-writer: one write-worker at a time; only read roles - reviewers, explorer - may run in parallel), passes the task plus its acceptance criteria, reads back the compressed structured result (not raw tool output), then runs the same verify / review / fix gate and AC check before the next task.
+The orchestrator never writes code itself. For every task - default and auto - it launches exactly one `nxs:worker` subagent (single-writer: one write-worker at a time; only read roles - reviewers, explorer - may run in parallel), passes the task, its acceptance criteria, and the conventions set (`reference/worker-mode.md`), reads back the compressed structured result (not raw tool output), then runs the same verify / review / fix gate and AC check before the next task.
 
-Launch is via the Agent / Task tool with a fresh `nxs:worker` subagent, prompt = task + AC; NOT a fork (a fork inherits the parent context). Calls are sequential (single-writer). The `nxs:worker` never commits, pushes, or runs destructive operations - the orchestrator runs verify / review and (in auto) commits; the user reviews. Full launch contract, single-writer, and context-isolation: `reference/worker-mode.md`.
+Launch is via the Agent / Task tool with a fresh `nxs:worker` subagent, prompt = task + AC + the conventions set; NOT a fork (a fork inherits the parent context). Calls are sequential (single-writer). The `nxs:worker` never commits, pushes, or runs destructive operations - the orchestrator runs verify / review and (in auto) commits; the user reviews. Full launch contract, single-writer, and context-isolation: `reference/worker-mode.md`.
 
 ## AC VERIFICATION
 

@@ -10,7 +10,8 @@ Loaded on demand from `/nxs:exec`. Worker delegation is the standing execution m
 
 ## LAUNCH CONTRACT (Claude Code)
 
-- **launch** - the Agent / Task tool with a fresh `nxs:worker` subagent; `prompt` = the task plus its acceptance criteria. NOT `subagent_type: "fork"` - a fork inherits the parent context, which defeats context-isolation.
+- **launch** - the Agent / Task tool with a fresh `nxs:worker` subagent; `prompt` = the task, its acceptance criteria, and the conventions set. NOT `subagent_type: "fork"` - a fork inherits the parent context, which defeats context-isolation.
+- **conventions set** - the plan's `## CONVENTIONS` section plus the conventions the orchestrator is working under: project rules that bear on how code is written, and standing directives the user gave in this session. A clean context does not carry them, so what is not passed does not reach the code. Assemble the set once per run and reuse it verbatim for every task - do not re-derive it per task. Nothing to pass -> pass nothing; never invent conventions the project did not state.
 - **result** - the agent's final message; the worker's tool output does not enter the orchestrator context. Read back file paths and a structured summary, not raw logs.
 - **single-writer** - Agent calls are sequential. `isolation: "worktree"` is not needed under single-writer; the worker writes into the working directory.
 
@@ -18,7 +19,7 @@ Loaded on demand from `/nxs:exec`. Worker delegation is the standing execution m
 
 For each task the orchestrator:
 
-1. Launches one `nxs:worker` subagent with the task + AC (single-writer, sequential).
+1. Launches one `nxs:worker` subagent with the task + AC + the conventions set (single-writer, sequential).
 2. Reads back the structured result (files changed, follow-ups, notes) - not raw tool output.
 3. Runs the same `verify` skill on the resulting diff.
 4. Runs the same adaptive review scoped to the task diff, with the same BLOCK / NIT handling, 3-round cap, and stalemate detection as the rest of the skill.

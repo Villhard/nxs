@@ -36,6 +36,7 @@ Required sections, in order:
 - **Context / source artifacts** - the brief, ticket, or diagnosis this plan derives from, so review can trace scope.
 - **ACCEPTANCE CRITERIA** - verifiable readiness criteria for the whole plan, right after Overview. Separate from per-task verification: task verification checks a step, AC checks the plan as a whole. `/nxs:exec` auto checks against AC, not only checkboxes.
 - **DEVELOPMENT APPROACH** - one line, right after Acceptance Criteria (see above).
+- **CONVENTIONS** - optional; the rules and shared steps every task in the plan follows: code style and naming for this work, a procedure repeated per task, standing preferences the user stated for this effort. Only what applies to every task belongs here - detail specific to one task stays in that task. No such rules, no section. `/nxs:exec` passes this section to every worker, so what is missing here does not reach the code.
 - **Implementation tasks** - each task well-formed (see below).
 - **COMPLEXITY TRACKING** - only when the plan deviates from these conventions (see below); no deviations, no section.
 
