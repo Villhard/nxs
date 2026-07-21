@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-07-22
+
+### Added
+
+- `plan-conventions`: an optional `## CONVENTIONS` plan section - the rules and shared steps every task in the plan follows (code style and naming for the work, a procedure repeated per task, standing preferences for this effort). Detail specific to one task stays in that task.
+
+### Changed
+
+- `exec`: the worker launch contract passes the task, its acceptance criteria, and a conventions set (the plan's `## CONVENTIONS` plus the project rules and standing directives the orchestrator works under). The set is assembled once per run and reused verbatim; a clean worker context does not carry conventions, so what is not passed does not reach the code.
+- `worker`: follows the conventions passed in its prompt and matches the surrounding code where they are silent, instead of inventing a style of its own.
+
 ## [0.7.0] - 2026-07-14
 
 ### Added
