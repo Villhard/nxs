@@ -1,72 +1,72 @@
 # CONTRIBUTING (nxs)
 
-Гайд по авторингу скилла или агента для плагина `nxs`. Прозаические пояснения - русский; шаблоны, frontmatter, таблицы, имена команд, пути и идентификаторы - English (runtime language, verbatim).
+How to author a skill or an agent for the `nxs` plugin.
 
 ## REPO LAYOUT
 
 ```
 nxs/
   .claude-plugin/
-    plugin.json          # name: nxs (namespace всех команд)
+    plugin.json          # name: nxs (the namespace of every command)
     marketplace.json     # local dev marketplace (source "./")
   skills/
     <name>/              # tier 2, command skill -> /nxs:<name>
       SKILL.md
-      reference/         # опционально, on-demand деталь
+      reference/         # optional, on-demand detail
     <background-name>/   # tier 3, user-invocable: false
   agents/
-    <agent-name>.md      # автономный subagent
+    <agent-name>.md      # self-contained subagent
   README.md CONTRIBUTING.md
 ```
 
-Tier 1 (global `~/.claude/CLAUDE.md`) и `settings.json` - НЕ в репо плагина: их пишет пользователь руками.
+Tier 1 (global `~/.claude/CLAUDE.md`) and `settings.json` stay out of this repo - you write those yourself.
 
 ## THREE TIERS
 
-- Tier 1 - global `~/.claude/CLAUDE.md`: always-on, работает в каждом ответе. Вне репо плагина.
-- Tier 2 - command skills `/nxs:<name>`: workflow, видны в `/` меню. Сейчас их шесть: `rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`.
-- Tier 3 - background skills (`user-invocable: false`): общие правила, грузятся по релевантности. Сейчас их пять: `plan-conventions`, `review-protocol`, `verify`, `commit-conventions`, `intake`.
+- Tier 1 - global `~/.claude/CLAUDE.md`: always on, applies to every response. Lives outside the plugin.
+- Tier 2 - command skills `/nxs:<name>`: the workflow, visible in the `/` menu. There are six: `rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`.
+- Tier 3 - background skills (`user-invocable: false`): shared rules, loaded by relevance. There are five: `plan-conventions`, `review-protocol`, `verify`, `commit-conventions`, `intake`.
 
 ## NAMING
 
-- Формат команды: `/nxs:<name>` - плоское имя, без флоу-префикса.
-- Имя команды = имя ДИРЕКТОРИИ скилла. `skills/plan/` -> `/nxs:plan`.
-- Namespace `nxs` берётся из `plugin.json` поля `name`. Инвокация всегда namespaced, bare-алиаса нет.
-- Background skills имеют ролевое имя (`commit-conventions`, `plan-conventions`), потому что command skills ссылаются на них по имени. Имя фиксируется при добавлении и не меняется без обновления всех потребителей.
+- A command is `/nxs:<name>` - flat, no flow prefix.
+- The command name is the skill DIRECTORY name. `skills/plan/` -> `/nxs:plan`.
+- The `nxs` namespace comes from the `name` field in `plugin.json`. Invocation is always namespaced; there is no bare alias.
+- Background skills get a role name (`commit-conventions`, `plan-conventions`) because command skills call for them by name. Renaming one means updating every file that references it, so pick the name once and leave it alone.
 
 ## PLACEMENT RULE
 
-Куда положить правило, политику или терм:
+Where a rule, policy, or term belongs:
 
-- always-on (язык, стиль, безопасность) -> tier 1, вне плагина;
-- потребляется ОДНОЙ командой -> inline в её `SKILL.md` (или её `reference/`);
-- потребляется НЕСКОЛЬКИМИ командами -> tier 3 background skill;
-- контент делят несколько агентов -> живёт в single-source файле; оркестратор читает его один раз и инжектит полный текст в prompt каждого агента;
-- правило нужно ровно одному агенту -> inline в файл этого агента.
+- always on (language, style, safety) -> tier 1, outside the plugin;
+- one command needs it -> inline in that skill's `SKILL.md` or its `reference/`;
+- several commands need it -> a tier 3 background skill;
+- several agents share it -> one single-source file that the orchestrator reads once and injects verbatim into every agent prompt;
+- exactly one agent needs it -> inline in that agent's file.
 
-Правило критичности: security-критичное содержимое (never commit secrets, no force-push, confirm destructive) НЕ вешать на tier 3 - авто-load эвристичен, не гарантирован. Такое идёт в tier 1. На tier 3 остаётся только workflow-деталь.
+Security-critical content (never commit secrets, no force-push, confirm destructive) never goes on tier 3. Auto-load is heuristic and can miss; tier 1 always fires. Tier 3 carries workflow detail only.
 
-## КОГДА ЗАВОДИТЬ НОВЫЙ АРТЕФАКТ
+## WHEN TO ADD SOMETHING NEW
 
-Репо намеренно держится маленьким: шесть команд, пять фоновых скиллов, шесть агентов. Новый tier-2 command skill заводится только когда выполнены ВСЕ условия сразу:
+This repo stays small on purpose: six commands, five background skills, six agents. Add a tier-2 command skill only when all of these hold at once:
 
-- intent отдельный (не сводится к существующей команде даже через слово-режим);
-- intent частый (реально вызывается несколько раз в месяц, не раз в квартал);
-- заслуживает отдельный autocomplete-слот в `/` меню;
-- идея стабильна, не экспериментальна.
+- the intent is distinct and does not reduce to an existing command, not even through a mode word;
+- the intent is frequent - you reach for it several times a month, not once a quarter;
+- it earns its own autocomplete slot in the `/` menu;
+- the idea has settled and is no longer experimental.
 
-Не выполнено хотя бы одно - это не команда, а upgrade существующего скилла, background skill или inline-правило.
+Miss even one and it is not a command. It is an upgrade to an existing skill, a background skill, or an inline rule.
 
-Что не делать: не копировать внешний скилл целиком; не заводить отдельную команду под каждый импортированный рецепт; не добавлять абстрактный "general guidance" без конкретного failure mode; не делать side-правки "пока я здесь".
+Things that bloat the repo and get rejected: copying an external skill wholesale, one new command per imported recipe, abstract guidance with no concrete failure mode behind it, and side edits made while you happened to be in the file.
 
 ## AUTHORING PLAYBOOK
 
-- Имя команды = имя ДИРЕКТОРИИ скилла.
-- НЕ ставить frontmatter `name` во вложенных скиллах: `name` - это display-label, он прячет namespace-префикс в `/` меню. Без `name` меню показывает `nxs:<dir>`.
-- Тело `SKILL.md` - компактный English. Язык вывода пользователю задаёт tier 1, не скилл.
-- Тело входит в контекст при вызове и остаётся на сессию: писать standing-инструкции, не одноразовые шаги.
-- `reference/*.md` - тяжёлая деталь, грузится по требованию, когда `SKILL.md` на неё ссылается.
-- Валидация каждого шага: `claude plugin validate --strict .`
+- The command name is the skill DIRECTORY name.
+- Leave the frontmatter `name` field out of bundled skills. It is a display label, and setting it hides the namespace prefix in the `/` menu; without it the menu shows `nxs:<dir>`.
+- Write the body of `SKILL.md` in compact English. Tier 1 decides what language the user reads in the chat.
+- The body loads on invocation and stays for the whole session, so write standing instructions, not one-off steps.
+- Put heavy detail in `reference/*.md`, which loads only when `SKILL.md` points at it.
+- Validate as you go: `claude plugin validate --strict .`
 
 ### COMMAND SKILL FRONTMATTER
 
@@ -77,7 +77,7 @@ argument-hint: "[...]"
 ---
 ```
 
-Правило SDO (`description` = when-to-use, не пересказ процесса): `description` называет ТОЛЬКО триггер плюс короткий clause что скилл производит - не перечисляет фазы и механику тела. Пересказывающий workflow `description` заставляет модель действовать по этому пересказу и пропускать тело скилла, где живёт процедура. Тело каждого command skill несёт одну строку `Example:` с реальной инвокацией сразу после intro.
+Keep `description` to the trigger plus a short clause on what the skill produces. Do not list phases or explain how the body works: a description that retells the workflow makes the model follow the retelling and skip the body, which is where the actual procedure lives. Every command skill also carries one `Example:` line with a real invocation right after the intro.
 
 ### BACKGROUND SKILL FRONTMATTER
 
@@ -90,49 +90,49 @@ user-invocable: false
 
 ## ARTIFACT PATHS
 
-Каждый producing skill инлайнит СВОЮ строку пути в секции `## ARTIFACT` - это единственный источник. Общей таблицы здесь намеренно нет: она была дублем и расходилась со скиллами. Обзор для человека - в README.
+Each skill that writes an artifact states its own path in its `## ARTIFACT` section, and that is the only place the path lives. There is deliberately no shared table here - the old one duplicated those lines and drifted out of sync with them. README carries the human-facing overview.
 
-Все рабочие артефакты лежат под `docs/nxs/` текущего репозитория. Молча создавать файлы вне этих шаблонов запрещено.
+Everything a skill writes goes under `docs/nxs/` in the current repository. Never create files outside those templates silently.
 
 ### PUBLIC SAFETY
 
-Durable-артефакты могут попасть в public-репозиторий. Перед коммитом убрать личный контекст: локальные пути `/Users/<name>`, приватные git-remote, реальные tracker-ключи и URL, secrets / tokens / `.env`, имена и почты коллег, сырой session/tool output. Использовать нейтральные плейсхолдеры (`<user_home>`, `<github_owner>/<repo>`, `PROJ-123`).
+Anything durable can end up in a public repository. Before committing, strip local paths like `/Users/<name>`, private git remotes, real tracker keys and URLs, secrets, tokens, `.env` values, colleague names and emails, and raw session or tool output. Swap in neutral placeholders: `<user_home>`, `<github_owner>/<repo>`, `PROJ-123`.
 
 ## DEV LOOP
 
-Install кэширует СНИМОК плагина, не читает репо вживую:
+Install caches a SNAPSHOT of the plugin rather than reading the repo live:
 
 ```
-# один раз - подключить локальный dev marketplace
+# once - connect the local dev marketplace
 claude plugin marketplace add ~/nxs
 claude plugin install nxs@nxs
 
-# после каждой правки
-claude plugin marketplace update nxs   # затем reinstall плагина
+# after every edit
+claude plugin marketplace update nxs   # then reinstall the plugin
 ```
 
-Инвокация обновлённого скилла в текущей сессии - только после рестарта сессии.
+An edited skill only becomes invocable after the session restarts.
 
 ## VERSIONING
 
-Любая правка bundled-контента (skills / agents / manifests) - bump поля `version` в `plugin.json` плюс запись в `CHANGELOG.md` (Keep a Changelog, секция новой версии сверху). Какой разряд двигать, решает не размер диффа, а то, тронут ли КОНТРАКТ.
+Every edit to bundled content - skills, agents, manifests - bumps the `version` field in `plugin.json` and adds an entry to `CHANGELOG.md` (Keep a Changelog, newest section on top). The size of the diff does not decide which part of the version moves. Whether the CONTRACT changed does.
 
-### ЧТО ТАКОЕ КОНТРАКТ
+### WHAT THE CONTRACT IS
 
-То, на что опирается пользователь или другой файл плагина:
+What a user or another plugin file depends on:
 
-1. имена команд `/nxs:<name>`, их аргументы и режимы;
-2. имена background skills и агентов - другие скиллы ссылаются на них по имени;
-3. пути и схемы имён артефактов (`docs/nxs/plans/YYYYMMDD-<slug>.md`);
-4. секции артефактов, которые читает другой скилл: `## SOURCE ARTIFACTS`, `## ACCEPTANCE CRITERIA`, `## DEVELOPMENT APPROACH`, `## CONVENTIONS`, чекбоксы `- [ ]`;
-5. гейты, решающие судьбу git и файлов: когда разрешён коммит, что является stop condition, что скилл пишет на диск.
+1. command names `/nxs:<name>`, their arguments and modes;
+2. the names of background skills and agents, since other skills call for them by name;
+3. artifact paths and naming schemes (`docs/nxs/plans/YYYYMMDD-<slug>.md`);
+4. artifact sections another skill reads: `## SOURCE ARTIFACTS`, `## ACCEPTANCE CRITERIA`, `## DEVELOPMENT APPROACH`, `## CONVENTIONS`, and `- [ ]` checkboxes;
+5. the gates that govern git and files: when a commit is allowed, what counts as a stop condition, what a skill writes to disk.
 
-Всё, что не в этом списке, - внутреннее устройство: формулировки внутри `SKILL.md`, критерии и focus areas линз, состав `reference/`-файлов, README и CONTRIBUTING.
+Everything else is internal: wording inside `SKILL.md`, lens criteria and focus areas, how `reference/` files are split, README and CONTRIBUTING.
 
-### РАЗРЯДЫ
+### MAJOR / MINOR / PATCH
 
-- **PATCH** - контракт не тронут: переписана формулировка, уточнён критерий линзы, переставлены `reference/`-файлы без смены поведения, поправлена документация.
-- **MINOR** - контракт изменился: команда добавлена / удалена / переименована, сменились её аргументы, переименован скилл или агент, сменилась схема путей, изменилась обязательная секция артефакта или гейт.
-- **MAJOR** - `0.x` это initial development по semver: публичный контракт не стабилизирован и может меняться в любом minor. `1.0.0` выпускается вместе с объявлением контракта стабильным - с этого момента ломающее изменение требует major-бампа. До этого major не двигается, каким бы крупным ни был diff.
+- **PATCH** - the contract is untouched. Rewritten wording, a sharpened lens criterion, `reference/` files rearranged without changing behavior, documentation fixes.
+- **MINOR** - the contract changed. A command added, removed, or renamed; its arguments changed; a skill or agent renamed; the path scheme changed; a required artifact section or a gate changed.
+- **MAJOR** - `0.x` is initial development per semver: the public contract is not stabilized and can change in any minor. `1.0.0` ships together with the decision to declare the contract stable, and from that point a breaking change costs a major bump. Until then major stays put, however large the diff.
 
-Тест, если сомневаешься: наберёт пользователь завтра то же, что вчера, - получит то же самое и в том же месте? Да, но качество разбора другое -> patch. Нет -> minor.
+When in doubt: if you type tomorrow what you typed yesterday, do you get the same thing in the same place? Yes, but the output reads differently -> patch. No -> minor.
