@@ -14,8 +14,8 @@ Example: /nxs:bug PROJ-4213
 ## STANCE (READ-ONLY INVESTIGATION)
 
 - /nxs:bug confirms the root cause with reproducible evidence. It does not write the fix.
-- The investigation runs in the main context: you read code and logs, run repro and existing tests, and build minimal probes. Nothing here mutates the repo.
-- No fix, patch, or code change here. No exceptions. The fix goes through `/nxs:plan` (fix plan) and `/nxs:exec` (execution).
+- The investigation runs in the main context: you read code and logs, run repro and existing tests, and build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out in Cleanup; the brief is the only file that stays.
+- No fix, patch, or product-code change here. No exceptions. The fix goes through `/nxs:plan` (fix plan) and `/nxs:exec` (execution).
 - No solution before the root cause is confirmed. Do not narrow to the first plausible explanation - stay skeptical.
 
 ## INTAKE
