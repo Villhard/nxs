@@ -22,7 +22,7 @@ Example: /nxs:plancheck docs/nxs/plans/20260711-auth-refactor.md
 
 ## REVIEW
 
-Delegate to one `nxs:plan-reviewer` subagent. Protocol injection is mandatory: read `review-protocol` (`${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`) once and include its full text in the agent's prompt. The agent does not restate the protocol - it receives it this way.
+Delegate to one `nxs:plan-reviewer` subagent. Protocol injection is mandatory: read `review-protocol` (`${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`) once and include its full text in the agent's prompt. Path does not resolve -> find `review-protocol`'s `SKILL.md` inside the plugin before spawning anything; the agent does not review from memory. The agent does not restate the protocol - it receives it this way.
 
 The agent checks the plan's claims against the repository: paths that do not exist, places the plan missed, steps out of order, decisions the executor cannot make alone. `plan-conventions` is orchestrator-side background - read it to scope the review, do not inject it.
 
