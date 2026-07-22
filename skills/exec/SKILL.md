@@ -20,7 +20,7 @@ Example: /nxs:exec docs/nxs/plans/20260711-auth-refactor.md
 ## RESOLVE THE PLAN
 
 - Plan to execute: the argument path if given, otherwise the latest active plan under `docs/nxs/plans/`. If none is found or the choice is ambiguous, ask.
-- Read the plan's **Development approach** (see `plan-conventions`) and branch on it:
+- Read the plan's `## DEVELOPMENT APPROACH` section (see `plan-conventions`) and branch on it:
   - `default` - ordinary implementation; the cycle below applies unchanged.
   - `TDD` - the cycle is per behavior, not per task: one task = one or more short RED -> GREEN -> REFACTOR cycles (see TDD MODE below).
   - `tracer-bullet` / `spike` - execution semantics do not change; follow the plan as is. For a spike, do not commit or clean up without explicit user confirmation.
@@ -99,7 +99,7 @@ After verify, compare what was achieved against the plan's `## ACCEPTANCE CRITER
 
 ## TDD MODE
 
-Active when the plan sets `Development approach: TDD`. Choose one behavior, write one failing test through the public interface, confirm RED, write the minimal code to pass, confirm GREEN, refactor only while green. Checkboxes are checked per completed cycle, not batched at the end. Full cycle discipline and anti-patterns: `plan-conventions` -> `reference/tdd.md`.
+Active when the plan's `## DEVELOPMENT APPROACH` section names TDD. Choose one behavior, write one failing test through the public interface, confirm RED, write the minimal code to pass, confirm GREEN, refactor only while green. Checkboxes are checked per completed cycle, not batched at the end. Full cycle discipline and anti-patterns: `plan-conventions` -> `reference/tdd.md`.
 
 Exec-specific detail:
 
