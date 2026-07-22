@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.2] - 2026-07-22
+
+### Removed
+
+- `review/reference/smell-baseline.md` - the Fowler smell definitions it injected into two lenses are textbook material the model already knows. The simplification lens keeps one line saying the vocabulary applies and that a smell is a candidate, not a violation.
+
+### Changed
+
+- The review flow says less and relies more on what the model brings: 700 lines down to 494 with no change in behavior. Gone are the sections that only stated where other sections live, the tables restating that `must` blocks and `should` does not, the per-lens matrices explaining how each lens differs from the other three, and the focus-area entries that defined ordinary words.
+- What stays is what the model cannot infer about this project: where the standards live, how to find the source artifact, the citation each axis finding carries, and three calls that are easy to get wrong - negative-only assertions, complexity judged against the task, and the ban on demanding a case matrix.
+
 ## [0.9.1] - 2026-07-22
 
 ### Changed
