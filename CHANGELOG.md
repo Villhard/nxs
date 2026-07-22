@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-07-22
+
+### Changed
+
+- `review`, `plancheck`: a finding is now `Issue:` / `Impact:` / `Fix:` - what is wrong, what it costs, what to change. The quoted excerpt is gone; a NIT is a single line and several nits fold into one summary line, so they stop competing with the blocking findings for attention.
+- `review-protocol`: verification is four steps - read the code with its context, confirm it is real, check it is not already handled, check it is not deliberate. Confirmed findings are reported, everything else is discarded rather than downgraded. Replaces the longer evidence checklist that had grown around the same job.
+- `plan-reviewer`: checks the plan against the repository instead of grading its form. It confirms the paths exist, follows the change outward to find the places the plan never mentions, and carries a `Repo:` line with the command it ran. Checkbox counts, title wording, and slicing style are explicitly out of scope.
+- Review lenses no longer restate how they differ from each other; one line replaces the cross-referenced matrix each of them carried.
+- `CONTRIBUTING.md` is now in English, so the whole repo is one language.
+
 ## [0.9.0] - 2026-07-22
 
 Cut the plugin back to its core loop. The workflow is `rnd` / `bug` -> `plan` -> `plancheck` -> `exec` -> `review` and nothing else; everything that was not being used, or that duplicated what the harness already does, is gone. 41 files and ~2980 lines became 22 files and ~1690.
