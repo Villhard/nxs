@@ -33,7 +33,7 @@ Six flat `/nxs:<name>` commands:
 
 Three tiers:
 
-1. Global `~/.claude/CLAUDE.md` - tool-level always-on rules (output language, style, safety). Hand-authored by you, NOT shipped by this plugin (see Setup). The skills rely on it for output style and for the safety rules some of them delegate to it: `commit-conventions` keeps its secret / force-push safety in your global rules, not in the skill.
+1. Global `~/.claude/CLAUDE.md` - tool-level always-on rules (output language, style, safety). Hand-authored by you, NOT shipped by this plugin (see Setup). The skills rely on it for output style and for the safety rules some of them delegate to it: `commit-conventions` states the git gate itself, but leaves secret safety and destructive-op confirmation to your global rules, which fire even when no skill loads.
 2. Command skills (`/nxs:<name>`) - the six commands above. Single-mode; `exec` takes an optional natural-language `no commits`.
 3. Background skills (`user-invocable: false`) - five shared rule sets loaded by relevance, hidden from the `/` menu: `plan-conventions`, `review-protocol`, `verify`, `commit-conventions`, `intake`.
 
@@ -74,7 +74,7 @@ agents/
    claude plugin install nxs@nxs
    ```
 
-2. **Global rules (your own)**. The skills defer output language and style to your global `~/.claude/CLAUDE.md`, and `commit-conventions` delegates secret / force-push safety there. The plugin does not ship a block (plugins cannot write `~/.claude/CLAUDE.md`), so set up your own global conventions. Without them the skills still run, but they lose the delegated secret / force-push protections and fall back to the default output style.
+2. **Global rules (your own)**. The skills defer output language and style to your global `~/.claude/CLAUDE.md`, and `commit-conventions` delegates secret safety and destructive-op confirmation there. The plugin does not ship a block (plugins cannot write `~/.claude/CLAUDE.md`), so set up your own global conventions. Without them the skills still run, but they lose the delegated secret and destructive-op protections and fall back to the default output style.
 
 3. **Optional - permissions**. The skills prefer `rg` / `fd` / `jq`. Allow them in `~/.claude/settings.json` to avoid prompts. Plugins cannot ship permissions.
 

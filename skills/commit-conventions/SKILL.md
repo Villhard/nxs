@@ -5,7 +5,7 @@ user-invocable: false
 
 # COMMIT CONVENTIONS
 
-Load before any `git add` / `git commit` / `git push`. Workflow rules, not a user-invocable command. Destructive-op and secret safety is enforced by the global tier-1 block, not here.
+Load before any `git add` / `git commit` / `git push`. Workflow rules, not a user-invocable command. The gate below says when a git write is allowed; secret safety and destructive-op confirmation are enforced by the global tier-1 block, which fires even when this skill does not load.
 
 ## THE GATE
 

@@ -44,7 +44,7 @@ Where a rule, policy, or term belongs:
 - several agents share it -> one single-source file that the orchestrator reads once and injects verbatim into every agent prompt;
 - exactly one agent needs it -> inline in that agent's file.
 
-Security-critical content (never commit secrets, no force-push, confirm destructive) never goes on tier 3. Auto-load is heuristic and can miss; tier 1 always fires. Tier 3 carries workflow detail only.
+Security-critical content (never commit secrets, confirm destructive) never lives on tier 3 ALONE. Auto-load is heuristic and can miss; tier 1 always fires, so tier 1 has to carry the protection. Tier 3 may still state the workflow gate around it - when a commit is allowed, that a push needs an explicit request - because that is workflow detail, and it is worthless as the only line of defence.
 
 ## WHEN TO ADD SOMETHING NEW
 
