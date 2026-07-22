@@ -14,7 +14,7 @@ An audit for name conflicts and dead terms. No command, argument, path scheme, o
 ### Fixed
 
 - The plan's source-artifact section has one name again: `## SOURCE ARTIFACTS`. `plan-conventions`, its template, and the sample plan called it `Context / source artifacts`, while `/nxs:plan` wrote and `/nxs:plancheck` plus the review spec axis read `## SOURCE ARTIFACTS` - so the section a plan carried was not the one its readers looked for. It is written only when a source artifact exists, which is what `/nxs:plan` already did.
-- `review` and `plancheck` point at the protocol as `${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`. The old relative path resolved against the user's project instead of the plugin, where the file is not, so every lens could answer `protocol missing` instead of reviewing.
+- `review` and `plancheck` point at the protocol as `${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`. The old relative path resolved against the user's project instead of the plugin, where the file is not, so every lens could answer `protocol missing` instead of reviewing. Both orchestrators carry a fallback: the path does not resolve -> find the file inside the plugin before spawning anything, and no lens reviews from memory.
 - `exec` names the plan's `## DEVELOPMENT APPROACH` section instead of a `Development approach: TDD` line no plan ever writes; TDD mode keys off the section.
 - `bug` says it writes no fix and no product code, instead of claiming nothing mutates the repo - the investigation builds probes, adds debug logs, and writes the brief.
 - The tier-3 placement rule matches what `commit-conventions` actually holds: security-critical content never lives on tier 3 alone, but the git gate is workflow detail and belongs there. README no longer says the force-push ban was moved out of the skill.
@@ -32,6 +32,7 @@ An audit for name conflicts and dead terms. No command, argument, path scheme, o
 
 - `rnd` and `bug` are the task and bug entry points, not the "tracked-task" and "tracked-bug" ones - both accept input that carries no tracker key.
 - CONTRIBUTING documents agent frontmatter (`name`, `description`, `tools`), and the repo layout lists `examples/`, `.github/`, `CHANGELOG.md`, and `LICENSE`.
+- The plan archive folder is stated once, in `plan-conventions`; `exec` and the task template point at that rule instead of repeating the path. CONTRIBUTING says why: where an artifact goes after it is written is not a write path, so the `## ARTIFACT` rule does not cover it.
 
 ## [0.10.0] - 2026-07-22
 
