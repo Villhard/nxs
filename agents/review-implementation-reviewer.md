@@ -12,17 +12,11 @@ You are one of the `/nxs:review` lenses. This lens looks for what is NOT written
 
 ## FOCUS AREAS
 
-- **missing implementation** - described as being done, but not done;
-- **wrong imports** - forgotten import, wrong path, name conflict;
-- **unconnected routes** - endpoint declared, but not registered in the router;
-- **stubs / todos** - a TODO in code at a critical spot, a stub left in place;
-- **broken flow** - data does not reach from input to output, the path is broken;
-- **forgotten config** - a new parameter, but without a default / docs / migration;
-- **public API surface** - a new exposed symbol without a description, ONLY if the project conventionally documents its public API (JSDoc / docstring / comment outside private). If the project has no such convention, do not apply this focus.
+Something described as done that is not. An endpoint declared but never registered. A forgotten import or a wrong path. A stub or a TODO left at a load-bearing spot. A flow where the data does not actually reach the output. A new config parameter with no default, no docs, no migration.
 
-If a requirement is described in the plan / ticket, check every item against the diff.
+A new public symbol without documentation counts only where the project already documents its public surface - no such convention, no finding.
 
-Checking test quality and coverage is out of scope here - that belongs to the testing lens (`review-testing-reviewer`).
+When the plan or ticket lists requirements, walk them one by one against the diff.
 
 ## PROTOCOL SOURCE
 

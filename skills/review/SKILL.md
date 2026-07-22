@@ -33,7 +33,7 @@ Resolve to a concrete diff before anything else:
 
 ## REVIEWERS (adaptive selection)
 
-Select the reviewer set proportional to the resolved diff and run only the lenses the diff needs. Each selected reviewer is an isolated subagent. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) once and include its full text in the prompt of every lens you spawn. The lens agents do not restate the protocol - they receive it via this injected prompt. For the quality and simplification lenses, also inject the full text of `reference/smell-baseline.md` - the fixed Fowler smell set those two lenses carry on top of documented standards. Parallel if the harness supports it, sequential fallback.
+Select the reviewer set proportional to the resolved diff and run only the lenses the diff needs. Each selected reviewer is an isolated subagent. Protocol injection is mandatory: read `review-protocol` (`skills/review-protocol/SKILL.md`) once and include its full text in the prompt of every lens you spawn. Parallel if the harness supports it, sequential fallback.
 
 - `nxs:review-quality-reviewer` - any diff touching behavioral code: bugs / regressions / leaks / stale comments + a basic security skim;
 - `nxs:review-implementation-reviewer` - feature / multi-file / public-surface changes: missing implementation / stubs / forgotten config / public API;
@@ -50,19 +50,9 @@ Adaptivity scopes effort - it never skips review of real code with logic. The se
 
 ## STANDARDS AND SPEC AXES
 
-Run in parallel with or after the agents, over the diff against the found sources. Both axes are always active, skipped only when their source is unavailable.
+Two axes run alongside the agents, over the same diff: does it follow the project's written standards, and does it implement its source artifact fully and nothing more. Both are active unless their source is missing.
 
-### Standards axis
-
-Does the diff conform to the project's documented standards. Read only sources that actually exist, do not invent them; the full list of standards sources lives once in `reference/review-policy.md` (STANDARDS AXIS / SOURCES).
-
-Every Standards finding carries a single citation line under `Fix:`: `Standard: <path>#<section> - "<verbatim rule>"`. Without a citation - drop. A standard "from memory" - drop.
-
-### Spec axis
-
-Does the diff implement the source artifact fully and without scope creep. Find the source artifact by the 5-step priority order (stop at the first one found) that lives once in `reference/review-policy.md` (SPEC AXIS / FINDING THE SOURCE ARTIFACT).
-
-If no source artifact is found, report the single line `Spec axis: skipped (no spec/source artifact available)` and continue. Every Spec finding carries a single citation line under `Fix:`: `Spec: <path>#<section> - "<verbatim requirement>"`. Without a citation - drop. Do not invent a spec from memory, git history, branch names, or the dialogue - if a requirement is absent from the found artifact, ask the user or drop.
+Sources, the artifact-finding order, and the citation each axis finding must carry are in `reference/review-policy.md`. An axis finding without its citation is dropped.
 
 ## ORCHESTRATOR PASS
 
@@ -77,18 +67,9 @@ Discarding most candidates is a normal outcome.
 
 The orchestrator may run the `verify` skill on the diff when useful (project checks: tests / lint / format / typecheck / build), but do not duplicate what the reviewers or axes already cover.
 
-## CLASSIFICATION
-
-The orchestrator classifies findings on the same base as the lenses; do not restate the definitions here.
-
-- Base BLOCK / NIT / DROP and tie-breaks - `review-protocol` (the kernel injected into every lens; the orchestrator follows the same base).
-- Review-specific refinements - over-engineering relative to the task, test discipline, and the Standards / Spec axis classification tables - `reference/review-policy.md`, where they live once.
-
 ## OUTPUT
 
-One header line, then confirmed BLOCK findings in full, then every NIT folded into a single line. No preamble, no praise, no narration.
-
-The finding format - `Issue:` / `Impact:` / `Fix:` for a BLOCK, one line for a NIT - lives in `review-protocol` OUTPUT FORMAT. Follow it; this section adds only what is specific to code review.
+One header line, then confirmed BLOCK findings, then every NIT folded into a single line. No preamble, no praise, no narration.
 
 ```
 Source artifact: <path or skipped> | Standards: <sources or skipped>
@@ -103,27 +84,15 @@ Nits (<n>): <file>:<line> <what is wrong>, <file>:<line> <what is wrong>, ...
 Verdict: APPROVE | NEEDS CHANGES
 ```
 
-- an axis BLOCK adds its `Standard:` / `Spec:` citation under `Fix:`;
-- the nits line stays one line however many there are. Expand a NIT only when the user asks;
-- no nits confirmed, no nits line at all;
-- nothing confirmed at all: `Verdict: APPROVE. Findings: none.`
+The nits line stays one line however many there are; expand a NIT only when asked. No nits, no line. Nothing confirmed at all: `Verdict: APPROVE. Findings: none.`
 
 The report should need no follow-up question. A user asking "why is that a problem?" means the finding was written badly.
 
-## RULES
-
-- Read-only - report, never edit code.
-- Every remark names a concrete file and line; the confidence threshold is high - skip a weak issue over a false positive.
-- Anti-hypothetical filter - no "what if someone later".
-- DRY / style suggestions without real benefit - drop.
-- A clean approve is valid.
-
 ## REFERENCE
 
-- `reference/review-policy.md` - the Standards / Spec axis classification tables and citation formats, the classification refinements (superfluous tests, test discipline, relative-complexity over-engineering), and per-reviewer differentiation - layered on the `review-protocol` base.
-- `reference/smell-baseline.md` - the fixed Fowler smell set (Refactoring ch.3) injected into the quality and simplification lenses, with the rules for how a smell enters the base classification.
-
-Reference skills used by name: `review-protocol` (the shared base protocol each selected lens follows - stance, the evidence bar, BLOCK / NIT / DROP, ranking, output format - injected into each lens and followed by the orchestrator too), `verify` (project checks on the diff when useful).
+- `reference/review-policy.md` - where the project keeps its standards, how to find the source artifact, the citation formats, and the classification calls that are easy to get wrong.
+- `review-protocol` - the stance, verification, classification, and output format every lens follows, injected into each one; the orchestrator follows the same base.
+- `verify` - project checks on the diff when useful.
 
 ## NEXT
 
