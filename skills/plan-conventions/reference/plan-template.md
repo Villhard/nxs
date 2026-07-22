@@ -48,8 +48,8 @@ Each task follows this shape:
 ### Task 1: Add password hashing utility
 
 **Files:**
-- Create: src/auth/hash
-- Create: src/auth/hash_test
+- Create: src/auth/hash.go
+- Create: src/auth/hash_test.go
 
 **Test cases:**
 - HashPassword(valid_input) -> returns 60-char bcrypt string
@@ -57,11 +57,13 @@ Each task follows this shape:
 - VerifyPassword(correct_hash, password) -> returns true
 - VerifyPassword(correct_hash, wrong_password) -> returns false
 
-- [ ] create `src/auth/hash` with HashPassword and VerifyPassword functions
+- [ ] create `src/auth/hash.go` with HashPassword and VerifyPassword functions
 - [ ] implement bcrypt-based hashing with configurable cost
 - [ ] write tests from Test cases above (HashPassword)
 - [ ] write tests from Test cases above (VerifyPassword)
 - [ ] run tests - must pass before task 2
+
+Success: a password hashes and verifies through the public functions; an empty password is rejected.
 ```
 
 Rules for the template:
@@ -72,6 +74,7 @@ Rules for the template:
   - Good: `- [ ] write tests for HashPassword (error cases)`
   - Bad: `- [ ] implement HashPassword and write tests`
 - **Verification** - the final checklist item runs tests / lint / typecheck / manual repro / e2e.
+- **Success** - one line after the checklist naming the observable outcome of the task. Forms by task type are below.
 
 ## ACCEPTANCE CRITERIA SCALING
 
