@@ -1,5 +1,5 @@
 ---
-description: Read-only multi-lens review of an implementation plan before execution, especially before auto modes - reports BLOCK / NIT findings without editing the plan. Use after /nxs:plan and before /nxs:exec, and always before /nxs:exec auto.
+description: Read-only review of an implementation plan before execution - reports BLOCK / NIT findings without editing the plan. Use after /nxs:plan and before /nxs:exec.
 argument-hint: "[plan path]"
 ---
 
@@ -7,9 +7,7 @@ argument-hint: "[plan path]"
 
 Read-only review of an implementation plan before execution. Produce BLOCK / NIT / approve findings, then stop. This skill never edits the plan. Self-contained skill. Output language and response style come from global rules, not this file.
 
-Use before `/nxs:exec`, and especially before `/nxs:exec auto`, where the bar is higher.
-
-Example: /nxs:plancheck docs/plans/20260711-auth-refactor.md
+Example: /nxs:plancheck docs/nxs/plans/20260711-auth-refactor.md
 
 ## STANCE (READ-ONLY, HAND OFF)
 
@@ -19,53 +17,30 @@ Example: /nxs:plancheck docs/plans/20260711-auth-refactor.md
 
 ## RESOLVE THE PLAN
 
-- Plan under review: the argument path if given, otherwise the latest active plan under `docs/plans/`. If none is found or the choice is ambiguous, ask.
+- Plan under review: the argument path if given, otherwise the latest active plan under `docs/nxs/plans/`. If none is found or the choice is ambiguous, ask.
 - Source artifact for the scope lens: the plan's `## SOURCE ARTIFACTS` section (brief, root-cause brief, tracker key / URL). If no source artifact exists, the scope lens is skipped with a stated reason.
 
-## LENSES
+## REVIEW
 
-Up to four independent read-only subagents, run proportional to the plan. Each lens carries its `plan-conventions` criteria embedded in its own FOCUS AREAS - `plan-conventions` is orchestrator-side background (what you read to scope the review), not a text injected into the agents. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) and `reference/plan-protocol-addendum.md` once each, and include the full text of both in the prompt of every plan lens you spawn. The lens agents do not restate the protocol - they receive it via these injected texts.
+Delegate the review to one `nxs:plan-reviewer` subagent. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) once and include its full text in the agent's prompt. The agent does not restate the protocol - it receives it this way.
 
-- `nxs:plan-scope-reviewer` - Spec/Scope: the plan against its source artifact - coverage of acceptance criteria, no scope creep, no invented work.
-- `nxs:plan-structure-reviewer` - Decomposition: task sizing, vertical-slice slicing, dependency sequencing, and per-task well-formedness (title, Files block, checklist, success criteria, final verification step).
-- `nxs:plan-testing-reviewer` - Verification: presence of test items, behavior-level test cases on the public interface, and TDD-loop discipline where the plan declares TDD.
-- `nxs:plan-safety-reviewer` - Risk: dangerous or irreversible operations, reversibility, and auto-execution safety.
+The agent covers four lenses in one pass - scope, structure, testing, risk - and skips a lens whose precondition is absent, with a one-line reason. `plan-conventions` is orchestrator-side background: read it to scope the review, do not inject it.
 
-Adaptivity: run the lenses proportional to the plan. A trivial plan can be a single orchestrator pass instead of four subagents; a large or risky plan warrants all four. A lens whose precondition is absent (no source artifact, spike approach, no dangerous ops and not auto-targeted) is skipped with a one-line reason, not silently dropped.
+A trivial plan does not need the agent at all - do one direct pass yourself and report.
 
-## AUTO-MODE BAR
-
-If the plan is headed for `/nxs:exec auto`:
-
-- open `[NEEDS CLARIFICATION]` markers in the plan are a BLOCK - a plan with open markers is not ready for unattended execution;
-- the safety lens reviews especially strictly.
+Open `[NEEDS CLARIFICATION]` markers are a BLOCK: a plan with open markers is not ready for execution.
 
 ## AGGREGATE
 
-- Collect per-lens findings; dedup repeats across lenses, keeping the most specific.
-- Classify each as BLOCK / NIT per `review-protocol`; apply its pre-emit check (quote a plan excerpt, drop what you cannot quote), high-confidence threshold, anti-speculation filter, and no numeric cap.
+- Classify each finding as BLOCK / NIT per `review-protocol`; apply its pre-emit check (quote a plan excerpt, drop what you cannot quote), high-confidence threshold, anti-speculation filter, and no numeric cap.
 - Rank by impact, strongest first.
-- overall: NEEDS CHANGES if any active lens has a BLOCK; APPROVE otherwise. A skipped lens does not affect overall.
+- overall: NEEDS CHANGES on any BLOCK; APPROVE otherwise. A skipped lens does not affect overall.
 
 ## OUTPUT
 
-Findings first, to chat. No file is written by default.
-Wording of every finding follows the plain-wording rule of review-protocol.
+Findings to chat, in the agent's output format. No file is written by default. Wording of every finding follows the plain-wording rule of review-protocol.
 
-```
-Plan review: <plan-file-path>
-Lenses: scope <active|skipped: reason> | structure active | testing <active|skipped: reason> | safety <active|skipped: reason>
-
-Blocking issues:
-- <BLOCK> Task <N> (<lens>): <issue> - <required change>
-
-Recommended changes:
-- <NIT> Task <N> (<lens>): <issue> - <required change>
-
-Overall: APPROVE | NEEDS CHANGES
-```
-
-A clean approve with no findings is valid. Only on explicit user request, save the result by appending a `## PLAN REVIEW NOTES` section to the plan file - otherwise the plan is left untouched.
+Only on explicit user request, save the result by appending a `## PLAN REVIEW NOTES` section to the plan file - otherwise the plan is left untouched.
 
 ## RULES
 
@@ -76,4 +51,4 @@ A clean approve with no findings is valid. Only on explicit user request, save t
 
 ## NEXT
 
-Plan clean -> `/nxs:exec` (or `/nxs:exec auto`) to implement. Findings to fix -> `/nxs:plan` to revise the plan, then re-review.
+Plan clean -> `/nxs:exec` to implement. Findings to fix -> `/nxs:plan` to revise the plan, then re-review.

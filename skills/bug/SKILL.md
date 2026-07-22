@@ -14,7 +14,7 @@ Example: /nxs:bug PROJ-4213
 ## STANCE (READ-ONLY INVESTIGATION)
 
 - /nxs:bug confirms the root cause with reproducible evidence. It does not write the fix.
-- The read-only investigation may be delegated to the `nxs:diagnose-investigator` subagent: it runs the diagnosis loop and 5-Why read-only and returns the evidence, hypotheses, and confirmed root cause to the main context, which then writes the brief and routes the fix. The delegation prompt must include the full text of this skill's `## DIAGNOSIS LOOP`, `## FIVE-WHY`, `## STOP CONDITIONS`, and `## RULES` sections (injection, not restatement from memory).
+- The investigation runs in the main context: you read code and logs, run repro and existing tests, and build minimal probes. Nothing here mutates the repo.
 - No fix, patch, or code change here. No exceptions. The fix goes through `/nxs:plan` (fix plan) and `/nxs:exec` (execution).
 - No solution before the root cause is confirmed. Do not narrow to the first plausible explanation - stay skeptical.
 
@@ -103,10 +103,10 @@ Enabled automatically when key evidence is unavailable to the agent, or on expli
 Write a root-cause brief:
 
 ```
-docs/briefs/YYYYMMDD-<slug>-root-cause.md
+docs/nxs/briefs/YYYYMMDD-<slug>-root-cause.md
 ```
 
-When intake extracted a tracker identifier, include it in the name - `docs/briefs/YYYYMMDD-<KEY>-<slug>-root-cause.md` - so the brief stays navigable by the key, as the `intake` contract promises.
+When intake extracted a tracker identifier, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-root-cause.md` - so the brief stays navigable by the key, as the `intake` contract promises.
 
 It captures: symptom; feedback loop / repro method; minimized repro; evidence; ranked hypotheses; tested probes; 5-Why chain; confirmed root cause; assumptions; fix direction; regression test idea; verification plan.
 
@@ -121,4 +121,4 @@ It captures: symptom; feedback loop / repro method; minimized repro; evidence; r
 
 ## NEXT
 
-Root cause confirmed -> `/nxs:plan` for the fix plan, then `/nxs:exec` to implement. For a plain-language statement of the cause first -> `/nxs:explain`.
+Root cause confirmed -> `/nxs:plan` for the fix plan, then `/nxs:exec` to implement.

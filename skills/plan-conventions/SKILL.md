@@ -34,13 +34,13 @@ Required sections, in order:
 
 - **Overview** - what the plan does and why.
 - **Context / source artifacts** - the brief, ticket, or diagnosis this plan derives from, so review can trace scope.
-- **ACCEPTANCE CRITERIA** - verifiable readiness criteria for the whole plan, right after Overview. Separate from per-task verification: task verification checks a step, AC checks the plan as a whole. `/nxs:exec` auto checks against AC, not only checkboxes.
+- **ACCEPTANCE CRITERIA** - verifiable readiness criteria for the whole plan, right after Overview. Separate from per-task verification: task verification checks a step, AC checks the plan as a whole. `/nxs:exec` checks against AC, not only checkboxes.
 - **DEVELOPMENT APPROACH** - one line, right after Acceptance Criteria (see above).
 - **CONVENTIONS** - optional; the rules and shared steps every task in the plan follows: code style and naming for this work, a procedure repeated per task, standing preferences the user stated for this effort. Only what applies to every task belongs here - detail specific to one task stays in that task. No such rules, no section. `/nxs:exec` passes this section to every worker, so what is missing here does not reach the code.
 - **Implementation tasks** - each task well-formed (see below).
 - **COMPLEXITY TRACKING** - only when the plan deviates from these conventions (see below); no deviations, no section.
 
-Full skeleton and scaling of Acceptance Criteria: `reference/plan-template.md`. Default location: `docs/plans/yyyymmdd-<task-name>.md`; move to `docs/plans/completed/` after completion, separately, on explicit user confirmation.
+Full skeleton and scaling of Acceptance Criteria: `reference/plan-template.md`. Default location: `docs/nxs/plans/yyyymmdd-<task-name>.md`; move to `docs/nxs/plans/completed/` after completion, separately, on explicit user confirmation.
 
 ## PER-TASK WELL-FORMEDNESS
 
@@ -73,8 +73,8 @@ An open decision is marked in the artifact itself instead of a plausible guess:
 ```
 
 - Mark only if the answer changes the decision; do not mark trivia.
-- A marker resolved in conversation is edited out of the file in the same turn - a stale marker causes a false auto block.
-- A plan with open markers is valid but not ready for auto execution: `/nxs:plancheck` flags open markers as BLOCK for auto modes, and `/nxs:exec` auto runs `rg "NEEDS CLARIFICATION" <plan>` before starting.
+- A marker resolved in conversation is edited out of the file in the same turn - a stale marker causes a false block.
+- A plan with open markers is valid but not ready for execution: `/nxs:plancheck` flags open markers as BLOCK, and `/nxs:exec` runs `rg "NEEDS CLARIFICATION" <plan>` before starting.
 
 ## TDD LOOP (essence)
 

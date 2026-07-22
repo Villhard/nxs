@@ -1,59 +1,28 @@
 ---
-description: Intake a task that carries an identifier - a tracker key/URL or a pasted ticket - extract structure, separate facts from assumptions, classify task vs bug, and route. The identifier also names the downstream plan / brief for navigation. Background knowledge, not a user command.
+description: Intake a task that carries an identifier - a tracker key/URL or a pasted ticket - extract structure, separate facts from assumptions, classify task vs bug, and route. The identifier also names the downstream plan / brief. Background knowledge, not a user command.
 user-invocable: false
 ---
 
 # TASK INTAKE
 
-Load when a task carries an identifier (a tracker key or URL, e.g. `PROJ-1234`) or comes as a pasted ticket. Background knowledge, not a user-invocable command. Consumed by `/nxs:rnd` (task entry point), `/nxs:bug` (bug entry point), and `/nxs:epic` (foggy-effort entry point): when any of them receives an identified task or a pasted ticket, run this intake first, then hand control back to the flow. The extracted identifier also names the downstream plan / brief so they stay navigable by it. For `/nxs:epic` the identifier names the epic map only - an epic is a higher abstraction than its tasks, so the key does not flow down to the briefs / plans those tasks spawn; each is named by its own key, if any.
+Load when a task carries a tracker key or URL (e.g. `PROJ-1234`) or comes as a pasted ticket. Background knowledge, not a user-invocable command. Consumed by `/nxs:rnd` and `/nxs:bug`: run this first, then hand control back to the flow. The extracted identifier also names the downstream plan / brief so they stay navigable by it.
 
-## INPUT DETECTION
+## READ THE TICKET
 
-Recognize three input shapes:
+- Key or URL: read the ticket through a tracker API / integration if one is available. If not, ask the user to paste the ticket text.
+- Pasted text: work from it directly.
 
-- Identifier key - a project key plus a number, e.g. `PROJ-1234`.
-- Tracker URL - a link to a ticket in an issue tracker.
-- Pasted ticket text - the ticket body pasted directly, or any task / bug description.
+Do not invent the ticket's content from the key. If it cannot be read, say so, ask for the text, and continue from what is pasted.
 
-What to do per shape:
+## EXTRACT
 
-- Key or URL: if a tracker API / integration is available, read the ticket through it. If none is available, ask the user to paste the ticket text.
-- Pasted text: work from it directly, no fetch needed.
+From the ticket pull: the problem in one sentence; the expected behavior and context; acceptance criteria; type (task or bug); links and dependencies; comments and attachments; the identifier.
 
-Do not invent the ticket's content from the key. If the ticket cannot be read, tell the user it cannot be read, ask for the text to be pasted, and continue from the pasted text.
-
-## STRUCTURE EXTRACTION
-
-From the ticket (or pasted text) pull:
-
-- title / problem - what needs to be solved, in one sentence;
-- description - the expected behavior and context;
-- acceptance criteria - measurable completion conditions;
-- type - task or bug (see below);
-- priority - only if stated; otherwise treat it as an assumption or unknown, never as a fact;
-- links - related tickets, dependencies, references;
-- comments and attachments - read them if present;
-- identifier - the key / id used to name the downstream plan / brief, if any.
+Priority counts as a fact only when the ticket states it.
 
 ## FACTS VS ASSUMPTIONS
 
-Keep the two distinct; never let an assumption pass as a fact.
-
-Facts - what the ticket or the code states directly:
-
-- the described expected behavior;
-- a stack trace from the ticket;
-- reporter comments;
-- acceptance criteria.
-
-Assumptions - what you infer but the ticket does not confirm:
-
-- implied behavior that is not stated explicitly;
-- a guess at the root cause before confirmation;
-- a guess at priority / scope;
-- a guess at consumers.
-
-Mark every assumption explicitly. Do not invent facts.
+Facts are what the ticket or the code states directly. Assumptions are what you infer - implied behavior, a guess at the root cause, scope, or consumers. Mark every assumption explicitly and never let one pass as a fact.
 
 ## TASK VS BUG
 
@@ -62,26 +31,14 @@ Mark every assumption explicitly. Do not invent facts.
 | task | new functionality, refactoring, migration, improvement | `/nxs:rnd` |
 | bug | broken behavior, regression, error | `/nxs:bug` |
 
-If the type is unclear, ask the user rather than guessing.
+If the type is unclear, ask rather than guess.
 
-## ACCEPTANCE CRITERIA, CONSTRAINTS, UNKNOWNS
+## UNKNOWNS
 
-- Acceptance criteria - if not specified, record them under unknowns and either ask the user or formulate candidates for confirmation. Do not start on a plan without clear AC when the task is nontrivial.
-- Constraints - what must not be broken: compatibility, performance budget, deadline, dependencies. Call these out separately.
-- Unknowns - open questions that need clarification, including missing acceptance criteria. Unknowns rank above the plan; close them with a question to the user (or an explorer) before planning.
+- Acceptance criteria not specified -> record as unknowns and either ask or formulate candidates for confirmation. Do not start planning a nontrivial task without clear AC.
+- Constraints - what must not break (compatibility, performance budget, deadline, dependencies) - are called out separately.
+- Unknowns rank above the plan; close them with a question before planning.
 
 ## OUTPUT
 
-Emit a structured summary, then hand control to the routed flow:
-
-- problem - one sentence;
-- identifier - the key / id used to name the plan / brief, if any;
-- acceptance criteria - a list, or unknowns if absent;
-- facts - what is known for certain;
-- assumptions - what was inferred, each marked;
-- constraints - what must not break;
-- unknowns - open questions;
-- type - task or bug;
-- next step - `/nxs:rnd` for a task, `/nxs:bug` for a bug.
-
-Do not try to plan the solution during intake, and do not treat guesses as facts. Surface the structure and the open questions, then route.
+Emit a structured summary - problem, identifier, acceptance criteria (or unknowns), facts, assumptions, constraints, unknowns, type, next step - then hand control to the routed flow. Do not plan the solution during intake.
