@@ -11,7 +11,7 @@ Accepted input: tracker key / URL, pasted bug text, observed behavior, stack tra
 
 Example: /nxs:bug PROJ-4213
 
-## STANCE (READ-ONLY INVESTIGATION)
+## STANCE (INVESTIGATE, DO NOT FIX)
 
 - /nxs:bug confirms the root cause with reproducible evidence. It does not write the fix.
 - The investigation runs in the main context: you read code and logs, run repro and existing tests, and build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out in Cleanup; the brief is the only file that stays.

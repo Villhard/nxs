@@ -64,8 +64,8 @@ skills/
   <background-name>/   # background skill (user-invocable: false)
 agents/
   <name>.md            # subagent (worker + read-only lenses)
-examples/
-  plan-sample.md       # a filled plan and brief, as the skills write them
+examples/              # filled sample artifacts, as the skills write them
+  plan-sample.md
   brief-sample.md
 ```
 
