@@ -13,7 +13,7 @@ An audit for name conflicts and dead terms. No command, argument, path scheme, o
 
 ### Fixed
 
-- The plan's source-artifact section has one name again: `## SOURCE ARTIFACTS`. `plan-conventions`, its template, and the sample plan called it `Context / source artifacts`, while `/nxs:plan` wrote and `/nxs:plancheck` plus the review spec axis read `## SOURCE ARTIFACTS` - so the section a plan carried was not the one its readers looked for.
+- The plan's source-artifact section has one name again: `## SOURCE ARTIFACTS`. `plan-conventions`, its template, and the sample plan called it `Context / source artifacts`, while `/nxs:plan` wrote and `/nxs:plancheck` plus the review spec axis read `## SOURCE ARTIFACTS` - so the section a plan carried was not the one its readers looked for. It is written only when a source artifact exists, which is what `/nxs:plan` already did.
 - `review` and `plancheck` point at the protocol as `${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`. The old relative path resolved against the user's project instead of the plugin, where the file is not, so every lens could answer `protocol missing` instead of reviewing.
 - `exec` names the plan's `## DEVELOPMENT APPROACH` section instead of a `Development approach: TDD` line no plan ever writes; TDD mode keys off the section.
 - `bug` says it writes no fix and no product code, instead of claiming nothing mutates the repo - the investigation builds probes, adds debug logs, and writes the brief.
