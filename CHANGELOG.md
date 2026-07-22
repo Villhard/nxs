@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1] - 2026-07-22
+
+An audit for name conflicts and dead terms. No command, argument, path scheme, or gate changed; the contract is where it always was, and this release makes the files agree with it.
+
+### Fixed
+
+- The plan's source-artifact section has one name again: `## SOURCE ARTIFACTS`. `plan-conventions`, its template, and the sample plan called it `Context / source artifacts`, while `/nxs:plan` wrote and `/nxs:plancheck` plus the review spec axis read `## SOURCE ARTIFACTS` - so the section a plan carried was not the one its readers looked for.
+- `review` and `plancheck` point at the protocol as `${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`. The old relative path resolved against the user's project instead of the plugin, where the file is not, so every lens could answer `protocol missing` instead of reviewing.
+- `exec` names the plan's `## DEVELOPMENT APPROACH` section instead of a `Development approach: TDD` line no plan ever writes; TDD mode keys off the section.
+- `bug` says it writes no fix and no product code, instead of claiming nothing mutates the repo - the investigation builds probes, adds debug logs, and writes the brief.
+- The tier-3 placement rule matches what `commit-conventions` actually holds: security-critical content never lives on tier 3 alone, but the git gate is workflow detail and belongs there. README no longer says the force-push ban was moved out of the skill.
+- `plan-conventions` drops its second copy of the plan path (`yyyymmdd-<task-name>.md` against `YYYYMMDD-<slug>.md` everywhere else). The path lives only in the `## ARTIFACT` section of `/nxs:plan`.
+- Section names and order match the template: `Implementation`, and acceptance criteria are no longer described as "right after Overview" when source artifacts sit between them.
+- The strict task template carries the `Success:` line the conventions require and the sample plan writes, and its example file paths have extensions.
+- `intake` lists `/nxs:plan` as a consumer, which it has been all along.
+
+### Removed
+
+- `examples/epic-sample.md` and `examples/adr-sample.md`. `epic` went in 0.9.0 and its sample still pointed at `decision-log` and the pre-0.9.0 `docs/plans/` path; no command has written an ADR since `decision-log` went.
+- The output block `plan-reviewer` duplicated from `plancheck` byte for byte. The agent now follows the injected protocol like the four review lenses, so its verdict is `CLEAN | FINDINGS` and `plancheck` alone owns the user-facing `APPROVE | NEEDS CHANGES` report.
+
+### Changed
+
+- `rnd` and `bug` are the task and bug entry points, not the "tracked-task" and "tracked-bug" ones - both accept input that carries no tracker key.
+- CONTRIBUTING documents agent frontmatter (`name`, `description`, `tools`), and the repo layout lists `examples/`, `.github/`, `CHANGELOG.md`, and `LICENSE`.
+
 ## [0.10.0] - 2026-07-22
 
 ### Changed
