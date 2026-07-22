@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-07-22
+
+Cut the plugin back to its core loop. The workflow is `rnd` / `bug` -> `plan` -> `plancheck` -> `exec` -> `review` and nothing else; everything that was not being used, or that duplicated what the harness already does, is gone. 41 files and ~2980 lines became 22 files and ~1690.
+
+Breaking: commands were removed and artifact paths moved. `0.x` is initial development - the public contract is not stabilized, so a breaking change is a minor bump. See CONTRIBUTING / VERSIONING.
+
+### Removed
+
+- Commands `dialectic`, `wrong`, `epic`, `explain`, `clean`, `recommit`, `techdoc`, `userdoc`.
+- Background skills `stress-test` (its four steps are inlined in `rnd`), `doc-draft`, `decision-log` (a significant decision is now recorded in the plan or brief itself).
+- Agents `explorer` (the built-in Explore agent is equivalent) and `diagnose-investigator` (`bug` investigates in the main context).
+- `exec`: the default / auto mode split. `exec` now always runs the plan to the end with the same gates; a single task is an ordinary prompt, not a mode. The `no commits` instruction is unchanged.
+
+### Changed
+
+- `plancheck`: the four `plan-*-reviewer` lens agents and the plan protocol addendum collapse into one `plan-reviewer` agent that covers scope, structure, testing, and risk in a single pass.
+- `exec`: `reference/auto.md`, `reference/worker-mode.md`, and `reference/tdd.md` fold into `SKILL.md`, which no longer states the worker model three times.
+- `commit-conventions`: `reference/git-conventions.md` folds into `SKILL.md`; the mode matrix collapses to one gate.
+- `intake`: trimmed to reading a tracker ticket and routing to `rnd` or `bug`.
+- Artifacts moved from `docs/plans/` and `docs/briefs/` to `docs/nxs/plans/` and `docs/nxs/briefs/`.
+- `CONTRIBUTING.md`: dropped the ARTIFACT PATHS table that duplicated each skill's own path line.
+
 ## [0.8.0] - 2026-07-22
 
 ### Added
