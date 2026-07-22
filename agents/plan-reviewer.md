@@ -56,20 +56,6 @@ The plan quote is not mandatory: the most valuable findings are about what the p
 
 ## OUTPUT
 
-The protocol's three questions, with the repository evidence added.
+Follow the injected protocol's OUTPUT FORMAT, with header `Plan review: <plan-file-path>`, plus the mandatory `Repo:` line inside every finding. A finding is anchored to the task it belongs to - `BLOCK Task <N>`, not a file and line.
 
-```
-Plan review: <plan-file-path>
-
-BLOCK Task <N>
-  Issue: <what the plan gets wrong or never mentions>
-  Repo: <command -> result>
-  Impact: <what the executor does, and what breaks when they do it>
-  Fix: <what to add or change in the plan>
-
-Nits (<n>): Task <N> <what is wrong>, Task <N> <what is wrong>, ...
-
-Verdict: APPROVE | NEEDS CHANGES
-```
-
-No nits confirmed, no nits line. Nothing confirmed at all: `Verdict: APPROVE. Findings: none.` A plan does not have to be perfect to be executable.
+A plan does not have to be perfect to be executable.
