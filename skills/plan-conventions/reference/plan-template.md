@@ -13,7 +13,7 @@ Loaded on demand from `plan-conventions` when authoring or checking the concrete
 
 ## Context / source artifacts
 
-<links or paths to the brief / ticket / diagnosis this plan derives from>
+<links or paths to the brief / root-cause brief / ticket this plan derives from>
 
 ## ACCEPTANCE CRITERIA
 
