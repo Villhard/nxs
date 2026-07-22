@@ -43,8 +43,8 @@ Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`; the on
 
 Working artifacts live under `docs/nxs/` in the current repository:
 
-- `/nxs:rnd` -> `docs/nxs/briefs/YYYYMMDD-<slug>.md`
-- `/nxs:bug` -> `docs/nxs/briefs/YYYYMMDD-<slug>-root-cause.md`
+- `/nxs:rnd` -> `docs/nxs/briefs/YYYYMMDD-<slug>-rnd.md`
+- `/nxs:bug` -> `docs/nxs/briefs/YYYYMMDD-<slug>-bug.md`
 - `/nxs:plan` -> `docs/nxs/plans/YYYYMMDD-<slug>.md`, archived by hand to `docs/nxs/plans/completed/`
 - `/nxs:plancheck`, `/nxs:review` -> chat only
 - `/nxs:exec` -> code changes plus updated plan checkboxes

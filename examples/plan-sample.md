@@ -9,7 +9,7 @@ keeps today's behavior for the first page.
 
 ## Context / source artifacts
 
-- Brief: `docs/briefs/YYYYMMDD-items-pagination.md`
+- Brief: `docs/nxs/briefs/YYYYMMDD-items-pagination-rnd.md`
 - Tracker: PROJ-123
 
 ## ACCEPTANCE CRITERIA

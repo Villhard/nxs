@@ -60,10 +60,10 @@ Pressure-test the approach EXPLORE recommended before writing it into the brief.
 Write a brief:
 
 ```
-docs/nxs/briefs/YYYYMMDD-<slug>.md
+docs/nxs/briefs/YYYYMMDD-<slug>-rnd.md
 ```
 
-When intake extracted a tracker identifier, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>.md` - so the brief stays navigable by the key, as the `intake` contract promises.
+When intake extracted a tracker identifier, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-rnd.md` - so the brief stays navigable by the key, as the `intake` contract promises.
 
 Keep the section skeleton stable - `/nxs:plan` consumes the brief by these headings:
 

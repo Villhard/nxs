@@ -103,10 +103,10 @@ Enabled automatically when key evidence is unavailable to the agent, or on expli
 Write a root-cause brief:
 
 ```
-docs/nxs/briefs/YYYYMMDD-<slug>-root-cause.md
+docs/nxs/briefs/YYYYMMDD-<slug>-bug.md
 ```
 
-When intake extracted a tracker identifier, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-root-cause.md` - so the brief stays navigable by the key, as the `intake` contract promises.
+When intake extracted a tracker identifier, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-bug.md` - so the brief stays navigable by the key, as the `intake` contract promises.
 
 It captures: symptom; feedback loop / repro method; minimized repro; evidence; ranked hypotheses; tested probes; 5-Why chain; confirmed root cause; assumptions; fix direction; regression test idea; verification plan.
 
