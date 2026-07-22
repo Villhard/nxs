@@ -16,7 +16,9 @@ nxs/
     <background-name>/   # tier 3, user-invocable: false
   agents/
     <agent-name>.md      # self-contained subagent
-  README.md CONTRIBUTING.md
+  examples/              # filled sample artifacts (plan, brief)
+  .github/               # CI, house-style linter, PR template
+  README.md CONTRIBUTING.md CHANGELOG.md LICENSE
 ```
 
 Tier 1 (global `~/.claude/CLAUDE.md`) and `settings.json` stay out of this repo - you write those yourself.
