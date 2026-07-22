@@ -116,7 +116,7 @@ If scope changes while executing:
 - mark blockers with the prefix `⚠️`;
 - the final state of the plan must match the work actually done.
 
-Task completion is tracked by flipping checkboxes `- [ ]` -> `- [x]` inside the plan file; `/nxs:exec` updates them after a task is done. Moving the plan to `docs/nxs/plans/completed/` happens separately, after explicit user confirmation - not automatically on the last checkbox.
+Task completion is tracked by flipping checkboxes `- [ ]` -> `- [x]` inside the plan file; `/nxs:exec` updates them after a task is done. Archiving the plan happens separately, after explicit user confirmation - not automatically on the last checkbox.
 
 ## COMPLEXITY TRACKING TABLE
 

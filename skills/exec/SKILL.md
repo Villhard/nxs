@@ -15,7 +15,7 @@ Example: /nxs:exec docs/nxs/plans/20260711-auth-refactor.md
 - Minimal diff for the task, no speculative abstractions - the simplest solution that works. Out-of-scope findings become follow-ups, not edits.
 - The orchestrator does not write code itself. For every task it launches exactly one `nxs:worker` subagent (single writer, sequential); reviewer subagents stay read-only.
 - A natural-language **no commits** instruction skips git and changes nothing else about the cycle.
-- Moving a plan to `docs/nxs/plans/completed/` happens only on explicit user confirmation, never automatically.
+- Archiving a finished plan happens only on explicit user confirmation, never automatically; `plan-conventions` says where it goes.
 
 ## RESOLVE THE PLAN
 
@@ -113,4 +113,4 @@ Exec-specific detail:
 
 ## NEXT
 
-Plan executed -> `/nxs:review` for a standalone review of the whole branch if you want one. Archive a finished plan by moving it to `docs/nxs/plans/completed/` on your confirmation.
+Plan executed -> `/nxs:review` for a standalone review of the whole branch if you want one. Archive a finished plan on your confirmation.
