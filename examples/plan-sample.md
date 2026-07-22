@@ -81,3 +81,5 @@ Success: the query returns a bounded, stably ordered page plus an accurate total
 - [ ] map InvalidPageParams to a 400 response
 - [ ] update / parametrize handler tests for the cases above
 - [ ] run tests + lint - must pass; check against ACCEPTANCE CRITERIA
+
+Success: GET /items returns a bounded page with total, limit, and offset, and answers 400 on invalid params.
