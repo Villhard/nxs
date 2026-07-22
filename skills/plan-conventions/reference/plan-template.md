@@ -11,7 +11,7 @@ Loaded on demand from `plan-conventions` when authoring or checking the concrete
 
 <what this plan does and why, in a few lines>
 
-## Context / source artifacts
+## SOURCE ARTIFACTS
 
 <links or paths to the brief / root-cause brief / ticket this plan derives from>
 

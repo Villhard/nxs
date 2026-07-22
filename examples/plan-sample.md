@@ -7,7 +7,7 @@ on large accounts. Add offset / limit pagination with a stable sort and a total 
 clients can page through results. Small, backward-compatible change: no pagination params
 keeps today's behavior for the first page.
 
-## Context / source artifacts
+## SOURCE ARTIFACTS
 
 - Brief: `docs/nxs/briefs/YYYYMMDD-items-pagination-rnd.md`
 - Tracker: PROJ-123
