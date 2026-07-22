@@ -1,11 +1,11 @@
 ---
-description: Think a task through to a plan-ready brief - the tracked-task entry point. Use to shape a fuzzy task, feature idea, or open question before planning.
+description: Think a task through to a plan-ready brief - the task entry point. Use to shape a fuzzy task, feature idea, or open question before planning.
 argument-hint: "[task | tracker key | question]"
 ---
 
 # /nxs:rnd
 
-Think a task through to a plan-ready brief and stop. The tracked-task entry point. Self-contained skill. Output language and response style come from global rules, not this file.
+Think a task through to a plan-ready brief and stop. The task entry point. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Accepted input: a task description, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work with the current session context.
 

@@ -5,7 +5,7 @@ user-invocable: false
 
 # TASK INTAKE
 
-Load when a task carries a tracker key or URL (e.g. `PROJ-1234`) or comes as a pasted ticket. Background knowledge, not a user-invocable command. Consumed by `/nxs:rnd` and `/nxs:bug`: run this first, then hand control back to the flow. The extracted identifier also names the downstream plan / brief so they stay navigable by it.
+Load when a task carries a tracker key or URL (e.g. `PROJ-1234`) or comes as a pasted ticket. Background knowledge, not a user-invocable command. Consumed by `/nxs:rnd`, `/nxs:bug`, and `/nxs:plan`: run this first, then hand control back to the flow. The extracted identifier also names the downstream plan / brief so they stay navigable by it.
 
 ## READ THE TICKET
 

@@ -1,5 +1,5 @@
 ---
-description: Investigate a bug to a confirmed root cause - the tracked-bug entry point. Use when handed a bug report, a tracker bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
+description: Investigate a bug to a confirmed root cause - the bug entry point. Use when handed a bug report, a tracker bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
 argument-hint: "[tracker key | bug description | path]"
 ---
 

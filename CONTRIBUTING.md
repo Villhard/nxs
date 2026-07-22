@@ -90,6 +90,18 @@ user-invocable: false
 ---
 ```
 
+### AGENT FRONTMATTER
+
+```yaml
+---
+name: <agent file name, without .md - this is what a skill spawns as nxs:<name>>
+description: <the role in one line, plus which command uses it>
+tools: Read, Grep, Glob
+---
+```
+
+Unlike a skill, an agent DOES carry `name` - a skill spawns it by that name, so it is part of the contract. `tools` is the read-only enforcement: every reviewer is limited to `Read, Grep, Glob`, and only `worker` gets write and Bash.
+
 ## ARTIFACT PATHS
 
 Each skill that writes an artifact states its own path in its `## ARTIFACT` section, and that is the only place the path lives. There is deliberately no shared table here - the old one duplicated those lines and drifted out of sync with them. README carries the human-facing overview.

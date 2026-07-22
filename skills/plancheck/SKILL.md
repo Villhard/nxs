@@ -18,7 +18,7 @@ Example: /nxs:plancheck docs/nxs/plans/20260711-auth-refactor.md
 ## RESOLVE THE PLAN
 
 - Plan under review: the argument path if given, otherwise the latest active plan under `docs/nxs/plans/`. If none is found or the choice is ambiguous, ask.
-- Source artifact for the scope lens: the plan's `## SOURCE ARTIFACTS` section (brief, root-cause brief, tracker key / URL). If no source artifact exists, the scope lens is skipped with a stated reason.
+- Source artifact for the scope check: the plan's `## SOURCE ARTIFACTS` section (brief, root-cause brief, tracker key / URL). If no source artifact exists, the scope check is skipped with a stated reason.
 
 ## REVIEW
 
