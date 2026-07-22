@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-07-22
+
+### Changed
+
+- Brief files are named after the command that writes them: `rnd` -> `docs/nxs/briefs/YYYYMMDD-<slug>-rnd.md`, `bug` -> `docs/nxs/briefs/YYYYMMDD-<slug>-bug.md` (the tracker-key forms gain the same suffix). Replaces a scheme where `bug` tagged its file by content (`-root-cause`) and `rnd` tagged nothing at all, so the file name now says which command produced it.
+- The suffix is a category tag, not a rename of the artifact: in prose the `bug` output is still a "root-cause brief", and `## SOURCE ARTIFACTS` still carries a `Root-cause brief:` line. Nothing reads the suffix - briefs are resolved by path - so files written under the old scheme keep working.
+- `plan-conventions`: the source-artifact line names the "root-cause brief" that `bug` writes, instead of calling it a "diagnosis". The artifact had two names across the repo; `plan` and `plancheck` already used this one.
+
 ## [0.9.2] - 2026-07-22
 
 ### Removed
