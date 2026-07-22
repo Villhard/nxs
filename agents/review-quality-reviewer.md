@@ -51,10 +51,8 @@ Follow the review protocol and the smell baseline (`reference/smell-baseline.md`
 
 Follow the injected protocol's OUTPUT FORMAT, with header `Quality review: <scope>`.
 
-## DIFFERENTIATION
+A bug is a bug when you can name the input that triggers it. Cannot name one, drop it: "might fail under concurrency" without the interleaving is noise.
 
-This lens finds bugs in code that IS written. It does not cover:
+## NOT YOUR LENS
 
-- what is NOT written or not connected -> `review-implementation-reviewer`;
-- what is NOT covered by tests or poorly verified -> `review-testing-reviewer`;
-- structural excess, over-engineering, or architecture -> `review-simplification-reviewer`.
+Missing or unconnected code, test quality, and structural excess belong to the other three lenses. Seeing one of those, ignore it.

@@ -22,32 +22,52 @@ Example: /nxs:plancheck docs/nxs/plans/20260711-auth-refactor.md
 
 ## REVIEW
 
-Delegate the review to one `nxs:plan-reviewer` subagent. Protocol injection is a mandatory step: read `review-protocol` (`skills/review-protocol/SKILL.md`) once and include its full text in the agent's prompt. The agent does not restate the protocol - it receives it this way.
+Delegate to one `nxs:plan-reviewer` subagent. Protocol injection is mandatory: read `review-protocol` (`skills/review-protocol/SKILL.md`) once and include its full text in the agent's prompt. The agent does not restate the protocol - it receives it this way.
 
-The agent covers four lenses in one pass - scope, structure, testing, risk - and skips a lens whose precondition is absent, with a one-line reason. `plan-conventions` is orchestrator-side background: read it to scope the review, do not inject it.
+The agent checks the plan's claims against the repository: paths that do not exist, places the plan missed, steps out of order, decisions the executor cannot make alone. `plan-conventions` is orchestrator-side background - read it to scope the review, do not inject it.
 
-A trivial plan does not need the agent at all - do one direct pass yourself and report.
+A trivial plan does not need the agent - do one direct pass yourself and report.
 
-Open `[NEEDS CLARIFICATION]` markers are a BLOCK: a plan with open markers is not ready for execution.
+## VERIFY BEFORE REPORTING
 
-## AGGREGATE
+The agent proposes; you decide what the user sees. For each finding: run the `Repo:` command yourself and read the plan text it points at. The command returning something else, or the point already covered by another task - discard, do not downgrade. This applies to NIT as much as to BLOCK.
 
-- Classify each finding as BLOCK / NIT per `review-protocol`; apply its pre-emit check (quote a plan excerpt, drop what you cannot quote), high-confidence threshold, anti-speculation filter, and no numeric cap.
-- Rank by impact, strongest first.
-- overall: NEEDS CHANGES on any BLOCK; APPROVE otherwise. A skipped lens does not affect overall.
+Discarding most candidates is a normal outcome.
+
+Open `[NEEDS CLARIFICATION]` markers are a BLOCK, verified mechanically: `rg "NEEDS CLARIFICATION" <plan>`.
+
+Overall: NEEDS CHANGES on any confirmed BLOCK; APPROVE otherwise.
 
 ## OUTPUT
 
-Findings to chat, in the agent's output format. No file is written by default. Wording of every finding follows the plain-wording rule of review-protocol.
+To chat. No file is written by default. BLOCK findings in full, nits folded into one line.
+
+```
+Plan review: <plan-file-path>
+
+BLOCK Task <N>
+  Issue: <what the plan gets wrong or never mentions>
+  Repo: <command -> result>
+  Impact: <what the executor does, and what breaks when they do it>
+  Fix: <what to add or change in the plan>
+
+Nits (<n>): Task <N> <what is wrong>, Task <N> <what is wrong>, ...
+
+Verdict: APPROVE | NEEDS CHANGES
+```
+
+No nits confirmed, no nits line. Nothing confirmed: `Verdict: APPROVE. Findings: none.`
+
+A finding may be about something the plan never mentions, but never without the `Repo:` line. The report should need no follow-up question.
 
 Only on explicit user request, save the result by appending a `## PLAN REVIEW NOTES` section to the plan file - otherwise the plan is left untouched.
 
 ## RULES
 
 - Read-only - no automatic rewrites of the plan.
-- Every finding quotes a specific task or line and states a concrete required change; no vague "could be better", no "what if later" hypotheticals.
-- Reuse the BLOCK / NIT vocabulary from `review-protocol`; do not invent a separate one.
-- Clean approve is a valid result.
+- Every finding names what the plan says and what the repository says; a finding without both is dropped.
+- Do not report on the plan's form - title wording, checkbox counts, section order. The executor does not care and neither should the review.
+- Clean approve is a valid and frequent result.
 
 ## NEXT
 

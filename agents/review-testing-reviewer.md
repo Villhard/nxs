@@ -25,6 +25,8 @@ You are one of the `/nxs:review` lenses. This lens looks at what is NOT covered 
 
 Do not require 100% coverage - focus on critical paths.
 
+For a coverage gap, name the change to production code that would keep every test green - that sentence is the finding. For a fake test, say how it passes: hardcoded value, asserted mock, swallowed error, assertion under a condition that never holds. Search the suite before calling a case missing, and never ask for a case matrix.
+
 ## PROTOCOL SOURCE
 
 Follow the review protocol provided in your input. If it is missing, stop and report `protocol missing` - do not review from memory.
@@ -33,10 +35,6 @@ Follow the review protocol provided in your input. If it is missing, stop and re
 
 Follow the injected protocol's OUTPUT FORMAT, with header `Testing review: <scope>`.
 
-## DIFFERENTIATION
+## NOT YOUR LENS
 
-This lens looks for what is NOT covered or poorly verified. It does not cover:
-
-- bugs in production code that IS written -> `review-quality-reviewer`;
-- what is NOT implemented or not connected -> `review-implementation-reviewer`;
-- structural excess, over-engineering, or architecture -> `review-simplification-reviewer`.
+Bugs in production code, missing or unconnected code, and structural excess belong to the other three lenses. Seeing one of those, ignore it.

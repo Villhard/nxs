@@ -1,5 +1,5 @@
 ---
-description: The shared review protocol for code and plan review - read-only stance, per-finding pre-emit check, BLOCK/NIT/DROP classification, ranking, and finding output format. Load during code or plan review. Background knowledge, not a user command.
+description: The shared review protocol for code and plan review - read-only stance, how to verify a finding before reporting it, BLOCK/NIT/DROP classification, and finding output format. Load during code or plan review. Background knowledge, not a user command.
 user-invocable: false
 ---
 
@@ -9,90 +9,54 @@ Load during code or plan review. Workflow discipline, not a user-invocable comma
 
 ## STANCE
 
-Read-only. Do not edit the code or plan under review - only report findings back to the main context. Confidence threshold is high: better to skip a weak issue than emit a false positive. No hypotheticals: a speculative future risk without a concrete scenario is not a finding.
+Read-only. Do not edit the code or plan under review - only report findings back to the main context.
 
-## PRE-EMIT CHECK (per finding, mandatory)
+A review that reports nothing is a good review. Silence is the default; you are not measured by how much you found.
 
-Read the intent before judging: the source artifact (plan / brief / ticket) and nearby comments / tests, to establish what the target is meant to do. A finding that contradicts a stated intention is likely intentional design - drop or downgrade it.
+## VERIFY EVERY FINDING
 
-For each finding candidate, before emitting:
+Only report what you verified by reading the actual code. For each candidate, before emitting it:
 
-1. Read 20-30 lines of context around `<file>:<line>`.
-2. Quote a 5-7 line excerpt, marking the offending line with `>`.
-3. Answer two counter-questions:
-   - Intentional, deliberate decision - any sign it was done on purpose?
-   - Already handled elsewhere?
+1. Read the code at `<file>:<line>`, plus 20-30 lines of context around it.
+2. Confirm the problem is real and not a false positive.
+3. Check whether it is already handled - a guard, a validation, a test elsewhere in the diff or nearby.
+4. Check whether it is deliberate - the plan, the brief, or a nearby comment saying so.
 
-Drop the candidate if either answer is "yes", or if you cannot quote the excerpt.
+Confirmed - report it. Anything else - discard, do not downgrade.
 
-If a finding rests on an inference rather than a quoted line, mark it explicitly (`Inference: ...`) or drop it. Do not present a guess as an observed fact.
+Before claiming something is unused, never called, or unreachable, search the project for it first, including tests and config. That claim is wrong more often than any other.
 
 ## CLASSIFICATION
 
-BLOCK - must be fixed before merge:
+**BLOCK** - fix before merge: a bug with a concrete input, a requirement the change does not meet, a build break, a broken existing behavior, a security or data-loss path, new behavior with no test to catch its regression.
 
-- real bug;
-- broken requirement (does not do what it should);
-- build break;
-- regression (old behavior is broken);
-- security / data risk;
-- missing important test (new functionality without coverage);
-- serious maintainability issue (code is genuinely unreadable).
+**NIT** - worth fixing, does not block: a leftover from a removal, a comment or name that will mislead the next reader, a duplicated shape that will drift, a test bound to an incidental detail.
 
-NIT - useful to fix, does not block merge:
+**DROP** - everything else, and anything you are unsure about: no concrete consequence, only "would be cleaner"; a speculative future scenario; a preference for a different structure that is not clearly better; a rule the linter already enforces; code this diff does not touch.
 
-- small readability improvement (no semantic change);
-- simpler debugging / maintenance;
-- clearer tests;
-- minor user-visible quality;
-- naming that reflects the meaning more precisely;
-- removal of small dead code.
-
-DROP - not a finding, do not emit:
-
-- pure style preference without justification;
-- speculative future risk without a concrete scenario;
-- abstraction preference without real benefit;
-- DRY suggestion that does not reduce coupling;
-- an alternative that is not clearly better;
-- any candidate without a concrete file / line / scenario.
-
-Tie-breaks: in doubt between BLOCK and NIT, choose NIT; in doubt between NIT and DROP, choose drop.
-
-## RANKING
-
-No fixed numeric cap. Emit every finding that passes the pre-emit check, ordered by real consequences, strongest first. Drop weak / speculative candidates rather than padding the list.
-
-Prefer one strong finding over several weak ones. A concern without a concrete failing path is not a finding - do not emit it to look thorough.
+Tie-breaks: unsure between BLOCK and NIT, choose NIT. Unsure between NIT and DROP, choose DROP.
 
 ## OUTPUT FORMAT
 
-Findings first - no praise, preamble, or process narration. If nothing passes the check, a clean APPROVE is a valid result.
+Findings first - no preamble, no praise, no narration. Nothing confirmed, say so and stop.
 
-Plain wording (per finding):
-
-- one claim per sentence; a sentence names the subject, the action, and the consequence ("the check misses X"), never a compressed coined term ("the check does not operationalize X");
-- no nominalizations or compound terms invented on the spot - describe the concrete failure instead;
-- the fix is one phrase with at most one example command per finding; no lists of example commands;
-- readability test: a reader who has not seen the target understands the finding on first read.
+A BLOCK answers three questions. A NIT is one line - a nit that needs explaining is a nit the reader should not be reading.
 
 ```
-<Reviewer> review: <scope>
+<Lens> review: <scope>
 
-Findings:
+BLOCK <file>:<line>
+  Issue: <what is wrong>
+  Impact: <what it costs - the request that breaks, the data that is lost>
+  Fix: <what to change>
 
-<BLOCK|NIT> <file>:<line> - <one-line issue>
+NIT <file>:<line> - <what is wrong>
 
-  <2-3 lines of context>
-> <offending line>
-  <2-3 lines of context>
-
-  Fix: <concrete action, one phrase>
-
-(optional `Why: ...` line if the point is not obvious from the excerpt;
-for a security finding, `Attack: <scenario>`)
-
-...
-
-Verdict: APPROVE | NEEDS CHANGES
+Verdict: CLEAN | FINDINGS
 ```
+
+Each of the three is one sentence. `Issue` names the problem, not the mechanics of the code around it. `Impact` says what actually happens - "any request without a scope gets a full-access token", not "this weakens the authorization model". `Fix` says what to change, not how to write it.
+
+Plain words. One claim per sentence, naming the thing, the action, and the consequence. No terms coined on the spot: "the check misses an empty scope, so any request passes", never "the check does not operationalize scope validation". Someone who has not opened the file understands it on first read.
+
+Rank BLOCK findings by impact, worst first. Emit every confirmed finding; never pad to look thorough.

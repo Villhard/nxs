@@ -66,13 +66,14 @@ If no source artifact is found, report the single line `Spec axis: skipped (no s
 
 ## ORCHESTRATOR PASS
 
-After collecting agent + axis findings:
+The lenses propose; you decide what the user sees.
 
-1. dedup - merge identical findings from different lenses, keep the most specific.
-2. format check - drop any finding without a quoted excerpt or without a concrete `Fix:`; an axis finding without its `Standard:` / `Spec:` citation - drop.
-3. verify - check each remaining finding against the real code (axis findings against the source artifact too); without evidence - drop.
-4. classify - apply the review-policy classification (BLOCK / NIT / DROP; see CLASSIFICATION and `reference/review-policy.md`).
-5. rank by impact, strongest first - no numeric cap; a weak or speculative candidate is dropped, never emitted to pad the list.
+1. **dedup** - merge identical findings from different lenses, keep the most specific.
+2. **verify each one against the real code** - read the file at the reported line with its context, confirm the problem exists and is not already handled elsewhere. Not confirmed - discard, do not downgrade. This applies to NIT as much as to BLOCK: an unconfirmed nit is pure noise.
+3. **classify** - BLOCK / NIT / DROP per `review-protocol`, with the review-specific refinements in `reference/review-policy.md`. An axis finding without its `Standard:` / `Spec:` citation - drop.
+4. **rank BLOCK findings** by consequence, worst first.
+
+Discarding most candidates is a normal outcome.
 
 The orchestrator may run the `verify` skill on the diff when useful (project checks: tests / lint / format / typecheck / build), but do not duplicate what the reviewers or axes already cover.
 
@@ -85,18 +86,34 @@ The orchestrator classifies findings on the same base as the lenses; do not rest
 
 ## OUTPUT
 
-Header first (single line), then findings, no preamble / praise / process narration:
+One header line, then confirmed BLOCK findings in full, then every NIT folded into a single line. No preamble, no praise, no narration.
+
+The finding format - `Issue:` / `Impact:` / `Fix:` for a BLOCK, one line for a NIT - lives in `review-protocol` OUTPUT FORMAT. Follow it; this section adds only what is specific to code review.
 
 ```
 Source artifact: <path or skipped> | Standards: <sources or skipped>
+
+BLOCK <file>:<line>
+  Issue: <what is wrong>
+  Impact: <what it costs>
+  Fix: <what to change>
+
+Nits (<n>): <file>:<line> <what is wrong>, <file>:<line> <what is wrong>, ...
+
+Verdict: APPROVE | NEEDS CHANGES
 ```
 
-Findings body - only confirmed BLOCK / NIT, each with a quoted excerpt (5-7 lines, the problem line marked `>`), a concrete `Fix:`, and the `Standard:` / `Spec:` citation for an axis finding. A clean approve is valid: `Verdict: APPROVE. Findings: none.` Wording of every finding follows the plain-wording rule of review-protocol.
+- an axis BLOCK adds its `Standard:` / `Spec:` citation under `Fix:`;
+- the nits line stays one line however many there are. Expand a NIT only when the user asks;
+- no nits confirmed, no nits line at all;
+- nothing confirmed at all: `Verdict: APPROVE. Findings: none.`
+
+The report should need no follow-up question. A user asking "why is that a problem?" means the finding was written badly.
 
 ## RULES
 
 - Read-only - report, never edit code.
-- Every remark has a concrete file / line / excerpt; the confidence threshold is high - skip a weak issue over a false positive.
+- Every remark names a concrete file and line; the confidence threshold is high - skip a weak issue over a false positive.
 - Anti-hypothetical filter - no "what if someone later".
 - DRY / style suggestions without real benefit - drop.
 - A clean approve is valid.
@@ -106,7 +123,7 @@ Findings body - only confirmed BLOCK / NIT, each with a quoted excerpt (5-7 line
 - `reference/review-policy.md` - the Standards / Spec axis classification tables and citation formats, the classification refinements (superfluous tests, test discipline, relative-complexity over-engineering), and per-reviewer differentiation - layered on the `review-protocol` base.
 - `reference/smell-baseline.md` - the fixed Fowler smell set (Refactoring ch.3) injected into the quality and simplification lenses, with the rules for how a smell enters the base classification.
 
-Reference skills used by name: `review-protocol` (the shared base protocol each selected lens follows - stance, pre-emit check, BLOCK / NIT / DROP, ranking, output format - injected into each lens and followed by the orchestrator too), `verify` (project checks on the diff when useful).
+Reference skills used by name: `review-protocol` (the shared base protocol each selected lens follows - stance, the evidence bar, BLOCK / NIT / DROP, ranking, output format - injected into each lens and followed by the orchestrator too), `verify` (project checks on the diff when useful).
 
 ## NEXT
 

@@ -7,7 +7,7 @@ This file does not restate the base classification. A smell is scored through th
 ## BINDING RULES
 
 - Heuristic, not a rule. Each smell is a labelled candidate ("possible Feature Envy"), never a violation on its own. It runs through the base BLOCK / NIT / DROP: by default a smell lands NIT; it reaches BLOCK only with a concrete cost (a real bug path, code genuinely unreadable); a smell without a concrete file / line / cost is DROP. Do not emit a smell to look thorough.
-- Documented standard and stated intent override. A repo standard (Standards axis) or a stated intent in the plan / brief / nearby comments that endorses what a smell would flag suppresses it - this is the pre-emit "contradicts stated intention -> drop".
+- Documented standard and stated intent override. A repo standard (Standards axis) or a stated intent in the plan / brief / nearby comments that endorses what a smell would flag suppresses it - this is the evidence bar's "deliberate decision -> drop".
 - Skip what tooling enforces. A smell that lint / formatter / typecheck already catches -> drop.
 - Diff scope only. The smell must appear in the diff under review, not in untouched surrounding code.
 
@@ -30,5 +30,5 @@ Format: `name [primary lens] - what it is -> how to fix`. A smell may fire in ei
 
 ## POINTERS
 
-- Base classification, tie-breaks, pre-emit check, output format - `review-protocol` (already injected into every lens).
+- Base classification, tie-breaks, the evidence bar, output format - `review-protocol` (already injected into every lens).
 - Speculative Generality and other over-engineering escalation is scored relative to task complexity - `review-policy.md` OVER-ENGINEERING - RELATIVE COMPLEXITY. Do not restate it here.

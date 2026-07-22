@@ -28,16 +28,12 @@ Checking test quality and coverage is out of scope here - that belongs to the te
 
 Follow the review protocol provided in your input. If it is missing, stop and report `protocol missing` - do not review from memory.
 
-For a missing-piece finding there is no offending line to quote; mark the spot where the missing code should be with `>`.
+Search the project before calling something missing or unwired - the registration may live in a file the diff never opened. Requirements come from the plan or ticket, not from you.
 
 ## OUTPUT FORMAT
 
-Follow the injected protocol's OUTPUT FORMAT, with header `Implementation review: <scope>`.
+Follow the injected protocol's OUTPUT FORMAT, with header `Implementation review: <scope>`. A missing piece has no line of its own - report the line where it should go.
 
-## DIFFERENTIATION
+## NOT YOUR LENS
 
-This lens looks for what is NOT written or not connected. It does not cover:
-
-- bugs in code that IS written -> `review-quality-reviewer`;
-- what is NOT covered by tests or poorly verified -> `review-testing-reviewer`;
-- structural excess, over-engineering, or architecture -> `review-simplification-reviewer`.
+Bugs in written code, test quality, and structural excess belong to the other three lenses. Seeing one of those, ignore it.

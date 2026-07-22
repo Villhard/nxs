@@ -4,14 +4,14 @@ Loaded on demand from `/nxs:review`. Layers the review-specific detail on top of
 
 ## BASE PROTOCOL
 
-The read-only stance, the anti-hypothetical / high-confidence threshold, the per-finding pre-emit check (intent read, context read, excerpt quote, counter-questions, mark-inference), the BLOCK / NIT / DROP definitions and tie-breaks, ranking without a numeric cap, the generic finding output format, and clean-approve validity all live once in `review-protocol` - follow it as the base. This file does not restate them; it adds only the sections below.
+The read-only stance, the evidence bar every finding clears (quote, concrete consequence, deliberate check, already-handled check, proven absence, labeled inference), the BLOCK / NIT / DROP definitions and tie-breaks, ranking, and the finding output format all live once in `review-protocol` - follow it as the base. This file does not restate them; it adds only the sections below.
 
 ## OUTPUT CONTRACT (axis additions)
 
-The generic finding format - findings first with no preamble, the marked `<BLOCK|NIT> <file>:<line>` excerpt block, the concrete `Fix:`, the optional `Why:` / `Attack:` line - lives in `review-protocol` OUTPUT FORMAT; do not restate it. This section adds only the review-specific requirements:
+The finding format - `Issue:` / `Impact:` / `Fix:` for a BLOCK, one line for a NIT - lives in `review-protocol` OUTPUT FORMAT; do not restate it. This section adds only the review-specific requirements:
 
 - A single-line header printed before the findings: `Source artifact: <path or skipped> | Standards: <sources or skipped>`.
-- For an axis finding (Standards / Spec) - a mandatory single citation line under `Fix:`:
+- For an axis BLOCK (Standards / Spec) - a mandatory single citation line under `Fix:`:
 
   ```
   Standard: <path>#<section> - "<verbatim quote of the rule>"
