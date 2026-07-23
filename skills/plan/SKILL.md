@@ -17,9 +17,8 @@ Example: /nxs:plan docs/nxs/briefs/20260711-auth-refactor-rnd.md
 - The plan is a proposal: read-only until the user approves it. Review is a separate step (`/nxs:plancheck`); execution is a separate step (`/nxs:exec`).
 - If the task is small and single-step, no plan is needed - route to `/nxs:exec` or a direct edit instead of ceremony.
 
-## INTAKE
+## CONTEXT
 
-- If the input is a tracker key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
 - When a domain term in the task is fuzzy or ambiguous, stop and clarify it before encoding it into the plan rather than guessing its meaning.
 - Inspect project context before decomposing: read the relevant files, patterns, and dependencies (delegate to the built-in Explore agent or inspect directly). Do not over-read.
 
@@ -47,7 +46,7 @@ Write the plan to:
 docs/nxs/plans/YYYYMMDD-<slug>.md
 ```
 
-When the input carries a tracker identifier (from `intake`, the brief name, or the ticket), include it - `docs/nxs/plans/YYYYMMDD-<KEY>-<slug>.md` - so the plan stays navigable by the key, as the `intake` contract promises.
+When the input carries a tracker key (from the brief name or the ticket), include it - `docs/nxs/plans/YYYYMMDD-<KEY>-<slug>.md` - so the plan stays navigable by the key.
 
 If source artifacts exist, add a `## SOURCE ARTIFACTS` section referencing only those that actually exist - no empty placeholders:
 

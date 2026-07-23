@@ -18,9 +18,8 @@ Example: /nxs:rnd add rate limiting to the public API
 - Full collapse (CLARIFY 0 questions, EXPLORE the single obvious approach, STRESS ~0) makes the brief ceremony. Do not write it silently and do not skip it silently - offer the user the choice: route straight to `/nxs:plan`, or write a short brief for decision traceability.
 - The next step is `/nxs:plan` (turn the brief into a plan). For a bug rather than a task, route to `/nxs:bug` instead of brainstorming.
 
-## INTAKE
+## CONTEXT
 
-- If the input is a tracker key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
 - Gather context before asking: read the relevant code, existing patterns, dependencies, integration points, and project memory (delegate to the built-in Explore agent or inspect directly). Ask only about what the code does not answer. Do not over-read.
 - When a domain term is fuzzy or ambiguous, stop and clarify it before EXPLORE rather than guessing its meaning.
 
@@ -63,7 +62,7 @@ Write a brief:
 docs/nxs/briefs/YYYYMMDD-<slug>-rnd.md
 ```
 
-When intake extracted a tracker identifier, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-rnd.md` - so the brief stays navigable by the key, as the `intake` contract promises.
+When the input carries a tracker key, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-rnd.md` - so the brief stays navigable by the key.
 
 Keep the section skeleton stable - `/nxs:plan` consumes the brief by these headings:
 

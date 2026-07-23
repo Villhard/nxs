@@ -18,9 +18,8 @@ Example: /nxs:bug PROJ-4213
 - No fix, patch, or product-code change here. No exceptions. The fix goes through `/nxs:plan` (fix plan) and `/nxs:exec` (execution).
 - No solution before the root cause is confirmed. Do not narrow to the first plausible explanation - stay skeptical.
 
-## INTAKE
+## CONTEXT
 
-- If the input is a tracker key, URL, or pasted ticket, run the `intake` background skill first to parse structure and separate facts from assumptions, then continue here.
 - When a domain term in the bug report is fuzzy or ambiguous, stop and clarify it before running 5-Why rather than guessing its meaning.
 
 ## DIAGNOSIS LOOP
@@ -106,7 +105,7 @@ Write a root-cause brief:
 docs/nxs/briefs/YYYYMMDD-<slug>-bug.md
 ```
 
-When intake extracted a tracker identifier, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-bug.md` - so the brief stays navigable by the key, as the `intake` contract promises.
+When the input carries a tracker key, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-bug.md` - so the brief stays navigable by the key.
 
 It captures: symptom; feedback loop / repro method; minimized repro; evidence; ranked hypotheses; tested probes; 5-Why chain; confirmed root cause; assumptions; fix direction; regression test idea; verification plan.
 
