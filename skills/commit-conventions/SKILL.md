@@ -5,13 +5,10 @@ user-invocable: false
 
 # COMMIT CONVENTIONS
 
-Load before any `git add` / `git commit` / `git push`. Workflow rules, not a user-invocable command. The gate below says when a git write is allowed; secret safety and destructive-op confirmation are enforced by the global tier-1 block, which fires even when this skill does not load.
+Load before any `git add` / `git commit` / `git push`. Workflow rules, not a user-invocable command. These conventions are shared by `/nxs:exec` and `/nxs:commit` - message format, atomicity, staging hygiene, and git safety. When a commit may run - the workflow gate - lives in the command that commits, not here; secret safety and destructive-op confirmation are enforced by the global tier-1 block, which fires even when this skill does not load.
 
-## THE GATE
+## GIT SAFETY
 
-- `/nxs:exec` may run `git add` / `git commit` only after verify passed and the review round came back with zero BLOCK findings.
-- Under a **no commits** instruction: no `git add`, no `git commit`.
-- Outside exec: do not run git writes - propose the message as text to copy.
 - `git push` only on explicit user request. Never `--force` / `--force-with-lease`. Never create an MR / PR automatically.
 - `--no-verify` only with explicit approval.
 

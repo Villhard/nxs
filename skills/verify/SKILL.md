@@ -59,4 +59,4 @@ If RED cannot technically be confirmed (no infrastructure to run a single test, 
 
 ## GATE ROLE
 
-Verify is mandatory after every task in `/nxs:exec` and before any commit. A verify pass is a precondition of the commit gate; the gate contract itself is owned by `commit-conventions`. Verify failing, or required checks missing, blocks the commit - the main context fixes the failure and re-runs verify before proceeding. The rest of the cycle (task loop, review-fix loop, stop conditions) lives in `/nxs:exec`.
+Verify is mandatory after every task in `/nxs:exec` and before any commit. A verify pass is a precondition of the commit gate; the gate contract itself is owned by `/nxs:exec`. Verify failing, or required checks missing, blocks the commit - the main context fixes the failure and re-runs verify before proceeding. The rest of the cycle (task loop, review-fix loop, stop conditions) lives in `/nxs:exec`.
