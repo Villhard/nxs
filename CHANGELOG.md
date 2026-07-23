@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-07-23
+
+Simplify the architecture: every non-command skill is now a plain rules contract, and a SessionStart hook makes the commands fire on their trigger. The `intake` dispatcher is gone, and a real `/nxs:commit` command commits working changes.
+
+### Added
+
+- `/nxs:commit` - commit the current working changes, split into atomic commits with conventional messages, for edits made outside `/nxs:exec`.
+- A SessionStart hook (`hooks/`) that injects the `using-nxs` discipline so a session checks for the right command before acting.
+
+### Changed
+
+- `commit-conventions` is a pure convention now: message format, atomicity, staging hygiene, and git safety. The exec-specific gate (commit only after verify and a zero-BLOCK review, the `no commits` mode) lives in `/nxs:exec`, which already owned it.
+- `rnd`, `bug`, `plan` drop their `INTAKE` sections; the tracker-ticket rule (read the ticket, name the artifact by its key) moved to the `using-nxs` hook.
+- `verify` points at `/nxs:exec` as the owner of the commit gate.
+
+### Removed
+
+- The `intake` background skill. Its ticket-reading rule moved to the hook; its task/bug routing is dropped - the entry command is the user's choice.
+
 ## [0.10.1] - 2026-07-22
 
 An audit for name conflicts and dead terms. No command, argument, path scheme, or gate changed; the contract is where it always was, and this release makes the files agree with it.

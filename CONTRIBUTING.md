@@ -16,6 +16,10 @@ nxs/
     <background-name>/   # tier 3, user-invocable: false
   agents/
     <agent-name>.md      # self-contained subagent
+  hooks/                 # SessionStart hook -> injects using-nxs (not a skill)
+    hooks.json
+    session-start.sh
+    using-nxs.md
   examples/              # filled sample artifacts (plan, brief)
   .github/               # CI, house-style linter, PR template
   README.md CONTRIBUTING.md CHANGELOG.md LICENSE
@@ -26,8 +30,10 @@ Tier 1 (global `~/.claude/CLAUDE.md`) and `settings.json` stay out of this repo 
 ## THREE TIERS
 
 - Tier 1 - global `~/.claude/CLAUDE.md`: always on, applies to every response. Lives outside the plugin.
-- Tier 2 - command skills `/nxs:<name>`: the workflow, visible in the `/` menu. There are six: `rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`.
-- Tier 3 - background skills (`user-invocable: false`): shared rules, loaded by relevance. There are five: `plan-conventions`, `review-protocol`, `verify`, `commit-conventions`, `intake`.
+- Tier 2 - command skills `/nxs:<name>`: the workflow, visible in the `/` menu. There are seven: `rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`, `commit`.
+- Tier 3 - background skills (`user-invocable: false`): shared rules, loaded by relevance. There are four: `plan-conventions`, `review-protocol`, `verify`, `commit-conventions`.
+
+Alongside the tiers, a SessionStart hook (`hooks/`) injects the `using-nxs` discipline so a session checks for the right command before acting. It is infrastructure, not a skill - it lives in `hooks/`, not `skills/`.
 
 ## NAMING
 
@@ -46,11 +52,11 @@ Where a rule, policy, or term belongs:
 - several agents share it -> one single-source file that the orchestrator reads once and injects verbatim into every agent prompt;
 - exactly one agent needs it -> inline in that agent's file.
 
-Security-critical content (never commit secrets, confirm destructive) never lives on tier 3 alone. Auto-load is heuristic and can miss; tier 1 always fires, so tier 1 carries the protection. Tier 3 states the workflow gate around it - when a commit is allowed, that a push needs an explicit request - which is workflow detail and holds only while the skill is loaded.
+Security-critical content (never commit secrets, confirm destructive) never lives on tier 3 alone. Auto-load is heuristic and can miss; tier 1 always fires, so tier 1 carries the protection. Tier 3 states git safety around it - that a push needs an explicit request - which is workflow detail and holds only while the skill is loaded. When a commit is allowed lives in the command that commits (`exec`, `commit`), not in `commit-conventions`.
 
 ## WHEN TO ADD SOMETHING NEW
 
-This repo stays small on purpose: six commands, five background skills, six agents. Add a tier-2 command skill only when all of these hold at once:
+This repo stays small on purpose: seven commands, four background skills, six agents, one hook. Add a tier-2 command skill only when all of these hold at once:
 
 - the intent is distinct and does not reduce to an existing command, not even through a mode word;
 - the intent is frequent - you reach for it several times a month, not once a quarter;
