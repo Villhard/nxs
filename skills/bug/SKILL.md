@@ -107,7 +107,7 @@ docs/nxs/briefs/YYYYMMDD-<slug>-bug.md
 
 When the input carries a tracker key, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-bug.md` - so the brief stays navigable by the key.
 
-It captures: symptom; feedback loop / repro method; minimized repro; evidence; ranked hypotheses; tested probes; 5-Why chain; confirmed root cause; assumptions; fix direction; regression test idea; verification plan.
+It captures: symptom; feedback loop / repro method; minimized repro; evidence; ranked hypotheses; tested probes; 5-Why chain; confirmed root cause; assumptions; fix direction; regression test idea; verification plan. Length follows the DELIVERABLE LENGTH rule in `plan-conventions`.
 
 ## RULES
 

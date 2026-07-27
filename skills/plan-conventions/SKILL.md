@@ -1,13 +1,17 @@
 ---
-description: The plan authoring and checking contract - required plan structure, development approaches, per-task well-formedness, TDD and vertical-slice discipline - load when writing or checking an implementation plan. Background knowledge, not a user command.
+description: The plan authoring and checking contract - required plan structure, development approaches, per-task well-formedness, TDD and vertical-slice discipline, deliverable length - load when writing or checking an implementation plan, or a brief that feeds one. Background knowledge, not a user command.
 user-invocable: false
 ---
 
 # PLAN CONVENTIONS
 
-Load when writing or checking an implementation plan. Workflow rules, not a user-invocable command. Shared by `/nxs:plan`, `/nxs:plancheck`, `/nxs:exec`, `/nxs:rnd`.
+Load when writing or checking an implementation plan, or a brief that feeds one. Workflow rules, not a user-invocable command. Shared by `/nxs:plan`, `/nxs:plancheck`, `/nxs:exec`, `/nxs:rnd`, `/nxs:bug`.
 
 A plan is the source of truth for execution: it has a concrete structure, is updated when scope changes, and must be reviewable. If a plan is not reviewable (unclear task scope, missing files, missing tests, missing verification), it is not ready.
+
+## DELIVERABLE LENGTH
+
+Match the length of a written artifact - a plan, a brief, a root-cause brief - to what the task needs: cover the substance and stop. No filler sections, no redundant summaries, no boilerplate.
 
 ## DEVELOPMENT APPROACH
 

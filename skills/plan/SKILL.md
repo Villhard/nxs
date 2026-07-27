@@ -34,7 +34,7 @@ Example: /nxs:plan docs/nxs/briefs/20260711-auth-refactor-rnd.md
 
 ## PLAN STRUCTURE
 
-Follow the `plan-conventions` background skill for the required sections, development-approach values, the per-task template, TDD and vertical-slice discipline, NEEDS CLARIFICATION markers, and COMPLEXITY TRACKING. Do not restate that contract here - reference it and apply it.
+Follow the `plan-conventions` background skill for the required sections, development-approach values, the per-task template, TDD and vertical-slice discipline, NEEDS CLARIFICATION markers, deliverable length, and COMPLEXITY TRACKING. Do not restate that contract here - reference it and apply it.
 
 Mark an open decision that would change the plan with `[NEEDS CLARIFICATION: <specific question>]` in the plan itself instead of a plausible guess. A plan with open markers is valid but not ready for execution; the marker convention and its effect on review and execution are detailed in `plan-conventions`.
 

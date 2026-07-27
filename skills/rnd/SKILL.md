@@ -90,7 +90,7 @@ Keep the section skeleton stable - `/nxs:plan` consumes the brief by these headi
 ## Next
 ```
 
-A brief can be short for a simple task and detailed for a complex one: sections scale in depth, empty ones are dropped, headings are not renamed. Acceptance criteria surfaced in CLARIFY land in their own section - `/nxs:plan` pulls them from here. The CLARIFICATIONS and STRESS sections are appended only under their own conditions below.
+A brief can be short for a simple task and detailed for a complex one: sections scale in depth, empty ones are dropped, headings are not renamed. Length follows the DELIVERABLE LENGTH rule in `plan-conventions`. Acceptance criteria surfaced in CLARIFY land in their own section - `/nxs:plan` pulls them from here. The CLARIFICATIONS and STRESS sections are appended only under their own conditions below.
 
 Add a clarifications log only when at least one CLARIFY question was asked:
 
