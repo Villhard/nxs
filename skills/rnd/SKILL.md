@@ -20,7 +20,7 @@ Example: /nxs:rnd add rate limiting to the public API
 
 ## CONTEXT
 
-- Gather context before asking: read the relevant code, existing patterns, dependencies, integration points, and project memory (delegate to the built-in Explore agent or inspect directly). Ask only about what the code does not answer. Do not over-read.
+- Gather context before asking: read the relevant code, existing patterns, dependencies, integration points, and project memory. Delegate to the built-in Explore agent when the files that answer the question are unknown and finding them means sweeping the repository; read directly when you can name the files. Ask only about what the code does not answer. Do not over-read.
 - When a domain term is fuzzy or ambiguous, stop and clarify it before EXPLORE rather than guessing its meaning.
 
 ## CLARIFY

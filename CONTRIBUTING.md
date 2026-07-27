@@ -104,6 +104,7 @@ user-invocable: false
 name: <agent file name, without .md - this is what a skill spawns as nxs:<name>>
 description: <the role in one line, plus which command uses it>
 tools: <the exact tool list this agent may use>
+effort: <the reasoning effort this agent runs at - omit to inherit the session level>
 skills: <list of skills preloaded into the agent at startup>
 ---
 ```

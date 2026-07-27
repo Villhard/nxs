@@ -46,6 +46,8 @@ Selection rules:
 - substantial or security-sensitive diff (auth / payment / crypto / data migration / broad logic) -> run the full set.
 - explicit user request for a full review -> run the full set regardless of size.
 
+Launch cap, scoped to one invocation of this command: one launch round, at most the four lenses above, and no relaunch of a lens inside that invocation. A post-fix re-review of the same scope is a NEW invocation and starts with a fresh cap - `/nxs:exec` runs up to three such rounds per task, and this cap never blocks them.
+
 Adaptivity scopes effort - it never skips review of real code with logic. The security skim lives inside `nxs:review-quality-reviewer`; there is no deep security review - for auth / payment / crypto / data migration call a manual review from outside. Documentation is not a separate lens: stale comments -> quality, public API surface -> implementation.
 
 ## STANDARDS AND SPEC AXES
