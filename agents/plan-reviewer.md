@@ -2,6 +2,10 @@
 name: plan-reviewer
 description: Read-only plan reviewer - checks a plan's claims against the actual repository, finds what the plan missed, and reports BLOCK / NIT findings. The /nxs:plancheck lens.
 tools: Read, Grep, Glob
+skills:
+  - review-protocol
+  - nxs:review-protocol
+  - nxs:preload-canary-absent
 ---
 
 # PLAN REVIEWER
