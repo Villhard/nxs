@@ -33,7 +33,7 @@ Tier 1 (global `~/.claude/CLAUDE.md`) and `settings.json` stay out of this repo 
 - Tier 2 - command skills `/nxs:<name>`: the workflow, visible in the `/` menu. There are seven: `rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`, `commit`.
 - Tier 3 - background skills (`user-invocable: false`): shared rules, loaded by relevance. There are four: `plan-conventions`, `review-protocol`, `verify`, `commit-conventions`.
 
-Alongside the tiers, a SessionStart hook (`hooks/`) injects the `using-nxs` discipline so a session checks for the right command before acting. It is infrastructure, not a skill - it lives in `hooks/`, not `skills/`.
+Alongside the tiers, a SessionStart hook (`hooks/`) injects the `using-nxs` routing context so a session matches a task to the right command before acting. It is infrastructure, not a skill - it lives in `hooks/`, not `skills/`.
 
 ## NAMING
 
@@ -82,10 +82,11 @@ Things that bloat the repo and get rejected: copying an external skill wholesale
 ---
 description: <one line, drives model-invocation; when-to-use trigger + short what-it-produces, not the process>
 argument-hint: "[...]"
+disable-model-invocation: true   # optional
 ---
 ```
 
-Keep `description` to the trigger plus a short clause on what the skill produces. Do not list phases or explain how the body works: a description that retells the workflow makes the model follow the retelling and skip the body, which is where the actual procedure lives. Every command skill also carries one `Example:` line with a real invocation right after the intro.
+Set `disable-model-invocation: true` only on a command with side effects whose timing the user controls - `commit` is the one that carries it; the model cannot fire it, the user types it. Keep `description` to the trigger plus a short clause on what the skill produces. Do not list phases or explain how the body works: a description that retells the workflow makes the model follow the retelling and skip the body, which is where the actual procedure lives. Every command skill also carries one `Example:` line with a real invocation right after the intro.
 
 ### BACKGROUND SKILL FRONTMATTER
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SessionStart hook for the nxs plugin - inject the using-nxs discipline.
+# SessionStart hook for the nxs plugin - inject the using-nxs routing context.
 
 set -euo pipefail
 
@@ -18,7 +18,7 @@ escape_for_json() {
 }
 
 discipline_escaped=$(escape_for_json "$discipline_content")
-context="You have the nxs plugin. The 'using-nxs' discipline below is standing guidance for this session - follow it. For nxs skills, use the 'Skill' tool.\n\n${discipline_escaped}"
+context="You have the nxs plugin. The 'using-nxs' note below is routing context for this session. For nxs skills, use the 'Skill' tool.\n\n${discipline_escaped}"
 
 # Claude Code reads hookSpecificOutput.additionalContext.
 printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$context"

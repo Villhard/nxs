@@ -28,7 +28,7 @@ Seven flat `/nxs:<name>` commands:
 | `plancheck` | Read-only review of a plan before execution; run after `plan` and before `exec`. |
 | `exec` | Execute a plan task by task and write the code, with verify, review, and a commit after each task. |
 | `review` | Review a diff (staged, branch vs base, file, or PR) and report confirmed BLOCK / NIT findings without editing code. |
-| `commit` | Commit the current working changes, split into atomic commits with conventional messages - for edits made outside `exec`. |
+| `commit` | Commit the current working changes, split into atomic commits with conventional messages - for edits made outside `exec`. User-invoked only: it runs when you type it. |
 
 ## Model
 
@@ -38,7 +38,7 @@ Three tiers:
 2. Command skills (`/nxs:<name>`) - the seven commands above. Single-mode; `exec` takes an optional natural-language `no commits`.
 3. Background skills (`user-invocable: false`) - four shared rule sets loaded by relevance, hidden from the `/` menu: `plan-conventions`, `review-protocol`, `verify`, `commit-conventions`.
 
-A SessionStart hook (`hooks/`) injects the `using-nxs` discipline so a session checks for the right command before acting - the commands fire on their trigger without being typed by name.
+A SessionStart hook (`hooks/`) injects the `using-nxs` routing context so a session matches a task to the right command before acting - the commands fire on their trigger without being typed by name, except `commit`, which runs only when you type it.
 
 Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`; the only agent that writes) plus five read-only lenses whose tools are limited to Read / Grep / Glob, so they cannot write or run shell: `plan-reviewer` (used by `plancheck`) and the four `review-*-reviewer` lenses (used by `review`).
 
@@ -67,7 +67,7 @@ skills/
   <background-name>/   # background skill (user-invocable: false)
 agents/
   <name>.md            # subagent (worker + read-only lenses)
-hooks/                 # SessionStart hook -> injects the using-nxs discipline
+hooks/                 # SessionStart hook -> injects the using-nxs routing context
   hooks.json
   session-start.sh
   using-nxs.md

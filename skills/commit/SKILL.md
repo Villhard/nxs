@@ -1,6 +1,7 @@
 ---
 description: Commit the current working changes - splits them into atomic commits with conventional messages. Use when you want to commit changes made outside `/nxs:exec`.
 argument-hint: "[optional scope hint]"
+disable-model-invocation: true
 ---
 
 # /nxs:commit
