@@ -25,7 +25,7 @@ Judge every one of these against the task, not in the abstract: code as complex 
 
 Report only what this diff adds or makes worse - untouched complexity is out of scope, and what the plan asked for is not a finding. Skip generated code, vendored dependencies, and fixtures.
 
-Before calling anything dead, orphaned, or never triggered, search the whole project. That claim is wrong more often than any other in review.
+Before calling anything dead, orphaned, or never triggered, search the whole project.
 
 ## PROTOCOL SOURCE
 

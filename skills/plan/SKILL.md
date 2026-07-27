@@ -5,7 +5,7 @@ argument-hint: "[task | brief path | tracker key]"
 
 # /nxs:plan
 
-Turn a task, brief, or tracker input into a well-formed implementation plan and stop. The plan becomes the source of truth for execution. Self-contained skill. Output language and response style come from global rules, not this file.
+Turn a task, brief, or tracker input into a well-formed implementation plan and stop. The plan becomes the source of truth for execution.
 
 Accepted input: a task description, a brainstorm brief (`docs/nxs/briefs/`), a root-cause brief from `/nxs:bug`, or a tracker key / URL / pasted ticket. A plan can be made with or without a brief - with no input, gather it here first.
 

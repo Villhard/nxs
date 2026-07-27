@@ -5,7 +5,7 @@ argument-hint: "[tracker key | bug description | path]"
 
 # /nxs:bug
 
-Bug investigation entry point. Reach a confirmed root cause, then stop. Self-contained skill. Output language and response style come from global rules, not this file.
+Bug investigation entry point. Reach a confirmed root cause, then stop.
 
 Accepted input: tracker key / URL, pasted bug text, observed behavior, stack trace / log, or a path.
 

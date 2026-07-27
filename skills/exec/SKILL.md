@@ -5,7 +5,7 @@ argument-hint: "[plan path] [no commits]"
 
 # /nxs:exec
 
-Execute an existing implementation plan task by task, running the plan to the end. This is the one skill that changes project code - the orchestrator does not write it itself but delegates each task to one write-capable `nxs:worker` subagent. Self-contained skill. Output language and response style come from global rules, not this file.
+Execute an existing implementation plan task by task, running the plan to the end. This is the one skill that changes project code - the orchestrator does not write it itself but delegates each task to one write-capable `nxs:worker` subagent.
 
 Example: /nxs:exec docs/nxs/plans/20260711-auth-refactor.md
 
@@ -68,6 +68,8 @@ Two guards prevent looping forever on one task:
 
 ## STOP CONDITIONS
 
+**Stop and report** - on any of these, stop and report to the user:
+
 - dirty worktree at start without explicit approval;
 - missing plan, or an open `[NEEDS CLARIFICATION: ...]` marker in it;
 - missing Files block in the task;
@@ -82,9 +84,7 @@ Two guards prevent looping forever on one task:
 - review-fix cap exhausted with a BLOCK remaining, or stalemate detected;
 - under TDD: batched RED tests without an intermediate GREEN, a missing test seam without a plan-approved fix in this task, or a refactor attempt during RED.
 
-On any of these - stop and report to the user.
-
-## WHAT EXEC NEVER DOES
+**Never** - exec does not do these at all; reporting first does not make them allowed:
 
 - `git push` (with or without force), or create an MR / PR;
 - delete files outside the plan, or modify unrelated files;

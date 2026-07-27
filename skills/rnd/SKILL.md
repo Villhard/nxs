@@ -5,7 +5,7 @@ argument-hint: "[task | tracker key | question]"
 
 # /nxs:rnd
 
-Think a task through to a plan-ready brief and stop. The task entry point. Self-contained skill. Output language and response style come from global rules, not this file.
+Think a task through to a plan-ready brief and stop. The task entry point.
 
 Accepted input: a task description, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work with the current session context.
 

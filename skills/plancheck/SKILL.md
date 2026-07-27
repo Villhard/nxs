@@ -5,7 +5,7 @@ argument-hint: "[plan path]"
 
 # /nxs:plancheck
 
-Read-only review of an implementation plan before execution. Produce BLOCK / NIT / approve findings, then stop. This skill never edits the plan. Self-contained skill. Output language and response style come from global rules, not this file.
+Read-only review of an implementation plan before execution. Produce BLOCK / NIT / approve findings, then stop. This skill never edits the plan.
 
 Example: /nxs:plancheck docs/nxs/plans/20260711-auth-refactor.md
 

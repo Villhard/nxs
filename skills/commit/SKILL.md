@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /nxs:commit
 
-Commit the changes already in the working tree, split into atomic commits. Use it for edits you made by hand, outside `/nxs:exec`. Self-contained skill. Output language and response style come from global rules, not this file.
+Commit the changes already in the working tree, split into atomic commits. Use it for edits you made by hand, outside `/nxs:exec`.
 
 Message format, the atomicity rule, staging hygiene, and git safety come from the `commit-conventions` background skill - load it and follow it. This command owns only the procedure of grouping and committing.
 

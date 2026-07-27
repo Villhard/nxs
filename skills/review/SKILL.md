@@ -5,7 +5,7 @@ argument-hint: "[scope: staged | path | PR url]"
 
 # /nxs:review
 
-Read-only code review of a diff. Resolve the scope, run an adaptive set of reviewer lenses plus the Standards and Spec axes, then report confirmed BLOCK / NIT findings or a clean approve and stop. This skill never edits code. Self-contained skill. Output language and response style come from global rules, not this file.
+Read-only code review of a diff. Resolve the scope, run an adaptive set of reviewer lenses plus the Standards and Spec axes, then report confirmed BLOCK / NIT findings or a clean approve and stop. This skill never edits code.
 
 Example: /nxs:review staged
 
