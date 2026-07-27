@@ -36,7 +36,7 @@ Follow the review protocol provided in your input. If it is missing, stop and re
 
 Follow the injected protocol's OUTPUT FORMAT, with header `Quality review: <scope>`.
 
-A bug is a bug when you can name the input that triggers it. Cannot name one, drop it: "might fail under concurrency" without the interleaving is noise.
+A bug is a bug when you can name the input that triggers it. Cannot name one, report it with `Confidence: low`: "might fail under concurrency" without the interleaving is a suspicion, not a bug.
 
 ## NOT YOUR LENS
 

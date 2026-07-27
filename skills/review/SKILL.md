@@ -60,7 +60,7 @@ The lenses propose; you decide what the user sees.
 
 1. **dedup** - merge identical findings from different lenses, keep the most specific.
 2. **verify each one against the real code** - read the file at the reported line with its context, confirm the problem exists and is not already handled elsewhere. Not confirmed - discard, do not downgrade. This applies to NIT as much as to BLOCK: an unconfirmed nit is pure noise.
-3. **classify** - BLOCK / NIT / DROP per `review-protocol`, with the review-specific refinements in `reference/review-policy.md`. An axis finding without its `Standard:` / `Spec:` citation - drop.
+3. **classify** - you own BLOCK / NIT / DROP. Rank the candidates by the `Confidence:` and `Severity:` the lenses report, then label each per `review-protocol`'s CLASSIFICATION, with the review-specific refinements in `reference/review-policy.md`. BLOCK takes the hard test: name the input where behavior is wrong, or the requirement in the plan or brief the diff does not meet - neither, and it is a NIT at most. An axis finding without its `Standard:` / `Spec:` citation - drop.
 4. **rank BLOCK findings** by consequence, worst first.
 
 Discarding most candidates is a normal outcome.
@@ -91,7 +91,7 @@ The report should need no follow-up question. A user asking "why is that a probl
 ## REFERENCE
 
 - `reference/review-policy.md` - where the project keeps its standards, how to find the source artifact, the citation formats, and the classification calls that are easy to get wrong.
-- `review-protocol` - the stance, verification, classification, and output format every lens follows, injected into each one; the orchestrator follows the same base.
+- `review-protocol` - the read-only stance, the checks before reporting, and the finding output format every lens follows, injected into each one; its CLASSIFICATION section is the orchestrator pass's.
 - `verify` - project checks on the diff when useful.
 
 ## NEXT

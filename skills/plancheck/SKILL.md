@@ -30,9 +30,11 @@ A trivial plan does not need the agent - do one direct pass yourself and report.
 
 ## VERIFY BEFORE REPORTING
 
-The agent proposes; you decide what the user sees. For each finding: run the `Repo:` command yourself and read the plan text it points at. The command returning something else, or the point already covered by another task - discard, do not downgrade. This applies to NIT as much as to BLOCK.
+The agent proposes findings with `Confidence:` and `Severity:`; you own the verdict. For each finding: run the `Repo:` command yourself and read the plan text it points at. The command returning something else, or the point already covered by another task - discard, do not downgrade. This applies to NIT as much as to BLOCK.
 
-Discarding most candidates is a normal outcome.
+Rank what survives by those two, then label it. A BLOCK means the executor does the wrong thing, gets stuck, or cannot start: a path that does not exist, a decision the plan never made, a step out of order, a requirement from the source artifact with no task, an instruction that contradicts a rule the plugin enforces on the executor. The precision of the plan's own checks, its wording, and anything the reader would still act correctly on is a NIT.
+
+Discarding most candidates is a normal outcome. A plan does not have to be perfect to be executable - that is the bar the report is written against.
 
 Open `[NEEDS CLARIFICATION]` markers are a BLOCK, verified mechanically: `rg "NEEDS CLARIFICATION" <plan>`.
 
@@ -71,4 +73,4 @@ Only on explicit user request, save the result by appending a `## PLAN REVIEW NO
 
 ## NEXT
 
-Plan clean -> `/nxs:exec` to implement. Findings to fix -> `/nxs:plan` to revise the plan, then re-review.
+Plan clean -> `/nxs:exec` to implement. Findings -> `/nxs:plan` to revise the plan; the user decides what to fix. Plancheck runs once per plan - nothing here re-runs it.

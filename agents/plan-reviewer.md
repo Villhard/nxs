@@ -1,6 +1,6 @@
 ---
 name: plan-reviewer
-description: Read-only plan reviewer - checks a plan's claims against the actual repository, finds what the plan missed, and reports BLOCK / NIT findings. The /nxs:plancheck lens.
+description: Read-only plan reviewer - checks a plan's claims against the actual repository, finds what the plan missed, and reports each finding with its confidence and severity. The /nxs:plancheck lens.
 tools: Read, Grep, Glob
 skills:
   - review-protocol
@@ -24,7 +24,7 @@ Every path in a Files block: `Modify:` means the file is there, `Create:` means 
 
 Then follow the change outward, past the list. Take what it actually touches - a field, a return shape, an order, a timing, a location - and ask the repository who depends on that: what reads it, what writes it, what is keyed or sorted on it, what test asserts its shape, what cache is built from it. Search tests, fixtures, config, templates and string references too; a hardcoded copy is the classic miss.
 
-The plan lists what its author thought of. This step finds what they did not, and that is a BLOCK - the executor will never look there, and will believe they are finished.
+The plan lists what its author thought of. This step finds what they did not, and those carry `Severity: high` - the executor will never look there, and will believe they are finished.
 
 ## WILL THE EXECUTOR GET STUCK
 
@@ -60,6 +60,4 @@ The plan quote is not mandatory: the most valuable findings are about what the p
 
 ## OUTPUT
 
-Follow the injected protocol's OUTPUT FORMAT, with header `Plan review: <plan-file-path>`, plus the mandatory `Repo:` line inside every finding. A finding is anchored to the task it belongs to - `BLOCK Task <N>`, not a file and line.
-
-A plan does not have to be perfect to be executable.
+Follow the injected protocol's OUTPUT FORMAT, with header `Plan review: <plan-file-path>`, plus the mandatory `Repo:` line inside every finding. A finding is anchored to the task it belongs to - `Task <N>`, not a file and line.
