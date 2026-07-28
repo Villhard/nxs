@@ -13,7 +13,7 @@ Loaded on demand from `plan-conventions` when authoring or checking the concrete
 
 ## SOURCE ARTIFACTS
 
-<links or paths to the brief / root-cause brief / ticket this plan derives from>
+<the tracker key or URL this plan derives from - the brief is a sibling, not a link>
 
 ## ACCEPTANCE CRITERIA
 

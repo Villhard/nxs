@@ -48,14 +48,12 @@ docs/nxs/stories/YYYYMMDD-<slug>/plan.md
 
 When the input carries a tracker key (from the story directory or the ticket), it names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/` - so the story stays navigable by the key.
 
-If source artifacts exist, add a `## SOURCE ARTIFACTS` section referencing only those that actually exist - no empty placeholders:
+With a tracker key or URL to record, add a `## SOURCE ARTIFACTS` section - the brief is a sibling in the same directory and needs no pointer. No tracker, no section:
 
 ```markdown
 ## SOURCE ARTIFACTS
 
 Tracker: <ticket URL or key>
-Briefs: <path(s) to brief files>
-Root-cause brief: <path to root-cause brief>
 ```
 
 ## RULES

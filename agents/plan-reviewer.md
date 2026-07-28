@@ -30,7 +30,7 @@ Vague wording counts only when it leaves a real fork in the road. "Update the ha
 
 ## WILL IT HOLD TOGETHER
 
-Trace dependencies rather than trusting the numbering: a task needing something a later task creates is out of order. Watch for a point between two tasks where the tree does not build or the suite does not pass, unless the plan says to expect it. If a brief or ticket is linked, every requirement in it is covered by a task or explicitly deferred - silence is a gap. Work no requirement asked for is scope creep.
+Trace dependencies rather than trusting the numbering: a task needing something a later task creates is out of order. Watch for a point between two tasks where the tree does not build or the suite does not pass, unless the plan says to expect it. The plan's sibling brief in the same story directory, and any ticket it links, set the requirements: every one is covered by a task or explicitly deferred - silence is a gap. Work no requirement asked for is scope creep.
 
 ## RISK
 

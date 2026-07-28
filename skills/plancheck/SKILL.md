@@ -18,7 +18,7 @@ Example: /nxs:plancheck docs/nxs/stories/20260711-auth-refactor
 ## RESOLVE THE PLAN
 
 - Plan under review: the argument if given - a story directory resolves to its `plan.md` - otherwise the latest story under `docs/nxs/stories/` (not `completed/`) that contains a `plan.md`. If none is found or the choice is ambiguous, ask.
-- Source artifact for the scope check: the plan's `## SOURCE ARTIFACTS` section (brief, root-cause brief, tracker key / URL). If no source artifact exists, the scope check is skipped with a stated reason.
+- Source artifact for the scope check: the story's sibling brief, plus the tracker key or URL from the plan's `## SOURCE ARTIFACTS` section. If no source artifact exists, the scope check is skipped with a stated reason.
 
 ## REVIEW
 

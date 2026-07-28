@@ -9,7 +9,6 @@ keeps today's behavior for the first page.
 
 ## SOURCE ARTIFACTS
 
-- Brief: `docs/nxs/briefs/YYYYMMDD-items-pagination-rnd.md`
 - Tracker: PROJ-123
 
 ## ACCEPTANCE CRITERIA
