@@ -110,7 +110,7 @@ Unlike a skill, an agent DOES carry `name` - a skill spawns it by that name, so 
 
 ## ARTIFACT PATHS
 
-Each skill that writes an artifact states its own path in its `## ARTIFACT` section, and that is the only place the path lives. There is deliberately no shared table here - the old one duplicated those lines and drifted out of sync with them. README carries the human-facing overview. Where an artifact goes AFTER it is written is not a write path: the plan archive lives once in `plan-conventions`, and skills point at that rule instead of repeating the folder.
+Each skill that writes an artifact states its own path in its `## ARTIFACT` section, and that is the only place the path lives. There is deliberately no shared table here - the old one duplicated those lines and drifted out of sync with them. README carries the human-facing overview. Where an artifact goes AFTER it is written is not a write path: the story archive lives once in `plan-conventions`, and skills point at that rule instead of repeating the folder.
 
 Everything a skill writes goes under `docs/nxs/` in the current repository. Never create files outside those templates silently.
 
@@ -143,7 +143,7 @@ What a user or another plugin file depends on:
 
 1. command names `/nxs:<name>`, their arguments and modes;
 2. the names of background skills and agents, since other skills call for them by name;
-3. artifact paths and naming schemes (`docs/nxs/plans/YYYYMMDD-<slug>.md`);
+3. artifact paths and naming schemes (`docs/nxs/stories/YYYYMMDD-<slug>/plan.md`);
 4. artifact sections another skill reads: `## SOURCE ARTIFACTS`, `## ACCEPTANCE CRITERIA`, `## DEVELOPMENT APPROACH`, `## CONVENTIONS`, and `- [ ]` checkboxes;
 5. the gates that govern git and files: when a commit is allowed, what counts as a stop condition, what a skill writes to disk.
 

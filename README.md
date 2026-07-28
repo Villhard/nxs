@@ -44,15 +44,15 @@ Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`; the on
 
 ## Artifacts
 
-Working artifacts live under `docs/nxs/` in the current repository:
+One story is one whole verifiable unit of work whose plan tasks are its atomic steps, and it gets one directory under `docs/nxs/stories/` in the current repository:
 
-- `/nxs:rnd` -> `docs/nxs/briefs/YYYYMMDD-<slug>-rnd.md`
-- `/nxs:bug` -> `docs/nxs/briefs/YYYYMMDD-<slug>-bug.md`
-- `/nxs:plan` -> `docs/nxs/plans/YYYYMMDD-<slug>.md`, archived by hand to `docs/nxs/plans/completed/`
+- `/nxs:rnd` -> `docs/nxs/stories/YYYYMMDD-<slug>/brief.md`
+- `/nxs:bug` -> `docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md`
+- `/nxs:plan` -> `plan.md` beside it, the whole directory archived by hand to `docs/nxs/stories/completed/`
 - `/nxs:plancheck`, `/nxs:review` -> chat only
 - `/nxs:exec` -> code changes plus updated plan checkboxes
 
-With a tracker key the name carries it: `YYYYMMDD-<KEY>-<slug>.md`. These are local working files - keep `docs/` out of git if you do not want them committed.
+With a tracker key the directory carries it: `YYYYMMDD-<KEY>-<slug>/`. These are local working files - keep `docs/` out of git if you do not want them committed.
 
 ## Layout
 
