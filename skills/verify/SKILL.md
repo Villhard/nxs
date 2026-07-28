@@ -5,19 +5,19 @@ user-invocable: false
 
 # VERIFY
 
-Load before or after checking a code change. Workflow knowledge, not a user-invocable command. Used by `/nxs:exec` (after every task) and `/nxs:review` (to check the diff).
+Used by `/nxs:exec` (after every task) and `/nxs:review` (to check the diff).
 
 ## PROCEDURE
 
 1. Inspect the project for a build / task manifest: `package.json` / `pyproject.toml` / `go.mod` / `Makefile` / `Cargo.toml`.
 2. Find existing scripts: test, lint, format, typecheck, build.
-3. Prefer the project's scripts over ad-hoc commands.
-4. Format runs first, in apply mode, scoped to the files touched by the current task diff when the tool accepts file arguments (existing `format` script, prettier, ruff format, gofmt, black). Never format files outside the task diff - no drive-by formatting. Report whether it changed anything.
-5. Lint runs in check mode only - no auto `--fix` (lint fixes can change behavior). Failures go to the report; the main context fixes them consciously.
+3. Run only commands that exist in the project - its own scripts first, ad-hoc commands only where the project has none.
+4. Format runs first, in apply mode, scoped to the files touched by the current task diff when the tool accepts file arguments (existing `format` script, prettier, ruff format, gofmt, black). Files outside the task diff stay untouched. Report whether it changed anything.
+5. Lint runs in check mode only, without auto `--fix`, since lint fixes can change behavior. Failures go to the report; the orchestrator fixes them consciously.
 6. Run only what permissions allow; mark anything without permission as skipped.
-7. Do not run heavy / long commands without need (a build on a unit-test change is overkill).
+7. Keep heavy / long commands for when they are needed - a build on a unit-test change is overkill. Destructive operations (db migrate, deploy, prod-touching) stay out entirely.
 8. Select the minimal command set by change type (table below).
-9. Collect output, classify it, return the report.
+9. Run the whole set even after a failure, then collect output, classify it, and return the report.
 
 ## MINIMAL COMMAND SET BY CHANGE TYPE
 
@@ -31,6 +31,8 @@ Load before or after checking a code change. Workflow knowledge, not a user-invo
 
 ## OUTPUT FORMAT
 
+"skipped", "not found", and "failed" mean different things and stay in separate lines.
+
 ```
 commands run: <list>
 commands skipped: <list + reason>
@@ -39,24 +41,17 @@ failures: <list with output>
 follow-up needed: <list>
 ```
 
-## RULES
-
-- Do not invent commands - use only what exists in the project.
-- Do not run destructive operations (db migrate, deploy, prod-touching).
-- Distinguish "skipped", "not found", and "failed" - they mean different things.
-- Do not abort on the first failure - continue with the rest and collect a summary.
-
 ## TDD-LOOP VERIFY BEHAVIOR
 
-When the plan fixes the TDD development approach, verify operates per-behavior within a slice, not project-wide each time:
+When the plan fixes the TDD development approach, verify operates per-behavior within a slice rather than project-wide each time:
 
-- RED - run exactly the new test (or a narrow group) expected to fail. Confirm the failure comes from the missing behavior, not from a compile / setup / import / fixture error. Do not run the full suite in this phase.
-- GREEN - run the same test and confirm it passes. Additionally run the relevant neighboring tests of the module to catch regressions from the minimal implementation.
-- REFACTOR - run at minimum the tests of the affected module; behavior must not change. Never runs while the cycle is in RED.
-- After a slice / task is finished - run the standard scope from the change-type table (format / lint / typecheck / module tests), not a project-wide build every cycle. Format and lint join at the slice / task level, not inside every RED -> GREEN cycle.
+- RED - run exactly the new test (or a narrow group) expected to fail. Confirm the failure comes from the missing behavior, not from a compile / setup / import / fixture error. The full suite waits.
+- GREEN - run the same test and confirm it passes, plus the relevant neighboring tests of the module to catch regressions from the minimal implementation.
+- REFACTOR - run at minimum the tests of the affected module; behavior must not change. Runs only once the cycle is green.
+- After a slice / task is finished - run the standard scope from the change-type table (format / lint / typecheck / module tests). Format and lint join at the slice / task level, not inside every RED -> GREEN cycle.
 
-If RED cannot technically be confirmed (no infrastructure to run a single test, no runner for the required framework), note it in the report as `confirm RED skipped: <reason>` and do not mark the cycle as a full TDD; hand the decision to the user.
+If RED cannot technically be confirmed (no infrastructure to run a single test, no runner for the required framework), note it in the report as `confirm RED skipped: <reason>`, leave the cycle unmarked as a full TDD, and hand the decision to the user.
 
 ## GATE ROLE
 
-Verify is mandatory after every task in `/nxs:exec` and before any commit. A verify pass is a precondition of the commit gate; the gate contract itself is owned by `/nxs:exec`. Verify failing, or required checks missing, blocks the commit - the main context fixes the failure and re-runs verify before proceeding. The rest of the cycle (task loop, review-fix loop, stop conditions) lives in `/nxs:exec`.
+Verify is mandatory after every task in `/nxs:exec` and before any commit: a verify pass is a precondition of the commit gate, and a failure or a missing required check blocks the commit until the orchestrator fixes it and re-runs verify. The gate contract itself, and the rest of the cycle (task loop, review-fix loop, stop conditions), lives in `/nxs:exec`.

@@ -2,6 +2,15 @@
 
 Loaded on demand from `plan-conventions` when authoring or checking the concrete shape of a plan.
 
+## Contents
+
+- Plan skeleton
+- Strict task template
+- Acceptance criteria scaling
+- Test cases scaling
+- Success criteria by task type
+- Scope changes during execution
+
 ## PLAN SKELETON
 
 ```markdown
@@ -66,15 +75,10 @@ Each task follows this shape:
 Success: a password hashes and verifies through the public functions; an empty password is rejected.
 ```
 
-Rules for the template:
+Required elements and their bar are in `plan-conventions` -> PER-TASK WELL-FORMEDNESS. The one that is easiest to get wrong is splitting tests out of the implementation step:
 
-- **Title** - specific and descriptive. Bad: "Implementation", "Core changes", "Setup".
-- **Files block** - mandatory Create / Modify with exact paths. Without it the plan is incomplete.
-- **Checklist** - tests are separate items, never bundled with implementation:
-  - Good: `- [ ] write tests for HashPassword (error cases)`
-  - Bad: `- [ ] implement HashPassword and write tests`
-- **Verification** - the final checklist item runs tests / lint / typecheck / manual repro / e2e.
-- **Success** - one line after the checklist naming the observable outcome of the task. Forms by task type are below.
+- Good: `- [ ] write tests for HashPassword (error cases)`
+- Bad: `- [ ] implement HashPassword and write tests`
 
 ## ACCEPTANCE CRITERIA SCALING
 
@@ -116,16 +120,4 @@ If scope changes while executing:
 - mark blockers with the prefix `⚠️`;
 - the final state of the plan must match the work actually done.
 
-Task completion is tracked by flipping checkboxes `- [ ]` -> `- [x]` inside the plan file; `/nxs:exec` updates them after a task is done. Archiving the plan happens separately, after explicit user confirmation - not automatically on the last checkbox.
-
-## COMPLEXITY TRACKING TABLE
-
-```markdown
-## COMPLEXITY TRACKING
-
-| deviation | why needed | why simpler alternative rejected |
-|---|---|---|
-| horizontal "create all models" task | migration has no working intermediate state | vertical slice impossible until schema exists |
-```
-
-One row per deviation. An empty "why simpler alternative rejected" cell makes the justification incomplete. This table is the single justification location.
+Task completion is tracked by flipping checkboxes `- [ ]` -> `- [x]` inside the plan file; `/nxs:exec` updates them after a task is done. Archiving the plan happens separately, after explicit user confirmation.

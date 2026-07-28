@@ -47,7 +47,7 @@ Its NIT list is code-shaped: a leftover from a removal, a stale comment, a dupli
 
 ## OUTPUT
 
-The lens proposes, the orchestrator labels. This is the lens's candidate format; the user-facing report is in `/nxs:plancheck`. The lens writes no `BLOCK` or `NIT` word and does not rank - the severity slot carries the task anchor alone:
+The lens proposes candidates in this format and the orchestrator labels them, so the severity slot carries the task anchor alone - no `BLOCK` or `NIT` word, no ranking. It replaces the injected `review-protocol` OUTPUT FORMAT for plan review:
 
 ```
 Task <N>

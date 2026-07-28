@@ -32,7 +32,7 @@ Does the diff implement its source artifact fully, and nothing else. Find that a
 3. a tracker URL from the plan, the PR, or the user;
 4. a spec document in the repo that the plan or PR points to.
 
-No `docs/nxs/stories/` at all: step 2 falls back to the latest plan under `docs/nxs/plans/` (not `completed/`) and a brief under `docs/nxs/briefs/` named by the plan, the branch, or the PR description. Read-only compatibility with the pre-story layout - nothing is ever written there - removable in a later release.
+No `docs/nxs/stories/` at all: step 2 falls back to the latest plan under `docs/nxs/plans/` (not `completed/`) and a brief under `docs/nxs/briefs/` named by the plan, the branch, or the PR description. This is read-only compatibility with the pre-story layout; nothing is ever written there.
 
 None found: report `Spec axis: skipped (no spec/source artifact available)` and move on.
 

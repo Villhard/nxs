@@ -5,16 +5,16 @@ user-invocable: false
 
 # PLAN CONVENTIONS
 
-Load when writing or checking an implementation plan. Workflow rules, not a user-invocable command. Shared by `/nxs:plan`, `/nxs:plancheck`, `/nxs:exec`, `/nxs:rnd`.
+Shared by `/nxs:plan`, `/nxs:plancheck`, `/nxs:exec`, `/nxs:rnd`.
 
-A plan is the source of truth for execution: it has a concrete structure, is updated when scope changes, and must be reviewable. If a plan is not reviewable (unclear task scope, missing files, missing tests, missing verification), it is not ready.
+A plan is the source of truth for execution: it has a concrete structure, is updated when scope changes, and is reviewable. Unclear task scope, missing files, missing tests, or missing verification means it is not ready.
 
 ## DEVELOPMENT APPROACH
 
 The plan records the approach in one line right after Acceptance Criteria. `/nxs:exec` branches on it. Allowed values:
 
 - **default** - ordinary implementation; tests are written together with the code for each task.
-- **TDD** - for each narrow behavior write a failing test first, then minimal code, then refactor while green. See `reference/tdd.md`.
+- **TDD** - for each narrow behavior write a failing test first, then minimal code, then refactor while green. Full discipline: `reference/tdd.md`.
 - **tracer-bullet** - first a thin end-to-end path through all layers for UX / feasibility; tests as the slice expands.
 - **spike / investigation** - the goal is an answer to a question, not shippable code; the artifact is findings / a brief, not a feature.
 
@@ -34,13 +34,13 @@ Required sections, in order:
 
 - **Overview** - what the plan does and why.
 - **SOURCE ARTIFACTS** - the tracker key or URL this plan derives from, so review can trace scope. The brief is a sibling in the same story directory and needs no pointer. Nothing to point at, no section.
-- **ACCEPTANCE CRITERIA** - verifiable readiness criteria for the whole plan. Separate from per-task verification: task verification checks a step, AC checks the plan as a whole. `/nxs:exec` checks against AC, not only checkboxes.
+- **ACCEPTANCE CRITERIA** - verifiable readiness criteria for the whole plan. Task verification checks a step; AC checks the plan as a whole, and `/nxs:exec` checks against AC rather than checkboxes alone.
 - **DEVELOPMENT APPROACH** - one line, right after Acceptance Criteria (see above).
-- **CONVENTIONS** - optional; the rules and shared steps every task in the plan follows: code style and naming for this work, a procedure repeated per task, standing preferences the user stated for this effort. Only what applies to every task belongs here - detail specific to one task stays in that task. No such rules, no section. `/nxs:exec` passes this section to every worker, so what is missing here does not reach the code.
+- **CONVENTIONS** - optional; the rules and shared steps every task follows: code style and naming for this work, a procedure repeated per task, standing preferences the user stated for this effort. Detail specific to one task stays in that task. No such rules, no section. `/nxs:exec` passes this section to every worker, so what is missing here does not reach the code.
 - **Implementation** - each task well-formed (see below).
-- **COMPLEXITY TRACKING** - only when the plan deviates from these conventions (see below); no deviations, no section.
+- **COMPLEXITY TRACKING** - only when the plan deviates from these conventions (see below).
 
-Full skeleton and scaling of Acceptance Criteria: `reference/plan-template.md`. `/nxs:plan` states where the file goes; move the whole story directory to `docs/nxs/stories/completed/` after completion, separately, on explicit user confirmation.
+Full skeleton and scaling of Acceptance Criteria: `reference/plan-template.md`. `/nxs:plan` states where the file goes; after completion the whole story directory moves to `docs/nxs/stories/completed/`, separately, on explicit user confirmation.
 
 ## PER-TASK WELL-FORMEDNESS
 
@@ -48,7 +48,7 @@ Each task is one atomic, independently verifiable logical change (one function, 
 
 - **title** - a concrete name, not "Implementation", "Core logic", or "Setup".
 - **Files block** - mandatory, exact Create / Modify paths. Without it the plan is incomplete and `/nxs:exec` stops on the task.
-- **Test cases** - for a task with behavioral code changes, a `**Test cases:**` block right after the Files block: concrete checks with expected outcome, describing what we check (the contract), separate from how the tests are written. A behavioral task without them is incomplete.
+- **Test cases** - for a task with behavioral code changes, a `**Test cases:**` block right after the Files block: concrete checks with expected outcome, describing the contract, separate from how the tests are written. A behavioral task without them is incomplete.
 - **checklist** - steps as `- [ ]`, marked `- [x]` when done. Tests are separate items, never bundled with the implementation.
 - **success criteria** - an observable outcome of the task.
 - **verification** - a final item: run tests / lint / typecheck / acceptance check.
@@ -60,9 +60,9 @@ Full task template, Test-cases scaling, and success-criteria forms by task type:
 ## TASK SIZING, DECOMPOSITION, SEQUENCING
 
 - Target size ~5 checkboxes per task. Too large (> 8) - split; too small (1-2) - merge into the same logical unit; logically atomic - keep even if larger.
-- Tasks are by default thin vertical slices, not thick horizontal layers (see below).
+- Tasks are by default thin vertical slices, not thick horizontal layers. Definition, good and bad examples, and the allowed exceptions: `reference/vertical-slice.md`. Each exception is justified in COMPLEXITY TRACKING.
 - Sequence tasks by dependency: groundwork a later slice needs comes first.
-- `➕` prefixes a task added mid-execution; `⚠️` prefixes a blocker. The final plan state must match the work actually done.
+- `➕` prefixes a task added mid-execution; `⚠️` prefixes a blocker. The final plan state matches the work actually done.
 
 ### NEEDS CLARIFICATION markers
 
@@ -72,35 +72,26 @@ An open decision is marked in the artifact itself instead of a plausible guess:
 [NEEDS CLARIFICATION: <specific question>]
 ```
 
-- Mark only if the answer changes the decision; do not mark trivia.
+- Mark only if the answer changes the decision; trivia stays unmarked.
 - A marker resolved in conversation is edited out of the file in the same turn - a stale marker causes a false block.
 - A plan with open markers is valid but not ready for execution: `/nxs:plancheck` and `/nxs:exec` both run `rg "NEEDS CLARIFICATION" <plan>` before execution starts.
 
-## TDD LOOP (essence)
-
-When the approach is TDD, per narrow behavior: **RED** (one failing test through the public interface) -> **GREEN** (minimal code to pass) -> **REFACTOR** (improve structure while green). One behavior, one test, one cycle - not all tests first. Test through the public interface, not private internals. Never refactor while RED. A TDD task is framed through behavior, its Test cases describe observable cases, and its checklist has explicit RED / GREEN / REFACTOR steps per behavior. Full discipline, anti-patterns, and when-not-TDD: `reference/tdd.md`.
-
-## VERTICAL SLICE (essence)
-
-A task is by default a vertical slice: one narrow observable behavior across all the layers it needs and only those, independently verifiable, delivering a working end-to-end path. Prefer many thin slices to a few thick ones; the Files block usually touches several layers at once, which is normal. Horizontal-by-layer tasks ("create all models", then "all services", then "all tests") are an exception, allowed only for pure scaffolding, a migration / refactor with a non-functional intermediate state, or shared groundwork without which no slice runs - and each such exception is justified in COMPLEXITY TRACKING. Detail and examples: `reference/vertical-slice.md`.
-
 ## COMPLEXITY TRACKING
 
-A plan that deviates from these conventions records every deviation in one table:
+A plan that deviates from these conventions records every deviation in one table - horizontal slicing, a task over the size guideline, skipped tests, and similar:
 
 ```markdown
 ## COMPLEXITY TRACKING
 
 | deviation | why needed | why simpler alternative rejected |
 |---|---|---|
+| horizontal "create all models" task | migration has no working intermediate state | vertical slice impossible until schema exists |
 ```
 
-- Filled only on deviation: horizontal slicing, a task larger than the size guideline, skipped tests, and similar. No deviations - no section.
-- One deviation per row. An empty "why simpler alternative rejected" cell makes the justification incomplete.
-- This table is the single justification location; deviations are not justified by prose elsewhere.
+One row per deviation. An empty "why simpler alternative rejected" cell makes the justification incomplete. This table is the single justification location; no deviations, no section.
 
 ## REFERENCE
 
 - `reference/plan-template.md` - full plan skeleton, strict task template, scaling of Acceptance Criteria / Test cases / success criteria, scope-change markers.
-- `reference/tdd.md` - full RED -> GREEN -> REFACTOR discipline, rules, anti-patterns, when not to use TDD, plan-level framing.
+- `reference/tdd.md` - RED -> GREEN -> REFACTOR discipline, rules, anti-patterns, when not to use TDD, plan-level framing.
 - `reference/vertical-slice.md` - vertical-slice definition, good vs bad examples, rules, when vertical does not fit.

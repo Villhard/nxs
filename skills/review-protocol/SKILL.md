@@ -5,13 +5,13 @@ user-invocable: false
 
 # REVIEW PROTOCOL
 
-Load during code or plan review. Workflow discipline, not a user-invocable command. This is the single shared protocol every reviewer follows; the orchestrator injects its full text into each lens subagent's prompt, and the subagent does not navigate any external source.
+The single shared protocol every lens follows. The orchestrator injects its full text into each lens prompt, so the lens works from this text alone.
 
 ## STANCE
 
-Read-only. Do not edit the code or plan under review - only report findings back to the main context.
+Read-only. Report findings back to the orchestrator; the code and plan under review stay untouched.
 
-A review that reports nothing is a good review. Silence is the default; you are not measured by how much you found.
+A review that reports nothing is a good review. Silence is the default.
 
 ## VERIFY EVERY FINDING
 
@@ -40,8 +40,6 @@ Tie-breaks: unsure between BLOCK and NIT, choose NIT. Unsure between NIT and DRO
 
 Findings first - no preamble, no praise, no narration. Nothing confirmed, say so and stop.
 
-A BLOCK answers three questions. A NIT is one line - a nit that needs explaining is a nit the reader should not be reading.
-
 ```
 <Lens> review: <scope>
 
@@ -57,6 +55,8 @@ Verdict: CLEAN | FINDINGS
 
 Each of the three is one sentence. `Issue` names the problem, not the mechanics of the code around it. `Impact` says what actually happens - "any request without a scope gets a full-access token", not "this weakens the authorization model". `Fix` says what to change, not how to write it.
 
-Plain words. One claim per sentence, naming the thing, the action, and the consequence. No terms coined on the spot: "the check misses an empty scope, so any request passes", never "the check does not operationalize scope validation". Someone who has not opened the file understands it on first read.
+A NIT is one line: a nit that needs explaining is a nit the reader should not be reading.
 
-Rank BLOCK findings by impact, worst first. Emit every confirmed finding; never pad to look thorough.
+Plain words, one claim per sentence, naming the thing, the action, and the consequence. Use the words the codebase uses rather than terms coined on the spot: "the check misses an empty scope, so any request passes", never "the check does not operationalize scope validation".
+
+Rank BLOCK findings by impact, worst first. Emit every confirmed finding and nothing beyond them.

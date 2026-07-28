@@ -1,6 +1,6 @@
 # REVIEW POLICY (reference)
 
-Loaded on demand from `/nxs:review` and injected into both review lenses beside `review-protocol`. Holds what the base protocol does not: where a requirement may come from, and the few classification calls that are easy to get wrong. Each call binds whichever lens owns that ground; it never widens a lens's ground. The orchestrator's own work - finding the source artifact, listing the standards, the report header - is in `review-axes.md`, and no lens sees it.
+Loaded on demand from `/nxs:review` and injected into both lenses beside `review-protocol`. Holds what the base protocol does not: where a requirement may come from, and the few classification calls that are easy to get wrong. Each call binds whichever lens owns that ground and never widens it.
 
 ## WHERE A REQUIREMENT COMES FROM
 

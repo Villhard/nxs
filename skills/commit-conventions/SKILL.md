@@ -5,7 +5,7 @@ user-invocable: false
 
 # COMMIT CONVENTIONS
 
-Load before any `git add` / `git commit` / `git push`. Workflow rules, not a user-invocable command. These conventions are shared by `/nxs:exec` and `/nxs:commit` - message format, atomicity, staging hygiene, and git safety. When a commit may run - the workflow gate - lives in the command that commits, not here; secret safety and destructive-op confirmation are enforced by the global tier-1 block, which fires even when this skill does not load.
+Load before any `git add` / `git commit` / `git push`. Shared by `/nxs:exec` and `/nxs:commit`: message format, atomicity, staging hygiene, git safety. When a commit may run - the workflow gate - lives in the command that commits. Secret safety and destructive-op confirmation are enforced by the global tier-1 block, which fires even when this skill does not load.
 
 ## GIT SAFETY
 

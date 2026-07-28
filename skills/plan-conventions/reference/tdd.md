@@ -2,8 +2,6 @@
 
 Loaded on demand from `plan-conventions` when the plan's development approach is TDD. For each narrow behavior: write one failing test -> write minimal code to pass -> refactor while tests stay green; one behavior per cycle.
 
-One behavior at a time forces design through actual usage of the public interface. Minimal code until green prevents premature generalization. Refactoring only while green prevents changing structure and behavior at once. "All tests first, all code later" is not TDD - it is a test-first dump without a feedback loop.
-
 ## THE RED -> GREEN -> REFACTOR CYCLE
 
 1. **RED** - write one failing test for an observable behavior through the public interface. Run it. Make sure it fails specifically because of the missing behavior, not because of compile / setup errors.
