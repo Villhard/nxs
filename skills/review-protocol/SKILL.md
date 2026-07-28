@@ -46,6 +46,6 @@ Verdict: CLEAN | FINDINGS
 
 `Issue`, `Impact`, and `Fix` are one sentence each. `Issue` names the problem, not the mechanics of the code around it. `Impact` says what actually happens - "any request without a scope gets a full-access token", not "this weakens the authorization model". `Fix` says what to change, not how to write it. `Confidence` is how sure you are the finding is real; `Severity` is what it costs if it is.
 
-Plain words. One claim per sentence, naming the thing, the action, and the consequence. No terms coined on the spot: "the check misses an empty scope, so any request passes", never "the check does not operationalize scope validation". Someone who has not opened the file understands it on first read.
+Someone who has not opened the file understands the finding on first read.
 
 Report every finding you have - the orchestrator decides which ones reach the user; never pad to look thorough.

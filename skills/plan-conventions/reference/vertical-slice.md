@@ -11,7 +11,7 @@ A vertical slice is a task that:
 - can be executed and verified independently of neighboring slices;
 - delivers a working end-to-end path, even if the behavior is narrow.
 
-A horizontal task is organized by layers ("create all models", "add all services", "wire everything") - an anti-pattern when a vertical slice is actually possible. Horizontal-by-layer tasks produce a lot of code without working behavior and postpone the first rollback-able green build; design errors surface later and more expensively.
+A horizontal task is organized by layers ("create all models", "add all services", "wire everything") - an anti-pattern when a vertical slice is actually possible.
 
 ## GOOD - THIN VERTICAL SLICES
 

@@ -7,11 +7,15 @@ user-invocable: false
 
 Load when writing or checking an implementation plan, or a brief that feeds one. Workflow rules, not a user-invocable command. Shared by `/nxs:plan`, `/nxs:plancheck`, `/nxs:exec`, `/nxs:rnd`, `/nxs:bug`.
 
-A plan is the source of truth for execution: it has a concrete structure, is updated when scope changes, and must be reviewable. If a plan is not reviewable (unclear task scope, missing files, missing tests, missing verification), it is not ready.
+A plan is the source of truth for execution: it has a concrete structure, is updated when scope changes, and is not ready until it is reviewable.
 
 ## DELIVERABLE LENGTH
 
 Match the length of a written artifact - a plan, a brief, a root-cause brief - to what the task needs: cover the substance and stop. No filler sections, no redundant summaries, no boilerplate.
+
+## REASONING IS NOT A DELIVERABLE
+
+No task, convention, or checklist item asks the executor to restate, transcribe, or explain its internal reasoning in its response - that instruction can trigger a refusal. Ask for the result and the evidence behind it.
 
 ## DEVELOPMENT APPROACH
 

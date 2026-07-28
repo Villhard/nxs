@@ -24,7 +24,7 @@ Example: /nxs:bug PROJ-4213
 
 ## DIAGNOSIS LOOP
 
-A disciplined engineering cycle: build a cheap feedback loop, reproduce the exact symptom, minimize, form ranked falsifiable hypotheses with predictions, instrument one at a time, confirm with facts. Guess-based fixes are the main source of regressions; without a reproducible symptom any fix is a lottery; without a minimized repro the investigation drowns in noise; without predictions a hypothesis is a story, not a theory; parallel variable changes destroy the signal.
+A disciplined engineering cycle: build a cheap feedback loop, reproduce the exact symptom, minimize, form ranked falsifiable hypotheses with predictions, instrument one at a time, confirm with facts. Skipping a phase leaves a guess where evidence should be.
 
 ### Feedback loop - choice
 
