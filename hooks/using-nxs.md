@@ -15,7 +15,7 @@ The nxs commands (`rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`, `commit`)
 Two triggers are easy to miss because no command name is spoken:
 
 - **Any `git add` / `git commit` / `git push`** -> load the `commit-conventions` skill first (message format, atomicity, git safety). When the user asks to commit working changes, use `/nxs:commit`.
-- **Input carries a tracker key / URL or a pasted ticket** -> read the ticket first (through the tracker if reachable, otherwise ask the user to paste it; never invent its content from the key), and name any brief or plan by the key: `YYYYMMDD-<KEY>-<slug>`.
+- **Input carries a tracker key / URL or a pasted ticket** -> read the ticket first (through the tracker if reachable, otherwise ask the user to paste it; never invent its content from the key), and name the story directory by the key: `YYYYMMDD-<KEY>-<slug>/`. The key names the directory, never the `brief.md` / `plan.md` files inside it.
 
 ## Red flags
 

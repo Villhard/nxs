@@ -59,10 +59,10 @@ Pressure-test the approach EXPLORE recommended before writing it into the brief.
 Write a brief:
 
 ```
-docs/nxs/briefs/YYYYMMDD-<slug>-rnd.md
+docs/nxs/stories/YYYYMMDD-<slug>/brief.md
 ```
 
-When the input carries a tracker key, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-rnd.md` - so the brief stays navigable by the key.
+When the input carries a tracker key, it names the story directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/` - so the story stays navigable by the key. The files inside keep their fixed names.
 
 Keep the section skeleton stable - `/nxs:plan` consumes the brief by these headings:
 

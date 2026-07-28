@@ -40,7 +40,7 @@ Required sections, in order:
 - **Implementation** - each task well-formed (see below).
 - **COMPLEXITY TRACKING** - only when the plan deviates from these conventions (see below); no deviations, no section.
 
-Full skeleton and scaling of Acceptance Criteria: `reference/plan-template.md`. `/nxs:plan` states where the file goes; move it to `docs/nxs/plans/completed/` after completion, separately, on explicit user confirmation.
+Full skeleton and scaling of Acceptance Criteria: `reference/plan-template.md`. `/nxs:plan` states where the file goes; move the whole story directory to `docs/nxs/stories/completed/` after completion, separately, on explicit user confirmation.
 
 ## PER-TASK WELL-FORMEDNESS
 

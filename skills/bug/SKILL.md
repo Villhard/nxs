@@ -102,10 +102,10 @@ Enabled automatically when key evidence is unavailable to the agent, or on expli
 Write a root-cause brief:
 
 ```
-docs/nxs/briefs/YYYYMMDD-<slug>-bug.md
+docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md
 ```
 
-When the input carries a tracker key, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-bug.md` - so the brief stays navigable by the key.
+When the input carries a tracker key, it names the story directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/` - so the story stays navigable by the key. The files inside keep their fixed names.
 
 It captures: symptom; feedback loop / repro method; minimized repro; evidence; ranked hypotheses; tested probes; 5-Why chain; confirmed root cause; assumptions; fix direction; regression test idea; verification plan.
 

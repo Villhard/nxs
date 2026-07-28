@@ -28,10 +28,9 @@ Read only what exists. A standard from memory, or "it is accepted here" without 
 Does the diff implement its source artifact fully, and nothing else. Find that artifact in this order, stopping at the first hit:
 
 1. a path given as the command argument;
-2. the latest active plan under `docs/nxs/plans/` (not `completed/`), and its `## SOURCE ARTIFACTS` section;
-3. a brief under `docs/nxs/briefs/` named by the plan, the branch, or the PR description;
-4. a tracker URL from the plan, the PR, or the user;
-5. a spec document in the repo that the plan or PR points to.
+2. the latest active story under `docs/nxs/stories/` (not `completed/`) - its `plan.md`, the sibling brief beside it, and the plan's `## SOURCE ARTIFACTS` section;
+3. a tracker URL from the plan, the PR, or the user;
+4. a spec document in the repo that the plan or PR points to.
 
 None found: report `Spec axis: skipped (no spec/source artifact available)` and move on.
 

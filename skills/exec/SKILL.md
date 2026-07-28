@@ -1,13 +1,13 @@
 ---
 description: Execute an implementation plan task by task and write the code - runs the plan to the end, with verify, review, and a commit after each task. Use after a plan is ready and plan-reviewed; add "no commits" to skip git.
-argument-hint: "[plan path] [no commits]"
+argument-hint: "[story path | plan path] [no commits]"
 ---
 
 # /nxs:exec
 
 Execute an existing implementation plan task by task, running the plan to the end. This is the one skill that changes project code - the orchestrator does not write it itself but delegates each task to one write-capable `nxs:worker` subagent. Self-contained skill. Output language and response style come from global rules, not this file.
 
-Example: /nxs:exec docs/nxs/plans/20260711-auth-refactor.md
+Example: /nxs:exec docs/nxs/stories/20260711-auth-refactor
 
 ## STANCE
 
@@ -15,11 +15,11 @@ Example: /nxs:exec docs/nxs/plans/20260711-auth-refactor.md
 - Minimal diff for the task, no speculative abstractions - the simplest solution that works. Out-of-scope findings become follow-ups, not edits.
 - The orchestrator does not write code itself. For every task it launches exactly one `nxs:worker` subagent (single writer, sequential); reviewer subagents stay read-only.
 - A natural-language **no commits** instruction skips git and changes nothing else about the cycle.
-- Archiving a finished plan happens only on explicit user confirmation, never automatically; `plan-conventions` says where it goes.
+- Archiving a finished story happens only on explicit user confirmation, never automatically; `plan-conventions` says where it goes.
 
 ## RESOLVE THE PLAN
 
-- Plan to execute: the argument path if given, otherwise the latest active plan under `docs/nxs/plans/`. If none is found or the choice is ambiguous, ask.
+- Plan to execute: the argument if given - a story directory resolves to its `plan.md` - otherwise the latest story under `docs/nxs/stories/` (not `completed/`) that contains a `plan.md`. If none is found or the choice is ambiguous, ask.
 - Read the plan's `## DEVELOPMENT APPROACH` section (see `plan-conventions`) and branch on it:
   - `default` - ordinary implementation; the cycle below applies unchanged.
   - `TDD` - the cycle is per behavior, not per task: one task = one or more short RED -> GREEN -> REFACTOR cycles (see TDD MODE below).
@@ -113,4 +113,4 @@ Exec-specific detail:
 
 ## NEXT
 
-Plan executed -> `/nxs:review` for a standalone review of the whole branch if you want one. Archive a finished plan on your confirmation.
+Plan executed -> `/nxs:review` for a standalone review of the whole branch if you want one. Archive a finished story on your confirmation.

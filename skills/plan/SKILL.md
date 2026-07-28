@@ -1,15 +1,15 @@
 ---
 description: Create an implementation plan that becomes the source of truth for execution - decompose a task, brief, or tracker input into sequenced, verifiable vertical-slice tasks. Use before executing non-trivial work, after a brainstorm or diagnosis, or whenever you need a reviewable plan.
-argument-hint: "[task | brief path | tracker key]"
+argument-hint: "[task | story path | tracker key]"
 ---
 
 # /nxs:plan
 
 Turn a task, brief, or tracker input into a well-formed implementation plan and stop. The plan becomes the source of truth for execution. Self-contained skill. Output language and response style come from global rules, not this file.
 
-Accepted input: a task description, a brainstorm brief (`docs/nxs/briefs/`), a root-cause brief from `/nxs:bug`, or a tracker key / URL / pasted ticket. A plan can be made with or without a brief - with no input, gather it here first.
+Accepted input: a task description, a story directory (`docs/nxs/stories/`) holding a brainstorm or root-cause brief, or a tracker key / URL / pasted ticket. A plan can be made with or without a brief - with no input, gather it here first.
 
-Example: /nxs:plan docs/nxs/briefs/20260711-auth-refactor-rnd.md
+Example: /nxs:plan docs/nxs/stories/20260711-auth-refactor
 
 ## STANCE (PLAN ONLY, HAND OFF)
 
@@ -40,13 +40,13 @@ Mark an open decision that would change the plan with `[NEEDS CLARIFICATION: <sp
 
 ## ARTIFACT
 
-Write the plan to:
+Write the plan into the story directory the input names, creating the directory when the input is a bare task with no prior brief:
 
 ```
-docs/nxs/plans/YYYYMMDD-<slug>.md
+docs/nxs/stories/YYYYMMDD-<slug>/plan.md
 ```
 
-When the input carries a tracker key (from the brief name or the ticket), include it - `docs/nxs/plans/YYYYMMDD-<KEY>-<slug>.md` - so the plan stays navigable by the key.
+When the input carries a tracker key (from the story directory or the ticket), it names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/` - so the story stays navigable by the key.
 
 If source artifacts exist, add a `## SOURCE ARTIFACTS` section referencing only those that actually exist - no empty placeholders:
 
