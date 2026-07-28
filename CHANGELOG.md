@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-07-28
+
+The artifacts of one unit of work now live together. `docs/nxs/briefs/` and `docs/nxs/plans/` give way to one directory per story, holding the brief and the plan side by side and archived as a whole.
+
+### Added
+
+- A read-only fallback in the Spec axis: with no `docs/nxs/stories/` present, review still finds a plan under `docs/nxs/plans/` and a brief under `docs/nxs/briefs/`. Compatibility only - nothing is ever written to the old layout - and removable in a later release. Existing files stay where they are; there is no migration.
+
+### Changed
+
+- Artifact paths: `/nxs:rnd` writes `docs/nxs/stories/YYYYMMDD-<slug>/brief.md`, `/nxs:bug` writes `root-cause.md`, and `/nxs:plan` writes `plan.md` into the same directory, creating it when there is no prior brief. A tracker key names the directory, never the files inside it.
+- Archiving moves the whole story directory to `docs/nxs/stories/completed/`, still on explicit user confirmation only.
+- `/nxs:plancheck` and `/nxs:exec` resolve the latest story that contains a `plan.md`; an explicit argument may be a story directory or a plan file. The `argument-hint` of `plan`, `plancheck`, and `exec` changes accordingly.
+- `## SOURCE ARTIFACTS` records a tracker key or URL and nothing else - the brief is a sibling and needs no pointer - and is omitted without one.
+- The Spec axis resolves a story's plan and its sibling brief in one step instead of two.
+
 ## [0.11.0] - 2026-07-23
 
 Simplify the architecture: every non-command skill is now a plain rules contract, and a SessionStart hook makes the commands fire on their trigger. The `intake` dispatcher is gone, and a real `/nxs:commit` command commits working changes.
