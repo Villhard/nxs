@@ -5,7 +5,7 @@ argument-hint: "[task | brief path | tracker key]"
 
 # /nxs:plan
 
-Turn a task, brief, or tracker input into a well-formed implementation plan and stop. The plan becomes the source of truth for execution.
+Turn a task, brief, or tracker input into a well-formed implementation plan and stop. The plan becomes the source of truth for execution. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Accepted input: a task description, a brainstorm brief (`docs/nxs/briefs/`), a root-cause brief from `/nxs:bug`, or a tracker key / URL / pasted ticket. A plan can be made with or without a brief - with no input, gather it here first.
 
@@ -20,7 +20,7 @@ Example: /nxs:plan docs/nxs/briefs/20260711-auth-refactor-rnd.md
 ## CONTEXT
 
 - When a domain term in the task is fuzzy or ambiguous, stop and clarify it before encoding it into the plan rather than guessing its meaning.
-- Inspect project context before decomposing: read the relevant files, patterns, and dependencies. Delegate to the built-in Explore agent when the files that answer the question are unknown and finding them means sweeping the repository; read directly when you can name the files. Do not over-read.
+- Inspect project context before decomposing: read the relevant files, patterns, and dependencies (delegate to the built-in Explore agent or inspect directly). Do not over-read.
 
 ## PROCEDURE
 
@@ -34,7 +34,7 @@ Example: /nxs:plan docs/nxs/briefs/20260711-auth-refactor-rnd.md
 
 ## PLAN STRUCTURE
 
-Follow the `plan-conventions` background skill for the required sections, development-approach values, the per-task template, TDD and vertical-slice discipline, NEEDS CLARIFICATION markers, deliverable length, and COMPLEXITY TRACKING. Do not restate that contract here - reference it and apply it.
+Follow the `plan-conventions` background skill for the required sections, development-approach values, the per-task template, TDD and vertical-slice discipline, NEEDS CLARIFICATION markers, and COMPLEXITY TRACKING. Do not restate that contract here - reference it and apply it.
 
 Mark an open decision that would change the plan with `[NEEDS CLARIFICATION: <specific question>]` in the plan itself instead of a plausible guess. A plan with open markers is valid but not ready for execution; the marker convention and its effect on review and execution are detailed in `plan-conventions`.
 

@@ -5,7 +5,7 @@ argument-hint: "[plan path] [no commits]"
 
 # /nxs:exec
 
-Execute an existing implementation plan task by task, running the plan to the end. This is the one skill that changes project code - the orchestrator does not write it itself but delegates each task to one write-capable `nxs:worker` subagent.
+Execute an existing implementation plan task by task, running the plan to the end. This is the one skill that changes project code - the orchestrator does not write it itself but delegates each task to one write-capable `nxs:worker` subagent. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Example: /nxs:exec docs/nxs/plans/20260711-auth-refactor.md
 
@@ -40,7 +40,7 @@ For each remaining unchecked task:
 1. Launch one `nxs:worker` subagent with the task, its acceptance criteria, and the conventions set (see WORKER LAUNCH). Read back its structured result - files changed, follow-ups, notes - not raw tool output.
 2. Update the plan (check the checkboxes).
 3. Run the `verify` skill scoped to the task change (format first in apply mode, then lint / typecheck / tests) so review sees a formatted, lint-clean diff.
-4. Review the task diff with `review`'s adaptive lens set (the lenses proportional to the change, not the full set) and its orchestrator pass, which applies the BLOCK / NIT classification. On a BLOCK, fix it and re-review the same scope until a zero-BLOCK round - a zero-BLOCK round, not "I fixed what was found". NIT findings are logged as follow-up and never gate the commit.
+4. Review the task diff with `review`'s adaptive lens set (the lenses proportional to the change, not the full set) and `review-protocol`'s BLOCK / NIT classification. On a BLOCK, fix it and re-review the same scope until a zero-BLOCK round - a zero-BLOCK round, not "I fixed what was found". NIT findings are logged as follow-up and never gate the commit.
 5. Run AC verification against the plan's `## ACCEPTANCE CRITERIA`. AC not met is a stop condition.
 6. verify pass + zero-BLOCK review round + AC met -> commit via `commit-conventions`; under no-commit, skip git instead.
 7. Move to the next task.
@@ -68,8 +68,6 @@ Two guards prevent looping forever on one task:
 
 ## STOP CONDITIONS
 
-**Stop and report** - on any of these, stop and report to the user:
-
 - dirty worktree at start without explicit approval;
 - missing plan, or an open `[NEEDS CLARIFICATION: ...]` marker in it;
 - missing Files block in the task;
@@ -84,7 +82,9 @@ Two guards prevent looping forever on one task:
 - review-fix cap exhausted with a BLOCK remaining, or stalemate detected;
 - under TDD: batched RED tests without an intermediate GREEN, a missing test seam without a plan-approved fix in this task, or a refactor attempt during RED.
 
-**Never** - exec does not do these at all; reporting first does not make them allowed:
+On any of these - stop and report to the user.
+
+## WHAT EXEC NEVER DOES
 
 - `git push` (with or without force), or create an MR / PR;
 - delete files outside the plan, or modify unrelated files;
@@ -109,7 +109,7 @@ Exec-specific detail:
 
 ## REFERENCE SKILLS
 
-`verify` (after every task and before any commit), `review` (the adaptive lens set the review step applies to the task diff, and the orchestrator pass that labels BLOCK / NIT), `review-protocol` (the shared protocol each lens preloads), `commit-conventions` (before any git write), `plan-conventions` (the plan structure and development approach).
+`verify` (after every task and before any commit), `review` (the adaptive lens set the review step applies to the task diff), `review-protocol` (the BLOCK / NIT classification), `commit-conventions` (before any git write), `plan-conventions` (the plan structure and development approach).
 
 ## NEXT
 

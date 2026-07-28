@@ -1,12 +1,11 @@
 ---
 description: Commit the current working changes - splits them into atomic commits with conventional messages. Use when you want to commit changes made outside `/nxs:exec`.
 argument-hint: "[optional scope hint]"
-disable-model-invocation: true
 ---
 
 # /nxs:commit
 
-Commit the changes already in the working tree, split into atomic commits. Use it for edits you made by hand, outside `/nxs:exec`.
+Commit the changes already in the working tree, split into atomic commits. Use it for edits you made by hand, outside `/nxs:exec`. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Message format, the atomicity rule, staging hygiene, and git safety come from the `commit-conventions` background skill - load it and follow it. This command owns only the procedure of grouping and committing.
 

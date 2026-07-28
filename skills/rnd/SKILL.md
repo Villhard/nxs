@@ -5,7 +5,7 @@ argument-hint: "[task | tracker key | question]"
 
 # /nxs:rnd
 
-Think a task through to a plan-ready brief and stop. The task entry point.
+Think a task through to a plan-ready brief and stop. The task entry point. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Accepted input: a task description, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work with the current session context.
 
@@ -20,7 +20,7 @@ Example: /nxs:rnd add rate limiting to the public API
 
 ## CONTEXT
 
-- Gather context before asking: read the relevant code, existing patterns, dependencies, integration points, and project memory. Delegate to the built-in Explore agent when the files that answer the question are unknown and finding them means sweeping the repository; read directly when you can name the files. Ask only about what the code does not answer. Do not over-read.
+- Gather context before asking: read the relevant code, existing patterns, dependencies, integration points, and project memory (delegate to the built-in Explore agent or inspect directly). Ask only about what the code does not answer. Do not over-read.
 - When a domain term is fuzzy or ambiguous, stop and clarify it before EXPLORE rather than guessing its meaning.
 
 ## CLARIFY
@@ -90,7 +90,7 @@ Keep the section skeleton stable - `/nxs:plan` consumes the brief by these headi
 ## Next
 ```
 
-A brief can be short for a simple task and detailed for a complex one: sections scale in depth, empty ones are dropped, headings are not renamed. Length follows the DELIVERABLE LENGTH rule in `plan-conventions`. Acceptance criteria surfaced in CLARIFY land in their own section - `/nxs:plan` pulls them from here. The CLARIFICATIONS and STRESS sections are appended only under their own conditions below.
+A brief can be short for a simple task and detailed for a complex one: sections scale in depth, empty ones are dropped, headings are not renamed. Acceptance criteria surfaced in CLARIFY land in their own section - `/nxs:plan` pulls them from here. The CLARIFICATIONS and STRESS sections are appended only under their own conditions below.
 
 Add a clarifications log only when at least one CLARIFY question was asked:
 

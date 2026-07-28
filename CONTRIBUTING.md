@@ -33,7 +33,7 @@ Tier 1 (global `~/.claude/CLAUDE.md`) and `settings.json` stay out of this repo 
 - Tier 2 - command skills `/nxs:<name>`: the workflow, visible in the `/` menu. There are seven: `rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`, `commit`.
 - Tier 3 - background skills (`user-invocable: false`): shared rules, loaded by relevance. There are four: `plan-conventions`, `review-protocol`, `verify`, `commit-conventions`.
 
-Alongside the tiers, a SessionStart hook (`hooks/`) injects the `using-nxs` routing context so a session matches a task to the right command before acting. It is infrastructure, not a skill - it lives in `hooks/`, not `skills/`.
+Alongside the tiers, a SessionStart hook (`hooks/`) injects the `using-nxs` discipline so a session checks for the right command before acting. It is infrastructure, not a skill - it lives in `hooks/`, not `skills/`.
 
 ## NAMING
 
@@ -49,7 +49,7 @@ Where a rule, policy, or term belongs:
 - always on (language, style, safety) -> tier 1, outside the plugin;
 - one command needs it -> inline in that skill's `SKILL.md` or its `reference/`;
 - several commands need it -> a tier 3 background skill;
-- several agents share it -> one single-source skill each of those agents preloads through its `skills:` frontmatter;
+- several agents share it -> one single-source file that the orchestrator reads once and injects verbatim into every agent prompt;
 - exactly one agent needs it -> inline in that agent's file.
 
 Security-critical content (never commit secrets, confirm destructive) never lives on tier 3 alone. Auto-load is heuristic and can miss; tier 1 always fires, so tier 1 carries the protection. Tier 3 states git safety around it - that a push needs an explicit request - which is workflow detail and holds only while the skill is loaded. When a commit is allowed lives in the command that commits (`exec`, `commit`), not in `commit-conventions`.
@@ -82,11 +82,10 @@ Things that bloat the repo and get rejected: copying an external skill wholesale
 ---
 description: <one line, drives model-invocation; when-to-use trigger + short what-it-produces, not the process>
 argument-hint: "[...]"
-disable-model-invocation: true   # optional
 ---
 ```
 
-Set `disable-model-invocation: true` only on a command with side effects whose timing the user controls - `commit` is the one that carries it; the model cannot fire it, the user types it. Keep `description` to the trigger plus a short clause on what the skill produces. Do not list phases or explain how the body works: a description that retells the workflow makes the model follow the retelling and skip the body, which is where the actual procedure lives. Every command skill also carries one `Example:` line with a real invocation right after the intro.
+Keep `description` to the trigger plus a short clause on what the skill produces. Do not list phases or explain how the body works: a description that retells the workflow makes the model follow the retelling and skip the body, which is where the actual procedure lives. Every command skill also carries one `Example:` line with a real invocation right after the intro.
 
 ### BACKGROUND SKILL FRONTMATTER
 
@@ -104,8 +103,6 @@ user-invocable: false
 name: <agent file name, without .md - this is what a skill spawns as nxs:<name>>
 description: <the role in one line, plus which command uses it>
 tools: <the exact tool list this agent may use>
-effort: <the reasoning effort this agent runs at - omit to inherit the session level>
-skills: <list of skills preloaded into the agent at startup>
 ---
 ```
 

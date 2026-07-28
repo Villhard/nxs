@@ -5,7 +5,7 @@ argument-hint: "[plan path]"
 
 # /nxs:plancheck
 
-Read-only review of an implementation plan before execution. Produce BLOCK / NIT / approve findings, then stop. This skill never edits the plan.
+Read-only review of an implementation plan before execution. Produce BLOCK / NIT / approve findings, then stop. This skill never edits the plan. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Example: /nxs:plancheck docs/nxs/plans/20260711-auth-refactor.md
 
@@ -22,7 +22,7 @@ Example: /nxs:plancheck docs/nxs/plans/20260711-auth-refactor.md
 
 ## REVIEW
 
-Delegate to one `nxs:plan-reviewer` subagent. It preloads `review-protocol` through its own `skills:` frontmatter - it does not review from memory, and an agent that started without the protocol stops with `protocol missing`.
+Delegate to one `nxs:plan-reviewer` subagent. Protocol injection is mandatory: read `review-protocol` (`${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`) once and include its full text in the agent's prompt. Path does not resolve -> find `review-protocol`'s `SKILL.md` inside the plugin before spawning anything; the agent does not review from memory. The agent does not restate the protocol - it receives it this way.
 
 The agent checks the plan's claims against the repository: paths that do not exist, places the plan missed, steps out of order, decisions the executor cannot make alone. `plan-conventions` is orchestrator-side background - read it to scope the review, do not inject it.
 
@@ -30,11 +30,9 @@ A trivial plan does not need the agent - do one direct pass yourself and report.
 
 ## VERIFY BEFORE REPORTING
 
-The agent proposes findings with `Confidence:` and `Severity:`; you own the verdict. For each finding: run the `Repo:` command yourself and read the plan text it points at. The command returning something else, or the point already covered by another task - discard, do not downgrade. This applies to NIT as much as to BLOCK.
+The agent proposes; you decide what the user sees. For each finding: run the `Repo:` command yourself and read the plan text it points at. The command returning something else, or the point already covered by another task - discard, do not downgrade. This applies to NIT as much as to BLOCK.
 
-Rank what survives by those two, then label it. A BLOCK means the executor does the wrong thing, gets stuck, or cannot start: a path that does not exist, a decision the plan never made, a step out of order, a requirement from the source artifact with no task, an instruction that contradicts a rule the plugin enforces on the executor. The precision of the plan's own checks, its wording, and anything the reader would still act correctly on is a NIT.
-
-Discarding most candidates is a normal outcome. A plan does not have to be perfect to be executable - that is the bar the report is written against.
+Discarding most candidates is a normal outcome.
 
 Open `[NEEDS CLARIFICATION]` markers are a BLOCK, verified mechanically: `rg "NEEDS CLARIFICATION" <plan>`.
 
@@ -73,4 +71,4 @@ Only on explicit user request, save the result by appending a `## PLAN REVIEW NO
 
 ## NEXT
 
-Plan clean -> `/nxs:exec` to implement. Findings -> `/nxs:plan` to revise the plan; the user decides what to fix. Plancheck runs once per plan - nothing here re-runs it.
+Plan clean -> `/nxs:exec` to implement. Findings to fix -> `/nxs:plan` to revise the plan, then re-review.

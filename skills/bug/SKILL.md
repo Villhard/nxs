@@ -5,7 +5,7 @@ argument-hint: "[tracker key | bug description | path]"
 
 # /nxs:bug
 
-Bug investigation entry point. Reach a confirmed root cause, then stop.
+Bug investigation entry point. Reach a confirmed root cause, then stop. Self-contained skill. Output language and response style come from global rules, not this file.
 
 Accepted input: tracker key / URL, pasted bug text, observed behavior, stack trace / log, or a path.
 
@@ -24,7 +24,7 @@ Example: /nxs:bug PROJ-4213
 
 ## DIAGNOSIS LOOP
 
-A disciplined engineering cycle: build a cheap feedback loop, reproduce the exact symptom, minimize, form ranked falsifiable hypotheses with predictions, instrument one at a time, confirm with facts. Skipping a phase leaves a guess where evidence should be.
+A disciplined engineering cycle: build a cheap feedback loop, reproduce the exact symptom, minimize, form ranked falsifiable hypotheses with predictions, instrument one at a time, confirm with facts. Guess-based fixes are the main source of regressions; without a reproducible symptom any fix is a lottery; without a minimized repro the investigation drowns in noise; without predictions a hypothesis is a story, not a theory; parallel variable changes destroy the signal.
 
 ### Feedback loop - choice
 
@@ -107,7 +107,7 @@ docs/nxs/briefs/YYYYMMDD-<slug>-bug.md
 
 When the input carries a tracker key, include it in the name - `docs/nxs/briefs/YYYYMMDD-<KEY>-<slug>-bug.md` - so the brief stays navigable by the key.
 
-It captures: symptom; feedback loop / repro method; minimized repro; evidence; ranked hypotheses; tested probes; 5-Why chain; confirmed root cause; assumptions; fix direction; regression test idea; verification plan. Length follows the DELIVERABLE LENGTH rule in `plan-conventions`.
+It captures: symptom; feedback loop / repro method; minimized repro; evidence; ranked hypotheses; tested probes; 5-Why chain; confirmed root cause; assumptions; fix direction; regression test idea; verification plan.
 
 ## RULES
 
