@@ -22,43 +22,70 @@ Example: /nxs:plancheck docs/nxs/stories/20260711-auth-refactor
 
 ## REVIEW
 
-Delegate to one `nxs:plan-reviewer` subagent. Protocol injection is mandatory: read `review-protocol` (`${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`) once and include its full text in the agent's prompt. Path does not resolve -> find `review-protocol`'s `SKILL.md` inside the plugin before spawning anything; the agent does not review from memory. The agent does not restate the protocol - it receives it this way.
+Delegate to one `nxs:plan-reviewer` subagent. Injection is mandatory and covers two files: `review-protocol` (`${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`) and `reference/plan-review-policy.md`. Read both once and include their full text in the agent's prompt. A path does not resolve -> find that file inside the plugin before spawning anything; the agent does not review from memory. The agent does not restate either file - it receives them this way.
 
-The agent checks the plan's claims against the repository: paths that do not exist, places the plan missed, steps out of order, decisions the executor cannot make alone. `plan-conventions` is orchestrator-side background - read it to scope the review, do not inject it.
+The agent checks the plan's claims against the repository: paths that do not exist, places the plan missed, steps out of order, decisions the executor cannot make alone. `plan-conventions` is orchestrator-side background - read it to scope the review, do not inject it. It says what a plan must contain; what is worth reporting is this skill's call.
 
-A trivial plan does not need the agent - do one direct pass yourself and report.
+A trivial plan does not need the agent - do one direct pass yourself, against the same bar, and report.
 
-## VERIFY BEFORE REPORTING
+## VERIFY, THEN CLASSIFY
 
-The agent proposes; you decide what the user sees. For each finding: run the `Repo:` command yourself and read the plan text it points at. The command returning something else, or the point already covered by another task - discard, do not downgrade. This applies to NIT as much as to BLOCK.
+The agent proposes unlabeled candidates; you decide what the user sees and what it is called. Two gates, in order.
 
-Discarding most candidates is a normal outcome.
+**Is it real.** Run the `Repo:` command yourself and read the plan text it points at. The command returning something else, or the point already covered by another task - discard, do not downgrade. This applies to NIT as much as to BLOCK.
 
-Open `[NEEDS CLARIFICATION]` markers are a BLOCK, verified mechanically: `rg "NEEDS CLARIFICATION" <plan>`.
+**Does it cost anything.** Name the gate that catches it: a Test case in the task, the `verify` run, the review of that task's diff, an acceptance criterion, or an `/nxs:exec` stop condition. Write that clause down before you write a label. A gate catches it - NIT at most. No gate catches it and you can name the wrong end state - BLOCK. Neither - drop it.
 
-Overall: NEEDS CHANGES on any confirmed BLOCK; APPROVE otherwise.
+Classify against `reference/plan-review-policy.md`. Discarding most candidates is a normal outcome.
+
+One BLOCK skips both gates because it is mechanical and `/nxs:exec` refuses to start on it: an open `[NEEDS CLARIFICATION]` marker, verified with `rg "NEEDS CLARIFICATION" <plan>`. It is the only such case; everything else earns its label through the two gates.
+
+Overall: NEEDS CHANGES on any confirmed BLOCK; APPROVE otherwise, nits and all.
 
 ## OUTPUT
 
-To chat. No file is written by default. BLOCK findings in full, nits folded into one line.
+To chat. No file is written by default. The verdict and the size of the problem first, then the findings, then the provenance.
 
 ```
-Plan review: <plan-file-path>
+<APPROVE | NEEDS CHANGES> - <counts> - <plan>
 
-BLOCK Task <N>
-  Issue: <what the plan gets wrong or never mentions>
+BLOCK  Task <N>
+  <one sentence: what ships wrong and why no gate catches it>
   Repo: <command -> result>
-  Impact: <what the executor does, and what breaks when they do it>
   Fix: <what to add or change in the plan>
 
-Nits (<n>): Task <N> <what is wrong>, Task <N> <what is wrong>, ...
+NIT  Task <N> - <what is wrong>
+  Repo: <command -> result>
 
-Verdict: APPROVE | NEEDS CHANGES
+Source artifact: <brief path, tracker key, or skipped with the reason>
 ```
 
-No nits confirmed, no nits line. Nothing confirmed: `Verdict: APPROVE. Findings: none.`
+Filled in:
 
-A finding may be about something the plan never mentions, but never without the `Repo:` line. The report should need no follow-up question.
+```
+NEEDS CHANGES - 1 block, 2 nits - 20260728-pagination/plan.md
+
+BLOCK  Task 2
+  No task touches src/reports/cache.py, which keys its cache on the items sort order, so the cache ships stale and nothing reads that file.
+  Repo: rg -n "sort" src/reports/cache.py -> 2 hits, no test file for it
+  Fix: add the cache rebuild to Task 2, or a task after it.
+
+NIT  Task 1 - the Files block lists tests/items/test_pagination.py, which no checklist item writes to.
+  Repo: rg -n "test_pagination" plan.md -> only in the Task 1 Files block
+
+NIT  Task 3 - runs before Task 2 creates the repository function it calls.
+  Repo: rg -n "list_items" plan.md -> Task 3 line 78 calls it, Task 2 line 60 creates it
+
+Source artifact: docs/nxs/stories/20260728-pagination/brief.md, PROJ-123
+```
+
+- **First line** - verdict, counts, plan. Counts drop an empty category and go singular at one: `1 block, 2 nits`, `2 nits`, `1 block`, `no findings`. The plan is named the way a person would name it; the full path lives in the last line.
+- **Blocks first**, worst consequence at the top, then nits in task order.
+- **The body of a block is one sentence** naming what ships wrong and what would have caught it. Not two.
+- **A nit is one line**, with its `Repo:` line indented below it. Evidence is not prose, and the evidence bar does not relax: a finding may be about something the plan never mentions, but never without the `Repo:` line.
+- **The last line is the provenance**, printed even when nothing was found, and it is where a skipped scope check states its reason.
+
+The report should need no follow-up question.
 
 Only on explicit user request, save the result by appending a `## PLAN REVIEW NOTES` section to the plan file - otherwise the plan is left untouched.
 
@@ -68,6 +95,12 @@ Only on explicit user request, save the result by appending a `## PLAN REVIEW NO
 - Every finding names what the plan says and what the repository says; a finding without both is dropped.
 - Do not report on the plan's form - title wording, checkbox counts, section order. The executor does not care and neither should the review.
 - Clean approve is a valid and frequent result.
+
+## REFERENCE
+
+- `reference/plan-review-policy.md` - what the executor is, the plan-shaped BLOCK / NIT / DROP bar, and the calls that are easy to get wrong. Read here, injected into the lens.
+- `review-protocol` - the stance, verification, and output format the lens follows, injected into it.
+- `plan-conventions` - what a plan must contain; background for scoping the review, never injected.
 
 ## NEXT
 

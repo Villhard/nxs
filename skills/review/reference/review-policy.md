@@ -1,42 +1,10 @@
 # REVIEW POLICY (reference)
 
-Loaded on demand from `/nxs:review`. Holds what the base `review-protocol` does not: where this project keeps its standards, how to find the artifact a diff is supposed to implement, and the few classification calls that are easy to get wrong.
+Loaded on demand from `/nxs:review` and injected into both review lenses beside `review-protocol`. Holds what the base protocol does not: where a requirement may come from, and the few classification calls that are easy to get wrong. Each call binds whichever lens owns that ground; it never widens a lens's ground. The orchestrator's own work - finding the source artifact, listing the standards, the report header - is in `review-axes.md`, and no lens sees it.
 
-## OUTPUT ADDITIONS
+## WHERE A REQUIREMENT COMES FROM
 
-- One header line before the findings: `Source artifact: <path or skipped> | Standards: <sources or skipped>`.
-- An axis finding carries its citation under `Fix:`, and is dropped without one:
-
-  ```
-  Standard: <path>#<section> - "<verbatim quote of the rule>"
-  Spec: <artifact-path>#<section> - "<verbatim quote of the requirement>"
-  ```
-
-## STANDARDS AXIS
-
-Does the diff follow the standards this project actually wrote down. Look in:
-
-- ADRs (`docs/adr/`, `docs/decisions/`, wherever they live);
-- root `AGENTS.md` / `CLAUDE.md`;
-- `CONTRIBUTING.md`, `STANDARDS.md`, `STYLE.md` and variants, in root or `docs/`;
-- lint / formatter / typecheck config - but only for a rule the project states explicitly and the tooling does not enforce on its own, or that the diff disabled.
-
-Read only what exists. A standard from memory, or "it is accepted here" without a file behind it, is not a finding. Neither is anything the tooling already catches - it will report itself.
-
-## SPEC AXIS
-
-Does the diff implement its source artifact fully, and nothing else. Find that artifact in this order, stopping at the first hit:
-
-1. a path given as the command argument;
-2. the latest active story under `docs/nxs/stories/` (not `completed/`) - its `plan.md`, the sibling brief beside it, and the plan's `## SOURCE ARTIFACTS` section;
-3. a tracker URL from the plan, the PR, or the user;
-4. a spec document in the repo that the plan or PR points to.
-
-No `docs/nxs/stories/` at all: step 2 falls back to the latest plan under `docs/nxs/plans/` (not `completed/`) and a brief under `docs/nxs/briefs/` named by the plan, the branch, or the PR description. Read-only compatibility with the pre-story layout - nothing is ever written there - removable in a later release.
-
-None found: report `Spec axis: skipped (no spec/source artifact available)` and move on.
-
-Never reconstruct a requirement from git history, branch names, the dialogue, or memory of similar projects. If something reads like a requirement but is not in the artifact, ask or drop it.
+The source artifact, and nothing else. Never reconstruct a requirement from git history, branch names, the dialogue, or memory of similar projects. If something reads like a requirement but is not in the artifact, ask or drop it.
 
 Scope creep counts as a finding when it costs something real - a new dependency, a changed public contract, a migration, added attack surface. A purely additive improvement that harms nothing does not.
 

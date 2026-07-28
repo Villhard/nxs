@@ -92,7 +92,7 @@ Per-task Test cases scale too:
 - trivial refactor - one line "existing tests still pass";
 - bug fix - a repro test is mandatory;
 - feature - the full list of observable cases;
-- config-only / settings / dotfiles / declarative change with no behavioral code to assert - no Test cases item required; verification is that the change takes effect. The testing lens does not flag this.
+- config-only / settings / dotfiles / declarative change with no behavioral code to assert - no Test cases item required; verification is that the change takes effect. Review does not flag this.
 
 When the change only alters behavior of already-covered code, prefer updating or parametrizing existing tests over inventing new ones (`- [ ] update / parametrize tests for cases above`); reserve new tests for genuinely new behavior or a new branch.
 

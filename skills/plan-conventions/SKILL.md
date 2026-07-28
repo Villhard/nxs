@@ -47,13 +47,13 @@ Full skeleton and scaling of Acceptance Criteria: `reference/plan-template.md`. 
 Each task is one atomic, independently verifiable logical change (one function, one endpoint, one component) and contains:
 
 - **title** - a concrete name, not "Implementation", "Core logic", or "Setup".
-- **Files block** - mandatory, exact Create / Modify paths. Without it the plan is incomplete (BLOCK).
-- **Test cases** - for a task with behavioral code changes, a `**Test cases:**` block right after the Files block: concrete checks with expected outcome, describing what we check (the contract), separate from how the tests are written. Missing Test cases on a behavioral task is a BLOCK.
+- **Files block** - mandatory, exact Create / Modify paths. Without it the plan is incomplete and `/nxs:exec` stops on the task.
+- **Test cases** - for a task with behavioral code changes, a `**Test cases:**` block right after the Files block: concrete checks with expected outcome, describing what we check (the contract), separate from how the tests are written. A behavioral task without them is incomplete.
 - **checklist** - steps as `- [ ]`, marked `- [x]` when done. Tests are separate items, never bundled with the implementation.
 - **success criteria** - an observable outcome of the task.
 - **verification** - a final item: run tests / lint / typecheck / acceptance check.
 
-Exemption: a config-only / settings / dotfiles / declarative task with no behavioral code to assert needs no Test cases block; verification is that the change takes effect. The testing lens does not flag it.
+Exemption: a config-only / settings / dotfiles / declarative task with no behavioral code to assert needs no Test cases block; verification is that the change takes effect. Review does not flag it.
 
 Full task template, Test-cases scaling, and success-criteria forms by task type: `reference/plan-template.md`.
 
@@ -74,7 +74,7 @@ An open decision is marked in the artifact itself instead of a plausible guess:
 
 - Mark only if the answer changes the decision; do not mark trivia.
 - A marker resolved in conversation is edited out of the file in the same turn - a stale marker causes a false block.
-- A plan with open markers is valid but not ready for execution: `/nxs:plancheck` flags open markers as BLOCK, and `/nxs:exec` runs `rg "NEEDS CLARIFICATION" <plan>` before starting.
+- A plan with open markers is valid but not ready for execution: `/nxs:plancheck` and `/nxs:exec` both run `rg "NEEDS CLARIFICATION" <plan>` before execution starts.
 
 ## TDD LOOP (essence)
 
@@ -82,7 +82,7 @@ When the approach is TDD, per narrow behavior: **RED** (one failing test through
 
 ## VERTICAL SLICE (essence)
 
-A task is by default a vertical slice: one narrow observable behavior across all the layers it needs and only those, independently verifiable, delivering a working end-to-end path. Prefer many thin slices to a few thick ones; the Files block usually touches several layers at once, which is normal. Horizontal-by-layer tasks ("create all models", then "all services", then "all tests") are an exception, allowed only for pure scaffolding, a migration / refactor with a non-functional intermediate state, or shared groundwork without which no slice runs - and each such exception is justified in COMPLEXITY TRACKING. `/nxs:plancheck` flags unjustified horizontal slicing as BLOCK. Detail and examples: `reference/vertical-slice.md`.
+A task is by default a vertical slice: one narrow observable behavior across all the layers it needs and only those, independently verifiable, delivering a working end-to-end path. Prefer many thin slices to a few thick ones; the Files block usually touches several layers at once, which is normal. Horizontal-by-layer tasks ("create all models", then "all services", then "all tests") are an exception, allowed only for pure scaffolding, a migration / refactor with a non-functional intermediate state, or shared groundwork without which no slice runs - and each such exception is justified in COMPLEXITY TRACKING. Detail and examples: `reference/vertical-slice.md`.
 
 ## COMPLEXITY TRACKING
 

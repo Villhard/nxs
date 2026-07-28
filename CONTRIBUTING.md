@@ -20,7 +20,7 @@ nxs/
     hooks.json
     session-start.sh
     using-nxs.md
-  examples/              # filled sample artifacts (plan, brief)
+  examples/              # filled sample artifacts (plan, brief) + plancheck fixtures
   .github/               # CI, house-style linter, PR template
   README.md CONTRIBUTING.md CHANGELOG.md LICENSE
 ```
@@ -56,7 +56,7 @@ Security-critical content (never commit secrets, confirm destructive) never live
 
 ## WHEN TO ADD SOMETHING NEW
 
-This repo stays small on purpose: seven commands, four background skills, six agents, one hook. Add a tier-2 command skill only when all of these hold at once:
+This repo stays small on purpose: seven commands, four background skills, four agents, one hook. Add a tier-2 command skill only when all of these hold at once:
 
 - the intent is distinct and does not reduce to an existing command, not even through a mode word;
 - the intent is frequent - you reach for it several times a month, not once a quarter;
@@ -106,7 +106,7 @@ tools: <the exact tool list this agent may use>
 ---
 ```
 
-Unlike a skill, an agent DOES carry `name` - a skill spawns it by that name, so it is part of the contract. `tools` is the read-only enforcement: the five reviewers get `Read, Grep, Glob` and nothing else, and only `worker` adds Write / Edit / Bash.
+Unlike a skill, an agent DOES carry `name` - a skill spawns it by that name, so it is part of the contract. `tools` is the read-only enforcement: the three reviewers get `Read, Grep, Glob` and nothing else, and only `worker` adds Write / Edit / Bash.
 
 ## ARTIFACT PATHS
 

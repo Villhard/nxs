@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-07-28
+
+Review gets its bar, its lenses, and its report reworked together. `/nxs:plancheck` had no plan-shaped definition of a BLOCK, so it borrowed the code-shaped one and called every omission a block; it has one now, and it is the only place plan severity is written down. Four code lenses become two, cut by reading mode rather than by severity: one reads the execution paths the diff touches and the tests over them, the other surveys the diff against its requirements and the rest of the project. And both reports now open with the verdict instead of ending with it.
+
+### Added
+
+- `skills/plancheck/reference/plan-review-policy.md` - what `/nxs:exec` actually is as an executor, the plan-shaped BLOCK / NIT / DROP bar, and the calls that are easy to get wrong. Read by the orchestrator and injected into the lens beside `review-protocol`.
+- `examples/plancheck-fixtures/` - two plans written against this repository, one carrying a single real blocker among plausible bait and one carrying none, with the expected verdicts kept in `examples/plancheck-fixtures.md` so they cannot leak into a review.
+- `agents/review-fit-reviewer.md` - what the change is missing or never wired up, and what it carries beyond what the task asked for: over-engineering, duplication, dead code, scope creep. Replaces `review-implementation-reviewer` and `review-simplification-reviewer`.
+- `skills/review/reference/review-axes.md` - where this project keeps its standards, how to find the source artifact, and the citation each axis finding carries. Split out of `review-policy.md` so a lens is never handed a procedure for finding artifacts it must not go looking for.
+
+### Changed
+
+- A plan BLOCK means the wrong end state ships and no gate catches it: the task's Test cases, the `verify` run, the review of that task's diff, the acceptance criteria, and exec's stop conditions all read as passing with the wrong result in place. A gap one of those catches is a NIT. A fix that adds a sentence to the plan and leaves the resulting code identical is neither.
+- `/nxs:plancheck` classifies and `nxs:plan-reviewer` proposes unlabeled candidates. The verify step now runs two gates - the `Repo:` command reproduces, and no named gate catches the consequence - instead of re-running the command alone. Every candidate carries a mandatory `Impact:` naming an end state after execution, not a property of the document.
+- `nxs:plan-reviewer` drops the line making every unlisted dependent a BLOCK, and the line rewarding the check that finds the most. It no longer reports open `[NEEDS CLARIFICATION]` markers - the orchestrator already checks them mechanically.
+- `plan-conventions` states what a plan must contain and no longer assigns review severity to it. The Files block and Test cases stay mandatory; whether a missing one is worth reporting is `/nxs:plancheck`'s call.
+- `nxs:review-quality-reviewer` also owns test coverage and test quality, and interleaves the two questions: read a path, then read what tests it, before moving to the next path. A bug and the missing test for it are one finding, with the test named in `Fix:`.
+- `reference/review-policy.md` is the lens payload now: `/nxs:review` injects it into both lenses beside `review-protocol`, the way `/nxs:plancheck` injects `plan-review-policy.md`. It holds only what a lens acts on - where a requirement may come from, when scope creep costs something, and the three classification calls that are easy to get wrong.
+- The rules the agent files stated in their own words - complexity judged against the task, never asking for a case matrix, and requirements coming from the artifact rather than from the reviewer - live in the policy alone.
+- Lens selection has two cases: a trivial or non-code diff gets one direct orchestrator pass and no subagents, anything with logic gets both lenses in parallel.
+- `dedup` names the collision two lenses actually produce: the fit lens and the Spec axis on one unmet requirement, and a bug reported apart from the test that would have caught it.
+- `/nxs:exec` reviews a task diff with both lenses or the direct pass, not with a set sized to the change.
+- The report `/nxs:review` and `/nxs:plancheck` print opens with the verdict, the counts and the scope, so the size of the problem is the first thing read; the provenance that used to head the report is now its last line. A block is an anchor, one sentence naming the cause and what it costs, and a `Fix:` line - `Issue:` and `Impact:` split one sentence in two and made the second half restate the first. Nits get a line each instead of one comma-separated run. The candidate format the lenses hand the orchestrator is unchanged: naming an impact is a bar on writing a finding, not on reading one.
+
+### Removed
+
+- `agents/review-implementation-reviewer.md`, `agents/review-testing-reviewer.md`, `agents/review-simplification-reviewer.md`. Anything spawning them by name breaks; `nxs:review-quality-reviewer` and `nxs:review-fit-reviewer` replace them.
+
 ## [0.12.0] - 2026-07-28
 
 The artifacts of one unit of work now live together. `docs/nxs/briefs/` and `docs/nxs/plans/` give way to one directory per story, holding the brief and the plan side by side and archived as a whole.

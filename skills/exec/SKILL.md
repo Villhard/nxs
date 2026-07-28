@@ -40,7 +40,7 @@ For each remaining unchecked task:
 1. Launch one `nxs:worker` subagent with the task, its acceptance criteria, and the conventions set (see WORKER LAUNCH). Read back its structured result - files changed, follow-ups, notes - not raw tool output.
 2. Update the plan (check the checkboxes).
 3. Run the `verify` skill scoped to the task change (format first in apply mode, then lint / typecheck / tests) so review sees a formatted, lint-clean diff.
-4. Review the task diff with `review`'s adaptive lens set (the lenses proportional to the change, not the full set) and `review-protocol`'s BLOCK / NIT classification. On a BLOCK, fix it and re-review the same scope until a zero-BLOCK round - a zero-BLOCK round, not "I fixed what was found". NIT findings are logged as follow-up and never gate the commit.
+4. Review the task diff with `review`'s lenses - both of them on a task that changed logic, the orchestrator's direct pass on a trivial one - and `review-protocol`'s BLOCK / NIT classification. On a BLOCK, fix it and re-review the same scope until a zero-BLOCK round - a zero-BLOCK round, not "I fixed what was found". NIT findings are logged as follow-up and never gate the commit.
 5. Run AC verification against the plan's `## ACCEPTANCE CRITERIA`. AC not met is a stop condition.
 6. verify pass + zero-BLOCK review round + AC met -> commit via `commit-conventions`; under no-commit, skip git instead.
 7. Move to the next task.
@@ -109,7 +109,7 @@ Exec-specific detail:
 
 ## REFERENCE SKILLS
 
-`verify` (after every task and before any commit), `review` (the adaptive lens set the review step applies to the task diff), `review-protocol` (the BLOCK / NIT classification), `commit-conventions` (before any git write), `plan-conventions` (the plan structure and development approach).
+`verify` (after every task and before any commit), `review` (the lenses the review step applies to the task diff), `review-protocol` (the BLOCK / NIT classification), `commit-conventions` (before any git write), `plan-conventions` (the plan structure and development approach).
 
 ## NEXT
 

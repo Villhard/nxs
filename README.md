@@ -40,7 +40,7 @@ Three tiers:
 
 A SessionStart hook (`hooks/`) injects the `using-nxs` discipline so a session checks for the right command before acting - the commands fire on their trigger without being typed by name.
 
-Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`; the only agent that writes) plus five read-only lenses whose tools are limited to Read / Grep / Glob, so they cannot write or run shell: `plan-reviewer` (used by `plancheck`) and the four `review-*-reviewer` lenses (used by `review`).
+Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`; the only agent that writes) plus three read-only lenses whose tools are limited to Read / Grep / Glob, so they cannot write or run shell: `plan-reviewer` (used by `plancheck`) and the two `review-*-reviewer` lenses (used by `review`).
 
 ## Artifacts
 
@@ -71,9 +71,11 @@ hooks/                 # SessionStart hook -> injects the using-nxs discipline
   hooks.json
   session-start.sh
   using-nxs.md
-examples/              # filled sample artifacts, as the skills write them
-  plan-sample.md
+examples/              # sample artifacts and review fixtures
+  plan-sample.md             # filled artifacts, as the skills write them
   brief-sample.md
+  plancheck-fixtures.md      # what the fixtures are and what they should return
+  plancheck-fixtures/        # deliberately flawed plans, a calibration target
 ```
 
 ## Setup
