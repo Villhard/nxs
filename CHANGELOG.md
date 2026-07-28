@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.2] - 2026-07-28
+
+Temporary diagnostic release. Two marker skills and one probe agent answer which name form
+resolves in an agent's `skills:` frontmatter - the bare name or the plugin-prefixed one. All
+three are deleted in the next release, together with whichever name form turns out to be dead.
+
+### Added
+
+- `preload-probe-bare` and `preload-probe-scoped`, two skills carrying only a marker string, and
+  the `preload-probe` agent that lists one by bare name and one by prefixed name.
+
 ## [0.12.1] - 2026-07-28
 
 The protocol preload declared in 0.12.0 is proven, so it becomes the only delivery path.
