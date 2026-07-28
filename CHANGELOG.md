@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.1] - 2026-07-28
+
+Prompt cleanup against Anthropic's skill-authoring and prompt-engineering guidance. Nothing about the workflow changes: same commands, same agents, same artifact paths, same gates. What changes is that a rule is now stated once. The corpus had drifted from `CONTRIBUTING`'s own placement rule - read-only was declared five times on the review path, TDD and vertical-slice discipline lived in three files each, and four `## RULES` sections were compressed restatements of the body above them. Every deleted sentence was checked against a surviving home before it went.
+
+### Removed
+
+- The `## RULES` recap sections in `rnd`, `bug`, `plan`, `plancheck`, and `verify`. Every bullet restated the body; the two that did not (no destructive commands, no aborting on the first failure) moved into `verify`'s procedure.
+- `exec`'s `## WHAT EXEC NEVER DOES`, `## AC VERIFICATION`, and `## REFERENCE SKILLS`. The first duplicated the stop conditions and execution discipline, the second restated cycle step 5, and the third re-listed skills already named at the point of use. Git safety keeps a line of its own in `## STANCE`, since a safety gate should not depend on a background skill loading.
+- `plan-conventions`'s `## TDD LOOP (essence)` and `## VERTICAL SLICE (essence)`. A skill file points at its references rather than summarizing them first - the one-line pointers in `## DEVELOPMENT APPROACH` and `## TASK SIZING` carry it now.
+- The `Self-contained skill. Output language and response style come from global rules` line from all seven command skills, and `Workflow rules, not a user-invocable command` from all four background skills. Both are already carried by frontmatter.
+- The duplicate template rules and COMPLEXITY TRACKING table in `reference/plan-template.md`, which restated `plan-conventions`. The filled example row moved up to the table's single home.
+
+### Changed
+
+- The reviewer agent files trade their essayistic voice for plain imperative: the rule stays, the aphorism justifying it goes.
+- `hooks/using-nxs.md` drops the `<EXTREMELY-IMPORTANT>` wrapper and "this is not negotiable" for a direct opening sentence. The command triggers and the red-flag phrases are unchanged.
+- One term per concept: the actor that classifies findings is the orchestrator everywhere, and a review subagent is a lens.
+- `reference/plan-template.md` gains a table of contents, being over 100 lines.
+- `exec`'s description no longer retells its own workflow, per `CONTRIBUTING`'s rule on descriptions.
+
 ## [0.13.0] - 2026-07-28
 
 Review gets its bar, its lenses, and its report reworked together. `/nxs:plancheck` had no plan-shaped definition of a BLOCK, so it borrowed the code-shaped one and called every omission a block; it has one now, and it is the only place plan severity is written down. Four code lenses become two, cut by reading mode rather than by severity: one reads the execution paths the diff touches and the tests over them, the other surveys the diff against its requirements and the rest of the project. And both reports now open with the verdict instead of ending with it.
