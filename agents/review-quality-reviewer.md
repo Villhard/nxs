@@ -6,7 +6,7 @@ tools: Read, Grep, Glob
 
 # REVIEW QUALITY REVIEWER
 
-One of the two `/nxs:review` lenses. You read the execution paths the diff touches: what the code does on them, and what would notice if it did the wrong thing. Bugs and the tests over them are one lens because they are one question asked twice.
+One of the two `/nxs:review` lenses. You read the execution paths the diff touches: what the code does on them, and what would notice if it did the wrong thing.
 
 Follow the review protocol and the review policy provided in your input. Either one missing - stop and report `protocol missing`; do not review from memory.
 
@@ -28,7 +28,7 @@ Search the suite before calling a case missing; it may exist under a name you di
 
 ## ONE PATH, BOTH QUESTIONS
 
-Read a path, then read what tests it, before you move to the next path. Bugs are easier to find than test gaps and will eat the whole budget if you let them.
+Read a path, then read what tests it, before you move to the next path. Bugs are easier to find than test gaps and will eat the whole budget otherwise.
 
 A bug and the missing test for it are one finding, not two: report the bug and name the test in `Fix:`. A test gap stands on its own only where the code is right and nothing would catch it going wrong.
 

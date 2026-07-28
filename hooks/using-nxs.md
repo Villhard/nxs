@@ -1,16 +1,12 @@
 # Using nxs
 
-<EXTREMELY-IMPORTANT>
-Before acting on any development task - including clarifying questions, reading code, or running a command - check whether an nxs skill applies, and if one does, invoke it with the `Skill` tool first. If a skill applies to your task, you do not get to skip it. This is not negotiable.
-</EXTREMELY-IMPORTANT>
+Before acting on any development task - including clarifying questions, reading code, or running a command - check whether an nxs skill applies, and invoke it with the `Skill` tool first when one does. A skill that applies is used, not skipped.
 
-<SUBAGENT-STOP>
-If you were dispatched as a subagent to execute a specific task, ignore this - your task is already scoped.
-</SUBAGENT-STOP>
+Dispatched as a subagent to execute a specific task? Your task is already scoped; this does not apply to you.
 
 ## The rule
 
-The nxs commands (`rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`, `commit`) are listed with their triggers in the `Skill` tool. Match your task to a command and invoke it before you start - do not hand-roll a workflow a command already owns.
+The nxs commands (`rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`, `commit`) are listed with their triggers in the `Skill` tool. Match your task to a command and invoke it before you start, rather than hand-rolling a workflow a command already owns.
 
 Two triggers are easy to miss because no command name is spoken:
 
