@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-07-28
+
+The protocol preload declared in 0.12.0 is proven, so it becomes the only delivery path.
+
+### Changed
+
+- `/nxs:review` and `/nxs:plancheck` no longer inject `review-protocol` into a lens prompt. Each of the five read-only agents preloads the protocol through its own `skills:` frontmatter, and the `protocol missing` guard still stops any lens that started without it. The protocol file, the agent pointers, and CONTRIBUTING's placement rule describe the preload instead of the injection.
+- Both candidate name forms, `review-protocol` and `nxs:review-protocol`, stay in the `skills:` list. A preloaded lens quoted the protocol back verbatim, but the session captured no debug log, so which form resolved is unknown; a `--debug` run names it and the other form goes.
+
+### Removed
+
+- The `nxs:preload-canary-absent` entry from all five agents. It was there to prove that an unresolvable skill name is skipped silently, and the preload it guarded now works.
+
 ## [0.12.0] - 2026-07-28
 
 Split reporting from judging in review. A lens now reports every finding it has, each with a `Confidence:` and a `Severity:` and no label; the orchestrator - `/nxs:review` or `/nxs:plancheck` - verifies what came back and owns the BLOCK / NIT / DROP call, with a hard test for BLOCK. Around that: `/nxs:commit` is user-invoked only, the SessionStart hook is routing context instead of a discipline, and lens launches are capped.

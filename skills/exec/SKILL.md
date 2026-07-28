@@ -109,7 +109,7 @@ Exec-specific detail:
 
 ## REFERENCE SKILLS
 
-`verify` (after every task and before any commit), `review` (the adaptive lens set the review step applies to the task diff, and the orchestrator pass that labels BLOCK / NIT), `review-protocol` (the shared protocol injected into every lens), `commit-conventions` (before any git write), `plan-conventions` (the plan structure and development approach).
+`verify` (after every task and before any commit), `review` (the adaptive lens set the review step applies to the task diff, and the orchestrator pass that labels BLOCK / NIT), `review-protocol` (the shared protocol each lens preloads), `commit-conventions` (before any git write), `plan-conventions` (the plan structure and development approach).
 
 ## NEXT
 

@@ -6,7 +6,6 @@ effort: medium
 skills:
   - review-protocol
   - nxs:review-protocol
-  - nxs:preload-canary-absent
 ---
 
 # REVIEW SIMPLIFICATION REVIEWER
@@ -29,11 +28,11 @@ Before calling anything dead, orphaned, or never triggered, search the whole pro
 
 ## PROTOCOL SOURCE
 
-Follow the review protocol provided in your input. If it is missing, stop and report `protocol missing` - do not review from memory. Fowler's smell vocabulary applies as shared language; a smell is a candidate, never a violation on its own.
+Follow the `review-protocol` skill preloaded into your context. If it is missing, stop and report `protocol missing` - do not review from memory. Fowler's smell vocabulary applies as shared language; a smell is a candidate, never a violation on its own.
 
 ## OUTPUT FORMAT
 
-Follow the injected protocol's OUTPUT FORMAT, with header `Simplification review: <scope>`.
+Follow `review-protocol`'s OUTPUT FORMAT, with header `Simplification review: <scope>`.
 
 ## NOT YOUR LENS
 

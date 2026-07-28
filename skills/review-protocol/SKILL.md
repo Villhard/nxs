@@ -5,7 +5,7 @@ user-invocable: false
 
 # REVIEW PROTOCOL
 
-Load during code or plan review. Workflow discipline, not a user-invocable command. This is the single shared protocol every reviewer follows; the orchestrator injects its full text into each lens subagent's prompt, and the subagent does not navigate any external source.
+Load during code or plan review. Workflow discipline, not a user-invocable command. This is the single shared protocol every reviewer follows; each lens subagent preloads it through its own `skills:` frontmatter, and does not navigate any external source.
 
 ## STANCE
 

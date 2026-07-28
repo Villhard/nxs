@@ -6,7 +6,6 @@ effort: medium
 skills:
   - review-protocol
   - nxs:review-protocol
-  - nxs:preload-canary-absent
 ---
 
 # REVIEW TESTING REVIEWER
@@ -27,11 +26,11 @@ Search the suite before calling a case missing; it may exist under a name you di
 
 ## PROTOCOL SOURCE
 
-Follow the review protocol provided in your input. If it is missing, stop and report `protocol missing` - do not review from memory.
+Follow the `review-protocol` skill preloaded into your context. If it is missing, stop and report `protocol missing` - do not review from memory.
 
 ## OUTPUT FORMAT
 
-Follow the injected protocol's OUTPUT FORMAT, with header `Testing review: <scope>`.
+Follow `review-protocol`'s OUTPUT FORMAT, with header `Testing review: <scope>`.
 
 ## NOT YOUR LENS
 

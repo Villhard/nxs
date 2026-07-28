@@ -49,7 +49,7 @@ Where a rule, policy, or term belongs:
 - always on (language, style, safety) -> tier 1, outside the plugin;
 - one command needs it -> inline in that skill's `SKILL.md` or its `reference/`;
 - several commands need it -> a tier 3 background skill;
-- several agents share it -> one single-source file that the orchestrator reads once and injects verbatim into every agent prompt;
+- several agents share it -> one single-source skill each of those agents preloads through its `skills:` frontmatter;
 - exactly one agent needs it -> inline in that agent's file.
 
 Security-critical content (never commit secrets, confirm destructive) never lives on tier 3 alone. Auto-load is heuristic and can miss; tier 1 always fires, so tier 1 carries the protection. Tier 3 states git safety around it - that a push needs an explicit request - which is workflow detail and holds only while the skill is loaded. When a commit is allowed lives in the command that commits (`exec`, `commit`), not in `commit-conventions`.

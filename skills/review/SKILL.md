@@ -33,7 +33,7 @@ Resolve to a concrete diff before anything else:
 
 ## REVIEWERS (adaptive selection)
 
-Select the reviewer set proportional to the resolved diff and run only the lenses the diff needs. Each selected reviewer is an isolated subagent. Protocol injection is mandatory: read `review-protocol` (`${CLAUDE_SKILL_DIR}/../review-protocol/SKILL.md`) once and include its full text in the prompt of every lens you spawn. Path does not resolve -> find `review-protocol`'s `SKILL.md` inside the plugin before spawning anything; no lens reviews from memory. Parallel if the harness supports it, sequential fallback.
+Select the reviewer set proportional to the resolved diff and run only the lenses the diff needs. Each selected reviewer is an isolated subagent that preloads `review-protocol` through its own `skills:` frontmatter - no lens reviews from memory, and a lens that started without the protocol stops with `protocol missing`. Parallel if the harness supports it, sequential fallback.
 
 - `nxs:review-quality-reviewer` - any diff touching behavioral code: bugs / regressions / leaks / stale comments + a basic security skim;
 - `nxs:review-implementation-reviewer` - feature / multi-file / public-surface changes: missing implementation / stubs / forgotten config / public API;
@@ -93,7 +93,7 @@ The report should need no follow-up question. A user asking "why is that a probl
 ## REFERENCE
 
 - `reference/review-policy.md` - where the project keeps its standards, how to find the source artifact, the citation formats, and the classification calls that are easy to get wrong.
-- `review-protocol` - the read-only stance, the checks before reporting, and the finding output format every lens follows, injected into each one; its CLASSIFICATION section is the orchestrator pass's.
+- `review-protocol` - the read-only stance, the checks before reporting, and the finding output format every lens follows, preloaded into each one; its CLASSIFICATION section is the orchestrator pass's.
 - `verify` - project checks on the diff when useful.
 
 ## NEXT

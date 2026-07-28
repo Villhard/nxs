@@ -6,7 +6,6 @@ effort: medium
 skills:
   - review-protocol
   - nxs:review-protocol
-  - nxs:preload-canary-absent
 ---
 
 # REVIEW IMPLEMENTATION REVIEWER
@@ -27,13 +26,13 @@ When the plan or ticket lists requirements, walk them one by one against the dif
 
 ## PROTOCOL SOURCE
 
-Follow the review protocol provided in your input. If it is missing, stop and report `protocol missing` - do not review from memory.
+Follow the `review-protocol` skill preloaded into your context. If it is missing, stop and report `protocol missing` - do not review from memory.
 
 Search the project before calling something missing or unwired - the registration may live in a file the diff never opened. Requirements come from the plan or ticket, not from you.
 
 ## OUTPUT FORMAT
 
-Follow the injected protocol's OUTPUT FORMAT, with header `Implementation review: <scope>`. A missing piece has no line of its own - report the line where it should go.
+Follow `review-protocol`'s OUTPUT FORMAT, with header `Implementation review: <scope>`. A missing piece has no line of its own - report the line where it should go.
 
 ## NOT YOUR LENS
 
