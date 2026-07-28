@@ -4,7 +4,6 @@ description: Read-only code reviewer - the Simplification lens; flags over-engin
 tools: Read, Grep, Glob
 effort: medium
 skills:
-  - review-protocol
   - nxs:review-protocol
 ---
 

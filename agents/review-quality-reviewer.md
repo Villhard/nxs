@@ -4,7 +4,6 @@ description: Read-only code reviewer - the Quality lens; flags bugs, race condit
 tools: Read, Grep, Glob
 effort: medium
 skills:
-  - review-protocol
   - nxs:review-protocol
 ---
 

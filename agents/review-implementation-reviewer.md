@@ -4,7 +4,6 @@ description: Read-only code reviewer - the Implementation lens; flags what is mi
 tools: Read, Grep, Glob
 effort: medium
 skills:
-  - review-protocol
   - nxs:review-protocol
 ---
 

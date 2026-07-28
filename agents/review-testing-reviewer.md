@@ -4,7 +4,6 @@ description: Read-only code reviewer - the Testing lens; flags missing coverage,
 tools: Read, Grep, Glob
 effort: medium
 skills:
-  - review-protocol
   - nxs:review-protocol
 ---
 

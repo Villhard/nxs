@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.3] - 2026-07-28
+
+Settles which skill name form an agent's `skills:` frontmatter resolves. Both do: a probe agent
+listing one marker skill by bare name and another with the plugin prefix received both. The
+agents keep the prefixed form only. A bare name can be shadowed by a personal or project skill
+of the same name, which would substitute that file into a lens without saying so; the
+`plugin:skill` form cannot be shadowed.
+
+### Changed
+
+- The five read-only agents list `nxs:review-protocol` alone. Until now they carried both
+  candidate forms, so the protocol was preloaded into every lens twice.
+
+### Removed
+
+- The `preload-probe-bare` and `preload-probe-scoped` marker skills and the `preload-probe`
+  agent, added in 0.12.2 to answer this question.
+
 ## [0.12.2] - 2026-07-28
 
 Temporary diagnostic release. Two marker skills and one probe agent answer which name form
