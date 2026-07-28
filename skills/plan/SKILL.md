@@ -5,7 +5,7 @@ argument-hint: "[task | story path | tracker key]"
 
 # /nxs:plan
 
-Turn a task, brief, or tracker input into a well-formed implementation plan and stop. The plan becomes the source of truth for execution. Self-contained skill. Output language and response style come from global rules, not this file.
+Turn a task, brief, or tracker input into a well-formed implementation plan and stop. The plan becomes the source of truth for execution.
 
 Accepted input: a task description, a story directory (`docs/nxs/stories/`) holding a brainstorm or root-cause brief, or a tracker key / URL / pasted ticket. A plan can be made with or without a brief - with no input, gather it here first.
 
@@ -13,13 +13,13 @@ Example: /nxs:plan docs/nxs/stories/20260711-auth-refactor
 
 ## STANCE (PLAN ONLY, HAND OFF)
 
-- /nxs:plan produces the plan document and stops. It does not write implementation code, run the build, or change behavior.
-- The plan is a proposal: read-only until the user approves it. Review is a separate step (`/nxs:plancheck`); execution is a separate step (`/nxs:exec`).
+- /nxs:plan produces the plan document and stops, leaving implementation code, the build, and any behavior change to `/nxs:exec`.
+- The plan is a proposal: read-only until the user approves it.
 - If the task is small and single-step, no plan is needed - route to `/nxs:exec` or a direct edit instead of ceremony.
 
 ## CONTEXT
 
-- When a domain term in the task is fuzzy or ambiguous, stop and clarify it before encoding it into the plan rather than guessing its meaning.
+- When a domain term in the task is fuzzy or ambiguous, clarify it before encoding it into the plan.
 - Inspect project context before decomposing: read the relevant files, patterns, and dependencies (delegate to the built-in Explore agent or inspect directly). Do not over-read.
 
 ## PROCEDURE
@@ -29,12 +29,12 @@ Example: /nxs:plan docs/nxs/stories/20260711-auth-refactor
 3. Choose the development approach - `default` / `TDD` / `tracer-bullet` / `spike`. Evaluate on complexity, risk, and future flexibility; pick the one that minimizes risk and preserves flexibility, and record it in the plan. Definitions and selection criteria are in `plan-conventions`.
 4. Decompose into thin vertical-slice tasks - each a narrow observable behavior through all the layers it needs and only those, independently verifiable. Horizontal-by-layer tasks are a justified exception, not the default.
 5. Sequence tasks by dependency - groundwork a later slice needs comes first.
-6. Make each task well-formed - a concrete title, a Files block (Create / Modify), Test cases for behavioral tasks, a `- [ ]` checklist with tests as separate items, success criteria, and a final verification step. Follow `plan-conventions` for the exact structure and per-task well-formedness; do not invent tasks to pad the count.
+6. Make each task well-formed - a concrete title, a Files block (Create / Modify), Test cases for behavioral tasks, a `- [ ]` checklist with tests as separate items, success criteria, and a final verification step. Follow `plan-conventions` for the exact structure and per-task well-formedness. Every task earns its place; DRY and YAGNI, cut the excess.
 7. Write the plan file (see ARTIFACT). When scope changes during planning, update the plan explicitly and add COMPLEXITY TRACKING on any deviation from the conventions. A significant design decision surfaced while planning goes into the plan itself, as a short `## Decision: <title>` section with what was decided, why, and what is explicitly not being done.
 
 ## PLAN STRUCTURE
 
-Follow the `plan-conventions` background skill for the required sections, development-approach values, the per-task template, TDD and vertical-slice discipline, NEEDS CLARIFICATION markers, and COMPLEXITY TRACKING. Do not restate that contract here - reference it and apply it.
+Follow the `plan-conventions` background skill for the required sections, development-approach values, the per-task template, TDD and vertical-slice discipline, NEEDS CLARIFICATION markers, and COMPLEXITY TRACKING.
 
 Mark an open decision that would change the plan with `[NEEDS CLARIFICATION: <specific question>]` in the plan itself instead of a plausible guess. A plan with open markers is valid but not ready for execution; the marker convention and its effect on review and execution are detailed in `plan-conventions`.
 
@@ -55,12 +55,6 @@ With a tracker key or URL to record, add a `## SOURCE ARTIFACTS` section - the b
 
 Tracker: <ticket URL or key>
 ```
-
-## RULES
-
-- The plan is the source of truth for execution - keep it reviewable and current.
-- Do not invent tasks for the sake of count - DRY and YAGNI, cut the excess.
-- Produce the plan and stop; do not execute it.
 
 ## NEXT
 

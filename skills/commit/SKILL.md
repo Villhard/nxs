@@ -5,7 +5,7 @@ argument-hint: "[optional scope hint]"
 
 # /nxs:commit
 
-Commit the changes already in the working tree, split into atomic commits. Use it for edits you made by hand, outside `/nxs:exec`. Self-contained skill. Output language and response style come from global rules, not this file.
+Commit the changes already in the working tree, split into atomic commits. Use it for edits you made by hand, outside `/nxs:exec`.
 
 Message format, the atomicity rule, staging hygiene, and git safety come from the `commit-conventions` background skill - load it and follow it. This command owns only the procedure of grouping and committing.
 
@@ -15,9 +15,8 @@ Example: /nxs:commit
 
 ## STANCE
 
-- Commit what is already there. This command does not write code, run the build, or change behavior - it stages and commits existing changes only.
-- One commit = one logical change (`commit-conventions`). Split a mixed working tree into separate commits; do not squash unrelated work into one.
-- HITL: never `git push`, never `--force`, never create an MR / PR. Push only on a later explicit request.
+- Commit what is already there. This command stages and commits existing changes; writing code, running the build, and changing behavior belong elsewhere.
+- HITL: `git push`, `--force`, and MR / PR creation stay out of this command. Push only on a later explicit request.
 
 ## PROCEDURE
 
