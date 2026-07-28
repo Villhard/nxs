@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-07-28
+
+Split reporting from judging in review. A lens now reports every finding it has, each with a `Confidence:` and a `Severity:` and no label; the orchestrator - `/nxs:review` or `/nxs:plancheck` - verifies what came back and owns the BLOCK / NIT / DROP call, with a hard test for BLOCK. Around that: `/nxs:commit` is user-invoked only, the SessionStart hook is routing context instead of a discipline, and lens launches are capped.
+
+### Added
+
+- Protocol preload on the five read-only agents: each declares `review-protocol` in its `skills:` frontmatter and starts with it loaded. The orchestrator still injects the protocol into every lens prompt, and a lens that does not get it still stops with `protocol missing`.
+- A launch cap on `/nxs:review`, scoped to one invocation: one launch round, at most the four lenses, no relaunch of a lens inside that invocation. A post-fix re-review of the same scope is a NEW invocation with a fresh cap, so `/nxs:exec`'s review-fix rounds are unaffected.
+- `effort: medium` on the four diff-review lenses - the setting to revisit if review quality drops. `plan-reviewer` inherits the session level. CONTRIBUTING documents `effort` and `skills` with the rest of the agent frontmatter.
+- `plan-conventions`: a DELIVERABLE LENGTH rule - match a plan or a brief to what the task needs, cover the substance and stop. `rnd`, `bug`, and `plan` point at it instead of each carrying their own version.
+- `plan-conventions`: REASONING IS NOT A DELIVERABLE - no task, convention, or checklist item asks the executor to restate or transcribe its internal reasoning; ask for the result and the evidence behind it.
+
+### Changed
+
+- `/nxs:commit` carries `disable-model-invocation: true` - it runs when the user types it, not on the model's initiative. Every other command still fires on its trigger. CONTRIBUTING states when a command gets the field.
+- Finding classification moved out of the lens into the orchestrator. `review-protocol` still holds the labels, `/nxs:review` and `/nxs:plancheck` apply them to what the lenses propose, and `/nxs:exec` reads the same labels for its commit gate.
+- BLOCK has a hard test: name the concrete input or state where the shipped behavior is wrong, or name the requirement in the plan or the brief the diff does not meet. Neither, and it is a NIT at most, whatever severity the lens gave it - wording, naming, and a preference for another structure never block. `/nxs:plancheck` carries the plan-form of the test: the executor does the wrong thing, gets stuck, or cannot start.
+- Lenses stop discarding their own weak candidates. An unnamed input, a complexity that cannot be named, a coverage gap with no failing production change behind it - reported with `Confidence: low` instead of dropped, and the orchestrator decides.
+- `/nxs:plancheck` runs once per plan. Its output is a list for the user to act on, and nothing in it asks for a re-review after a fix. It states the bar it is written against: a plan does not have to be perfect to be executable.
+- The SessionStart hook is routing context: it names the commands, says to match the task to one rather than hand-roll a workflow a command already owns, and drops the coercive framing.
+- `/nxs:exec` states its stop conditions and its prohibitions in one section, keeping both meanings: "Stop and report" for what ends the run, "Never" for what exec does not do at all, where reporting first does not make it allowed.
+- Rationale is compressed where it only restated the rule above it - the bug diagnosis loop, the TDD and vertical-slice references, the `plan-conventions` opening, and `review-protocol`'s output rules.
+
+### Removed
+
+- `review-protocol`: the silence default ("a review that reports nothing is a good review"), the "anything you are unsure about" clause in DROP, and the tie-breaks that pushed an uncertain finding down a level. All three suppressed findings before the orchestrator could see them.
+- `review-protocol`: the per-candidate verification checklist. The lens still checks whether a finding is deliberate and still searches the project before calling anything unused; re-reading the code to confirm a finding is real is the orchestrator's verify step, which already ran on every finding.
+- The hook's red-flags list, including "simple changes are still tasks", which contradicted `/nxs:plan`'s own stance on a small task.
+- The `Self-contained skill. Output language and response style come from global rules` line in all seven command skills, and other rules stated twice in one context - tier 1 already carries them.
+
 ## [0.11.0] - 2026-07-23
 
 Simplify the architecture: every non-command skill is now a plain rules contract, and a SessionStart hook makes the commands fire on their trigger. The `intake` dispatcher is gone, and a real `/nxs:commit` command commits working changes.
