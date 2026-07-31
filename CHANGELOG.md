@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-07-31
+
+A plan task is now a capability, not a step. `/nxs:exec` pays a fixed toll per task - a fresh worker with a cold context, a verify run, a two-lens review to zero BLOCK, an AC comparison, a commit - so a plan that splits one capability into five technical steps costs about five times what the same capability costs as one slice. Every rule in the repo pushed toward that split: the sizing rule targeted five checkboxes, the vertical-slice reference asked for "many thin slices, not a few thick ones", and all three worked examples taught fine-grained slicing, one of them sliced horizontally by layer despite the rule forbidding it. The bar moves to 2-5 tasks for a typical feature with 7 as the ceiling, and a boundary now has to earn itself. Nothing about rigor moves: a task still carries Test cases, success criteria, and a verification step, and that step now names the project's actual command instead of saying "run tests".
+
+### Changed
+
+- `skills/plan-conventions/SKILL.md` - a task is one complete capability carried through every layer it needs, not "one function, one endpoint, one component". `## TASK SIZING, DECOMPOSITION, SEQUENCING` states the 2-5 / 7 counts and the five criteria that license a split: parts release independently, carry different risk, change different public contracts, need different verification strategies, or one task would be too large to review in a single pass. Touching different files or layers is explicitly not one of them.
+- `skills/plan-conventions/reference/vertical-slice.md` - the registration example becomes two complete slices instead of three validation cases, a second anti-pattern block names the cost of splitting one capability by step, and a reviewability check says when a slice is the right size: what capability was added, how it is verified, what contracts changed, what risk remains, all answerable from one task.
+- `skills/plan-conventions/reference/plan-template.md` - the worked task is a cross-layer capability with a Files block spanning migration, service, and API, replacing the single-file hashing utility.
+- `skills/plan-conventions/reference/tdd.md` - a larger slice means more RED -> GREEN -> REFACTOR cycles, never a longer one.
+- `skills/plan/SKILL.md` - step 4 asks for the fewest vertical slices the split criteria justify and defers the counts to `plan-conventions`.
+- `skills/exec/SKILL.md` - the commit rule moves into cycle step 6 and covers both ways a task gets split at commit time, by layer and by TDD micro-cycle. The large-diff stop condition now measures against the task's Files block and goal, so a diff matching a deliberately large slice is expected rather than a stop. The review-fix cap goes from 3 rounds to 5: a stalled task now holds a whole capability of uncommitted work, and rounds that make no progress are already cut by stalemate detection.
+- `skills/plancheck/reference/plan-review-policy.md` - slicing is a NIT, reported once for the group with the merge named, never a BLOCK. It covers both over-splitting and cutting by layer, which used to be judged in two places at once. `agents/plan-reviewer.md` drops `task size` and the slicing clause from its NOT-YOUR-JOB list so the injected policy is not overridden; checkbox counts, titles, and section order stay dropped.
+- `examples/plan-sample.md` - the pagination plan collapses from three layer tasks (params -> repository -> handler) to the single slice it always was.
+- `README.md` - plan tasks are a story's end-to-end increments, not its atomic steps.
+
+### Removed
+
+- The `~5 checkboxes per task` target with its split-at-8 and merge-at-2 thresholds, and the slice-size bound that repeated it in `reference/vertical-slice.md`. Task size is governed by the split criteria and the reviewability check; a checkbox count never described a capability.
+- `exec`'s `commit granularity` bullet in TDD MODE, folded into cycle step 6 where the commit already happens.
+
 ## [0.13.1] - 2026-07-28
 
 Prompt cleanup against Anthropic's skill-authoring and prompt-engineering guidance. Nothing about the workflow changes: same commands, same agents, same artifact paths, same gates. What changes is that a rule is now stated once. The corpus had drifted from `CONTRIBUTING`'s own placement rule - read-only was declared five times on the review path, TDD and vertical-slice discipline lived in three files each, and four `## RULES` sections were compressed restatements of the body above them. Every deleted sentence was checked against a surviving home before it went.

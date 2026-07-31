@@ -44,7 +44,7 @@ Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`; the on
 
 ## Artifacts
 
-One story is one whole verifiable unit of work whose plan tasks are its atomic steps, and it gets one directory under `docs/nxs/stories/` in the current repository:
+One story is one whole verifiable unit of work whose plan tasks are its end-to-end increments, and it gets one directory under `docs/nxs/stories/` in the current repository:
 
 - `/nxs:rnd` -> `docs/nxs/stories/YYYYMMDD-<slug>/brief.md`
 - `/nxs:bug` -> `docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md`

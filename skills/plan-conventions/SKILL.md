@@ -34,7 +34,7 @@ Required sections, in order:
 
 - **Overview** - what the plan does and why.
 - **SOURCE ARTIFACTS** - the tracker key or URL this plan derives from, so review can trace scope. The brief is a sibling in the same story directory and needs no pointer. Nothing to point at, no section.
-- **ACCEPTANCE CRITERIA** - verifiable readiness criteria for the whole plan. Task verification checks a step; AC checks the plan as a whole, and `/nxs:exec` checks against AC rather than checkboxes alone.
+- **ACCEPTANCE CRITERIA** - verifiable readiness criteria for the whole plan. Task verification checks one capability; AC checks the plan as a whole, and `/nxs:exec` checks against AC rather than checkboxes alone.
 - **DEVELOPMENT APPROACH** - one line, right after Acceptance Criteria (see above).
 - **CONVENTIONS** - optional; the rules and shared steps every task follows: code style and naming for this work, a procedure repeated per task, standing preferences the user stated for this effort. Detail specific to one task stays in that task. No such rules, no section. `/nxs:exec` passes this section to every worker, so what is missing here does not reach the code.
 - **Implementation** - each task well-formed (see below).
@@ -44,14 +44,14 @@ Full skeleton and scaling of Acceptance Criteria: `reference/plan-template.md`. 
 
 ## PER-TASK WELL-FORMEDNESS
 
-Each task is one atomic, independently verifiable logical change (one function, one endpoint, one component) and contains:
+Each task is one complete, independently verifiable capability, carried through every layer it needs (API, service, domain, repository, schema, tests, docs) - not a technical step in one layer. It contains:
 
 - **title** - a concrete name, not "Implementation", "Core logic", or "Setup".
 - **Files block** - mandatory, exact Create / Modify paths. Without it the plan is incomplete and `/nxs:exec` stops on the task.
 - **Test cases** - for a task with behavioral code changes, a `**Test cases:**` block right after the Files block: concrete checks with expected outcome, describing the contract, separate from how the tests are written. A behavioral task without them is incomplete.
 - **checklist** - steps as `- [ ]`, marked `- [x]` when done. Tests are separate items, never bundled with the implementation.
-- **success criteria** - an observable outcome of the task.
-- **verification** - a final item: run tests / lint / typecheck / acceptance check.
+- **success criteria** - an observable outcome of the task, with the project left in a working state.
+- **verification** - a final item naming the concrete command this project runs (`pytest tests/items -q`, `go test ./...`), not a bare "run tests", plus the acceptance check.
 
 Exemption: a config-only / settings / dotfiles / declarative task with no behavioral code to assert needs no Test cases block; verification is that the change takes effect. Review does not flag it.
 
@@ -59,8 +59,9 @@ Full task template, Test-cases scaling, and success-criteria forms by task type:
 
 ## TASK SIZING, DECOMPOSITION, SEQUENCING
 
-- Target size ~5 checkboxes per task. Too large (> 8) - split; too small (1-2) - merge into the same logical unit; logically atomic - keep even if larger.
-- Tasks are by default thin vertical slices, not thick horizontal layers. Definition, good and bad examples, and the allowed exceptions: `reference/vertical-slice.md`. Each exception is justified in COMPLEXITY TRACKING.
+- A typical feature is 2-5 tasks. Over 7 - merge adjacent technical tasks back into capabilities, and record what is left in COMPLEXITY TRACKING.
+- Split one capability into two tasks only when one of these holds: the parts release independently, carry different risk, change different public contracts, need different verification strategies, or one task would be too large to review in a single pass. Touching different files or different layers is never a reason.
+- Tasks are vertical slices, not horizontal layers. Definition, good and bad examples, the reviewability check, and the allowed exceptions: `reference/vertical-slice.md`. Each exception is justified in COMPLEXITY TRACKING.
 - Sequence tasks by dependency: groundwork a later slice needs comes first.
 - `➕` prefixes a task added mid-execution; `⚠️` prefixes a blocker. The final plan state matches the work actually done.
 
@@ -78,7 +79,7 @@ An open decision is marked in the artifact itself instead of a plausible guess:
 
 ## COMPLEXITY TRACKING
 
-A plan that deviates from these conventions records every deviation in one table - horizontal slicing, a task over the size guideline, skipped tests, and similar:
+A plan that deviates from these conventions records every deviation in one table - horizontal slicing, a plan over seven tasks, skipped tests, and similar:
 
 ```markdown
 ## COMPLEXITY TRACKING

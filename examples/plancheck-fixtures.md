@@ -38,4 +38,8 @@ name, or the `.github/` line in `CONTRIBUTING.md`, which glosses the directory a
 linter. The plan's own goal still ships - the script runs locally and CI calls it - so the cost
 is a stale line, not a wrong result.
 
+The other nit on offer: the two tasks are one capability - the script is dead until the workflow
+calls it, and both are verified by the same CI run - so they merge. A NIT, never a BLOCK, and the
+same holds for the two tasks in `bait.md`.
+
 Anything blocking here is a false positive, and each one is a bug in the bar.

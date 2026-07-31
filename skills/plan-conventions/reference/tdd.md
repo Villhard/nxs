@@ -44,4 +44,4 @@ In a plan, TDD means:
 - the task is framed through behavior, not through files;
 - the Test cases block describes observable cases through the public interface, not private internals;
 - the checklist contains explicit steps: `write failing test for X`, `minimal implementation until X passes`, `refactor while green`;
-- one task is one or more short RED -> GREEN -> REFACTOR cycles, not a dump of all tests at the start.
+- one task is a series of short RED -> GREEN -> REFACTOR cycles, one per behavior in the slice, not a dump of all tests at the start. A larger slice means more cycles, never a longer cycle.

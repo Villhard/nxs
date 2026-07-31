@@ -54,31 +54,37 @@ Loaded on demand from `plan-conventions` when authoring or checking the concrete
 Each task follows this shape:
 
 ```markdown
-### Task 1: Add password hashing utility
+### Task 1: A visitor registers with an email and lands in the database
 
 **Files:**
+- Create: migrations/0007_users.sql
 - Create: src/auth/hash.go
 - Create: src/auth/hash_test.go
+- Modify: src/users/service.go
+- Modify: src/users/service_test.go
+- Modify: src/api/routes.go
+- Create: src/api/users_test.go
 
 **Test cases:**
-- HashPassword(valid_input) -> returns 60-char bcrypt string
-- HashPassword(empty_string) -> returns ErrEmptyPassword
-- VerifyPassword(correct_hash, password) -> returns true
-- VerifyPassword(correct_hash, wrong_password) -> returns false
+- POST /api/users with a fresh email -> 201, the row holds a bcrypt hash, never the plaintext
+- POST /api/users with an existing email -> 409, no second row
+- POST /api/users with a malformed email -> 422
 
-- [ ] create `src/auth/hash.go` with HashPassword and VerifyPassword functions
-- [ ] implement bcrypt-based hashing with configurable cost
-- [ ] write tests from Test cases above (HashPassword)
-- [ ] write tests from Test cases above (VerifyPassword)
-- [ ] run tests - must pass before task 2
+- [ ] add the users migration with a unique index on email
+- [ ] add HashPassword in `src/auth/hash.go` (bcrypt, configurable cost)
+- [ ] add service.Register: normalize, hash, persist, ErrEmailTaken on a duplicate
+- [ ] wire POST /api/users to the service and map errors to 201 / 409 / 422
+- [ ] write tests from Test cases above (the stored hash)
+- [ ] write tests from Test cases above (the duplicate and malformed outcomes)
+- [ ] run `go test ./...` and check against ACCEPTANCE CRITERIA
 
-Success: a password hashes and verifies through the public functions; an empty password is rejected.
+Success: a visitor registers through the public API, the credential round-trips, and a duplicate email is rejected with 409.
 ```
 
 Required elements and their bar are in `plan-conventions` -> PER-TASK WELL-FORMEDNESS. The one that is easiest to get wrong is splitting tests out of the implementation step:
 
-- Good: `- [ ] write tests for HashPassword (error cases)`
-- Bad: `- [ ] implement HashPassword and write tests`
+- Good: `- [ ] write tests for the duplicate-email path`
+- Bad: `- [ ] implement service.Register and write tests`
 
 ## ACCEPTANCE CRITERIA SCALING
 

@@ -38,7 +38,7 @@ Only where a step actually carries it - a migration, a deletion, a deploy, destr
 
 ## NOT YOUR JOB
 
-Form, not substance: checkbox counts, task size, how concrete a title sounds, vertical versus horizontal slicing where the sequence works either way, wording and section order, a missing test-case block on a config-only task, or a summary of the plan read back.
+Form, not substance: checkbox counts, how concrete a title sounds, wording and section order, a missing test-case block on a config-only task, or a summary of the plan read back.
 
 Test cases are worth a finding only when a behavioral task has none, or when the ones it has would pass no matter what the code does.
 

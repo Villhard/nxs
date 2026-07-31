@@ -39,7 +39,9 @@ Its NIT list is code-shaped: a leftover from a removal, a stale comment, a dupli
 
 **"Not covered" is usually covered elsewhere.** Read every task for the requirement under different words before saying it is missing. A plan rarely uses the brief's vocabulary.
 
-**Form is not substance.** A missing Files block, missing Test cases, unjustified horizontal slicing, a vague title. Exec stops on the first and the plan comes back for one edit, the review of the task diff asks for the second, and the other two cost nothing. NIT at most, usually DROP.
+**Form is not substance.** A missing Files block, missing Test cases, a vague title. Exec stops on the first and the plan comes back for one edit, the review of the task diff asks for the second, and the third costs nothing. NIT at most, usually DROP.
+
+**Slicing is a NIT, never a BLOCK.** One capability spread over several technical tasks, or a task cut by layer instead of by behavior: the right end state still ships, at an avoidable cost - a worker launch, a verify run, a review round, and a commit per boundary. Report it once for the group, naming the tasks that merge and the capability they add up to. `plan-conventions` carries the split criteria; a boundary that meets one of them is not a finding.
 
 **Risk only where a step carries it.** A migration, a deletion, a deploy, destructive shell, a secret written into the plan. Ordinary code changes carry none; do not manufacture it.
 
