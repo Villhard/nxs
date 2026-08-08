@@ -31,7 +31,7 @@ Nothing is written outside the workspace.
 ## PROCEDURE
 
 1. Read what already exists: `MISSION.md`, `NOTES.md`, `GLOSSARY.md`, and the last two or three lessons. Learning records: all of them while there are fewer than eight, otherwise the three most recent plus the covered ground listed in `NOTES.md`.
-2. No mission, or a vague one? Interview the user before teaching anything, and write `MISSION.md`. This comes first even when they arrived asking for a specific lesson.
+2. No mission, or a vague one? Interview the user before teaching anything, and write `MISSION.md`. This comes first even when they arrived asking for a specific lesson. In the same interview ask two or three questions that test the topic rather than collecting a self-report, and write what they turn up as the first learning record. What someone claims to know and what they can use are different sizes.
 3. Thin `RESOURCES.md`? Search for sources and fill it. Teaching ahead of the sources means teaching from memory, which is where the errors come from.
 4. Pick the next thing to teach (see PICKING THE NEXT LESSON).
 5. Write the lesson, open it, and stay available for questions.
