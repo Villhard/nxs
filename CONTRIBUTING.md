@@ -35,8 +35,6 @@ Plugins version independently. An edit to bundled content bumps `version` in tha
 
 What counts as a contract, and therefore as a minor rather than a patch, is defined per plugin. Renaming a plugin is a contract change: it renames every command and agent it ships.
 
-Renaming a plugin also needs an entry in the `renames` map of `marketplace.json`, `{"<old>": "<new>"}`, so existing installs follow the rename instead of breaking.
-
 ## HOUSE STYLE
 
 Markdown uses ASCII `-` and straight quotes only. Em-dash, en-dash, horizontal bar, minus sign, and typographic or angle quotes are rejected. `.github/scripts/lint-house-style.sh` enforces this over every git-tracked `*.md`; run it before pushing.

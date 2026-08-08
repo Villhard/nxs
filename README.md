@@ -17,8 +17,6 @@ claude plugin install teach@nxs
 
 Restart Claude Code so the plugin snapshots load. Each plugin's README covers its own setup.
 
-Installing `nxs@nxs` no longer works: the plugin was renamed to `dev` in `dev` 0.17.0, and the marketplace keeps the name. An existing install should follow the `renames` entry in the manifest on `claude plugin marketplace update nxs`. If it does not, uninstall `nxs@nxs` and install `dev@nxs`.
-
 ## Layout
 
 ```

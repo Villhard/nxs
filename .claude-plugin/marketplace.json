@@ -4,9 +4,6 @@
   "owner": {
     "name": "Victor Ryabov"
   },
-  "renames": {
-    "nxs": "dev"
-  },
   "plugins": [
     {
       "name": "dev",
