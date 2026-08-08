@@ -104,6 +104,7 @@ Quiz rules:
 - Answers are the same length in words, and in characters where you can manage it. Length is a tell.
 - No formatting, hedging, or specificity that marks the right answer.
 - Shuffle position. The correct answer must not sit first by habit.
+- Every wrong option is a mistake people actually make, stated as confidently as the right one. Which one the user picks then names the misconception to attack next; an option nobody would believe teaches nothing.
 
 ## WISDOM
 
