@@ -71,6 +71,7 @@ Requirements:
 - **Themed to the system.** Follow `prefers-color-scheme`, so a lesson opened at night is not a white page. Both themes carry real contrast; a dark theme is not the light one dimmed. The shared stylesheet holds both.
 - **Tied to the mission.** State the connection in the lesson itself.
 - **Cited.** Link the claim to the source it came from. A lesson with no outbound links is a lesson built from your own recall.
+- **Current.** Teach the topic as it stands today. Where the lesson names something superseded, say so and name what replaced it. Reach for the old way only to explain how today's state came about, or when the user asked about a specific version. A source can be high-trust and stale at once, so check its date and not only its authority.
 - **Pointed at one primary source** to read or watch next, the best one you found.
 - **Cross-linked** by anchor to the lessons and reference documents around it.
 - **Ended with an invitation to ask.** You are the teacher; the file is the handout.
