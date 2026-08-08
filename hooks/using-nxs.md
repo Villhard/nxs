@@ -6,11 +6,11 @@ Dispatched as a subagent to execute a specific task? Your task is already scoped
 
 ## The rule
 
-The nxs commands (`rnd`, `bug`, `plan`, `plancheck`, `exec`, `review`, `commit`) are listed with their triggers in the `Skill` tool. Match your task to a command and invoke it before you start, rather than hand-rolling a workflow a command already owns.
+The nxs commands (`rnd`, `bug`, `plan`, `exec`, `review`, `commit`) are listed with their triggers in the `Skill` tool. Match your task to a command and invoke it before you start, rather than hand-rolling a workflow a command already owns.
 
 Two triggers are easy to miss because no command name is spoken:
 
-- **Any `git add` / `git commit` / `git push`** -> load the `commit-conventions` skill first (message format, atomicity, git safety). When the user asks to commit working changes, use `/nxs:commit`.
+- **Committing working changes** -> `/nxs:commit`, which owns the message format, the atomicity rule, and git safety.
 - **Input carries a tracker key / URL or a pasted ticket** -> read the ticket first (through the tracker if reachable, otherwise ask the user to paste it; never invent its content from the key), and name the story directory by the key: `YYYYMMDD-<KEY>-<slug>/`. The key names the directory, never the `brief.md` / `plan.md` files inside it.
 
 ## Red flags
@@ -19,6 +19,6 @@ These thoughts mean stop and check for a skill:
 
 - "This is a simple change, I'll just do it" - simple changes are still tasks.
 - "Let me explore the code first" - a skill tells you how to explore; check first.
-- "I'll commit this quickly" - a git write pulls `commit-conventions`.
+- "I'll commit this quickly" - a git write pulls `/nxs:commit`.
 
 User instructions override this discipline. Only skip a skill when the user told you to.

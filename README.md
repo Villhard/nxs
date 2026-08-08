@@ -1,8 +1,8 @@
 # nxs
 
-An opinionated plan -> exec -> review loop for Claude Code, packaged as a plugin. You get a reviewable plan as the source of truth, task-by-task execution by a single write-capable worker, and multi-lens code review - with commit, plan, and review conventions enforced from one place instead of re-explained in every prompt.
+An opinionated plan -> exec -> review loop for Claude Code, packaged as a plugin. You get a reviewable plan as the source of truth, task-by-task execution by a single write-capable worker, and one multi-agent review gate over the finished branch.
 
-Why install it over ad-hoc prompts: the workflow is fixed and named (`/nxs:plan`, `/nxs:exec`, `/nxs:review`), the conventions live in single-source background skills that every command shares, and human review gates stay in the loop - plan review before execution, code review before commit.
+Why install it over ad-hoc prompts: the workflow is fixed and named (`/nxs:plan`, `/nxs:exec`, `/nxs:review`), each command is self-contained, and the human stays in the loop - you approve the plan before execution and the review runs before you push.
 
 ## Quickstart
 
@@ -10,47 +10,54 @@ One task through the loop:
 
 ```
 /nxs:rnd add rate limiting to the public API   # shape a fuzzy task into a plan-ready brief
-/nxs:plan                                        # turn the brief into sequenced, verifiable tasks
-/nxs:plancheck                                   # read-only review of the plan
-/nxs:exec                                        # run the plan to the end, with gates on every task
-/nxs:review                                      # review the diff before you commit
+/nxs:plan                                      # turn the brief into sequenced tasks
+/nxs:exec                                      # run the plan to the end, one commit per task
+/nxs:review                                    # five reviewers over the branch, fixes committed
 ```
 
 ## Commands
 
-Seven flat `/nxs:<name>` commands:
+Six flat `/nxs:<name>` commands:
 
 | command | when to use |
 | --- | --- |
 | `rnd` | Think a fuzzy task, feature idea, or open question through to a plan-ready brief - the task entry point. |
 | `bug` | Investigate a bug to a confirmed root cause before any fix - the bug entry point. |
-| `plan` | Decompose a task, brief, or tracker input into sequenced, verifiable vertical-slice tasks - the source of truth for execution. |
-| `plancheck` | Read-only review of a plan before execution; run after `plan` and before `exec`. |
-| `exec` | Execute a plan task by task and write the code, with verify, review, and a commit after each task. |
-| `review` | Review a diff (staged, branch vs base, file, or PR) and report confirmed BLOCK / NIT findings without editing code. |
-| `commit` | Commit the current working changes, split into atomic commits with conventional messages - for edits made outside `exec`. |
+| `plan` | Decompose a task, brief, or ticket into sequenced tasks with checkboxes, then self-check the plan against the repository. |
+| `exec` | Execute the plan task by task and write the code, committing each finished task. |
+| `review` | Review the branch with five parallel agents, verify every finding, fix what is confirmed, and commit. |
+| `commit` | Commit the current working changes, split into atomic commits - for edits made outside `exec`. |
 
 ## Model
 
-Three tiers:
+Two tiers, nothing in between:
 
-1. Global `~/.claude/CLAUDE.md` - tool-level always-on rules (output language, style, safety). Hand-authored by you, NOT shipped by this plugin (see Setup). The skills rely on it for output style and for the safety rules some of them delegate to it: `commit-conventions` states git safety (push on request only, never force), but leaves secret safety and destructive-op confirmation to your global rules, which fire even when no skill loads.
-2. Command skills (`/nxs:<name>`) - the seven commands above. Single-mode; `exec` takes an optional natural-language `no commits`.
-3. Background skills (`user-invocable: false`) - four shared rule sets loaded by relevance, hidden from the `/` menu: `plan-conventions`, `review-protocol`, `verify`, `commit-conventions`.
+1. Global `~/.claude/CLAUDE.md` - always-on rules (output language, style, safety). Hand-authored by you, NOT shipped by this plugin (see Setup). The commands defer output style and the safety rules on secrets and destructive operations to it, so they fire even when no skill loads.
+2. The six commands above. Each is self-contained: no shared background skills, no `reference/` files, no cross-skill injection. A rule lives in exactly one file.
+
+The contract between `plan` and `exec` is two structural tokens: a `### Task N:` heading and `- [ ]` checkboxes. `exec` takes the first task section with open checkboxes and does not require anything else inside it.
 
 A SessionStart hook (`hooks/`) injects the `using-nxs` discipline so a session checks for the right command before acting - the commands fire on their trigger without being typed by name.
 
-Agents (`agents/*.md`) - one write-capable `worker` (used by `/nxs:exec`; the only agent that writes) plus three read-only lenses whose tools are limited to Read / Grep / Glob, so they cannot write or run shell: `plan-reviewer` (used by `plancheck`) and the two `review-*-reviewer` lenses (used by `review`).
+Agents (`agents/*.md`) - one write-capable `worker` used by `/nxs:exec`, the only agent that writes, plus five read-only reviewers used by `/nxs:review`:
+
+| agent | lens |
+| --- | --- |
+| `review-quality` | bugs, edge cases, error handling, leaks, races, security skim |
+| `review-implementation` | goal reached, wiring, completeness, scope creep |
+| `review-testing` | coverage over the changed code, fake tests, test quality |
+| `review-simplification` | over-engineering this branch introduces |
+| `review-documentation` | docs the change needs or made stale, plan checkboxes |
 
 ## Artifacts
 
-One story is one whole verifiable unit of work whose plan tasks are its end-to-end increments, and it gets one directory under `docs/nxs/stories/` in the current repository:
+One story is one whole unit of work, and it gets one directory under `docs/nxs/stories/` in the current repository:
 
 - `/nxs:rnd` -> `docs/nxs/stories/YYYYMMDD-<slug>/brief.md`
 - `/nxs:bug` -> `docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md`
 - `/nxs:plan` -> `plan.md` beside it, the whole directory archived by hand to `docs/nxs/stories/completed/`
-- `/nxs:plancheck`, `/nxs:review` -> chat only
-- `/nxs:exec` -> code changes plus updated plan checkboxes
+- `/nxs:exec` -> code changes, updated checkboxes, one commit per task
+- `/nxs:review` -> fixes committed as `fix: address review findings`
 
 With a tracker key the directory carries it: `YYYYMMDD-<KEY>-<slug>/`. These are local working files - keep `docs/` out of git if you do not want them committed.
 
@@ -61,21 +68,14 @@ With a tracker key the directory carries it: `YYYYMMDD-<KEY>-<slug>/`. These are
   plugin.json          # plugin manifest (name: nxs)
   marketplace.json     # plugin marketplace
 skills/
-  <name>/              # command skill -> /nxs:<name>
-    SKILL.md
-    reference/         # heavy detail, loaded on demand
-  <background-name>/   # background skill (user-invocable: false)
+  <name>/SKILL.md      # command skill -> /nxs:<name>, self-contained
 agents/
-  <name>.md            # subagent (worker + read-only lenses)
+  worker.md            # the single write-capable agent
+  review-*.md          # five read-only reviewers
 hooks/                 # SessionStart hook -> injects the using-nxs discipline
   hooks.json
   session-start.sh
   using-nxs.md
-examples/              # sample artifacts and review fixtures
-  plan-sample.md             # filled artifacts, as the skills write them
-  brief-sample.md
-  plancheck-fixtures.md      # what the fixtures are and what they should return
-  plancheck-fixtures/        # deliberately flawed plans, a calibration target
 ```
 
 ## Setup
@@ -86,7 +86,7 @@ examples/              # sample artifacts and review fixtures
    claude plugin install nxs@nxs
    ```
 
-2. **Global rules (your own)**. The skills defer output language and style to your global `~/.claude/CLAUDE.md`, and `commit-conventions` delegates secret safety and destructive-op confirmation there. The plugin does not ship a block (plugins cannot write `~/.claude/CLAUDE.md`), so set up your own global conventions. Without them the skills still run, but they lose the delegated secret and destructive-op protections and fall back to the default output style.
+2. **Global rules (your own)**. The commands defer output language and style to your global `~/.claude/CLAUDE.md`, along with secret safety and destructive-op confirmation. The plugin does not ship a block (plugins cannot write `~/.claude/CLAUDE.md`), so set up your own. Without them the commands still run, but they lose those delegated protections and fall back to the default output style.
 
 3. **Optional - permissions**. The skills prefer `rg` / `fd` / `jq`. Allow them in `~/.claude/settings.json` to avoid prompts. Plugins cannot ship permissions.
 
