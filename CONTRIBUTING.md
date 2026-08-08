@@ -41,6 +41,8 @@ Renaming a plugin also needs an entry in the `renames` map of `marketplace.json`
 
 Markdown uses ASCII `-` and straight quotes only. Em-dash, en-dash, horizontal bar, minus sign, and typographic or angle quotes are rejected. `.github/scripts/lint-house-style.sh` enforces this over every git-tracked `*.md`; run it before pushing.
 
+Headings split by reader, not by level. Anything the model loads as instructions - `SKILL.md`, the files a skill links to, `agents/*.md`, `CONTRIBUTING.md` - uses UPPERCASE headings at every level, `#` through `###`. Anything a human reads on GitHub - `README.md`, `CHANGELOG.md` - uses sentence case. A heading inside a fenced block belongs to the artifact being templated and keeps whatever case that artifact needs.
+
 ## PUBLIC SAFETY
 
 This repository is public. Before committing, strip local paths like `/Users/<name>`, private git remotes, real tracker keys and URLs, secrets, tokens, `.env` values, colleague names and emails, and raw session or tool output. Swap in neutral placeholders: `<user_home>`, `<github_owner>/<repo>`, `PROJ-123`.
