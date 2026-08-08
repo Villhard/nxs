@@ -20,7 +20,7 @@ The current directory is the workspace, and it holds the entire state of this co
 | `MISSION.md` | why the user is learning this. Grounds every other decision. [MISSION-FORMAT.md](./MISSION-FORMAT.md) |
 | `RESOURCES.md` | the trusted sources and communities for this topic. [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md) |
 | `GLOSSARY.md` | the settled vocabulary of the topic. [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md) |
-| `NOTES.md` | how the user wants to be taught. Free-form. |
+| `NOTES.md` | how the user wants to be taught, plus a running list of ground already covered |
 | `lessons/NNNN-<slug>.html` | the lessons themselves, numbered from `0001` |
 | `reference/*.html` | cheat sheets distilled from lessons, built to be reread |
 | `learning-records/NNNN-<slug>.md` | what the user has demonstrably learned. [LEARNING-RECORD-FORMAT.md](./LEARNING-RECORD-FORMAT.md) |
@@ -30,12 +30,12 @@ Nothing is written outside the workspace.
 
 ## PROCEDURE
 
-1. Read what already exists: `MISSION.md`, `NOTES.md`, `GLOSSARY.md`, every learning record, and the last two or three lessons.
+1. Read what already exists: `MISSION.md`, `NOTES.md`, `GLOSSARY.md`, and the last two or three lessons. Learning records: all of them while there are fewer than eight, otherwise the three most recent plus the covered ground listed in `NOTES.md`.
 2. No mission, or a vague one? Interview the user before teaching anything, and write `MISSION.md`. This comes first even when they arrived asking for a specific lesson.
 3. Thin `RESOURCES.md`? Search for sources and fill it. Teaching ahead of the sources means teaching from memory, which is where the errors come from.
 4. Pick the next thing to teach (see PICKING THE NEXT LESSON).
 5. Write the lesson, open it, and stay available for questions.
-6. Update `RESOURCES.md`, `GLOSSARY.md`, and `reference/` with whatever the lesson produced.
+6. Update `RESOURCES.md`, `GLOSSARY.md`, and `reference/` with whatever the lesson produced, and add what it covered to the covered-ground list in `NOTES.md`.
 7. Write a learning record only when the user demonstrated something. Coverage is not learning.
 
 A preference the user states in passing belongs in `NOTES.md` the moment it is said, whatever step you are on: pace, format, what they want more of, what they will not sit through. Unwritten, it is gone by the next session.
