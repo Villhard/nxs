@@ -1,14 +1,24 @@
 {
   "name": "nxs",
-  "description": "Marketplace for the nxs plugin",
+  "description": "Victor Ryabov's Claude Code plugins",
   "owner": {
     "name": "Victor Ryabov"
   },
+  "renames": {
+    "nxs": "dev"
+  },
   "plugins": [
     {
-      "name": "nxs",
-      "source": "./",
-      "description": "Nexus workflow skills for Claude Code"
+      "name": "dev",
+      "source": "./plugins/dev",
+      "category": "development",
+      "description": "An opinionated plan -> exec -> review loop: six flat /dev commands, a single write-capable worker, and five review agents over the finished branch"
+    },
+    {
+      "name": "teach",
+      "source": "./plugins/teach",
+      "category": "productivity",
+      "description": "Turn the current directory into a teaching workspace - a mission, curated sources, short interactive lessons, and a record of what you have actually learned"
     }
   ]
 }
