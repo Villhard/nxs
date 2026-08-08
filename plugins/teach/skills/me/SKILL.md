@@ -1,15 +1,14 @@
 ---
-name: teach
 description: Teach the user a topic across many sessions, in a workspace that remembers what they already know. Use when the user asks to be taught, tutored, or walked into a subject from scratch.
 disable-model-invocation: true
 argument-hint: "What would you like to learn about?"
 ---
 
-# /teach
+# /teach:me
 
 The user wants to learn something, and they want to keep learning it. Treat this as standing work across many sessions, not a single answer.
 
-Example: /teach olympic weightlifting
+Example: /teach:me olympic weightlifting
 
 ## WORKSPACE
 

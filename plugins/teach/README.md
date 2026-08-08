@@ -1,13 +1,13 @@
 # teach
 
-A tutor that remembers. `/teach` turns the current directory into a teaching workspace and keeps the state of a course there: why you are learning the topic, which sources are trustworthy, the lessons you have been through, and what you have actually demonstrated. Next session picks up from that record rather than from an empty prompt.
+A tutor that remembers. `/teach:me` turns the current directory into a teaching workspace and keeps the state of a course there: why you are learning the topic, which sources are trustworthy, the lessons you have been through, and what you have actually demonstrated. Next session picks up from that record rather than from an empty prompt.
 
 ## Quickstart
 
 ```
 mkdir ~/learning/weightlifting && cd ~/learning/weightlifting
 claude
-/teach olympic weightlifting
+/teach:me olympic weightlifting
 ```
 
 The first session interviews you about why you want this and writes the mission. Every session after that reads the workspace, picks the next lesson just past what you can already do, and writes it as a self-contained HTML page you can reopen later.
@@ -40,14 +40,14 @@ claude plugin marketplace add Villhard/nxs
 claude plugin install teach@nxs
 ```
 
-Restart Claude Code so the plugin snapshot loads. `/teach` is invoked by hand only; the model will not start a course on its own.
+Restart Claude Code so the plugin snapshot loads. `/teach:me` is invoked by hand only; the model will not start a course on its own.
 
 ## Layout
 
 ```
 .claude-plugin/
   plugin.json
-skills/teach/
+skills/me/
   SKILL.md
   MISSION-FORMAT.md
   RESOURCES-FORMAT.md

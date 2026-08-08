@@ -5,7 +5,7 @@ A Claude Code plugin marketplace. Two plugins live here, versioned and released 
 | plugin | what it gives you |
 | --- | --- |
 | [`dev`](plugins/dev) | An opinionated plan -> exec -> review loop. Six flat `/dev` commands, a single write-capable worker, five review agents over the finished branch. |
-| [`teach`](plugins/teach) | `/teach` turns the current directory into a teaching workspace that survives between sessions: a mission, curated sources, numbered lessons, and a record of what you have learned. |
+| [`teach`](plugins/teach) | `/teach:me` turns the current directory into a teaching workspace that survives between sessions: a mission, curated sources, numbered lessons, and a record of what you have learned. |
 
 ## Install
 
