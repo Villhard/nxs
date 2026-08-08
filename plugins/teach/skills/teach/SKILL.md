@@ -68,6 +68,7 @@ Requirements:
 
 - **Short.** Working memory is small. One tangible win the user can build on, and out.
 - **Beautiful.** Clean typography, generous margins, restrained rules and colour. Tufte, not a slide deck. The user will come back to these.
+- **Themed to the system.** Follow `prefers-color-scheme`, so a lesson opened at night is not a white page. Both themes carry real contrast; a dark theme is not the light one dimmed. The shared stylesheet holds both.
 - **Tied to the mission.** State the connection in the lesson itself.
 - **Cited.** Link the claim to the source it came from. A lesson with no outbound links is a lesson built from your own recall.
 - **Pointed at one primary source** to read or watch next, the best one you found.
