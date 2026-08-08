@@ -1,24 +1,24 @@
 # Using nxs
 
-Before acting on any development task - including clarifying questions, reading code, or running a command - check whether an nxs skill applies, and invoke it with the `Skill` tool first when one does. A skill that applies is used, not skipped.
+Before acting on any development work - including clarifying questions, reading code, or running a command - check whether an nxs command applies, and invoke it with the `Skill` tool first when one does. A command that applies is used, not skipped.
 
 Dispatched as a subagent to execute a specific task? Your task is already scoped; this does not apply to you.
 
 ## The rule
 
-The nxs commands (`rnd`, `bug`, `plan`, `exec`, `review`, `commit`) are listed with their triggers in the `Skill` tool. Match your task to a command and invoke it before you start, rather than hand-rolling a workflow a command already owns.
+The nxs commands (`rnd`, `bug`, `plan`, `exec`, `review`, `commit`) are listed with their triggers in the `Skill` tool. Match the work in front of you to a command and invoke it before you start, rather than hand-rolling a workflow a command already owns.
 
 Two triggers are easy to miss because no command name is spoken:
 
 - **Committing working changes** -> `/nxs:commit`, which owns the message format, the atomicity rule, and git safety.
-- **Input carries a tracker key / URL or a pasted ticket** -> read the ticket first (through the tracker if reachable, otherwise ask the user to paste it; never invent its content from the key), and name the story directory by the key: `YYYYMMDD-<KEY>-<slug>/`. The key names the directory, never the `brief.md` / `plan.md` files inside it.
+- **Input carries a tracker key / URL or a pasted ticket** -> read the ticket first (through the tracker if reachable, otherwise ask the user to paste it; never invent its content from the key), and name the story directory by the key: `YYYYMMDD-<KEY>-<slug>/`. The key names the directory, never the `brief.md` / `root-cause.md` / `plan.md` files inside it.
 
 ## Red flags
 
-These thoughts mean stop and check for a skill:
+These thoughts mean stop and check for a command:
 
-- "This is a simple change, I'll just do it" - simple changes are still tasks.
-- "Let me explore the code first" - a skill tells you how to explore; check first.
+- "This is a simple change, I'll just do it" - simple changes still go through a command.
+- "Let me explore the code first" - a command tells you how to explore; check first.
 - "I'll commit this quickly" - a git write pulls `/nxs:commit`.
 
-User instructions override this discipline. Only skip a skill when the user told you to.
+User instructions override this discipline. Only skip a command when the user told you to.
