@@ -38,6 +38,8 @@ Nothing is written outside the workspace.
 6. Update `RESOURCES.md`, `GLOSSARY.md`, and `reference/` with whatever the lesson produced.
 7. Write a learning record only when the user demonstrated something. Coverage is not learning.
 
+A preference the user states in passing belongs in `NOTES.md` the moment it is said, whatever step you are on: pace, format, what they want more of, what they will not sit through. Unwritten, it is gone by the next session.
+
 ## THREE THINGS THE USER NEEDS
 
 - **Knowledge** from high-trust sources. Never from your own recall.
