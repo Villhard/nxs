@@ -3,20 +3,20 @@ description: Think a request through to a plan-ready brief - the entry point for
 argument-hint: "[request | tracker key | question]"
 ---
 
-# /nxs:rnd
+# /dev:rnd
 
 Think a request through to a plan-ready brief and stop. The entry point for new work.
 
 Accepted input: a request in words, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work from the current session context.
 
-Example: /nxs:rnd add rate limiting to the public API
+Example: /dev:rnd add rate limiting to the public API
 
 ## STANCE
 
 - Produce the brief and stop. The plan, the code, and any behavior change belong to the commands that own them.
 - Three steps in order: clarify, explore, stress-test. All three scale with the request - a clear one collapses to zero questions, one obvious approach, and no stress pass.
-- Full collapse makes the brief ceremony. Say so out loud and offer to route straight to `/nxs:plan` instead.
-- For a bug rather than a request, route to `/nxs:bug`.
+- Full collapse makes the brief ceremony. Say so out loud and offer to route straight to `/dev:plan` instead.
+- For a bug rather than a request, route to `/dev:bug`.
 
 ## CLARIFY
 
@@ -59,7 +59,7 @@ docs/nxs/stories/YYYYMMDD-<slug>/brief.md
 
 Create the story when the request has none yet; write into the one the input names when it does.
 
-Keep the headings stable - `/nxs:plan` reads the brief by them:
+Keep the headings stable - `/dev:plan` reads the brief by them:
 
 ```markdown
 # Brief: <title>
@@ -92,4 +92,4 @@ Nothing durable is written before the user approves it.
 
 ## NEXT
 
-Brief written -> `/nxs:plan` turns it into a plan, then `/nxs:exec` implements it.
+Brief written -> `/dev:plan` turns it into a plan, then `/dev:exec` implements it.

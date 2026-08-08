@@ -1,6 +1,6 @@
 ---
 name: review-implementation
-description: Read-only code reviewer - checks whether the diff achieves its stated goal, is wired up, and stays inside what was asked for. A /nxs:review agent.
+description: Read-only code reviewer - checks whether the diff achieves its stated goal, is wired up, and stays inside what was asked for. A /dev:review agent.
 tools: Read, Grep, Glob, Bash
 ---
 

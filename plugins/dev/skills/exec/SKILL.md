@@ -3,11 +3,11 @@ description: Execute an implementation plan task by task and write the code, com
 argument-hint: "[story path | plan path] [no commits]"
 ---
 
-# /nxs:exec
+# /dev:exec
 
-Execute a plan to the end, one task per cycle. This is the one command that changes project code, and it delegates every task to a `nxs:worker` subagent rather than writing code itself.
+Execute a plan to the end, one task per cycle. This is the one command that changes project code, and it delegates every task to a `dev:worker` subagent rather than writing code itself.
 
-Example: /nxs:exec docs/nxs/stories/20260711-auth-refactor
+Example: /dev:exec docs/nxs/stories/20260711-auth-refactor
 
 ## RESOLVE THE PLAN
 
@@ -20,7 +20,7 @@ Before the first task: the worktree is clean unless the user approved a dirty st
 Repeat until no `- [ ]` is left:
 
 1. **Pick the task** - the first `### Task N:` section with open checkboxes. One section per cycle, all of its checkboxes, then move on.
-2. **Delegate** - launch one `nxs:worker` with the task text, the plan's `## Conventions` section, the project rules bearing on how code is written, and any standing directive from this session. Assemble that set once and reuse it verbatim. What is not passed does not reach the code. Use a fresh subagent, never `subagent_type: "fork"` - a fork inherits this context and defeats the isolation.
+2. **Delegate** - launch one `dev:worker` with the task text, the plan's `## Conventions` section, the project rules bearing on how code is written, and any standing directive from this session. Assemble that set once and reuse it verbatim. What is not passed does not reach the code. Use a fresh subagent, never `subagent_type: "fork"` - a fork inherits this context and defeats the isolation.
 3. **Validate** - run the test and lint commands the task names. Fix failures and re-run until green.
 4. **Flip the checkboxes** to `- [x]`.
 5. **Commit** the code and the plan together, one commit per task: `<type>(<scope>): <subject>`. Under **no commits**, skip this step and change nothing else.
@@ -60,4 +60,4 @@ On any of these - stop and tell the user rather than guessing.
 
 ## NEXT
 
-Plan executed -> `/nxs:review` for the review gate over the whole branch.
+Plan executed -> `/dev:review` for the review gate over the whole branch.

@@ -1,11 +1,29 @@
 # Changelog
 
-All notable changes to the `nxs` plugin are documented in this file.
+All notable changes to the `dev` plugin are documented in this file. The plugin was called `nxs` until 0.17.0; entries below that version use the old name and are left as written.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.17.0] - 2026-08-08
+
+The repository stops being one plugin that happens to declare a marketplace and becomes a marketplace that holds several. `nxs` was both the marketplace and the only plugin in it, so the name carried no information once a second plugin arrived. The marketplace keeps the name; the plugin takes the one that says what it does. Every command reads `/dev:plan` instead of `/nxs:plan`, and the plugin moves from the repository root into `plugins/dev/`.
+
+The artifact path does not follow. Stories written as `docs/nxs/stories/` live in repositories this plugin does not control, and renaming the directory would hide every one of them from `plan` and `exec`. `docs/nxs/` is a fixed string from here on, documented as such rather than kept in sync with the plugin name.
+
+### Changed
+
+- `.claude-plugin/plugin.json` - `name` becomes `dev`, which renames all six commands and all six agents. `homepage` points at the plugin directory rather than the repository root.
+- `skills/*/SKILL.md`, `agents/*.md` - `/nxs:<name>` becomes `/dev:<name>`, and the agents `/dev:exec` and `/dev:review` spawn become `dev:worker` and `dev:review-*`.
+- `hooks/using-nxs.md` becomes `hooks/using-dev.md`; `hooks/session-start.sh` reads the new filename and names the `dev` plugin in the context it injects.
+- `CONTRIBUTING.md` - scoped to this plugin. The layout section describes `plugins/dev/`, and the repository-wide rules (house style, public safety, how a plugin is added) move to the root `CONTRIBUTING.md`. A new paragraph in `## ARTIFACT PATHS` records why `docs/nxs/` keeps the old name.
+- `README.md` - moved out of the repository root into the plugin, and covers the plugin only. The root README now describes the marketplace.
+
+### Fixed
+
+- `agents/review-simplification.md` - the `description` was an unquoted YAML scalar containing `introduces: needless`, which made the whole frontmatter block fail to parse. The agent loaded with no `name`, no `description`, and no `tools`. Quoting the value fixes it; `claude plugin validate` now catches this class of error, which is how it surfaced.
 
 ## [0.16.1] - 2026-08-08
 

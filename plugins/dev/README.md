@@ -1,23 +1,23 @@
-# nxs
+# dev
 
 An opinionated plan -> exec -> review loop for Claude Code, packaged as a plugin. You get a reviewable plan as the source of truth, task-by-task execution by a single write-capable worker, and one multi-agent review gate over the finished branch.
 
-Why install it over ad-hoc prompts: the workflow is fixed and named (`/nxs:plan`, `/nxs:exec`, `/nxs:review`), each command is self-contained, and the human stays in the loop - you approve the plan before execution and the review runs before you push.
+Why install it over ad-hoc prompts: the workflow is fixed and named (`/dev:plan`, `/dev:exec`, `/dev:review`), each command is self-contained, and the human stays in the loop - you approve the plan before execution and the review runs before you push.
 
 ## Quickstart
 
 One story through the loop:
 
 ```
-/nxs:rnd add rate limiting to the public API   # shape a fuzzy request into a plan-ready brief
-/nxs:plan                                      # turn the brief into sequenced tasks
-/nxs:exec                                      # run the plan to the end, one commit per task
-/nxs:review                                    # five reviewers over the branch, fixes committed
+/dev:rnd add rate limiting to the public API   # shape a fuzzy request into a plan-ready brief
+/dev:plan                                      # turn the brief into sequenced tasks
+/dev:exec                                      # run the plan to the end, one commit per task
+/dev:review                                    # five reviewers over the branch, fixes committed
 ```
 
 ## Commands
 
-Six flat `/nxs:<name>` commands:
+Six flat `/dev:<name>` commands:
 
 | command | when to use |
 | --- | --- |
@@ -37,9 +37,9 @@ Two tiers, nothing in between:
 
 Three commands hand work to the next one, and each handoff is minimal: `plan` reads a brief by its `## Acceptance criteria` and `## Chosen approach` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a plan by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes. Nothing else crosses between them.
 
-A SessionStart hook (`hooks/`) injects the `using-nxs` discipline so a session checks for the right command before acting - the commands fire on their trigger without being typed by name.
+A SessionStart hook (`hooks/`) injects the `using-dev` discipline so a session checks for the right command before acting - the commands fire on their trigger without being typed by name.
 
-Agents (`agents/*.md`) - one write-capable `worker` used by `/nxs:exec`, the only agent that writes, plus five read-only reviewers used by `/nxs:review`:
+Agents (`agents/*.md`) - one write-capable `worker` used by `/dev:exec`, the only agent that writes, plus five read-only reviewers used by `/dev:review`:
 
 | agent | lens |
 | --- | --- |
@@ -71,17 +71,16 @@ These are local working files - keep `docs/` out of git if you do not want them 
 
 ```
 .claude-plugin/
-  plugin.json          # plugin manifest (name: nxs)
-  marketplace.json     # plugin marketplace
+  plugin.json          # plugin manifest (name: dev)
 skills/
-  <name>/SKILL.md      # implements the /nxs:<name> command, self-contained
+  <name>/SKILL.md      # implements the /dev:<name> command, self-contained
 agents/
   worker.md            # the single write-capable agent
   review-*.md          # five read-only reviewers
-hooks/                 # SessionStart hook -> injects the using-nxs discipline
+hooks/                 # SessionStart hook -> injects the using-dev discipline
   hooks.json
   session-start.sh
-  using-nxs.md
+  using-dev.md
 ```
 
 ## Setup
@@ -89,7 +88,7 @@ hooks/                 # SessionStart hook -> injects the using-nxs discipline
 1. Install the plugin:
    ```
    claude plugin marketplace add Villhard/nxs
-   claude plugin install nxs@nxs
+   claude plugin install dev@nxs
    ```
 
 2. **Global rules (your own)**. The commands defer output language and style to your global `~/.claude/CLAUDE.md`, along with secret safety and destructive-op confirmation. The plugin does not ship a block (plugins cannot write `~/.claude/CLAUDE.md`), so set up your own. Without them the commands still run, but they lose those delegated protections and fall back to the default output style.
@@ -104,12 +103,12 @@ The installed plugin reads a cached snapshot, not the live repo, so a session pi
 
 ```
 # simplest - reinstall (no version bump)
-claude plugin uninstall nxs@nxs && claude plugin install nxs@nxs
+claude plugin uninstall dev@nxs && claude plugin install dev@nxs
 
 # or version-based
-# bump "version" in .claude-plugin/plugin.json, then:
+# bump "version" in plugins/dev/.claude-plugin/plugin.json, then:
 claude plugin marketplace update nxs
-claude plugin update nxs@nxs
+claude plugin update dev@nxs
 ```
 
-A restart is required either way. `claude plugin validate --strict .` checks the manifest and skills before install.
+A restart is required either way. `claude plugin validate --strict plugins/dev`, run from the repository root, checks the manifest and skills before install.

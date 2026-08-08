@@ -1,6 +1,6 @@
 ---
 name: review-documentation
-description: Read-only code reviewer - finds documentation the diff should have updated and existing documentation the diff made stale. A /nxs:review agent.
+description: Read-only code reviewer - finds documentation the diff should have updated and existing documentation the diff made stale. A /dev:review agent.
 tools: Read, Grep, Glob, Bash
 ---
 

@@ -1,24 +1,22 @@
-# CONTRIBUTING (nxs)
+# CONTRIBUTING (dev)
 
-How to author a skill or an agent for the `nxs` plugin.
+How to author a skill or an agent for the `dev` plugin. The rules here govern this plugin only - the other plugins in this marketplace have their own. Repository-wide rules (house style, public safety, how a plugin is added) live in the root `CONTRIBUTING.md`.
 
-## REPO LAYOUT
+## PLUGIN LAYOUT
 
 ```
-nxs/
+plugins/dev/
   .claude-plugin/
-    plugin.json          # name: nxs (the namespace of every command)
-    marketplace.json     # local dev marketplace (source "./")
+    plugin.json          # name: dev (the namespace of every command)
   skills/
-    <name>/SKILL.md      # command skill -> /nxs:<name>
+    <name>/SKILL.md      # command skill -> /dev:<name>
   agents/
     <agent-name>.md      # self-contained subagent
-  hooks/                 # SessionStart hook -> injects using-nxs (not a skill)
+  hooks/                 # SessionStart hook -> injects using-dev (not a skill)
     hooks.json
     session-start.sh
-    using-nxs.md
-  .github/               # CI, house-style linter, PR template
-  README.md CONTRIBUTING.md CHANGELOG.md LICENSE
+    using-dev.md
+  README.md CONTRIBUTING.md CHANGELOG.md
 ```
 
 The global `~/.claude/CLAUDE.md` and `settings.json` stay out of this repo - you write those yourself.
@@ -26,32 +24,32 @@ The global `~/.claude/CLAUDE.md` and `settings.json` stay out of this repo - you
 ## TWO TIERS
 
 - Global `~/.claude/CLAUDE.md`: always on, applies to every response. Lives outside the plugin.
-- Command skills `/nxs:<name>`: the workflow, visible in the `/` menu. There are six: `rnd`, `bug`, `plan`, `exec`, `review`, `commit`.
+- Command skills `/dev:<name>`: the workflow, visible in the `/` menu. There are six: `rnd`, `bug`, `plan`, `exec`, `review`, `commit`.
 
 There is no third tier. A rule lives in exactly one file - the command that uses it, or the agent that uses it. No background skills, no `reference/` directories, no cross-skill injection.
 
-Alongside the tiers, a SessionStart hook (`hooks/`) injects the `using-nxs` discipline so a session checks for the right command before acting. It is infrastructure, not a skill - it lives in `hooks/`, not `skills/`.
+Alongside the tiers, a SessionStart hook (`hooks/`) injects the `using-dev` discipline so a session checks for the right command before acting. It is infrastructure, not a skill - it lives in `hooks/`, not `skills/`.
 
 ## UBIQUITOUS LANGUAGE
 
-One term, one meaning, everywhere in the repo. A word in this table is never used in another sense, and never replaced by a synonym.
+One term, one meaning, everywhere in this plugin. A word in this table is never used in another sense, and never replaced by a synonym.
 
 | term | means | never call it |
 | --- | --- | --- |
-| command | a `/nxs:<name>` entry point the user invokes. There are six | a skill, in user-facing text |
+| command | a `/dev:<name>` entry point the user invokes. There are six | a skill, in user-facing text |
 | skill | the `skills/<name>/SKILL.md` file implementing a command. An authoring word | a command, in CONTRIBUTING |
 | agent | a subagent a command spawns: `worker` and the five `review-*` | a skill |
 | story | one whole unit of work: one directory `docs/nxs/stories/YYYYMMDD-<slug>/` | a folder, a work item |
 | artifact | one durable markdown file a command writes into a story. There are exactly three | a commit, a report, a follow-up |
-| brief | the artifact `/nxs:rnd` writes, `brief.md` | - |
-| root cause | the artifact `/nxs:bug` writes, `root-cause.md` | a root-cause brief, a brief, a diagnosis |
-| plan | the artifact `/nxs:plan` writes, `plan.md` | - |
+| brief | the artifact `/dev:rnd` writes, `brief.md` | - |
+| root cause | the artifact `/dev:bug` writes, `root-cause.md` | a root-cause brief, a brief, a diagnosis |
+| plan | the artifact `/dev:plan` writes, `plan.md` | - |
 | task | one `### Task N:` block inside a plan | a step, the user's incoming work |
 | checkbox | one `- [ ]` / `- [x]` line inside a task | a step, an item |
 | request | what the user arrives with: a description, an idea, a question, a ticket | a task |
 | tracker key | the key or URL of an external ticket | a tracker identifier |
 
-Two collisions this table exists to prevent: `task` used to mean both the incoming work and a numbered block in a plan, and `brief` used to mean both artifacts that feed `/nxs:plan`. A new term is added here before it appears in a skill, an agent, or the README.
+Two collisions this table exists to prevent: `task` used to mean both the incoming work and a numbered block in a plan, and `brief` used to mean both artifacts that feed `/dev:plan`. A new term is added here before it appears in a skill, an agent, or the README.
 
 ## PLACEMENT RULE
 
@@ -85,7 +83,7 @@ Keep all three that narrow. Any new required section is a new coupling between t
 
 ## WHEN TO ADD SOMETHING NEW
 
-This repo stays small on purpose: six commands, six agents, one hook. Add a command only when all of these hold at once:
+This plugin stays small on purpose: six commands, six agents, one hook. Add a command only when all of these hold at once:
 
 - the intent is distinct and does not reduce to an existing command, not even through a mode word;
 - the intent is frequent - you reach for it several times a month, not once a quarter;
@@ -94,17 +92,17 @@ This repo stays small on purpose: six commands, six agents, one hook. Add a comm
 
 Miss even one and it is not a command. It is an upgrade to an existing skill or an inline rule.
 
-Things that bloat the repo and get rejected: copying an external skill wholesale, one new command per imported recipe, abstract guidance with no concrete failure mode behind it, and side edits made while you happened to be in the file.
+Things that bloat the plugin and get rejected: copying an external skill wholesale, one new command per imported recipe, abstract guidance with no concrete failure mode behind it, and side edits made while you happened to be in the file.
 
 ## AUTHORING PLAYBOOK
 
-- The command name is the skill DIRECTORY name. `skills/plan/` -> `/nxs:plan`.
-- The `nxs` namespace comes from the `name` field in `plugin.json`. Invocation is always namespaced; there is no bare alias.
-- Leave the frontmatter `name` field out of bundled skills. It is a display label, and setting it hides the namespace prefix in the `/` menu; without it the menu shows `nxs:<dir>`.
+- The command name is the skill DIRECTORY name. `skills/plan/` -> `/dev:plan`.
+- The `dev` namespace comes from the `name` field in `plugin.json`. Invocation is always namespaced; there is no bare alias.
+- Leave the frontmatter `name` field out of bundled skills. It is a display label, and setting it hides the namespace prefix in the `/` menu; without it the menu shows `dev:<dir>`.
 - Write the body of `SKILL.md` in compact English. The global tier decides what language the user reads in the chat.
 - The body loads on invocation and stays for the whole session, so write standing instructions, not one-off steps.
 - A skill that grows past roughly 120 lines is doing more than one job. Split the job, do not add a reference file.
-- Validate as you go: `claude plugin validate --strict .`
+- Validate as you go, from the repository root: `claude plugin validate --strict plugins/dev`
 
 ### COMMAND SKILL FRONTMATTER
 
@@ -121,7 +119,7 @@ Keep `description` to the trigger plus a short clause on what the skill produces
 
 ```yaml
 ---
-name: <agent file name, without .md - this is what a skill spawns as nxs:<name>>
+name: <agent file name, without .md - this is what a skill spawns as dev:<name>>
 description: <the role in one line, plus which command uses it>
 tools: <the exact tool list this agent may use>
 ---
@@ -147,11 +145,9 @@ Each of those three skills states its own path in its `## ARTIFACT` section, and
 
 Everything a skill writes goes under `docs/nxs/` in the current repository. Never create files outside those templates silently.
 
+The path keeps the old plugin name on purpose. `dev` was called `nxs` until 0.17.0, and stories written under the old name live in repositories this plugin does not control - renaming the directory would hide every one of them from `plan` and `exec`. `docs/nxs/` is a fixed string now, not a name to keep in sync.
+
 Moving a finished story to `docs/nxs/stories/completed/` is the user's action, not a command's. No skill performs it or asks about it. `exec` skips `completed/` when it resolves the latest story, which is a resolution rule and nothing more.
-
-### PUBLIC SAFETY
-
-Anything durable can end up in a public repository. Before committing, strip local paths like `/Users/<name>`, private git remotes, real tracker keys and URLs, secrets, tokens, `.env` values, colleague names and emails, and raw session or tool output. Swap in neutral placeholders: `<user_home>`, `<github_owner>/<repo>`, `PROJ-123`.
 
 ## DEV LOOP
 
@@ -159,8 +155,8 @@ Install caches a SNAPSHOT of the plugin rather than reading the repo live:
 
 ```
 # once - connect the local dev marketplace
-claude plugin marketplace add ~/nxs
-claude plugin install nxs@nxs
+claude plugin marketplace add ~/dev/nxs
+claude plugin install dev@nxs
 
 # after every edit
 claude plugin marketplace update nxs   # then reinstall the plugin
@@ -176,7 +172,7 @@ Every edit to bundled content - skills, agents, manifests - bumps the `version` 
 
 What a user or another plugin file depends on:
 
-1. command names `/nxs:<name>`, their arguments and modes;
+1. command names `/dev:<name>`, their arguments and modes;
 2. agent names, since skills spawn them by name;
 3. artifact paths and naming schemes (`docs/nxs/stories/YYYYMMDD-<slug>/plan.md`);
 4. the three handoff contracts: the headings of `brief.md` and `root-cause.md` that `plan` reads, and the two plan tokens `exec` depends on, `### Task N:` and `- [ ]`;

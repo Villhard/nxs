@@ -1,6 +1,6 @@
 ---
 name: review-testing
-description: Read-only code reviewer - checks test coverage and test quality over the code the diff changed, and detects tests that verify nothing. A /nxs:review agent.
+description: Read-only code reviewer - checks test coverage and test quality over the code the diff changed, and detects tests that verify nothing. A /dev:review agent.
 tools: Read, Grep, Glob, Bash
 ---
 

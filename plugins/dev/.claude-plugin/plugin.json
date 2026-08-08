@@ -1,0 +1,13 @@
+{
+  "name": "dev",
+  "description": "Development workflow for Claude Code - six flat /dev commands, each self-contained, plus a worker and five review agents",
+  "version": "0.17.0",
+  "author": {
+    "name": "Victor Ryabov",
+    "email": "victorwillhard@gmail.com"
+  },
+  "keywords": ["workflow", "planning", "review", "development"],
+  "license": "MIT",
+  "repository": "https://github.com/Villhard/nxs",
+  "homepage": "https://github.com/Villhard/nxs/tree/main/plugins/dev"
+}
