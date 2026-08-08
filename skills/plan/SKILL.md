@@ -1,13 +1,13 @@
 ---
-description: Create an implementation plan that becomes the source of truth for execution - decompose a task, brief, or ticket into sequenced tasks with checkboxes. Use before executing non-trivial work, after a brainstorm or a diagnosis.
-argument-hint: "[task | story path | tracker key]"
+description: Create an implementation plan that becomes the source of truth for execution - decompose a request, a brief, or a root cause into sequenced tasks with checkboxes. Use before executing non-trivial work, after a brainstorm or an investigation.
+argument-hint: "[request | story path | tracker key]"
 ---
 
 # /nxs:plan
 
-Turn a task, brief, or ticket into an implementation plan and stop. The plan is what `/nxs:exec` executes.
+Turn a request, a brief, or a root cause into an implementation plan and stop. The plan is what `/nxs:exec` executes.
 
-Accepted input: a task description, a story directory under `docs/nxs/stories/` holding a brief or a root-cause brief, or a tracker key / URL / pasted ticket. With no input, gather it here first.
+Accepted input: a request in words, a story directory under `docs/nxs/stories/` holding a `brief.md` or a `root-cause.md`, or a tracker key / URL / pasted ticket. With no input, gather it here first.
 
 Example: /nxs:plan docs/nxs/stories/20260711-auth-refactor
 
@@ -15,15 +15,16 @@ Example: /nxs:plan docs/nxs/stories/20260711-auth-refactor
 
 - Write the plan and stop. Implementation code, the build, and any behavior change belong to `/nxs:exec`.
 - The plan is a proposal, read-only until the user approves it.
-- A small single-step task needs no plan - route to `/nxs:exec` or a direct edit instead of ceremony.
+- A small single-step request needs no plan - route to `/nxs:exec` or a direct edit instead of ceremony.
 
 ## PROCEDURE
 
-1. **Read the code.** Inspect the files, patterns, and dependencies the task touches - directly or through the built-in Explore agent. Do not over-read. Clarify a fuzzy domain term before encoding it into the plan.
-2. **Close the open questions.** Ask one at a time, 2-4 concrete options with a recommendation. For several viable approaches, lay out the trade-offs and ask once.
-3. **Decompose.** 3-7 tasks. Each is one working unit: the code plus the tests for it, leaving the project green. Sequence by dependency - a task never calls what a later task creates. Every task earns its place; cut the rest.
-4. **Write the file** using the template below.
-5. **Run the self-check** before handing the plan over.
+1. **Read the source artifact.** The story holds a `brief.md`, a `root-cause.md`, or neither. Read it by its headings: `## Acceptance criteria` and `## Chosen approach` from a brief, `## Root cause` and `## Fix direction` from a root cause. Those carry the decisions already made - the plan implements them rather than reopening them. With no artifact, the request itself is the source.
+2. **Read the code.** Inspect the files, patterns, and dependencies the work touches - directly or through the built-in Explore agent. Do not over-read. Clarify a fuzzy domain term before encoding it into the plan.
+3. **Close the open questions.** Ask one at a time, 2-4 concrete options with a recommendation. For several viable approaches, lay out the trade-offs and ask once.
+4. **Decompose.** 3-7 tasks. Each is one working unit: the code plus the tests for it, leaving the project green. Sequence by dependency - a task never calls what a later task creates. Every task earns its place; cut the rest.
+5. **Write the file** using the template below.
+6. **Run the self-check** before handing the plan over.
 
 An open decision that would change the plan is marked in the file rather than guessed:
 
@@ -100,19 +101,21 @@ Before handing the plan over, verify it against the repository and fix what fail
 - everything the plan leans on - a function it calls, an interface it implements, a seam it assumes - exists in the shape it expects;
 - a task with code changes has a checkbox for its tests;
 - dependencies run forward: no task calls what a later task creates;
-- every requirement from the brief or the ticket is covered by a task or explicitly deferred - read the other tasks for it under different words first;
+- every requirement from the brief, the root cause, or the ticket is covered by a task or explicitly deferred - read the other tasks for it under different words first;
 - nothing the requirements never asked for: no abstraction with one consumer, no future-proofing, no fallback for a case that cannot happen;
 - `rg "NEEDS CLARIFICATION" <plan>` returns nothing.
 
 ## ARTIFACT
 
+The plan is one file inside a story - one story is one whole unit of work, one directory:
+
 ```
 docs/nxs/stories/YYYYMMDD-<slug>/plan.md
 ```
 
-Write it into the story directory the input names, creating the directory when the input is a bare task with no prior brief. A tracker key names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/` - so the story stays navigable by the key. The files inside keep their fixed names.
+Write it into the story the input names. Create the story when the input is a bare request with no prior brief or root cause: `YYYYMMDD` is that day, `<slug>` is two to four lowercase english words from the request, hyphenated. A tracker key names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/` - so the story stays navigable by the key. The files inside keep their fixed names.
 
-A finished story moves to `docs/nxs/stories/completed/` by hand, on explicit user confirmation.
+A story that already holds a `plan.md` is never overwritten silently. Say what is there and ask whether to replace it or open a new story.
 
 ## NEXT
 
