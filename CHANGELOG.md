@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-08-08
+
+The plugin loses a whole layer. It had grown to 2348 lines across seven commands, four background skills, six `reference/` files, and four agents, and one rule lived in several of them at once: changing the shape of a plan task meant editing `plan/SKILL.md`, `plan-conventions/SKILL.md`, `reference/plan-template.md`, and `exec/SKILL.md` together. The architecture now follows [ralphex](https://github.com/umputun/ralphex): flat self-contained files, narrow single-subject agents, the output format stated at the end of each agent instead of a shared protocol injected into it, and a contract between plan and execution reduced to two structural tokens. 822 lines of skills and agents, no background tier at all.
+
+The review gate moves too. It used to run inside `exec` after every task, with two lenses, an acceptance comparison, a cap of five fix rounds, and stalemate detection to keep it from looping. Now `exec` runs the plan straight through, committing each green task, and `review` runs once over the finished branch with five agents in parallel - and it fixes what it confirms instead of only reporting it.
+
+### Changed
+
+- `skills/review/SKILL.md` - launches five agents in one message, merges duplicates, verifies every candidate against the code, fixes the confirmed ones, and commits `fix: address review findings`. A round that fixed something runs again, because fixes introduce problems; a round with zero findings ends the pass, and three rounds is the ceiling. Injection is gone: agents fetch the diff themselves and carry their own output format.
+- `skills/plan/SKILL.md` - absorbs `plancheck` and the whole `plan-conventions` tree. It carries the plan template with one filled example, the decomposition rules (3-7 tasks, each one working unit with its tests, dependencies running forward), and a self-check against the repository as its last step instead of a separate command and a separate agent.
+- `skills/exec/SKILL.md` - the cycle is pick, delegate, validate, flip checkboxes, commit. It absorbs the `verify` discipline as one step that runs the commands the task names, and the commit format from `commit-conventions`. Stop conditions go from thirteen to seven.
+- `skills/commit/SKILL.md` - absorbs `commit-conventions`: message format, types, atomicity, staging hygiene, git safety.
+- `skills/rnd/SKILL.md` - same three steps, without the internal Impact times Uncertainty scoring, the coverage-category table, and the one-loop-back rule.
+- `skills/bug/SKILL.md` - ten phases become eight, the seven feedback-loop types become one sentence, and evidence-request mode becomes one paragraph.
+- `agents/worker.md` - drops the enumerated list of destructive operations, which the global tier already covers, and the `AC:` line from its result block.
+- `hooks/using-nxs.md`, `README.md`, `CONTRIBUTING.md` - six commands, two tiers, no background skills or `reference/` directories.
+
+### Added
+
+- `agents/review-quality.md`, `review-implementation.md`, `review-testing.md`, `review-simplification.md`, `review-documentation.md` - five read-only reviewers, one subject each, self-contained. Every one fetches the branch diff itself, states its own bounds and what the other agents own, and ends with a `## WHAT TO REPORT` block. `review-simplification` names the over-engineering patterns it looks for rather than describing the idea.
+
+### Removed
+
+- The background tier: `skills/plan-conventions/` (with `plan-template.md`, `tdd.md`, `vertical-slice.md`), `skills/review-protocol/`, `skills/verify/`, `skills/commit-conventions/`, and `skills/review/reference/`. Everything they held now lives in the one command or agent that uses it.
+- `/nxs:plancheck` and `agents/plan-reviewer.md` - the plan self-check runs inline at the end of `/nxs:plan`.
+- `agents/review-quality-reviewer.md` and `agents/review-fit-reviewer.md`, replaced by the five narrow reviewers.
+- The four development approaches (`default`, `TDD`, `tracer-bullet`, `spike`) with `exec`'s TDD mode and the `## DEVELOPMENT APPROACH` section. Tests are written with the code; `exec` branches on nothing.
+- The review step inside `exec`'s task cycle, with its five-round cap and stalemate detection. Nothing loops there anymore.
+- `## SOURCE ARTIFACTS` (a `Tracker:` line in the plan header replaces it), `## COMPLEXITY TRACKING`, the mandatory `Test cases` block, and per-task success criteria.
+- `examples/` - the filled plan and brief samples, and the plancheck fixtures they calibrated. The worked example now sits inside the template in `plan/SKILL.md`.
+
 ## [0.14.0] - 2026-07-31
 
 A plan task is now a capability, not a step. `/nxs:exec` pays a fixed toll per task - a fresh worker with a cold context, a verify run, a two-lens review to zero BLOCK, an AC comparison, a commit - so a plan that splits one capability into five technical steps costs about five times what the same capability costs as one slice. Every rule in the repo pushed toward that split: the sizing rule targeted five checkboxes, the vertical-slice reference asked for "many thin slices, not a few thick ones", and all three worked examples taught fine-grained slicing, one of them sliced horizontally by layer despite the rule forbidding it. The bar moves to 2-5 tasks for a typical feature with 7 as the ceiling, and a boundary now has to earn itself. Nothing about rigor moves: a task still carries Test cases, success criteria, and a verification step, and that step now names the project's actual command instead of saying "run tests".
