@@ -6,10 +6,10 @@ Why install it over ad-hoc prompts: the workflow is fixed and named (`/nxs:plan`
 
 ## Quickstart
 
-One task through the loop:
+One story through the loop:
 
 ```
-/nxs:rnd add rate limiting to the public API   # shape a fuzzy task into a plan-ready brief
+/nxs:rnd add rate limiting to the public API   # shape a fuzzy request into a plan-ready brief
 /nxs:plan                                      # turn the brief into sequenced tasks
 /nxs:exec                                      # run the plan to the end, one commit per task
 /nxs:review                                    # five reviewers over the branch, fixes committed
@@ -21,9 +21,9 @@ Six flat `/nxs:<name>` commands:
 
 | command | when to use |
 | --- | --- |
-| `rnd` | Think a fuzzy task, feature idea, or open question through to a plan-ready brief - the task entry point. |
-| `bug` | Investigate a bug to a confirmed root cause before any fix - the bug entry point. |
-| `plan` | Decompose a task, brief, or ticket into sequenced tasks with checkboxes, then self-check the plan against the repository. |
+| `rnd` | Think a fuzzy request, feature idea, or open question through to a plan-ready brief - the entry point for new work. |
+| `bug` | Investigate a bug to a confirmed root cause before any fix - the entry point for a bug report. |
+| `plan` | Decompose a request, a brief, or a root cause into sequenced tasks with checkboxes, then self-check the plan against the repository. |
 | `exec` | Execute the plan task by task and write the code, committing each finished task. |
 | `review` | Review the branch with five parallel agents, verify every finding, fix what is confirmed, and commit. |
 | `commit` | Commit the current working changes, split into atomic commits - for edits made outside `exec`. |
@@ -35,7 +35,7 @@ Two tiers, nothing in between:
 1. Global `~/.claude/CLAUDE.md` - always-on rules (output language, style, safety). Hand-authored by you, NOT shipped by this plugin (see Setup). The commands defer output style and the safety rules on secrets and destructive operations to it, so they fire even when no skill loads.
 2. The six commands above. Each is self-contained: no shared background skills, no `reference/` files, no cross-skill injection. A rule lives in exactly one file.
 
-The contract between `plan` and `exec` is two structural tokens: a `### Task N:` heading and `- [ ]` checkboxes. `exec` takes the first task section with open checkboxes and does not require anything else inside it.
+Three commands hand work to the next one, and each handoff is minimal: `plan` reads a brief by its `## Acceptance criteria` and `## Chosen approach` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a plan by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes. Nothing else crosses between them.
 
 A SessionStart hook (`hooks/`) injects the `using-nxs` discipline so a session checks for the right command before acting - the commands fire on their trigger without being typed by name.
 
@@ -49,17 +49,23 @@ Agents (`agents/*.md`) - one write-capable `worker` used by `/nxs:exec`, the onl
 | `review-simplification` | over-engineering this branch introduces |
 | `review-documentation` | docs the change needs or made stale, plan checkboxes |
 
-## Artifacts
+## Stories
 
-One story is one whole unit of work, and it gets one directory under `docs/nxs/stories/` in the current repository:
+One story is one whole unit of work, and it gets one directory under `docs/nxs/stories/` in the current repository. Three commands write an artifact into it, and an artifact is always one markdown file:
 
-- `/nxs:rnd` -> `docs/nxs/stories/YYYYMMDD-<slug>/brief.md`
-- `/nxs:bug` -> `docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md`
-- `/nxs:plan` -> `plan.md` beside it, the whole directory archived by hand to `docs/nxs/stories/completed/`
-- `/nxs:exec` -> code changes, updated checkboxes, one commit per task
-- `/nxs:review` -> fixes committed as `fix: address review findings`
+| command | artifact | file |
+| --- | --- | --- |
+| `rnd` | brief | `docs/nxs/stories/YYYYMMDD-<slug>/brief.md` |
+| `bug` | root cause | `docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md` |
+| `plan` | plan | `docs/nxs/stories/YYYYMMDD-<slug>/plan.md` |
 
-With a tracker key the directory carries it: `YYYYMMDD-<KEY>-<slug>/`. These are local working files - keep `docs/` out of git if you do not want them committed.
+`exec` and `review` write no artifact - what they produce lands in git. `exec` leaves code changes, flipped checkboxes, and one commit per task; `review` commits its fixes as `fix: address review findings`. Follow-ups and the review report are spoken to you, not filed.
+
+With a tracker key the directory carries it: `YYYYMMDD-<KEY>-<slug>/`. The key names the directory, never the files inside it.
+
+You move a finished story to `docs/nxs/stories/completed/` yourself, when you decide it is finished. No command does it for you and none will ask - `exec` only knows to skip `completed/` when it looks for the latest plan.
+
+These are local working files - keep `docs/` out of git if you do not want them committed.
 
 ## Layout
 
@@ -68,7 +74,7 @@ With a tracker key the directory carries it: `YYYYMMDD-<KEY>-<slug>/`. These are
   plugin.json          # plugin manifest (name: nxs)
   marketplace.json     # plugin marketplace
 skills/
-  <name>/SKILL.md      # command skill -> /nxs:<name>, self-contained
+  <name>/SKILL.md      # implements the /nxs:<name> command, self-contained
 agents/
   worker.md            # the single write-capable agent
   review-*.md          # five read-only reviewers
