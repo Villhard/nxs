@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.1] - 2026-08-08
+
+`/nxs:commit` was the one command a user reaches without naming it. "Commit this" is a request to commit, not a request for a command, and the description only answered the question a user asks when browsing the `/` menu - "what does this do" - not the one the model asks when reading a plain sentence: does this apply right now. The `using-nxs` hook already listed the trigger as easy to miss, which is a hook compensating for a description that does not carry its own trigger.
+
+### Changed
+
+- `skills/commit/SKILL.md` - the `description` names the trigger it fires on: any request to commit work made outside `/nxs:exec`, and a hand-run `git add` or `git commit`. The body is untouched.
+
 ## [0.16.0] - 2026-08-08
 
 One term, one meaning. The vocabulary had drifted while the plugin shrank to six commands, and two words were carrying two jobs each. `task` meant both the work a user arrives with and a numbered block in a plan - the collision sat inside one sentence of `/nxs:plan`'s own description, "decompose a task ... into sequenced tasks". `brief` meant both the artifact `rnd` writes and the one `bug` writes: `plan` called the second a "root-cause brief", `bug` called it "the brief" twice in its own body, and the file on disk is `root-cause.md`. Meanwhile `story` - the concept that names the directory - appeared in `plan`, `exec`, `using-nxs`, and the README, but in neither of the two commands that create one.
