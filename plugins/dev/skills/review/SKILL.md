@@ -1,13 +1,13 @@
 ---
-description: Review the branch diff with five parallel agents, verify every finding against the code, fix what is confirmed, and commit. Use after /nxs:exec finishes a plan, or on any branch you want reviewed.
+description: Review the branch diff with five parallel agents, verify every finding against the code, fix what is confirmed, and commit. Use after /dev:exec finishes a plan, or on any branch you want reviewed.
 argument-hint: "[scope: staged | path | PR url]"
 ---
 
-# /nxs:review
+# /dev:review
 
 Review a diff, fix what is really wrong, and commit the fixes. This is the review gate for a whole plan, not for a single task.
 
-Example: /nxs:review
+Example: /dev:review
 
 ## RESOLVE THE SCOPE
 
@@ -26,11 +26,11 @@ git diff <base>...HEAD
 
 Five agents, all in one message so they run in parallel:
 
-- `nxs:review-quality` - bugs, edge cases, error handling, leaks, races, security skim;
-- `nxs:review-implementation` - goal reached, wiring, completeness, scope creep;
-- `nxs:review-testing` - coverage over the changed code, fake tests, test quality;
-- `nxs:review-simplification` - over-engineering this branch introduces;
-- `nxs:review-documentation` - docs the change needs or made stale, plan checkboxes.
+- `dev:review-quality` - bugs, edge cases, error handling, leaks, races, security skim;
+- `dev:review-implementation` - goal reached, wiring, completeness, scope creep;
+- `dev:review-testing` - coverage over the changed code, fake tests, test quality;
+- `dev:review-simplification` - over-engineering this branch introduces;
+- `dev:review-documentation` - docs the change needs or made stale, plan checkboxes.
 
 Each prompt carries the base branch, the goal in one sentence, and the plan path when there is one. Do not paste the diff into a prompt - each agent fetches it itself, and an embedded diff makes the launch slow and expensive.
 

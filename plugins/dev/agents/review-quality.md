@@ -1,6 +1,6 @@
 ---
 name: review-quality
-description: Read-only code reviewer - reads the execution paths the diff touches and reports bugs, races, edge cases, error handling, leaks, and a basic security skim. A /nxs:review agent.
+description: Read-only code reviewer - reads the execution paths the diff touches and reports bugs, races, edge cases, error handling, leaks, and a basic security skim. A /dev:review agent.
 tools: Read, Grep, Glob, Bash
 ---
 

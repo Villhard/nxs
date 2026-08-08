@@ -1,6 +1,6 @@
 ---
 name: review-simplification
-description: Read-only code reviewer - detects over-engineering the diff introduces: needless layers, premature generalization, indirection, future-proofing, dead fallbacks. A /nxs:review agent.
+description: Read-only code reviewer - detects over-engineering the diff introduces: needless layers, premature generalization, indirection, future-proofing, dead fallbacks. A /dev:review agent.
 tools: Read, Grep, Glob, Bash
 ---
 

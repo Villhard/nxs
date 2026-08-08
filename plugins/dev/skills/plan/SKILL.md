@@ -3,19 +3,19 @@ description: Create an implementation plan that becomes the source of truth for 
 argument-hint: "[request | story path | tracker key]"
 ---
 
-# /nxs:plan
+# /dev:plan
 
-Turn a request, a brief, or a root cause into an implementation plan and stop. The plan is what `/nxs:exec` executes.
+Turn a request, a brief, or a root cause into an implementation plan and stop. The plan is what `/dev:exec` executes.
 
 Accepted input: a request in words, a story directory under `docs/nxs/stories/` holding a `brief.md` or a `root-cause.md`, or a tracker key / URL / pasted ticket. With no input, gather it here first.
 
-Example: /nxs:plan docs/nxs/stories/20260711-auth-refactor
+Example: /dev:plan docs/nxs/stories/20260711-auth-refactor
 
 ## STANCE
 
-- Write the plan and stop. Implementation code, the build, and any behavior change belong to `/nxs:exec`.
+- Write the plan and stop. Implementation code, the build, and any behavior change belong to `/dev:exec`.
 - The plan is a proposal, read-only until the user approves it.
-- A small single-step request needs no plan - route to `/nxs:exec` or a direct edit instead of ceremony.
+- A small single-step request needs no plan - route to `/dev:exec` or a direct edit instead of ceremony.
 
 ## PROCEDURE
 
@@ -32,7 +32,7 @@ An open decision that would change the plan is marked in the file rather than gu
 [NEEDS CLARIFICATION: <specific question>]
 ```
 
-Mark only when the answer changes the decision. A marker answered in conversation is edited out in the same turn. `/nxs:exec` refuses to start while one is open.
+Mark only when the answer changes the decision. A marker answered in conversation is edited out in the same turn. `/dev:exec` refuses to start while one is open.
 
 ## TEMPLATE
 
@@ -55,7 +55,7 @@ Mark only when the answer changes the decision. A marker answered in conversatio
 
 ## Conventions
 
-<rules every task follows - style, naming, a repeated step, a standing preference. /nxs:exec passes this
+<rules every task follows - style, naming, a repeated step, a standing preference. /dev:exec passes this
 section to every worker, so what is missing here does not reach the code. No such rules, no section.>
 
 ## Implementation
@@ -87,7 +87,7 @@ section to every worker, so what is missing here does not reach the code. No suc
 
 Rules the template does not show:
 
-- `### Task N:` and `- [ ]` are structural - `/nxs:exec` finds the work by them, so keep both exactly as written, in English, whatever language the plan body uses.
+- `### Task N:` and `- [ ]` are structural - `/dev:exec` finds the work by them, so keep both exactly as written, in English, whatever language the plan body uses.
 - Tests are their own checkbox, never bundled into the implementation step.
 - The last checkbox of a task names the concrete command this project runs, not a bare "run tests".
 - A config-only or declarative task has no tests to write; verification is that the change takes effect.
@@ -119,4 +119,4 @@ A story that already holds a `plan.md` is never overwritten silently. Say what i
 
 ## NEXT
 
-Plan written -> `/nxs:exec` to implement it, then `/nxs:review` for the review gate.
+Plan written -> `/dev:exec` to implement it, then `/dev:review` for the review gate.

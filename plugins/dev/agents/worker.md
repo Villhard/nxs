@@ -1,6 +1,6 @@
 ---
 name: worker
-description: Write-capable execution worker - single writer, clean isolated context, structured result back to the orchestrator. Used by /nxs:exec for every task.
+description: Write-capable execution worker - single writer, clean isolated context, structured result back to the orchestrator. Used by /dev:exec for every task.
 tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 

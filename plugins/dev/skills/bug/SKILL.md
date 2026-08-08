@@ -3,17 +3,17 @@ description: Investigate a bug to a confirmed root cause - the bug entry point. 
 argument-hint: "[tracker key | bug description | path]"
 ---
 
-# /nxs:bug
+# /dev:bug
 
 Reach a confirmed root cause, then stop. The bug entry point.
 
 Accepted input: a tracker key / URL, pasted bug text, observed behavior, a stack trace or log, or a path.
 
-Example: /nxs:bug PROJ-4213
+Example: /dev:bug PROJ-4213
 
 ## STANCE
 
-- Confirm the cause with reproducible evidence and leave the fix to `/nxs:plan` and `/nxs:exec`. No patch, no product-code change here.
+- Confirm the cause with reproducible evidence and leave the fix to `/dev:plan` and `/dev:exec`. No patch, no product-code change here.
 - The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The root cause is the only file that stays.
 - Stay skeptical of the first plausible explanation. Clarify a fuzzy term in the report before running the 5-Why.
 
@@ -67,7 +67,7 @@ docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md
 
 Create the story when the report has none yet; write into the one the input names when it does.
 
-Keep the headings stable - `/nxs:plan` reads the root cause by them:
+Keep the headings stable - `/dev:plan` reads the root cause by them:
 
 ```markdown
 # Root cause: <title>
@@ -106,4 +106,4 @@ Every other heading stays even when the investigation fell short: an unconfirmed
 
 ## NEXT
 
-Root cause confirmed -> `/nxs:plan` for the fix plan, then `/nxs:exec` to implement it.
+Root cause confirmed -> `/dev:plan` for the fix plan, then `/dev:exec` to implement it.

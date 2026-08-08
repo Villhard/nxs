@@ -1,15 +1,15 @@
 ---
-description: Commit the current working changes - splits them into atomic commits with conventional messages. Use on any request to commit work made outside /nxs:exec, and before running `git add` or `git commit` by hand.
+description: Commit the current working changes - splits them into atomic commits with conventional messages. Use on any request to commit work made outside /dev:exec, and before running `git add` or `git commit` by hand.
 argument-hint: "[optional scope hint]"
 ---
 
-# /nxs:commit
+# /dev:commit
 
-Commit what is already in the working tree, split into atomic commits. For edits made by hand, outside `/nxs:exec`.
+Commit what is already in the working tree, split into atomic commits. For edits made by hand, outside `/dev:exec`.
 
 Accepted input: an optional hint to narrow the scope or guide the grouping. With nothing given, commit the whole working tree.
 
-Example: /nxs:commit
+Example: /dev:commit
 
 ## STANCE
 
