@@ -1,0 +1,113 @@
+---
+name: teach
+description: Teach the user a topic across many sessions, in a workspace that remembers what they already know. Use when the user asks to be taught, tutored, or walked into a subject from scratch.
+disable-model-invocation: true
+argument-hint: "What would you like to learn about?"
+---
+
+# /teach
+
+The user wants to learn something, and they want to keep learning it. Treat this as standing work across many sessions, not a single answer.
+
+Example: /teach olympic weightlifting
+
+## WORKSPACE
+
+The current directory is the workspace, and it holds the entire state of this course. Create files lazily, when there is something real to put in them.
+
+| path | holds |
+| --- | --- |
+| `MISSION.md` | why the user is learning this. Grounds every other decision. [MISSION-FORMAT.md](./MISSION-FORMAT.md) |
+| `RESOURCES.md` | the trusted sources and communities for this topic. [RESOURCES-FORMAT.md](./RESOURCES-FORMAT.md) |
+| `GLOSSARY.md` | the settled vocabulary of the topic. [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md) |
+| `NOTES.md` | how the user wants to be taught. Free-form. |
+| `lessons/NNNN-<slug>.html` | the lessons themselves, numbered from `0001` |
+| `reference/*.html` | cheat sheets distilled from lessons, built to be reread |
+| `learning-records/NNNN-<slug>.md` | what the user has demonstrably learned. [LEARNING-RECORD-FORMAT.md](./LEARNING-RECORD-FORMAT.md) |
+| `assets/*` | components shared across lessons: stylesheet, quiz widget, diagrams |
+
+Nothing is written outside the workspace.
+
+## PROCEDURE
+
+1. Read what already exists: `MISSION.md`, `NOTES.md`, `GLOSSARY.md`, every learning record, and the last two or three lessons.
+2. No mission, or a vague one? Interview the user before teaching anything, and write `MISSION.md`. This comes first even when they arrived asking for a specific lesson.
+3. Thin `RESOURCES.md`? Search for sources and fill it. Teaching ahead of the sources means teaching from memory, which is where the errors come from.
+4. Pick the next thing to teach (see PICKING THE NEXT LESSON).
+5. Write the lesson, open it, and stay available for questions.
+6. Update `RESOURCES.md`, `GLOSSARY.md`, and `reference/` with whatever the lesson produced.
+7. Write a learning record only when the user demonstrated something. Coverage is not learning.
+
+## THREE THINGS THE USER NEEDS
+
+- **Knowledge** from high-trust sources. Never from your own recall.
+- **Skills** from lessons that make them do the thing and give them feedback.
+- **Wisdom** from real practice among other practitioners, which you cannot supply yourself.
+
+The balance shifts by topic. Theoretical physics leans on knowledge; a barbell lift leans on skill; navigating a professional field leans on wisdom. Judge the mix from the mission.
+
+### Fluency against storage
+
+Fluency is retrieval right now, minutes after reading. Storage is retrieval in six weeks. Fluency feels like mastery and is not, so design against it:
+
+- make the user recall rather than recognise;
+- space the same material across sessions instead of massing it into one;
+- interleave related skills in practice, once there are several to mix.
+
+Difficulty is the enemy while knowledge is being acquired and the tool once skills are being built. Keep the two phases apart inside a lesson.
+
+## LESSONS
+
+A lesson is one self-contained HTML file in `lessons/`, numbered `NNNN-<slug>.html` from the highest existing number. It is the unit everything else supports.
+
+Requirements:
+
+- **Short.** Working memory is small. One tangible win the user can build on, and out.
+- **Beautiful.** Clean typography, generous margins, restrained rules and colour. Tufte, not a slide deck. The user will come back to these.
+- **Tied to the mission.** State the connection in the lesson itself.
+- **Cited.** Link the claim to the source it came from. A lesson with no outbound links is a lesson built from your own recall.
+- **Pointed at one primary source** to read or watch next, the best one you found.
+- **Cross-linked** by anchor to the lessons and reference documents around it.
+- **Ended with an invitation to ask.** You are the teacher; the file is the handout.
+
+Open the lesson for the user with a CLI command when the environment allows it.
+
+## ASSETS
+
+Lessons are assembled from components in `assets/`: the stylesheet, quiz widgets, simulators, diagram helpers, anything a second lesson could use.
+
+Read `assets/` before writing a lesson and build from what is there. Something new that another lesson could want becomes a component and gets linked, never inlined twice. The shared stylesheet is the first component any workspace earns, because it is what makes a pile of files read as one course.
+
+## THE MISSION
+
+The mission is the concrete outcome the user is chasing, and it decides what is worth teaching. Without it every lesson is plausible and none is necessary.
+
+Missions move as the user learns what they actually care about. Confirm the shift with the user, rewrite `MISSION.md`, and record it.
+
+## PICKING THE NEXT LESSON
+
+Aim just past what the user can already do. Too easy wastes the session; too hard collapses into copying.
+
+The user naming a topic settles it. Otherwise: read the learning records for the current floor, read the mission for the direction, and take the smallest step that moves along it.
+
+## SKILLS AND FEEDBACK
+
+Every skill lesson is a feedback loop, and the loop wants to be tight - immediate, and automatic where the browser can do it. Quizzes and small in-page tasks for anything mental, a checklist of real-world steps for anything physical.
+
+Quiz rules:
+
+- Answers are the same length in words, and in characters where you can manage it. Length is a tell.
+- No formatting, hedging, or specificity that marks the right answer.
+- Shuffle position. The correct answer must not sit first by habit.
+
+## WISDOM
+
+When a question needs judgement rather than facts, answer it, then point past yourself. Judgement comes from practice among people who already have it.
+
+Find the user high-reputation places to practise: a moderated forum, a local group, a class. Suggest them once. If the user says they do not want a community, record that in `RESOURCES.md` and stop offering.
+
+## REFERENCE DOCUMENTS
+
+Lessons are read once. Reference documents are read for years: syntax tables, algorithms, pose sequences, routines, glossaries. Distil each lesson into `reference/` as HTML built for scanning and printing.
+
+The glossary is the reference document every topic with its own vocabulary needs. Once a term is in `GLOSSARY.md`, every lesson uses that term and no synonym.
