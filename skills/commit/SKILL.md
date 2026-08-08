@@ -1,5 +1,5 @@
 ---
-description: Commit the current working changes - splits them into atomic commits with conventional messages. Use when you want to commit changes made outside /nxs:exec.
+description: Commit the current working changes - splits them into atomic commits with conventional messages. Use on any request to commit work made outside /nxs:exec, and before running `git add` or `git commit` by hand.
 argument-hint: "[optional scope hint]"
 ---
 
