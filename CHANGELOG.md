@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-08-08
+
+One term, one meaning. The vocabulary had drifted while the plugin shrank to six commands, and two words were carrying two jobs each. `task` meant both the work a user arrives with and a numbered block in a plan - the collision sat inside one sentence of `/nxs:plan`'s own description, "decompose a task ... into sequenced tasks". `brief` meant both the artifact `rnd` writes and the one `bug` writes: `plan` called the second a "root-cause brief", `bug` called it "the brief" twice in its own body, and the file on disk is `root-cause.md`. Meanwhile `story` - the concept that names the directory - appeared in `plan`, `exec`, `using-nxs`, and the README, but in neither of the two commands that create one.
+
+A closed vocabulary now lives in `CONTRIBUTING.md` and every file obeys it. `task` is a `### Task N:` block and nothing else; the incoming work is a `request`. The three artifacts are named after their files: brief, root cause, plan. An artifact is a durable markdown file in a story - commits, flipped checkboxes, follow-ups, and the review report are not artifacts and get no home on disk.
+
+Archiving loses its owner on purpose. It was stated three times and differently - in `plan`'s `## ARTIFACT`, in `exec`'s `## NEXT`, and in the README - and it belongs to none of them: `exec` is an executor and `review` is a quality gate, while the decision that a story is finished is the user's, made after reading the plan. Moving a story to `completed/` is now documented as a user action and no command mentions it. `exec` keeps skipping `completed/` when it resolves the latest plan, which is a resolution rule, not archiving.
+
+### Changed
+
+- `CONTRIBUTING.md` - a new `## UBIQUITOUS LANGUAGE` section holds the twelve-term table and the rule that a term enters it before it appears in a skill. `## THE PLAN CONTRACT` becomes `## THE HANDOFF CONTRACTS` and covers all three handoffs instead of one. `## ARTIFACT PATHS` names the three artifacts in a table and states that `exec`, `review`, and `commit` write none and grow no `## ARTIFACT` section.
+- `skills/rnd/SKILL.md` - `task` becomes `request` throughout, including the `## Task` heading of the brief skeleton, which becomes `## Request`. The `## ARTIFACT` section names the story, defines the slug, and fixes `YYYYMMDD` as the day the story is created rather than the day of a later write.
+- `skills/bug/SKILL.md` - "the brief" becomes "the root cause" in both places. `## ARTIFACT` replaces its prose list of contents with the fixed heading skeleton `/nxs:plan` now reads, and gains the same story, slug, and date rules as `rnd`.
+- `skills/plan/SKILL.md` - reading the source artifact by its headings becomes the first step of `## PROCEDURE`, which is what `rnd` already promised on its side and nothing enforced on this one. Input is a request, a brief, or a root cause. A story that already holds a `plan.md` is not overwritten silently.
+- `skills/exec/SKILL.md`, `hooks/using-nxs.md`, `README.md` - `skill` becomes `command` in user-facing text; `skill` stays only for the file that implements one. The README `## Artifacts` section becomes `## Stories` and separates the three artifacts from what `exec` and `review` leave in git.
+- `agents/review-implementation.md` - a requirement may come from the root cause, which was missing from the list of sources.
+
+### Removed
+
+- The archiving rule from `skills/plan/SKILL.md` and `skills/exec/SKILL.md`. It survives as a described user action in `README.md` and `CONTRIBUTING.md`.
+
 ## [0.15.0] - 2026-08-08
 
 The plugin loses a whole layer. It had grown to 2348 lines across seven commands, four background skills, six `reference/` files, and four agents, and one rule lived in several of them at once: changing the shape of a plan task meant editing `plan/SKILL.md`, `plan-conventions/SKILL.md`, `reference/plan-template.md`, and `exec/SKILL.md` together. The architecture now follows [ralphex](https://github.com/umputun/ralphex): flat self-contained files, narrow single-subject agents, the output format stated at the end of each agent instead of a shared protocol injected into it, and a contract between plan and execution reduced to two structural tokens. 822 lines of skills and agents, no background tier at all.
