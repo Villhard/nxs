@@ -19,9 +19,9 @@ jobs:
         run: |
           status=0
           shopt -s nullglob
-          skills=(skills/*/SKILL.md)
+          skills=(plugins/*/skills/*/SKILL.md)
           if [ "${#skills[@]}" -eq 0 ]; then
-            echo "no skills/*/SKILL.md files found"
+            echo "no plugins/*/skills/*/SKILL.md files found"
             exit 1
           fi
           for f in "${skills[@]}"; do
@@ -41,7 +41,7 @@ jobs:
           exit $status
 
   validate:
-    name: Plugin validate
+    name: Marketplace and plugin validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -55,5 +55,19 @@ jobs:
       - name: Install Claude Code CLI
         run: npm install -g @anthropic-ai/claude-code
 
-      - name: Validate plugin
+      - name: Validate marketplace manifest
         run: claude plugin validate --strict .
+
+      - name: Validate every plugin
+        run: |
+          status=0
+          shopt -s nullglob
+          plugins=(plugins/*/)
+          if [ "${#plugins[@]}" -eq 0 ]; then
+            echo "no plugins/*/ directories found"
+            exit 1
+          fi
+          for p in "${plugins[@]}"; do
+            claude plugin validate --strict "${p%/}" || status=1
+          done
+          exit $status
