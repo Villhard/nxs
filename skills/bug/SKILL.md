@@ -14,7 +14,7 @@ Example: /nxs:bug PROJ-4213
 ## STANCE
 
 - Confirm the cause with reproducible evidence and leave the fix to `/nxs:plan` and `/nxs:exec`. No patch, no product-code change here.
-- The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The brief is the only file that stays.
+- The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The root cause is the only file that stays.
 - Stay skeptical of the first plausible explanation. Clarify a fuzzy term in the report before running the 5-Why.
 
 ## THE LOOP
@@ -26,7 +26,7 @@ Example: /nxs:bug PROJ-4213
 5. **Instrument one at a time** - one probe, one changed parameter, one added log. Parallel changes destroy the signal.
 6. **Run the 5-Why** on the hypothesis a probe confirmed, not on the original guess.
 7. **Confirm** - a root cause only once the predictions held and the evidence reproduces. Then, and only then, name the fix direction and propose a regression test at the nearest layer where the cause reproduces cheaply and stably.
-8. **Clean up** - remove debug logs, delete the throwaway harness, record the evidence and the probes in the brief.
+8. **Clean up** - remove debug logs, delete the throwaway harness, record the evidence and the probes in the root cause.
 
 When key evidence is out of your reach, ask for it specifically. Scan the repo for its observability and test setup first (`docker-compose*.yml`, `infra/`, `.env.example`, `Makefile`, the test runner, fixtures) and name what you need: which log query with which filter and period, which fixture, which captured payload. Ask only where the loop cannot be built or a hypothesis cannot be told apart from a guess without it.
 
@@ -57,13 +57,52 @@ Example. Symptom: the API returns 500 on payment. Unhandled exception in the pay
 
 ## ARTIFACT
 
+The root cause is one file inside a story - one story is one whole unit of work, one directory:
+
 ```
 docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md
 ```
 
-A tracker key names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/`. The files inside keep their fixed names.
+`YYYYMMDD` is the day the story is created and does not change on later writes into it. `<slug>` is two to four lowercase english words from the report, hyphenated. A tracker key names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/`. The files inside keep their fixed names.
 
-It captures: the symptom, the feedback loop and repro method, the minimized repro, the evidence, the ranked hypotheses, the probes run, the 5-Why chain, the confirmed root cause, the assumptions, the fix direction, and the regression test idea.
+Create the story when the report has none yet; write into the one the input names when it does.
+
+Keep the headings stable - `/nxs:plan` reads the root cause by them:
+
+```markdown
+# Root cause: <title>
+
+- Date: YYYY-MM-DD
+- Tracker: <key / URL - drop the line if there is none>
+
+## Symptom
+
+## Repro
+
+<the feedback loop that was built, and the minimized repro with the exact steps to run it>
+
+## Evidence
+
+## Hypotheses
+
+<ranked, each with its prediction and the probe that confirmed or killed it>
+
+## 5-Why
+
+<the chain in the format above>
+
+## Root cause
+
+## Assumptions
+
+<what could not be verified - drop the section when everything held>
+
+## Fix direction
+
+## Regression test
+```
+
+Every other heading stays even when the investigation fell short: an unconfirmed cause is stated as unconfirmed under `## Root cause`, not left out.
 
 ## NEXT
 

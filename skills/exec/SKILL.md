@@ -5,7 +5,7 @@ argument-hint: "[story path | plan path] [no commits]"
 
 # /nxs:exec
 
-Execute a plan to the end, one task per cycle. This is the one skill that changes project code, and it delegates every task to a `nxs:worker` subagent rather than writing code itself.
+Execute a plan to the end, one task per cycle. This is the one command that changes project code, and it delegates every task to a `nxs:worker` subagent rather than writing code itself.
 
 Example: /nxs:exec docs/nxs/stories/20260711-auth-refactor
 
@@ -60,4 +60,4 @@ On any of these - stop and tell the user rather than guessing.
 
 ## NEXT
 
-Plan executed -> `/nxs:review` for the review gate over the whole branch. Archive the finished story on your confirmation.
+Plan executed -> `/nxs:review` for the review gate over the whole branch.

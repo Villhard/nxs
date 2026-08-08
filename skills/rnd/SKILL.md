@@ -1,22 +1,22 @@
 ---
-description: Think a task through to a plan-ready brief - the task entry point. Use to shape a fuzzy task, feature idea, or open question before planning.
-argument-hint: "[task | tracker key | question]"
+description: Think a request through to a plan-ready brief - the entry point for new work. Use to shape a fuzzy request, feature idea, or open question before planning.
+argument-hint: "[request | tracker key | question]"
 ---
 
 # /nxs:rnd
 
-Think a task through to a plan-ready brief and stop. The task entry point.
+Think a request through to a plan-ready brief and stop. The entry point for new work.
 
-Accepted input: a task description, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work from the current session context.
+Accepted input: a request in words, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work from the current session context.
 
 Example: /nxs:rnd add rate limiting to the public API
 
 ## STANCE
 
-- Produce the brief and stop. The plan, the code, and any behavior change belong to the skills that own them.
-- Three steps in order: clarify, explore, stress-test. All three scale with the task - a clear one collapses to zero questions, one obvious approach, and no stress pass.
+- Produce the brief and stop. The plan, the code, and any behavior change belong to the commands that own them.
+- Three steps in order: clarify, explore, stress-test. All three scale with the request - a clear one collapses to zero questions, one obvious approach, and no stress pass.
 - Full collapse makes the brief ceremony. Say so out loud and offer to route straight to `/nxs:plan` instead.
-- For a bug rather than a task, route to `/nxs:bug`.
+- For a bug rather than a request, route to `/nxs:bug`.
 
 ## CLARIFY
 
@@ -49,11 +49,15 @@ Every concern carries a concrete justification. If the approach clearly survives
 
 ## ARTIFACT
 
+The brief is one file inside a story - one story is one whole unit of work, one directory:
+
 ```
 docs/nxs/stories/YYYYMMDD-<slug>/brief.md
 ```
 
-A tracker key names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/`. The files inside keep their fixed names.
+`YYYYMMDD` is the day the story is created and does not change on later writes into it. `<slug>` is two to four lowercase english words from the request, hyphenated. A tracker key names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/`. The files inside keep their fixed names.
+
+Create the story when the request has none yet; write into the one the input names when it does.
 
 Keep the headings stable - `/nxs:plan` reads the brief by them:
 
@@ -63,7 +67,7 @@ Keep the headings stable - `/nxs:plan` reads the brief by them:
 - Date: YYYY-MM-DD
 - Tracker: <key / URL - drop the line if there is none>
 
-## Task
+## Request
 
 ## Context (facts from the code)
 
@@ -82,7 +86,7 @@ Keep the headings stable - `/nxs:plan` reads the brief by them:
 <assumptions, failure modes, kill criteria, verdict - only when the stress step actually ran>
 ```
 
-Sections scale with the task, empty ones are dropped, headings keep their names. Add a `## Clarifications` log only when at least one question was asked, as `- Q: <question> -> A: <answer>`. The answer is integrated into the brief text; an answer that invalidates earlier wording replaces it.
+Sections scale with the request, empty ones are dropped, headings keep their names. Add a `## Clarifications` log only when at least one question was asked, as `- Q: <question> -> A: <answer>`. The answer is integrated into the brief text; an answer that invalidates earlier wording replaces it.
 
 Nothing durable is written before the user approves it.
 

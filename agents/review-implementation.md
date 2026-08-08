@@ -28,7 +28,7 @@ git diff <base>...HEAD
 
 Changes unrelated to the stated goal. Work no requirement asked for. A changed public contract, a new dependency, or a migration nobody requested.
 
-A requirement comes from the plan, the brief, or the ticket, and from nothing else. Never reconstruct one from git history, branch names, or memory of similar projects.
+A requirement comes from the plan, the brief, the root cause, or the ticket, and from nothing else. Never reconstruct one from git history, branch names, or memory of similar projects.
 
 ## SEARCH BEFORE YOU CLAIM AN ABSENCE
 
