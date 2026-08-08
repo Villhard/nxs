@@ -41,7 +41,7 @@ jobs:
           exit $status
 
   validate:
-    name: Marketplace and plugin validate
+    name: Plugin validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
