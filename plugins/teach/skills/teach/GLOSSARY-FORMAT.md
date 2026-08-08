@@ -2,7 +2,7 @@
 
 The settled vocabulary of the topic. Lessons, exercises, and learning records all use these words and no synonyms. Writing an entry is itself a test: compressing a concept into two sentences is evidence the user holds it.
 
-## Template
+## TEMPLATE
 
 ```md
 # {Topic} glossary
@@ -25,7 +25,7 @@ in the tank.
 _Avoid_: effort score, intensity rating
 ```
 
-## Rules
+## RULES
 
 - **Promote a term only once the user understands it.** This is a record of compressed knowledge, not a dictionary to read for learning. A concept met ten minutes ago waits until they can use it correctly.
 - **Pick one word and say so.** Where the field uses several names, choose the best and list the rest under `_Avoid_`. That choice is what makes the language compress.

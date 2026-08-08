@@ -46,7 +46,7 @@ Nothing is written outside the workspace.
 
 The balance shifts by topic. Theoretical physics leans on knowledge; a barbell lift leans on skill; navigating a professional field leans on wisdom. Judge the mix from the mission.
 
-### Fluency against storage
+### FLUENCY AGAINST STORAGE
 
 Fluency is retrieval right now, minutes after reading. Storage is retrieval in six weeks. Fluency feels like mastery and is not, so design against it:
 
