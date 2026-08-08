@@ -2,7 +2,7 @@
 
 The trusted sources for this topic. Lessons draw their knowledge from here rather than from recall, and the communities listed here are where the user goes for judgement.
 
-## Template
+## TEMPLATE
 
 ```md
 # {Topic} resources
@@ -27,7 +27,7 @@ The trusted sources for this topic. Lessons draw their knowledge from here rathe
 - Nothing solid found on {area the mission needs}. Search again before teaching it.
 ```
 
-## Rules
+## RULES
 
 - **High trust only.** Primary sources, recognised practitioners, peer-reviewed work, communities with real moderation. Marketing dressed as teaching stays out.
 - **Annotate every entry.** One line: what it covers and when to reach for it. A bare link is dead weight in three months.

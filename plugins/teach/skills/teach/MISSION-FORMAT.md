@@ -2,7 +2,7 @@
 
 The mission is the concrete outcome the user wants. It sits at the workspace root and every teaching decision traces back to it: what to teach next, which sources to chase, which exercise to build.
 
-## Template
+## TEMPLATE
 
 ```md
 # Mission: {topic}
@@ -23,7 +23,7 @@ reach the thing underneath it.}
 - {Adjacent topics deliberately left alone, so lessons stop drifting toward them}
 ```
 
-## Rules
+## RULES
 
 - **One mission per workspace.** Two unrelated topics are two directories.
 - **Concrete beats abstract.** "Half marathon in October" over "get fitter". "Ship a Rust CLI my team uses" over "learn Rust".
