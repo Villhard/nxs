@@ -62,6 +62,8 @@ Difficulty is the enemy while knowledge is being acquired and the tool once skil
 
 A lesson is one self-contained HTML file in `lessons/`, numbered `NNNN-<slug>.html` from the highest existing number. It is the unit everything else supports.
 
+Build it around one skill the user walks away able to perform. The knowledge that goes in is only what that skill needs; anything else the topic offers belongs to a later lesson or to `reference/`. Teach that knowledge first, then hand over the practice that uses it.
+
 Requirements:
 
 - **Short.** Working memory is small. One tangible win the user can build on, and out.
