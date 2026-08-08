@@ -1,41 +1,57 @@
 ---
-description: Commit the current working changes - splits them into atomic commits with conventional messages. Use when you want to commit changes made outside `/nxs:exec`.
+description: Commit the current working changes - splits them into atomic commits with conventional messages. Use when you want to commit changes made outside /nxs:exec.
 argument-hint: "[optional scope hint]"
 ---
 
 # /nxs:commit
 
-Commit the changes already in the working tree, split into atomic commits. Use it for edits you made by hand, outside `/nxs:exec`.
+Commit what is already in the working tree, split into atomic commits. For edits made by hand, outside `/nxs:exec`.
 
-Message format, the atomicity rule, staging hygiene, and git safety come from the `commit-conventions` background skill - load it and follow it. This command owns only the procedure of grouping and committing.
-
-Accepted input: an optional hint to narrow scope or guide grouping; with nothing given, commit the whole working tree split into atomic commits.
+Accepted input: an optional hint to narrow the scope or guide the grouping. With nothing given, commit the whole working tree.
 
 Example: /nxs:commit
 
 ## STANCE
 
-- Commit what is already there. This command stages and commits existing changes; writing code, running the build, and changing behavior belong elsewhere.
-- HITL: `git push`, `--force`, and MR / PR creation stay out of this command. Push only on a later explicit request.
+Commit what is there. Writing code, running the build, and changing behavior belong elsewhere. `git push`, `--force`, and MR / PR creation stay out of this command - push only on a later explicit request.
 
 ## PROCEDURE
 
-1. Read the state: `git status` and `git diff` (staged and unstaged), including untracked files.
-2. Group the changes by logical change - one group per `feat` / `fix` / `refactor` / `chore` / `docs` unit. Separate a refactor from a feat / fix even when they touch the same file.
+1. Read the state: `git status`, `git diff`, `git diff --staged`, and untracked files.
+2. Group by logical change - one group per `feat` / `fix` / `refactor` / `chore` / `docs` unit. Separate a refactor from a feat or a fix even inside one file.
 3. For each group, in dependency order:
-   - stage exactly that group: `git add <specific files>` (never `git add -A` / `git add .`); for a file that mixes groups, stage the intended hunks with `git add -p`;
+   - stage exactly that group with `git add <specific files>`, never `git add -A` or `git add .`; for a file mixing groups, stage the hunks with `git add -p`;
    - check the staged diff matches the group;
-   - commit with a conventional one-line message (`commit-conventions`): `git commit -m "<type>(<scope>): <subject>"`.
-4. Report the commits made - one line each - and anything left uncommitted with the reason.
+   - `git commit -m "<type>(<scope>): <subject>"`.
+4. Report the commits made, one line each, plus anything left uncommitted and why.
+
+## MESSAGE FORMAT
+
+```
+<type>(<scope>): <subject>
+```
+
+Single line, no body unless explicitly requested. Subject as short as possible and fully lowercase, abbreviations included ("seo", not "SEO"). Types: `feat` (new functionality), `fix` (bug fix), `refactor` (no behavior change), `chore` (deps, configs), `docs` (documentation).
+
+Plain simple verbs: add, fix, remove, update, show, hide, validate. Never tighten, strengthen, refine, streamline, leverage, harden.
+
+## RULES
+
+- one commit is one logical change;
+- do not commit unrelated files, large generated artifacts, foreign-branch files, or merge artifacts;
+- do not amend a published commit;
+- `--no-verify` only with explicit approval;
+- after a failed pre-commit hook, make a NEW commit with the fix rather than amending;
+- branches are `<type>/<short-desc>`, or `<type>/vr/<short-desc>` for work branches.
 
 ## STOP CONDITIONS
 
-- nothing to commit (clean tree);
-- a secret, credential, large generated artifact, foreign-branch file, or merge artifact in the diff - stop and ask;
-- a hunk that spans two logical changes and cannot be split cleanly - ask how to group rather than guess;
-- a group whose type or scope is unclear - ask, do not invent.
+- nothing to commit;
+- a secret, a credential, a large generated artifact, a foreign-branch file, or a merge artifact in the diff;
+- a hunk spanning two logical changes that will not split cleanly;
+- a group whose type or scope is unclear.
 
-On any of these - stop and inform the user.
+On any of these - stop and ask rather than guessing.
 
 ## NEXT
 
