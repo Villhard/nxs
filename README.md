@@ -1,10 +1,11 @@
 # nxs
 
-A Claude Code plugin marketplace. Two plugins live here, versioned and released independently.
+A Claude Code plugin marketplace. Three plugins live here, versioned and released independently.
 
 | plugin | what it gives you |
 | --- | --- |
 | [`dev`](plugins/dev) | An opinionated plan -> exec -> review loop. Six flat `/dev` commands, a single write-capable worker, five review agents over the finished branch. |
+| [`gate`](plugins/gate) | A planning artifact opens in the revdiff TUI before it is written. What you annotate goes back to the agent as blocking feedback. |
 | [`teach`](plugins/teach) | `/teach:me` turns the current directory into a teaching workspace that survives between sessions: a mission, curated sources, numbered lessons, and a record of what you have learned. |
 
 ## Install
@@ -12,6 +13,7 @@ A Claude Code plugin marketplace. Two plugins live here, versioned and released 
 ```
 claude plugin marketplace add Villhard/nxs
 claude plugin install dev@nxs
+claude plugin install gate@nxs
 claude plugin install teach@nxs
 ```
 
@@ -21,9 +23,10 @@ Restart Claude Code so the plugin snapshots load. Each plugin's README covers it
 
 ```
 .claude-plugin/
-  marketplace.json     # the two plugin entries
+  marketplace.json     # the three plugin entries
 plugins/
   dev/                 # plugin, own version and CHANGELOG
+  gate/                # plugin, own version and CHANGELOG
   teach/               # plugin, own version and CHANGELOG
 .github/               # CI, house-style linter, PR template
 ```

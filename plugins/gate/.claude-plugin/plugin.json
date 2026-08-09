@@ -1,0 +1,13 @@
+{
+  "name": "gate",
+  "description": "Opens a planning artifact in the revdiff TUI before it is written, and returns the annotations to the agent as blocking feedback",
+  "version": "0.1.0",
+  "author": {
+    "name": "Victor Ryabov",
+    "email": "victorwillhard@gmail.com"
+  },
+  "keywords": ["review", "revdiff", "hooks", "planning"],
+  "license": "MIT",
+  "repository": "https://github.com/Villhard/nxs",
+  "homepage": "https://github.com/Villhard/nxs/tree/main/plugins/gate"
+}
