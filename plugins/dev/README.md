@@ -12,7 +12,8 @@ One story through the loop:
 /dev:rnd add rate limiting to the public API   # shape a fuzzy request into a plan-ready brief
 /dev:plan                                      # turn the brief into sequenced tasks
 /dev:exec                                      # run the plan to the end, one commit per task
-/dev:review                                    # five reviewers over the branch, fixes committed
+/dev:review                                    # five reviewers over the branch, findings reported
+/dev:review fix                                # same, and the confirmed findings get fixed
 ```
 
 ## Commands
@@ -25,7 +26,7 @@ Six flat `/dev:<name>` commands:
 | `bug` | Investigate a bug to a confirmed root cause before any fix - the entry point for a bug report. |
 | `plan` | Decompose a request, a brief, or a root cause into sequenced tasks with checkboxes, then self-check the plan against the repository. |
 | `exec` | Execute the plan task by task and write the code, committing each finished task. |
-| `review` | Review the branch with five parallel agents, verify every finding, fix what is confirmed, and commit. A later round re-checks with two and ends on severity. |
+| `review` | Review the branch with five parallel agents, verify every finding, and report it. Writes nothing unless you add `fix`, which applies the confirmed findings and re-checks its own work with two agents. |
 | `commit` | Commit the current working changes, split into atomic commits - for edits made outside `exec`. |
 
 ## Model
@@ -59,7 +60,7 @@ One story is one whole unit of work, and it gets one directory under `docs/nxs/s
 | `bug` | root cause | `docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md` |
 | `plan` | plan | `docs/nxs/stories/YYYYMMDD-<slug>/plan.md` |
 
-`exec` and `review` write no artifact - what they produce lands in git. `exec` leaves code changes, flipped checkboxes, and one commit per task; `review` commits its fixes as `fix: address review findings`. Follow-ups and the review report are spoken to you, not filed.
+`exec` and `review` write no artifact - what they produce lands in git. `exec` leaves code changes, flipped checkboxes, and one commit per task; `review` leaves nothing at all unless you ask for `fix`, and then commits as `fix: address review findings`. Follow-ups and the review report are spoken to you, not filed.
 
 With a tracker key the directory carries it: `YYYYMMDD-<KEY>-<slug>/`. The key names the directory, never the files inside it.
 
