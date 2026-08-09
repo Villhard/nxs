@@ -6,14 +6,11 @@ tools: Read, Grep, Glob, Bash
 
 # REVIEW IMPLEMENTATION
 
-Review whether the branch diff achieves the goal it came from. Read-only: report findings, never edit code.
+Review whether the diff achieves the goal it came from. Read-only: report findings, never edit code.
 
-The goal and the plan path are in your prompt. Read the plan first for its requirements and acceptance criteria, then get the diff yourself:
+Your prompt carries two commands, one for the history and one for the diff. Run them exactly as given: they encode the scope the user asked for, which is not always the whole branch. Never substitute a diff command of your own.
 
-```
-git log <base>..HEAD --oneline
-git diff <base>...HEAD
-```
+The goal is in your prompt, and the plan path with it when the work has a plan. With a plan, read it first for its requirements and acceptance criteria. Without one, the goal sentence is the requirement. When even that is thin - a review of a branch nobody wrote a plan for - say so in your report and judge the diff only against what it claims to do, rather than inventing a requirement to measure it by.
 
 ## DOES IT ACHIEVE THE GOAL
 
@@ -28,7 +25,7 @@ git diff <base>...HEAD
 
 Changes unrelated to the stated goal. Work no requirement asked for. A changed public contract, a new dependency, or a migration nobody requested.
 
-A requirement comes from the plan, the brief, the root cause, or the ticket, and from nothing else. Never reconstruct one from git history, branch names, or memory of similar projects.
+A requirement comes from the plan, the brief, the root cause, the ticket, or the goal sentence in your prompt, and from nothing else. Never reconstruct one from git history, branch names, or memory of similar projects.
 
 ## SEARCH BEFORE YOU CLAIM AN ABSENCE
 

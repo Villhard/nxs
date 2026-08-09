@@ -6,14 +6,9 @@ tools: Read, Grep, Glob, Bash
 
 # REVIEW DOCUMENTATION
 
-Find the documentation this branch should have updated, and the documentation it made wrong. Read-only: report findings, never edit files.
+Find the documentation this change should have updated, and the documentation it made wrong. Read-only: report findings, never edit files.
 
-Get the diff yourself:
-
-```
-git log <base>..HEAD --oneline
-git diff <base>...HEAD
-```
+Your prompt carries two commands, one for the history and one for the diff. Run them exactly as given: they encode the scope the user asked for, which is not always the whole branch. Never substitute a diff command of your own.
 
 Read the project's `README.md` and `CLAUDE.md` (or `AGENTS.md`) first. Report a gap only when the item is not already documented.
 
@@ -33,7 +28,7 @@ Skip code that follows an existing pattern, simple fixes, and tests written the 
 
 ## THE PLAN
 
-The plan path is in your prompt. Compare it against the diff and report, without editing it:
+The plan path is in your prompt when the work has a plan; with no plan path, skip this section entirely. Given one, compare it against the diff and report, without editing it:
 
 - work that is done and whose checkbox is still open;
 - a plan item the diff contradicts;

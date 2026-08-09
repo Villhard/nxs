@@ -31,6 +31,19 @@ What fix mode deliberately gives up: a pass that confirmed only minor findings f
 - `README.md` - the quickstart shows both modes, and the command table and `## Stories` section state that `review` leaves nothing behind unless asked.
 - `skills/exec/SKILL.md`, `skills/plan/SKILL.md` - the `## NEXT` pointers name `/dev:review fix` beside `/dev:review`, since a branch you just executed is the case where applying the findings is the point. `exec` also says out loud that neither starts on its own, which has been true since 0.18.0 made the workflow commands type-only and is easy to assume otherwise from a line that reads like a handoff.
 
+### Fixed
+
+A multi-agent pass over the skillset for contradictions found eight, six after merging. These are them.
+
+- `skills/review/SKILL.md`, `agents/review-*.md` - the scope selector now reaches the agents. `## RESOLVE THE SCOPE` resolves to exactly two commands, a history one and a diff one, the launch contract carries them verbatim, and all five agents run what they are given instead of a hardcoded `git diff <base>...HEAD`. Until now `argument-hint` advertised selectors that nothing downstream consumed, so `/dev:review staged` silently reported on the whole branch. `staged` resolves to `git diff --staged` against the last commit, a path narrows the branch scope, and the `PR / MR URL` selector is gone - someone else's branch is reviewed by checking it out, which the no-selector case already covers, and `gh pr diff` would have bought a dependency for a case nobody runs.
+- `agents/review-implementation.md`, `agents/review-documentation.md` - the plan path is conditional, matching what the skill actually sends. Without a plan the goal sentence is the requirement, and when even that is thin the agent says so and judges the diff against what it claims to do; `review-implementation` adds the goal sentence to its list of allowed requirement sources, so the ban on reconstructing requirements from git history stays intact. `review-documentation` skips its plan section when no plan came. Both agents previously asserted the path was always present, which is false on the first-class case of a branch nobody planned.
+- `skills/exec/SKILL.md` - "the one command that changes project code" becomes "the command that turns a plan into code". Fix mode in `review` writes too.
+- `skills/plan/SKILL.md`, `CONTRIBUTING.md`, `README.md` - `## Conventions` joins the `plan -> exec` contract, since `exec` has always passed it to every worker while both documents said only two tokens crossed. `plan` also gains the sources to fill it from - the brief's chosen approach, the patterns of the surrounding code, what the user said this session - and an instruction not to copy in what CLAUDE.md already covers, which `exec` passes separately.
+- `CONTRIBUTING.md` - `sweep`, `re-check` and `fix mode` get rows in the ubiquitous-language table. The rule above it now asks for a row whenever one is missing rather than demanding it precede the skill, which was a rule nobody could keep.
+- `CHANGELOG.md` - the `## [0.18.0]` heading is back. The 0.19.0 entry had replaced it, leaving a whole release filed under the wrong version.
+
+## [0.18.0] - 2026-08-09
+
 The plugin stops routing the user and waits to be called. Five commands become type-only and the SessionStart hook is gone.
 
 The hook existed to make the commands fire without being typed, which only makes sense when this plugin is the whole workflow. It is not: work larger than one story starts in another toolchain, and small work is faster in the built-in plan mode. In both cases the injected discipline pulled toward a `/dev:` command that did not belong, and the pull was strongest exactly where the workflows met - `/dev:plan` invoked inside plan mode cannot write its artifact at all, since plan mode blocks the write the whole command exists to perform.

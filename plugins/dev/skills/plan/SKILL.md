@@ -23,7 +23,7 @@ Example: /dev:plan docs/nxs/stories/20260711-auth-refactor
 ## PROCEDURE
 
 1. **Read the source artifact.** The story holds a `brief.md`, a `root-cause.md`, or neither. Read it by its headings: `## Acceptance criteria` and `## Chosen approach` from a brief, `## Root cause` and `## Fix direction` from a root cause. Those carry the decisions already made - the plan implements them rather than reopening them. With no artifact, the request itself is the source.
-2. **Read the code.** Inspect the files, patterns, and dependencies the work touches - directly or through the built-in Explore agent. Do not over-read. Clarify a fuzzy domain term before encoding it into the plan.
+2. **Read the code.** Inspect the files, patterns, and dependencies the work touches - directly or through the built-in Explore agent. Do not over-read. Clarify a fuzzy domain term before encoding it into the plan. Collect what belongs in `## Conventions` as you go: the decisions the brief's `## Chosen approach` already made, the patterns the surrounding code follows, and anything the user has said in this session about how the work is to be done.
 3. **Close the open questions.** Ask one at a time, 2-4 concrete options with a recommendation. For several viable approaches, lay out the trade-offs and ask once.
 4. **Decompose.** 3-7 tasks. Each is one working unit: the code plus the tests for it, leaving the project green. Sequence by dependency - a task never calls what a later task creates. Every task earns its place; cut the rest.
 5. **Write the file** using the template below.
@@ -59,7 +59,9 @@ Mark only when the answer changes the decision. A marker answered in conversatio
 ## Conventions
 
 <rules every task follows - style, naming, a repeated step, a standing preference. /dev:exec passes this
-section to every worker, so what is missing here does not reach the code. No such rules, no section.>
+section to every worker, so what is missing here does not reach the code. Do not copy in what the project's
+CLAUDE.md already says: exec passes the project rules separately, and a duplicate only inflates every worker
+prompt. No such rules, no section.>
 
 ## Implementation
 

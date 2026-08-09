@@ -44,8 +44,11 @@ One term, one meaning, everywhere in this plugin. A word in this table is never 
 | checkbox | one `- [ ]` / `- [x]` line inside a task | a step, an item |
 | request | what the user arrives with: a description, an idea, a question, a ticket | a task |
 | tracker key | the key or URL of an external ticket | a tracker identifier |
+| sweep | the first review pass: five agents over the diff as it arrived | a round, a first round |
+| re-check | the narrowed pass after fixes land: two agents, critical and major only | a second round, a retry |
+| fix mode | a `/dev:review` run carrying the `fix` argument, the only run that writes | a fix phase, auto-fix |
 
-Two collisions this table exists to prevent: `task` used to mean both the incoming work and a numbered block in a plan, and `brief` used to mean both artifacts that feed `/dev:plan`. A new term is added here before it appears in a skill, an agent, or the README.
+Two collisions this table exists to prevent: `task` used to mean both the incoming work and a numbered block in a plan, and `brief` used to mean both artifacts that feed `/dev:plan`. Every term this plugin uses in that load-bearing way has a row here. Add one the moment you notice it missing; whether the skill or the row landed first does not matter.
 
 ## PLACEMENT RULE
 
@@ -62,16 +65,17 @@ Security-critical content (never commit secrets, confirm destructive operations)
 
 ## THE HANDOFF CONTRACTS
 
-Three commands hand work to the next one, and each handoff is a named, minimal contract. Nothing else crosses between them.
+Three commands hand work to the next one, and each handoff is a named, minimal contract. Nothing beyond what a contract names crosses between them.
 
 **`rnd` -> `plan`** - the headings of `brief.md`. `plan` reads `## Acceptance criteria` and `## Chosen approach`; the rest of the brief it reads as text.
 
 **`bug` -> `plan`** - the headings of `root-cause.md`. `plan` reads `## Root cause` and `## Fix direction`; the rest it reads as text.
 
-**`plan` -> `exec`** - two structural tokens:
+**`plan` -> `exec`** - two structural tokens and one optional section:
 
 - `### Task N: <title>` - the task heading;
-- `- [ ]` / `- [x]` - the checkboxes.
+- `- [ ]` / `- [x]` - the checkboxes;
+- `## Conventions` - optional. `exec` passes it verbatim to every worker, and a worker inherits nothing else, so a rule missing from it does not reach the code.
 
 `exec` takes the first task section with open checkboxes and reads the rest as text.
 
@@ -174,7 +178,7 @@ What a user or another plugin file depends on:
 1. command names `/dev:<name>`, their arguments and modes;
 2. agent names, since skills spawn them by name;
 3. artifact paths and naming schemes (`docs/nxs/stories/YYYYMMDD-<slug>/plan.md`);
-4. the three handoff contracts: the headings of `brief.md` and `root-cause.md` that `plan` reads, and the two plan tokens `exec` depends on, `### Task N:` and `- [ ]`;
+4. the three handoff contracts: the headings of `brief.md` and `root-cause.md` that `plan` reads, the two plan tokens `exec` depends on - `### Task N:` and `- [ ]` - and the plan's `## Conventions` heading, which `exec` passes on to every worker;
 5. the gates that govern git and files: when a commit is allowed, what counts as a stop condition, what a skill writes to disk.
 
 Everything else is internal: wording inside `SKILL.md`, agent criteria and focus areas, README and CONTRIBUTING.

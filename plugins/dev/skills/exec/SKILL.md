@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /dev:exec
 
-Execute a plan to the end, one task per cycle. This is the one command that changes project code, and it delegates every task to a `dev:worker` subagent rather than writing code itself.
+Execute a plan to the end, one task per cycle. This is the command that turns a plan into code, and it delegates every task to a `dev:worker` subagent rather than writing code itself.
 
 Example: /dev:exec docs/nxs/stories/20260711-auth-refactor
 
