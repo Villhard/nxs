@@ -29,6 +29,7 @@ What fix mode deliberately gives up: a pass that confirmed only minor findings f
 - `skills/review/SKILL.md` - `## LAUNCH THE AGENTS` describes the sweep and the re-check by what each is for. `## VERIFY` carries the agent's severity forward instead of re-ranking by consequence, and forbids lowering a finding to end the pass. `## FIX AND COMMIT` becomes `## FIX`, delegates to one `dev:worker`, and gates the re-check on a confirmed critical or major.
 - `agents/worker.md` - a list of confirmed review findings counts as a unit of work alongside a plan task. Without this its scope rule reads as plan tasks only.
 - `README.md` - the quickstart shows both modes, and the command table and `## Stories` section state that `review` leaves nothing behind unless asked.
+- `skills/exec/SKILL.md`, `skills/plan/SKILL.md` - the `## NEXT` pointers name `/dev:review fix` beside `/dev:review`, since a branch you just executed is the case where applying the findings is the point. `exec` also says out loud that neither starts on its own, which has been true since 0.18.0 made the workflow commands type-only and is easy to assume otherwise from a line that reads like a handoff.
 
 The plugin stops routing the user and waits to be called. Five commands become type-only and the SessionStart hook is gone.
 

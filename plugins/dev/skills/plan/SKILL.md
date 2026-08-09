@@ -122,4 +122,4 @@ A story that already holds a `plan.md` is never overwritten silently. Say what i
 
 ## NEXT
 
-Plan written -> `/dev:exec` to implement it, then `/dev:review` for the review gate.
+Plan written -> `/dev:exec` to implement it, then `/dev:review` for the review gate, or `/dev:review fix` to have it apply what it confirms.
