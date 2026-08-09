@@ -19,7 +19,7 @@ What this deliberately gives up: a round that found only minor problems now fixe
 
 ### Changed
 
-- `skills/review/SKILL.md` - `## LAUNCH THE AGENTS` gains the round rule. `## VERIFY` carries the agent's severity forward instead of re-ranking by consequence, and forbids downgrading a finding to end the pass. `## FIX AND COMMIT` delegates the fixes to one `dev:worker` and gates the next round on a confirmed critical or major.
+- `skills/review/SKILL.md` - `## LAUNCH THE AGENTS` gains the round rule, and states that rounds are counted inside one invocation: every `/dev:review` opens at round 1 with all five, so a PR arriving for the first time is never met with the narrowed re-check. `## VERIFY` carries the agent's severity forward instead of re-ranking by consequence, and forbids downgrading a finding to end the pass. `## FIX AND COMMIT` delegates the fixes to one `dev:worker` and gates the next round on a confirmed critical or major.
 - `agents/worker.md` - a list of confirmed review findings counts as a unit of work alongside a plan task. Without this its scope rule reads as plan tasks only.
 
 The plugin stops routing the user and waits to be called. Five commands become type-only and the SessionStart hook is gone.
