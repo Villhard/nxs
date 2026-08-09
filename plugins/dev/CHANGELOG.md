@@ -7,7 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.18.0] - 2026-08-09
+## [0.19.0] - 2026-08-09
+
+`/dev:review` stops paying full price for every round. The first round is the sweep it always was; the rounds after it are a re-check, and they now cost like one.
+
+Three changes, borrowed from [cc-thingz](https://github.com/umputun/cc-thingz) `planning:exec`, which runs the same shape of pipeline inside an interactive session. Round 1 launches five agents and round 2 launches two, since a later round exists to catch what the fixes broke rather than to sweep the branch again. The loop ends on severity instead of on activity: the agents have always reported `Severity: critical | major | minor` and the command simply never read the field. And the fixes move into a `dev:worker`, so reading files and editing them stops happening in the session that also has to hold the whole review.
+
+What this deliberately gives up: a round that found only minor problems now fixes them and stops, so those fixes go unverified. That is the trade cc-thingz makes, and a minor fix is small enough to be worth it.
+
+`## VERIFY` stays in the main session. Handing the decision of what is real to an agent is a different philosophy, not an optimization, and it is not in this release.
+
+### Changed
+
+- `skills/review/SKILL.md` - `## LAUNCH THE AGENTS` gains the round rule. `## VERIFY` carries the agent's severity forward instead of re-ranking by consequence, and forbids downgrading a finding to end the pass. `## FIX AND COMMIT` delegates the fixes to one `dev:worker` and gates the next round on a confirmed critical or major.
+- `agents/worker.md` - a list of confirmed review findings counts as a unit of work alongside a plan task. Without this its scope rule reads as plan tasks only.
 
 The plugin stops routing the user and waits to be called. Five commands become type-only and the SessionStart hook is gone.
 

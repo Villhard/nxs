@@ -25,7 +25,7 @@ Six flat `/dev:<name>` commands:
 | `bug` | Investigate a bug to a confirmed root cause before any fix - the entry point for a bug report. |
 | `plan` | Decompose a request, a brief, or a root cause into sequenced tasks with checkboxes, then self-check the plan against the repository. |
 | `exec` | Execute the plan task by task and write the code, committing each finished task. |
-| `review` | Review the branch with five parallel agents, verify every finding, fix what is confirmed, and commit. |
+| `review` | Review the branch with five parallel agents, verify every finding, fix what is confirmed, and commit. A later round re-checks with two and ends on severity. |
 | `commit` | Commit the current working changes, split into atomic commits - for edits made outside `exec`. |
 
 ## Model
