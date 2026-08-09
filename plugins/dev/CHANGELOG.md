@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-08-09
+
+The plugin stops routing the user and waits to be called. Five commands become type-only and the SessionStart hook is gone.
+
+The hook existed to make the commands fire without being typed, which only makes sense when this plugin is the whole workflow. It is not: work larger than one story starts in another toolchain, and small work is faster in the built-in plan mode. In both cases the injected discipline pulled toward a `/dev:` command that did not belong, and the pull was strongest exactly where the workflows met - `/dev:plan` invoked inside plan mode cannot write its artifact at all, since plan mode blocks the write the whole command exists to perform.
+
+`commit` keeps model-invocation. "Commit this" is a request to commit rather than a request for a command, and its description has carried that trigger since 0.16.1.
+
+### Changed
+
+- `skills/{rnd,bug,plan,exec,review}/SKILL.md` - `disable-model-invocation: true`. Each one is invocable only as `/dev:<name>`; none appears in the model's skill listing, and no skill or agent can call them. `skills/commit/SKILL.md` is unchanged.
+- `skills/{rnd,bug,plan}/SKILL.md` - the tracker-ticket rule returns to the three commands that accept a key, one line after `Accepted input`: read the ticket through the tracker, ask for a paste when it is unreachable, never infer its content from the key. It moved to the hook in 0.11.0 and had no other home.
+- `CONTRIBUTING.md` - `disable-model-invocation: true` joins the command frontmatter template as the default, with `commit` named as the single exception. The layout, the tiers, and the "when to add something new" sections drop the hook.
+- `README.md` - the `## Model` section states that five commands are type-only and why; the layout block drops `hooks/`.
+
+### Removed
+
+- `hooks/` - `hooks.json`, `session-start.sh`, and `using-dev.md`. Of what the discipline carried, the artifact-naming rule was already duplicated in `rnd`, `bug`, and `plan`, the commit trigger lives in the `commit` description, and the ticket-reading rule moves back into the three skills. What is left, "check for a command before acting" and the red-flag list, is what this release deliberately drops.
+
 ## [0.17.0] - 2026-08-08
 
 The repository stops being one plugin that happens to declare a marketplace and becomes a marketplace that holds several. `nxs` was both the marketplace and the only plugin in it, so the name carried no information once a second plugin arrived. The marketplace keeps the name; the plugin takes the one that says what it does. Every command reads `/dev:plan` instead of `/nxs:plan`, and the plugin moves from the repository root into `plugins/dev/`.

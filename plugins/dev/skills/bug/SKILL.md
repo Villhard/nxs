@@ -1,6 +1,7 @@
 ---
 description: Investigate a bug to a confirmed root cause - the bug entry point. Use when handed a bug report, a tracker bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
 argument-hint: "[tracker key | bug description | path]"
+disable-model-invocation: true
 ---
 
 # /dev:bug
@@ -8,6 +9,8 @@ argument-hint: "[tracker key | bug description | path]"
 Reach a confirmed root cause, then stop. The bug entry point.
 
 Accepted input: a tracker key / URL, pasted bug text, observed behavior, a stack trace or log, or a path.
+
+A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
 
 Example: /dev:bug PROJ-4213
 

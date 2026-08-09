@@ -12,10 +12,6 @@ plugins/dev/
     <name>/SKILL.md      # command skill -> /dev:<name>
   agents/
     <agent-name>.md      # self-contained subagent
-  hooks/                 # SessionStart hook -> injects using-dev (not a skill)
-    hooks.json
-    session-start.sh
-    using-dev.md
   README.md CONTRIBUTING.md CHANGELOG.md
 ```
 
@@ -28,7 +24,7 @@ The global `~/.claude/CLAUDE.md` and `settings.json` stay out of this repo - you
 
 There is no third tier. A rule lives in exactly one file - the command that uses it, or the agent that uses it. No background skills, no `reference/` directories, no cross-skill injection.
 
-Alongside the tiers, a SessionStart hook (`hooks/`) injects the `using-dev` discipline so a session checks for the right command before acting. It is infrastructure, not a skill - it lives in `hooks/`, not `skills/`.
+Nothing sits alongside the tiers. The plugin ships no hook and injects nothing into a session it was not invoked in.
 
 ## UBIQUITOUS LANGUAGE
 
@@ -83,7 +79,7 @@ Keep all three that narrow. Any new required section is a new coupling between t
 
 ## WHEN TO ADD SOMETHING NEW
 
-This plugin stays small on purpose: six commands, six agents, one hook. Add a command only when all of these hold at once:
+This plugin stays small on purpose: six commands, six agents, nothing else. Add a command only when all of these hold at once:
 
 - the intent is distinct and does not reduce to an existing command, not even through a mode word;
 - the intent is frequent - you reach for it several times a month, not once a quarter;
@@ -108,12 +104,15 @@ Things that bloat the plugin and get rejected: copying an external skill wholesa
 
 ```yaml
 ---
-description: <one line, drives model-invocation; when-to-use trigger + short what-it-produces, not the process>
+description: <one line; when-to-use trigger + short what-it-produces, not the process>
 argument-hint: "[...]"
+disable-model-invocation: true
 ---
 ```
 
 Keep `description` to the trigger plus a short clause on what the skill produces. Do not list phases or explain how the body works: a description that retells the workflow makes the model follow the retelling and skip the body, which is where the actual procedure lives. Every command skill also carries one `Example:` line with a real invocation right after the intro.
+
+`disable-model-invocation: true` is the default for a workflow command, and it takes the command out of the model's skill listing - it runs only when the user types `/dev:<name>`. Leave the flag off only when the intent is one a user expresses without naming a command; `commit` is the sole case, and a second one needs an argument here first.
 
 ### AGENT FRONTMATTER
 
