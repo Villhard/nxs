@@ -37,6 +37,8 @@ Each prompt carries the base branch, the goal in one sentence, and the plan path
 
 Round 2 and later launch `dev:review-quality` and `dev:review-implementation` only, told to report critical and major findings and skip the rest. A later round exists to catch what the fixes broke; re-running the full sweep pays five agents to re-read a diff that changed in three places.
 
+Rounds are counted inside one invocation and nowhere else. Every `/dev:review` opens at round 1 with all five, whatever ran earlier in the session - a diff arriving for the first time gets the full sweep, and reviewing someone else's PR is always that case.
+
 A trivial diff (dotfiles, docs only, pure formatting) does not need them: do one direct pass yourself against the same bar.
 
 Wait for every agent of the round before doing anything else.
