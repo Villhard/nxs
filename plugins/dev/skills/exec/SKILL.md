@@ -61,4 +61,4 @@ On any of these - stop and tell the user rather than guessing.
 
 ## NEXT
 
-Plan executed -> `/dev:review` for the review gate over the whole branch.
+Plan executed -> `/dev:review` for the review gate over the whole branch, or `/dev:review fix` to have the confirmed findings applied in the same run. Neither starts on its own; the user types it.
