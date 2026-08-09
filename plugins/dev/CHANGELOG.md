@@ -9,18 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.19.0] - 2026-08-09
 
-`/dev:review` stops paying full price for every round. The first round is the sweep it always was; the rounds after it are a re-check, and they now cost like one.
+`/dev:review` reviews. It no longer edits anything unless asked, and when asked it stops paying full price for every pass.
 
-Three changes, borrowed from [cc-thingz](https://github.com/umputun/cc-thingz) `planning:exec`, which runs the same shape of pipeline inside an interactive session. Round 1 launches five agents and round 2 launches two, since a later round exists to catch what the fixes broke rather than to sweep the branch again. The loop ends on severity instead of on activity: the agents have always reported `Severity: critical | major | minor` and the command simply never read the field. And the fixes move into a `dev:worker`, so reading files and editing them stops happening in the session that also has to hold the whole review.
+Reviewing someone else's PR is a normal use of this command, and until now the command answered that by rewriting their branch. Reporting is the whole command by default: nothing edited, nothing staged, nothing committed. `fix` in the arguments opts into changing code, and that word is the only thing that does. A command that writes by default and needs a flag to stay quiet gets it backwards, because the run where the flag is forgotten is the destructive one.
 
-What this deliberately gives up: a round that found only minor problems now fixes them and stops, so those fixes go unverified. That is the trade cc-thingz makes, and a minor fix is small enough to be worth it.
+Fix mode picks up three things from [cc-thingz](https://github.com/umputun/cc-thingz) `planning:exec`, which runs the same shape of pipeline inside an interactive session. The passes are named by purpose rather than counted: the **sweep** launches five agents on the diff as it arrived, and the **re-check** launches two, critical and major only, to answer whether the fixes broke something. A re-check exists only after fixes landed, so report mode is one sweep and no more. The run ends on severity instead of on activity - the agents have always reported `Severity: critical | major | minor` and the command simply never read the field. And the fixes move into a `dev:worker`, so reading files and editing them stops happening in the session that also has to hold the whole review.
+
+What fix mode deliberately gives up: a pass that confirmed only minor findings fixes them and stops, so those fixes go unverified. That is the trade cc-thingz makes, and a minor fix is small enough to be worth it.
 
 `## VERIFY` stays in the main session. Handing the decision of what is real to an agent is a different philosophy, not an optimization, and it is not in this release.
 
+### Added
+
+- `skills/review/SKILL.md` - a `## STANCE` section and the `fix` argument. Without it the command is read-only over any diff, including a PR that is not yours; with it the confirmed findings are applied, committed, and re-checked. The mode is announced before anything launches, so a run that will write is never a surprise, and fix mode over a diff the user does not own is a stop condition.
+- `skills/review/SKILL.md` - a `## REPORT` section, which is where a default run ends. It names the dismissed findings in one line so a discarded candidate stays visible.
+
 ### Changed
 
-- `skills/review/SKILL.md` - `## LAUNCH THE AGENTS` gains the round rule, and states that rounds are counted inside one invocation: every `/dev:review` opens at round 1 with all five, so a PR arriving for the first time is never met with the narrowed re-check. `## VERIFY` carries the agent's severity forward instead of re-ranking by consequence, and forbids downgrading a finding to end the pass. `## FIX AND COMMIT` delegates the fixes to one `dev:worker` and gates the next round on a confirmed critical or major.
+- `skills/review/SKILL.md` - `## LAUNCH THE AGENTS` describes the sweep and the re-check by what each is for. `## VERIFY` carries the agent's severity forward instead of re-ranking by consequence, and forbids lowering a finding to end the pass. `## FIX AND COMMIT` becomes `## FIX`, delegates to one `dev:worker`, and gates the re-check on a confirmed critical or major.
 - `agents/worker.md` - a list of confirmed review findings counts as a unit of work alongside a plan task. Without this its scope rule reads as plan tasks only.
+- `README.md` - the quickstart shows both modes, and the command table and `## Stories` section state that `review` leaves nothing behind unless asked.
 
 The plugin stops routing the user and waits to be called. Five commands become type-only and the SessionStart hook is gone.
 
