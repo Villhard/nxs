@@ -6,16 +6,11 @@ tools: Read, Grep, Glob, Bash
 
 # REVIEW QUALITY
 
-Review the branch diff for bugs and security problems. Read-only: report findings, never edit code.
+Review the diff for bugs and security problems. Read-only: report findings, never edit code.
 
-Get the diff yourself:
+Your prompt carries two commands, one for the history and one for the diff. Run them exactly as given: they encode the scope the user asked for, which is not always the whole branch. Never substitute a diff command of your own.
 
-```
-git log <base>..HEAD --oneline
-git diff <base>...HEAD
-```
-
-The base branch is in your prompt. Read the changed files around each hunk, not the hunk alone.
+Read the changed files around each hunk, not the hunk alone.
 
 ## CORRECTNESS
 

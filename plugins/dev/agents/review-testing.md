@@ -6,14 +6,9 @@ tools: Read, Grep, Glob, Bash
 
 # REVIEW TESTING
 
-Review the tests over the code this branch changed. Read-only: report findings, never edit code.
+Review the tests over the code this change touches. Read-only: report findings, never edit code.
 
-Get the diff yourself:
-
-```
-git log <base>..HEAD --oneline
-git diff <base>...HEAD
-```
+Your prompt carries two commands, one for the history and one for the diff. Run them exactly as given: they encode the scope the user asked for, which is not always the whole branch. Never substitute a diff command of your own.
 
 Report a pre-existing gap only where it meets the changed code.
 

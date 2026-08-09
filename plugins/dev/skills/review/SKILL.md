@@ -1,6 +1,6 @@
 ---
-description: Review the branch diff with five parallel agents, verify every finding against the code, and report it. Add "fix" to apply the confirmed findings. Use after /dev:exec finishes a plan, or on any branch or PR you want reviewed.
-argument-hint: "[scope: staged | path | PR url] [fix]"
+description: Review a diff with five parallel agents, verify every finding against the code, and report it. Add "fix" to apply the confirmed findings. Use after /dev:exec finishes a plan, or on any branch you want reviewed, including one you pulled from someone else's PR.
+argument-hint: "[scope: staged | path] [fix]"
 disable-model-invocation: true
 ---
 
@@ -21,16 +21,16 @@ Example: /dev:review fix
 
 The word `fix` anywhere in the arguments turns on fix mode; its absence is report mode. Say which mode you are in before launching anything, so a run that will write is never a surprise.
 
-- an explicit selector - `staged`, a file path, or a PR / MR URL - is used as given;
-- no selector - the current branch against its base. Detect the base explicitly: `origin/HEAD`, else whichever of `main` / `master` exists;
+Resolving the scope produces exactly two commands, a history command and a diff command. Everything downstream runs those two and nothing else - your own read of the context, and every agent you launch.
+
+- no selector - the current branch against its base. Detect the base explicitly: `origin/HEAD`, else whichever of `main` / `master` exists. Then `git log <base>..HEAD --oneline` and `git diff <base>...HEAD`;
+- `staged` - what is staged against the last commit: `git log -1 --oneline` and `git diff --staged`;
+- a file path - the branch scope narrowed to it: the same two commands with `-- <path>` appended;
 - no selector and a mixed state (commits ahead of base plus uncommitted changes) - ask once which scope to review, before launching anything.
 
-Then read the context yourself:
+Someone else's branch is reviewed by checking it out and running with no selector; there is no PR URL selector, and inventing one from a URL in the arguments is not a substitute.
 
-```
-git log <base>..HEAD --oneline
-git diff <base>...HEAD
-```
+Read the context yourself with the two resolved commands before launching anything.
 
 ## LAUNCH THE AGENTS
 
@@ -42,11 +42,11 @@ git diff <base>...HEAD
 - `dev:review-simplification` - over-engineering this branch introduces;
 - `dev:review-documentation` - docs the change needs or made stale, plan checkboxes.
 
-Each prompt carries the base branch, the goal in one sentence, and the plan path when there is one. Do not paste the diff into a prompt - each agent fetches it itself, and an embedded diff makes the launch slow and expensive.
+Each prompt carries the two resolved scope commands verbatim, the goal in one sentence, and the plan path when there is one. Do not paste the diff into a prompt - each agent runs the commands itself, and an embedded diff makes the launch slow and expensive. An agent given no commands falls back to the whole branch, which is the wrong answer for every selector, so the commands are not optional.
 
 **The re-check** launches `dev:review-quality` and `dev:review-implementation` only, told to report critical and major findings and skip the rest. It exists to answer one question - did the fixes break something - so it runs in fix mode and nowhere else, after fixes landed in this same run. Re-running the full sweep there would pay five agents to re-read a diff that changed in three places.
 
-A diff nobody has fixed yet never gets a re-check. Report mode is one sweep and no more; someone else's PR is always that case.
+A diff nobody has fixed yet never gets a re-check. Report mode is one sweep and no more; a branch pulled from someone else's PR is always that case.
 
 A trivial diff (dotfiles, docs only, pure formatting) does not need agents: do one direct pass yourself against the same bar.
 
@@ -86,7 +86,7 @@ Report the outcome the same way: what was found, what was fixed, what is left an
 - tests or linter that stay red after a reasonable attempt;
 - a destructive operation, a migration, or a dependency install needed for a fix;
 - an auth, payment, crypto, or migration diff - say plainly that it needs a manual security review beyond this pass;
-- fix mode over a diff the user does not own, a PR / MR URL among them - confirm before writing anything.
+- fix mode over work the user did not write, a branch pulled from someone else's PR above all - confirm before writing anything.
 
 On any of these - stop and tell the user. The last four apply to fix mode; the first is a report-mode outcome too.
 
