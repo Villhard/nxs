@@ -4,7 +4,9 @@ A planning artifact is a decision you sign off on. This plugin makes you sign it
 
 It is the same loop [`revdiff-planning`](https://github.com/umputun/revdiff) runs on `ExitPlanMode`, moved from the built-in plan mode onto files, so a brief, a plan, or a ticket written by any skill goes through the same gate.
 
-> **This plugin is a front-end for revdiff and does nothing without it.** The `revdiff` binary must be in `PATH`, and the review needs an overlay terminal. Install revdiff first: `brew install umputun/apps/revdiff`, or see the [releases](https://github.com/umputun/revdiff/releases). Without it every `Write` simply passes through unreviewed.
+> **This plugin is a front-end for revdiff and does nothing without it.** The `revdiff` binary must be in `PATH` at **v1.0.0 or newer**, and the review needs an overlay terminal. Install revdiff first: `brew install umputun/apps/revdiff`, or see the [releases](https://github.com/umputun/revdiff/releases). Without it every `Write` simply passes through unreviewed.
+
+The dependency is the binary alone. This plugin ships its own launcher and resolver, so neither the `revdiff` nor the `revdiff-planning` plugin has to be installed for it to work - and nothing here calls their files. What it uses of revdiff is the flags `--only`, `--compare-old`, `--compare-new`, `--output`, `--wrap`, `--collapsed`, and the `REVDIFF_EXIT_CODE_ON_ANNOTATIONS` environment variable. `--compare-old` / `--compare-new` are what set the v1.0.0 floor; on an older binary they are unknown flags, revdiff exits non-zero, and the hook fails open with a `gate:` note.
 
 ## What it gates
 
