@@ -42,7 +42,9 @@ Read the context yourself with the two resolved commands before launching anythi
 - `dev:review-simplification` - over-engineering this branch introduces;
 - `dev:review-documentation` - docs the change needs or made stale, plan checkboxes.
 
-Each prompt carries the two resolved scope commands verbatim, the goal in one sentence, and the plan path when there is one. Do not paste the diff into a prompt - each agent runs the commands itself, and an embedded diff makes the launch slow and expensive. An agent given no commands falls back to the whole branch, which is the wrong answer for every selector, so the commands are not optional.
+Each prompt carries the two resolved scope commands verbatim, plus the goal in one sentence and the plan path when the work has them. Do not paste the diff into a prompt - each agent runs the commands itself, and an embedded diff makes the launch slow and expensive. An agent given no commands falls back to the whole branch, which is the wrong answer for every selector, so the commands are not optional.
+
+The goal comes from the plan, or from what the user said when they invoked this. With neither - a branch handed to you, whose intent nobody stated - put `no stated goal` in the prompt and pass nothing more. Never manufacture one from commit messages, the branch name, or the diff: an invented goal becomes a requirement the reviewer holds the code to, and findings against a requirement nobody set are worse than no findings.
 
 **The re-check** launches `dev:review-quality` and `dev:review-implementation` only, told to report critical and major findings and skip the rest. It exists to answer one question - did the fixes break something - so it runs in fix mode and nowhere else, after fixes landed in this same run. Re-running the full sweep there would pay five agents to re-read a diff that changed in three places.
 
