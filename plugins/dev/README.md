@@ -37,7 +37,7 @@ Two tiers, nothing in between:
 
 Three commands hand work to the next one, and each handoff is minimal: `plan` reads a brief by its `## Acceptance criteria` and `## Chosen approach` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a plan by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes. Nothing else crosses between them.
 
-A SessionStart hook (`hooks/`) injects the `using-dev` discipline so a session checks for the right command before acting - the commands fire on their trigger without being typed by name.
+Five of the six commands carry `disable-model-invocation: true`, so they run only when you type them. The workflow is yours to pick, not the model's to guess, and the plugin stays out of the way when you drive a session by hand or through another planning tool. `commit` is the exception: it fires on its own trigger, since "commit this" is a request to commit rather than a request for a command.
 
 Agents (`agents/*.md`) - one write-capable `worker` used by `/dev:exec`, the only agent that writes, plus five read-only reviewers used by `/dev:review`:
 
@@ -77,10 +77,6 @@ skills/
 agents/
   worker.md            # the single write-capable agent
   review-*.md          # five read-only reviewers
-hooks/                 # SessionStart hook -> injects the using-dev discipline
-  hooks.json
-  session-start.sh
-  using-dev.md
 ```
 
 ## Setup

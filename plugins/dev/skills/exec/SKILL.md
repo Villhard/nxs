@@ -1,6 +1,7 @@
 ---
 description: Execute an implementation plan task by task and write the code, committing each finished task. Use after a plan is ready; add "no commits" to skip git.
 argument-hint: "[story path | plan path] [no commits]"
+disable-model-invocation: true
 ---
 
 # /dev:exec

@@ -1,6 +1,7 @@
 ---
 description: Think a request through to a plan-ready brief - the entry point for new work. Use to shape a fuzzy request, feature idea, or open question before planning.
 argument-hint: "[request | tracker key | question]"
+disable-model-invocation: true
 ---
 
 # /dev:rnd
@@ -8,6 +9,8 @@ argument-hint: "[request | tracker key | question]"
 Think a request through to a plan-ready brief and stop. The entry point for new work.
 
 Accepted input: a request in words, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work from the current session context.
+
+A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
 
 Example: /dev:rnd add rate limiting to the public API
 

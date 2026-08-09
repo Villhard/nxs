@@ -1,6 +1,7 @@
 ---
 description: Create an implementation plan that becomes the source of truth for execution - decompose a request, a brief, or a root cause into sequenced tasks with checkboxes. Use before executing non-trivial work, after a brainstorm or an investigation.
 argument-hint: "[request | story path | tracker key]"
+disable-model-invocation: true
 ---
 
 # /dev:plan
@@ -8,6 +9,8 @@ argument-hint: "[request | story path | tracker key]"
 Turn a request, a brief, or a root cause into an implementation plan and stop. The plan is what `/dev:exec` executes.
 
 Accepted input: a request in words, a story directory under `docs/nxs/stories/` holding a `brief.md` or a `root-cause.md`, or a tracker key / URL / pasted ticket. With no input, gather it here first.
+
+A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
 
 Example: /dev:plan docs/nxs/stories/20260711-auth-refactor
 

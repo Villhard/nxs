@@ -1,6 +1,7 @@
 ---
 description: Review the branch diff with five parallel agents, verify every finding against the code, fix what is confirmed, and commit. Use after /dev:exec finishes a plan, or on any branch you want reviewed.
 argument-hint: "[scope: staged | path | PR url]"
+disable-model-invocation: true
 ---
 
 # /dev:review
