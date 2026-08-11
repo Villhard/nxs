@@ -1,7 +1,7 @@
 {
   "name": "dev",
   "description": "Development workflow for Claude Code - six flat /dev commands, each self-contained, plus a worker and five review agents",
-  "version": "0.19.1",
+  "version": "0.19.2",
   "author": {
     "name": "Victor Ryabov",
     "email": "victorwillhard@gmail.com"

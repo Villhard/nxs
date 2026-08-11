@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.2] - 2026-08-11
+
+### Added
+
+- `agents/review-quality.md` - a `## WHAT THE DIFF TOOK AWAY` section. For every deleted or replaced line the agent names the invariant it held and looks for where the new code re-establishes it, and for every changed function it greps the callers to see what the change costs them. The agent read what the diff adds and had nothing to say about what it removes, which is where a dropped guard or a narrowed validation hides.
+
+### Changed
+
+- `agents/review-quality.md` - the enclosing function of a hunk is read in full and its unchanged lines count, since a change re-exposes them. `## CORRECTNESS` keeps its six categories and adds the traps by name - falsy-zero, `==` coercion, mutable default args, a nil-map write, a range variable captured, float equality, DST drift, a narrowed lock scope, a predicate with a side effect. A named trap is something to look for; a category is something to agree with.
+- `agents/review-testing.md` - `## TEST QUALITY` covers setup and teardown that do not match, in both directions: what a test stands up and never takes down, and what a teardown removes without a setup that created it.
+
 ## [0.19.1] - 2026-08-11
 
 ### Changed
