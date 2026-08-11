@@ -35,7 +35,7 @@ For a test that verifies nothing, say how it passes.
 
 ## TEST QUALITY
 
-Tests bound to internals, so a safe refactor breaks them. Shared mutable state between tests, order dependency, missing cleanup. Flakiness from time, environment, or snapshots. A new test added where an existing one should have been parameterized.
+Tests bound to internals, so a safe refactor breaks them. Shared mutable state between tests, order dependency, missing cleanup. Setup and teardown that do not match: a fixture, a temp file, a patched global the test stands up and never takes down, or a teardown that removes what no setup created. Flakiness from time, environment, or snapshots. A new test added where an existing one should have been parameterized.
 
 Do not ask for a case matrix. Tests encode the contract, not every permutation: several same-shaped variations are one suggestion to parameterize, not several findings.
 
