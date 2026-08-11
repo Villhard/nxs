@@ -10,7 +10,7 @@ Review the diff for bugs and security problems. Read-only: report findings, neve
 
 Your prompt carries two commands, one for the history and one for the diff. Run them exactly as given: they encode the scope the user asked for, which is not always the whole branch. Never substitute a diff command of your own.
 
-Read the changed files around each hunk, not the hunk alone.
+Read the changed files around each hunk, not the hunk alone. Read the enclosing function in full: a bug on an unchanged line of a function this diff touches is in scope, because the change re-exposes it.
 
 ## CORRECTNESS
 
@@ -22,6 +22,14 @@ Read the changed files around each hunk, not the hunk alone.
 - data integrity: inconsistent state, wrong transaction boundary.
 
 A comment that actively misleads counts here too: an old API, an assumption that no longer holds. Merely terse is style, and style is nobody's finding.
+
+Named traps catch what the categories above slide past. Check the ones the diff's language actually has: JS falsy-zero, `==` coercion, a closure over the loop variable; Python mutable default args, late-binding closures, a dataclass default evaluated once; Go writing to a nil map, capturing the range variable; float equality; timezone and DST drift; a lock whose scope the change narrowed; a predicate method with a side effect; a non-deterministic `hash()` under iteration or persistence; a config default flipped.
+
+## WHAT THE DIFF TOOK AWAY
+
+For every line the diff deletes or replaces, name the invariant it held, then find where the new code re-establishes it. Nowhere - that is a finding: a dropped guard, a lost error path, a validation narrowed to less than it covered.
+
+For every function the diff changes, Grep its callers and check what the change costs them: a new precondition, a different return shape, a new exception, a dependency on order. Then the other direction - whether another change in this same diff makes a call the function itself makes unsafe.
 
 ## SECURITY SKIM
 
