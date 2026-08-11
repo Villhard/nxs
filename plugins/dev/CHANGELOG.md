@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.1] - 2026-08-11
+
 ### Changed
 
 - `skills/{rnd,bug,plan}/SKILL.md` - the `- Tracker:` line of the brief, the root cause, and the plan accepts the path of a local ticket beside a tracker key or URL. A story that came out of `to-tickets` had no way to name what it implements, because the line asked for a tracker and the ticket is a file under `.scratch/`; the link back to the spec rides through that ticket's own `## Parent`.
