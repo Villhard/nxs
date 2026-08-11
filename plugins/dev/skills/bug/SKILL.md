@@ -76,7 +76,7 @@ Keep the headings stable - `/dev:plan` reads the root cause by them:
 # Root cause: <title>
 
 - Date: YYYY-MM-DD
-- Tracker: <key / URL - drop the line if there is none>
+- Tracker: <key / URL, or the path to the local ticket this story implements - drop the line if there is none>
 
 ## Symptom
 

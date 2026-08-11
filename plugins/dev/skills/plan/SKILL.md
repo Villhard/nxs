@@ -42,7 +42,7 @@ Mark only when the answer changes the decision. A marker answered in conversatio
 ````markdown
 # <Plan title>
 
-- Tracker: <key or URL - drop the line if there is none>
+- Tracker: <key / URL, or the path to the local ticket this plan implements - drop the line if there is none>
 
 ## Overview
 
