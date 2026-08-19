@@ -1,8 +1,10 @@
 # LEARNING RECORDS
 
-Learning records live in `learning-records/`, numbered `0001-<slug>.md` upward. They are the decision record of this course: what the user actually knows, and why that changes what comes next. Reading them is how the next lesson gets picked.
+Learning records live in `learning-records/`, numbered `0001-<slug>.md` upward. They are the decision record of this course: what the user actually knows, and why that changes what comes next. Reading them, alongside `OBSERVATIONS.md`, is how the next step gets picked.
 
 Create the directory when the first record is written, not before.
+
+These records are the settled half of what is known about the user. The unsettled half lives in `OBSERVATIONS.md`: gaps, stumbles, and claims not yet tested. A record is what an observation turns into once it closes, and the observation is deleted in the same move.
 
 ## TEMPLATE
 
@@ -35,6 +37,7 @@ Add these only when they carry weight, which is rarely:
 - Material that was merely covered. Coverage is not learning; wait for evidence.
 - A term already defined in `GLOSSARY.md`. That is the glossary's job.
 - Session logs. These are not a journal.
+- Anything still open. A gap, a stumble, or a claim you have not tested belongs in `OBSERVATIONS.md` until there is evidence to close it.
 
 ## NUMBERING AND SUPERSESSION
 
