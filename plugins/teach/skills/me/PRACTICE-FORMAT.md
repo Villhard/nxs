@@ -47,7 +47,9 @@ two or more sessions ago and never retested. Retrieval beats rereading by a wide
 
 **2. WORKED EXAMPLE.** Produces a marked-up solution: each step, and the reason it is there.
 Feedback is the comparison against the principle behind the solution. Reach for it when the
-topic is new and the learner has nothing to build the first attempt from.
+topic is new and the learner has nothing to build the first attempt from. The effect size
+behind this is a mathematics-only meta-analysis; treat it as weaker evidence outside that
+domain until a broader source turns up.
 ([Barbieri et al. 2023](https://link.springer.com/article/10.1007/s10648-023-09745-1))
 
 **3. COMPLETION.** Produces the missing steps of a solution that is otherwise finished.
@@ -92,12 +94,15 @@ declaration.
 generate for a problem whose method they have not been taught, failed attempts included.
 Feedback is the canonical explanation afterwards, laid against what they tried. Reach for it
 when the goal is a principle rather than a procedure, and only when the learner already has a
-base to invent from.
+base to invent from. The effect reverses for younger learners and for domain-general skills -
+do not reach for this format there even with a base in place.
 ([Sinha and Kapur 2021](https://journals.sagepub.com/doi/10.3102/00346543211019105))
 
 **10. MASTERY CHECK.** Produces a run of tasks against a stated threshold before the topic is
 left behind. Feedback is the threshold, not a score. Reach for it before moving off a topic
-the rest of the course will stand on.
+the rest of the course will stand on. This is the check `SKILL.md`'s THE NEXT STEP points to
+for closing an `OBSERVATIONS.md` line with a learning record - roughly 80 to 90 per cent, on a
+check that does not repeat the practice that taught the skill.
 ([Kulik, Kulik, Bangert-Drowns 1990](https://journals.sagepub.com/doi/10.3102/00346543060002265))
 
 ## TWO ADD-ONS
@@ -105,8 +110,12 @@ the rest of the course will stand on.
 These attach to any format above rather than standing alone.
 
 - **Explain your own solution.** Ask why each step is correct, before the next one. It is what
-  keeps fading from producing solutions the learner cannot account for.
-  ([Bisra et al. 2018](https://link.springer.com/article/10.1007/s10648-018-9434-x))
+  keeps fading from producing solutions the learner cannot account for. Not a default on top of
+  a worked example: paired that way it has been shown to get in the way instead of helping, so
+  reach for it once the learner is producing solutions of their own, not while they are still
+  reading someone else's.
+  ([Bisra et al. 2018](https://link.springer.com/article/10.1007/s10648-018-9434-x);
+  worked-example caveat from [Barbieri et al. 2023](https://link.springer.com/article/10.1007/s10648-023-09745-1))
 - **Come back to it later.** The same task returned to after a gap, rather than repeated the
   same day. The gap grows with how long the material has to survive.
   ([Cepeda et al. 2006](https://www.yorku.ca/ncepeda/publications/CPVWR2006.html))

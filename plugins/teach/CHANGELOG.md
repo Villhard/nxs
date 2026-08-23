@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-08-23
+
+Pedagogy claims that carried no citation, or carried the wrong one, now cite the specific
+research behind them and note where that research stops applying.
+
+### Changed
+
+- `SKILL.md`, THE NEXT STEP - the 85 per cent success line is now attributed (Wilson et al.
+  2019) and separated from a new rule: closing an `OBSERVATIONS.md` line with a learning
+  record needs roughly 80 to 90 per cent on an independent check (Bloom 1968), not a clean run
+  inside the same practice format that taught the skill. That check is named as format 10,
+  MASTERY CHECK, and the format's entry in `PRACTICE-FORMAT.md` now points back to this rule.
+- `SKILL.md`, LESSONS - "Short" now cites the segmenting principle it rests on (Mayer and
+  Pilegard 2014) with its actual scope: complex material, novice learner. "Themed to the
+  system" no longer claims both themes are equivalent; it names the two different things they
+  are each good for, reading comprehension against eye comfort, without a source neither claim
+  currently has.
+- `PRACTICE-FORMAT.md`, format 2 (WORKED EXAMPLE) - notes that Barbieri et al. 2023 is a
+  mathematics-only meta-analysis, not general evidence.
+- `PRACTICE-FORMAT.md`, format 9 (INVENTION BEFORE INSTRUCTION) - notes the effect reverses
+  for younger learners and domain-general skills.
+- `PRACTICE-FORMAT.md`, "Explain your own solution" add-on - no longer a default on top of a
+  worked example; the same Barbieri et al. 2023 result shows self-explanation paired with a
+  worked example can get in the way.
+
 ## [0.2.0] - 2026-08-20
 
 The programme now moves with the learner. Before this release the course was picked from whatever the last session discussed, and practice defaulted to a blank-sheet task because no other format was described. Both are addressed by the same mechanism: the skill keeps a running list of what the learner has not settled, and chooses the next step against it.

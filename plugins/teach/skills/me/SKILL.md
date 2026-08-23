@@ -59,7 +59,9 @@ Put up to four candidates to the user before doing anything, one line each: what
 | the last practice came out clean with no stumble | a larger step, or transfer to a new surface |
 | the same misconception shows up twice | theory again, from a different angle |
 
-Aim at roughly 85 per cent success, so about one attempt in six fails. Everything correct first time means the step was too small; nothing moving means it was too large. Where you can measure this from the work itself, measure it. Where you cannot, ask.
+Aim at roughly 85 per cent success, so about one attempt in six fails. Everything correct first time means the step was too small; nothing moving means it was too large. Where you can measure this from the work itself, measure it. Where you cannot, ask. This is a difficulty target for a single step, not a bar for whether the material is learned. (Wilson et al. 2019, "The Eighty Five Percent Rule for Optimal Learning," Nature Communications 10:4646.)
+
+Closing a line in `OBSERVATIONS.md` with a learning record is a different question. Close it once the user clears roughly 80 to 90 per cent on a check that does not repeat the exact practice that taught it - that check is format 10, MASTERY CHECK, in `PRACTICE-FORMAT.md`. A clean run inside the same practice format shows the step was sized right, not that the material has settled. (Bloom 1968, "Learning for Mastery," Evaluation Comment 1(2), UCLA CSEIP.)
 
 ## OBSERVATIONS
 
@@ -105,9 +107,9 @@ Build it around one skill the user walks away able to perform, and build it from
 
 Requirements:
 
-- **Short.** Working memory is small. One tangible win the user can build on, and out.
+- **Short.** Working memory is small. One tangible win the user can build on, and out. Best evidenced when the material is complex and the learner is a novice; a fluent learner or simple material does not need the same segmenting. (Mayer & Pilegard 2014, "Principles for Managing Essential Processing in Multimedia Learning: Segmenting, Pretraining, and Modality Principles," in Mayer (ed.), The Cambridge Handbook of Multimedia Learning.)
 - **Beautiful.** Clean typography, generous margins, restrained rules and colour. Tufte, not a slide deck. The user will come back to these.
-- **Themed to the system.** Follow `prefers-color-scheme`, so a lesson opened at night is not a white page. Both themes carry real contrast; a dark theme is not the light one dimmed. The shared stylesheet holds both.
+- **Themed to the system.** Follow `prefers-color-scheme`, so a lesson opened at night is not a white page. Light reads better for comprehension and proofreading; dark is easier on the eyes in low light. Different jobs, not one theme dimmed into the other - build real contrast into both. The shared stylesheet holds both.
 - **Tied to the mission.** State the connection in the lesson itself.
 - **Cited.** Link the claim to the source it came from. A lesson with no outbound links is a lesson built from your own recall.
 - **Current.** Teach the topic as it stands today. Where the lesson names something superseded, say so and name what replaced it. Reach for the old way only to explain how today's state came about, or when the user asked about a specific version. A source can be high-trust and stale at once, so check its date and not only its authority.
