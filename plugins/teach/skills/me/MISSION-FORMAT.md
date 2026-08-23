@@ -17,7 +17,9 @@ reach the thing underneath it.}
 - {Another one}
 
 ## Constraints
-- {Time per week, budget, equipment, deadlines, how they prefer to learn}
+- Deadline: {date}, when there is one
+- Budget: {N} hours per week, when there is one
+- {Other constraints: equipment, how they prefer to learn}
 
 ## Out of scope
 - {Adjacent topics deliberately left alone, so lessons stop drifting toward them}
@@ -30,3 +32,5 @@ reach the thing underneath it.}
 - **Interview before writing.** If the user cannot say why, ask until they can. A wrong mission steers every future session wrong, and a missing one at least stays honest.
 - **Rewrite when the goal moves.** Confirm the change with the user, update this file, and write a learning record for it.
 - **Keep it under a screen.** Past that it has stopped being a compass and turned into a plan.
+- **Deadline and budget get their own bullets, when they exist.** Plain values, not prose - `Deadline: {date}` and `Budget: {N} hours per week` - so `PLAN.md` can do arithmetic against them. Neither applies to this course? Nothing about time gets enforced; the plan still gets built, just without a fit-check.
+- **`Success looks like` lines may carry `[core]`.** Untagged lines default to `extra`. This is decided in the intake interview as each line comes up - see `SKILL.md` PROCEDURE step 2. An older `MISSION.md` without tags gets asked once, at the first `PLAN.md` build (step 4). After intake, a tag changes only through the rewrite-when-the-goal-moves rule above, with the user's confirmation.

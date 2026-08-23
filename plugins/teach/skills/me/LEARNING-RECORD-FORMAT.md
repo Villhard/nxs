@@ -15,14 +15,14 @@ These records are the settled half of what is known about the user. The unsettle
 sessions.}
 ```
 
-That is the whole format. One paragraph is a complete record. The value is the fact that this is now known, not the filling of sections.
+That is the whole format. One paragraph is a complete record, up to about 80 words. The value is the fact that this is now known, not the filling of sections. A third sentence is a prompt to check yourself before writing it - it is often two facts wearing one record, not one that needed the extra room.
 
 ## OPTIONAL LINES
 
 Add these only when they carry weight, which is rarely:
 
 - `Status: superseded by LR-NNNN` in frontmatter, once an earlier understanding turns out to be wrong.
-- **Evidence** - how the user showed it: a question answered cold, an exercise completed, experience they cited. Worth having when the claim may be revisited.
+- **Evidence** - one line, a pointer to what closed the record: `practice/NNNN-<slug>` or the lesson. Not a paragraph of prose. Required when this record also closes a node in `PLAN.md` - the node's `done` status carries this record's number, so the record needs the pointer back.
 - **Implications** - what this opens up or rules out, when that is not obvious.
 
 ## WHEN TO WRITE ONE

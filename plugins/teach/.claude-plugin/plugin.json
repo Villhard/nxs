@@ -1,7 +1,7 @@
 {
   "name": "teach",
   "description": "Turn the current directory into a teaching workspace - a mission, curated sources, short interactive lessons, and a record of what you have actually learned",
-  "version": "0.2.1",
+  "version": "0.4.0",
   "author": {
     "name": "Victor Ryabov",
     "email": "victorwillhard@gmail.com"

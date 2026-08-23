@@ -7,6 +7,114 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-23
+
+Time now has a place to live, and getting there for a new workspace is one conversation.
+Before this release a deadline or an hours-per-week figure was just prose in `MISSION.md`'s
+Constraints, nothing existed to compare it against, every `Success looks like` line carried
+the same weight, the mission interview and the first `PLAN.md` build were two separate
+steps with the second one collecting a fresh round of the same kind of information, and a
+lesson and the practice that followed it took two unrelated numbers from one shared counter
+instead of one number both directories could be found under.
+
+### Added
+
+- Intake - for a new workspace, `SKILL.md` step 2 is now one conversation, one or two
+  questions a turn: why; `Success looks like`, each line tagged `[core]` or left `extra` as it
+  comes up; deadline and hours per week; how they like to learn and their usual session
+  length, both into `NOTES.md`; what to leave alone; then the diagnostic. It ends by building
+  `PLAN.md` and showing the course - the nodes, the hours, and what fits and gets cut when
+  there is a deadline and a budget - for the user's OK. Before that OK, `MISSION.md` and
+  `PLAN.md` are a draft: free to edit, no mission-revision protocol yet, and the OK itself
+  writes nothing extra (see THE MISSION).
+- `MISSION.md`'s Constraints - `Deadline: {date}` and `Budget: {N} hours per week`, plain
+  values instead of prose, so `PLAN.md` can do arithmetic against them. Neither is required; no
+  deadline or no budget just skips the fit-check below.
+- `MISSION.md`'s `Success looks like` lines may carry `[core]`; untagged lines default to
+  `extra`. Decided in the intake interview above; an older `MISSION.md` without tags gets asked
+  once at the first `PLAN.md` build instead.
+- `PLAN.md` nodes carry a rough hour estimate (`(~Xh)`) and are built from `core` lines first -
+  an `extra` line earns a node only once every `core` line already has one.
+- A fit-check at every `PLAN.md` build and rebuild, when a deadline and a budget exist:
+  remaining calendar (weeks to the deadline times hours per week, shrinking on its own as the
+  deadline nears - no counter needed) against the sum of hour estimates on nodes not yet
+  `done`. Short on time: drop `extra` nodes first, then cut format depth on the remaining
+  `core` nodes - the Bloom threshold check itself is never cut. `core` still doesn't fit after
+  both cuts: stop and ask the user to demote a `core` line to `extra` or extend the budget,
+  never a silent drop and never a lowered threshold. Grounded in the tension Carroll (1963)
+  formalizes, not a prescription from Carroll or Bloom - see `PLAN-FORMAT.md` for the exact
+  wording, chosen to avoid the same overreach fixed for the 85 per cent line in 0.2.1.
+- Session-length filtering - every session, intake's first pick included, asks how long today
+  is, offering the usual length from `NOTES.md` as a default. Candidates are filtered to what
+  fits; a short window that still fits a check (material two or more sessions old, never
+  retested) gets offered one; a window that fits nothing gets told so, not started.
+- A migration path for an older `MISSION.md`: step 4 asks once which untagged lines are `core`
+  and captures a deadline and budget if there is one, folds an inline status note like
+  "(closed)" into a `done` node, and offers to trim a `Why` that has grown into course history
+  - all through the mission-revision protocol, since this mission is already established. It
+  then builds and shows the plan the way intake does.
+
+### Changed
+
+- `SKILL.md` step 3 (`RESOURCES.md`) now runs after the intake's plan is approved and before
+  the chosen step runs, not before or during the interview - an hour estimate does not need
+  sources, only teaching the step itself does.
+- `PLAN.md`'s node-change rule gains a third trigger, mission revision, alongside observation
+  and learning record. A mission revision that adds, drops, or re-tags a `Success looks like`
+  line updates `PLAN.md`'s nodes in the same turn, without asking a second time.
+- **Contract change - numbering.** A lesson claims the next number, the highest one already
+  used across `lessons/` and `practice/` plus one. Practice tied to a lesson inherits its
+  number instead of claiming a new one; practice with no lesson of its own (a check, a
+  transfer task, a drill on old material - the most recent lesson among several it draws on)
+  claims a number the same way a lesson does. `practice/NNNN-<slug>/` is now one directory per
+  topic rather than per step - several rounds of practice on the same topic land in the same
+  directory over time, told apart by the format named in each task, not by the filename. No
+  workspace is renumbered retroactively; the rule already accounts for a workspace where the
+  old shared counter left a practice number higher than any lesson number, since it always
+  looks at the highest number in either directory, not just at lessons.
+
+## [0.3.0] - 2026-08-23
+
+A short backbone now survives between sessions. Before this release THE NEXT STEP rebuilt
+direction from nothing every time, which kept the promise of never locking in a rigid
+programme but also meant nothing about where the course was heading carried over from one
+session to the next.
+
+### Added
+
+- `PLAN.md` in the workspace - 3 to 5 nodes, each a skill tied to one line of `MISSION.md`'s
+  "Success looks like," with no activities, dates, or reasons attached.
+  `skills/me/PLAN-FORMAT.md` is the template and the rules for it. Listed in `README.md`'s
+  workspace table and Layout section alongside the other format files.
+- `OBSERVATIONS.md` entries may now point at a `PLAN.md` node by its number - a number is
+  assigned once and never reused, so the pointer never goes stale.
+
+### Changed
+
+- `SKILL.md`, PROCEDURE - step 1 reads `PLAN.md` alongside `MISSION.md`. Step 4 builds the
+  plan's first nodes the first time a step is chosen, if it does not exist yet, and picks
+  candidates from its open nodes. Step 5 will not write a task to disk unless its title names
+  the practice format it came from, out of the catalogue in `PRACTICE-FORMAT.md`, and will not
+  write a lesson block that repeats a previous lesson word for word until that block is a
+  shared component in `assets/` - the check ASSETS and PRACTICE already asked for, now made
+  explicit before anything is written. Step 7 is now three questions, one per file it updates
+  - a new source for `RESOURCES.md`, a new term the user is using for `GLOSSARY.md`, a
+  rereadable piece of the lesson for `reference/`, distilled in the same session rather than
+  left for later - plus the covered-ground line in `NOTES.md` as before. Step 8 closes the plan
+  node a step was advancing when the learning record clears the Bloom threshold.
+- `LEARNING-RECORD-FORMAT.md` - a record now has a length to aim for, up to about 80 words; a
+  third sentence is a prompt to check whether it is two facts rather than one. Evidence is now
+  one line pointing at what closed the record (`practice/NNNN-<slug>` or the lesson), not a
+  paragraph, and it is required rather than optional when the record also closes a `PLAN.md`
+  node - the node's `done` status carries the record's number, so the record needs the pointer
+  back.
+- `SKILL.md`, THE NEXT STEP - "no programme written in advance" now names what that bans: a
+  detailed programme and lessons or tasks prepared before their turn. It no longer bans a short
+  backbone. A plan node changes only when an observation or a learning record contradicts it,
+  and rebuilding it is a visible move with a one-line reason to the user, never a silent
+  overwrite. Running out of open nodes with the mission unmet calls for a replan; running out
+  with it met is a mission conversation instead.
+
 ## [0.2.1] - 2026-08-23
 
 Pedagogy claims that carried no citation, or carried the wrong one, now cite the specific

@@ -17,6 +17,7 @@ The first session interviews you about why you want this and writes the mission.
 | path | holds |
 | --- | --- |
 | `MISSION.md` | the concrete outcome you are chasing. Everything else is judged against it |
+| `PLAN.md` | 3 to 5 nodes tied to what success looks like, so direction survives between sessions |
 | `RESOURCES.md` | trusted sources, plus the communities where judgement comes from |
 | `GLOSSARY.md` | the settled vocabulary, used the same way in every lesson |
 | `OBSERVATIONS.md` | what you have not settled yet: where you stalled, what you looked up, what you got wrong |
@@ -35,7 +36,7 @@ Knowledge comes from sources in `RESOURCES.md` rather than from the model's reca
 
 Lessons are designed against the illusion of fluency: recall over recognition, the same material spaced across sessions, related skills interleaved once there are several to mix. Each lesson is deliberately small - one win, then out.
 
-There is no roadmap written at the start, because one built before the first lesson survives about two sessions. Instead the course keeps `OBSERVATIONS.md`: where you stalled, what you had to look up, what you got wrong on a check. That list is what the next step is chosen against, so the programme follows the gaps rather than an outline. Practice is chosen from a catalogue of ten formats with the evidence behind each, and no practice is handed over before the theory it needs.
+There is a short plan, 3 to 5 nodes tied to what success looks like, but no detailed programme and no lesson written before its turn - one written out in full at the start survives about two sessions. The course also keeps `OBSERVATIONS.md`: where you stalled, what you had to look up, what you got wrong on a check. That list, alongside the plan, is what the next step is chosen against, so the programme follows the gaps rather than an outline. Practice is chosen from a catalogue of ten formats with the evidence behind each, and no practice is handed over before the theory it needs.
 
 ## Setup
 
@@ -54,6 +55,7 @@ Restart Claude Code so the plugin snapshot loads. `/teach:me` is invoked by hand
 skills/me/
   SKILL.md
   MISSION-FORMAT.md
+  PLAN-FORMAT.md
   RESOURCES-FORMAT.md
   GLOSSARY-FORMAT.md
   LEARNING-RECORD-FORMAT.md
