@@ -13,8 +13,12 @@ believed.
   or against theory just taught. The tie is written into the task itself.
 - **Teach first.** Never issue practice whose theory has not been given or confirmed as
   already held. A link to a neighbouring lesson is not theory.
-- **Calibrate to about 85 per cent success**, so roughly one attempt in six fails. All green
-  first time means the step was too small. Nothing moving means it was too big.
+- **Use an allowed source.** Theory may come from the linked entry in `RESOURCES.md` or the
+  exact supplied file in `materials/`. Missing sources follow the search, defer, or agreed
+  unsourced choice in `SKILL.md`.
+- **Size the current step for about 85 per cent success**, so roughly one attempt in six fails.
+  This is a practice-sizing heuristic from `SKILL.md`, not a criterion for closing an
+  observation or plan node.
 - **Novice in unfamiliar ground:** worked example, then completion, then whole task with
   support fading out. Handing a novice the full task is where copying starts.
 - **Fading support beats standing support** once the learner succeeds. Support goes back up
@@ -41,8 +45,9 @@ Fluency work is an addition to whole tasks and never a replacement for them.
 ## THE FORMATS
 
 **1. RECALL PROBE.** Produces an answer from memory with the material closed. Feedback is the
-comparison against the source, immediately after the attempt. Reach for it on anything taught
-two or more sessions ago and never retested. Retrieval beats rereading by a wide margin.
+comparison against the source, immediately after the attempt. Reach for it when the unit is due
+under the date-based spacing rule in `SKILL.md` and has not been retested. Retrieval beats
+rereading by a wide margin.
 ([Adesope, Trevisan, Sundararajan 2017](https://journals.sagepub.com/doi/abs/10.3102/0034654316689306))
 
 **2. WORKED EXAMPLE.** Produces a marked-up solution: each step, and the reason it is there.
@@ -98,11 +103,10 @@ base to invent from. The effect reverses for younger learners and for domain-gen
 do not reach for this format there even with a base in place.
 ([Sinha and Kapur 2021](https://journals.sagepub.com/doi/10.3102/00346543211019105))
 
-**10. MASTERY CHECK.** Produces a run of tasks against a stated threshold before the topic is
-left behind. Feedback is the threshold, not a score. Reach for it before moving off a topic
-the rest of the course will stand on. This is the check `SKILL.md`'s THE NEXT STEP points to
-for closing an `OBSERVATIONS.md` line with a learning record - roughly 80 to 90 per cent, on a
-check that does not repeat the practice that taught the skill.
+**10. MASTERY CHECK.** Produces 5 to 8 new tasks in chat, with the material and lookup closed,
+and allows at most one error. Feedback is the threshold, not a score. Reach for it before
+closing a plan node. This is the check `SKILL.md`'s THE NEXT STEP points to; its dates, failure
+handling, and chat-only state are defined there.
 ([Kulik, Kulik, Bangert-Drowns 1990](https://journals.sagepub.com/doi/10.3102/00346543060002265))
 
 ## TWO ADD-ONS

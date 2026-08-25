@@ -5,6 +5,30 @@ All notable changes to the `teach` plugin are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-08-25
+
+### Added
+
+- Source-led sessions for user-supplied book chapters, course lessons, and transcripts.
+  The material is saved in `materials/` and enters the same recall, practice, observation,
+  and remediation loop as a generated lesson.
+- A stable `unit_id` contract. Generated lessons and supplied materials own the id; linked
+  practice reuses it and records the id and theory path in every stored task.
+
+### Changed
+
+- Number allocation now distinguishes teaching-unit ids from `PLAN.md` node ids and checks
+  the link before writing practice. Existing workspaces keep their paths and numbers.
+- Checks and mastery checks are chat-only; learning records now require `Date`, `Units`, and
+  `Evidence`, while untested claims and failed checks stay in `OBSERVATIONS.md`.
+- Mastery checks use dated spacing at 7, 14, and 28 days, with 5 to 8 new tasks, no lookup,
+  and at most one error. Two failures on an open node trigger theory again; a late failure on
+  a done node starts ordinary practice without reopening it.
+- Source-led materials carry `Node`, support `off-plan` state, inherit node metadata, and use
+  `RESOURCES.md` or `materials/` as allowed sources. Sources now carry years and retire with a
+  reason instead of being deleted.
+- `PLAN.md` keeps done nodes as history and `NOTES.md` stores teaching preferences only.
+
 ## [Unreleased]
 
 ## [0.4.0] - 2026-08-23
