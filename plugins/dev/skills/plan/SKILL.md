@@ -1,61 +1,54 @@
 ---
-description: Create an implementation plan that becomes the source of truth for execution - decompose a request, a brief, or a root cause into sequenced tasks with checkboxes. Use before executing non-trivial work, after a brainstorm or an investigation.
-argument-hint: "[request | story path | tracker key]"
+description: Plan a ticket - decompose a spec, a root cause, or a request into sequenced tasks with checkboxes written into the ticket file. Use before executing non-trivial work, after a brainstorm or an investigation.
+argument-hint: "[request | ticket path | feature dir | tracker key]"
 disable-model-invocation: true
 ---
 
 # /dev:plan
 
-Turn a request, a brief, or a root cause into an implementation plan and stop. The plan is what `/dev:exec` executes.
+Turn a ticket into an implementation plan and stop. The plan is written into the ticket itself, as `## Conventions` and `## Implementation`, and `/dev:exec` executes it from there.
 
-Accepted input: a request in words, a story directory under `docs/nxs/stories/` holding a `brief.md` or a `root-cause.md`, or a tracker key / URL / pasted ticket. With no input, gather it here first.
+Accepted input: a ticket path under `.scratch/<feature-slug>/issues/`, a feature directory `.scratch/<feature-slug>/`, a request in words, or a tracker key / URL / pasted ticket. With no input, take the frontier ticket of the feature in play.
 
 A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
 
-Example: /dev:plan docs/nxs/stories/20260711-auth-refactor
+Example: /dev:plan .scratch/rate-limiting/issues/02-per-key-quota.md
 
 ## STANCE
 
-- Write the plan and stop. Implementation code, the build, and any behavior change belong to `/dev:exec`.
+- Write the plan into the ticket and stop. Implementation code, the build, and any behavior change belong to `/dev:exec`.
 - The plan is a proposal, read-only until the user approves it.
 - A small single-step request needs no plan - route to `/dev:exec` or a direct edit instead of ceremony.
 
+## TRACKER CONFIG
+
+Before the first write into a feature directory that does not exist yet, read the layout: `docs/agents/issue-tracker.md` in this repo, failing that the same relative path under the user's Claude config directory, failing both local markdown - the fallback `/wayfinder` itself uses. Every variant of that file opens with `# Issue tracker: <GitHub|GitLab|Local Markdown>`, so it is one line to read and no parser.
+
+Local Markdown, or no such file anywhere: write under `.scratch/` without asking. GitHub or GitLab: never pick silently and never invent tracker calls. Name the tracker, say in one sentence that writing under `.scratch/` here leaves the shaping in local files while the issues live on that tracker, then let the user pick - write locally anyway and own the split, or stop and drive the tracker with `/to-spec` and `/to-tickets` and come back with the ticket path. Ask once; the answer holds for the session. Never write `docs/agents/issue-tracker.md` yourself and never run a setup skill; that file belongs to another toolchain.
+
 ## PROCEDURE
 
-1. **Read the source artifact.** The story holds a `brief.md`, a `root-cause.md`, or neither. Read it by its headings: `## Acceptance criteria` and `## Chosen approach` from a brief, `## Root cause` and `## Fix direction` from a root cause. Those carry the decisions already made - the plan implements them rather than reopening them. With no artifact, the request itself is the source.
-2. **Read the code.** Inspect the files, patterns, and dependencies the work touches - directly or through the built-in Explore agent. Do not over-read. Clarify a fuzzy domain term before encoding it into the plan. Collect what belongs in `## Conventions` as you go: the decisions the brief's `## Chosen approach` already made, the patterns the surrounding code follows, and anything the user has said in this session about how the work is to be done.
-3. **Close the open questions.** Ask one at a time, 2-4 concrete options with a recommendation. For several viable approaches, lay out the trade-offs and ask once.
-4. **Decompose.** 3-7 tasks. Each is one working unit: the code plus the tests for it, leaving the project green. Sequence by dependency - a task never calls what a later task creates. Every task earns its place; cut the rest.
-5. **Write the file** using the template below.
-6. **Run the self-check** before handing the plan over.
+1. **Read the ticket.** Its `**What to build:**` line and the `- [ ]` acceptance criteria above `## Implementation` are the requirements. With no ticket named, resolve the feature first: the directory the argument names, else the single `.scratch/<slug>/` that holds an `issues/` directory and no `map.md` - several of those, list them and ask; none, say so and stop. Then take its frontier ticket: `**Status:** ready-for-agent`, no `## Implementation` yet, every number on its `**Blocked by:**` line at `**Status:** resolved`, lowest first. Say which ticket you took.
+2. **Read the feature document.** `## Implementation Decisions` and `## Testing Decisions` from `spec.md`, or `## Root cause` and `## Fix direction` from `root-cause.md`. Those carry the decisions already made - the plan implements them rather than reopening them. A directory holding both takes the fix from `root-cause.md` and the build conventions from `spec.md`; a contradiction between the two is a question, not a call you make.
+3. **Read the code.** Inspect the files, patterns, and dependencies the work touches - directly or through the built-in Explore agent. Do not over-read. Clarify a fuzzy domain term before encoding it into the plan. Collect what belongs in `## Conventions` as you go: the decisions the feature document already made, the patterns the surrounding code follows, and anything the user has said in this session about how the work is to be done.
+4. **Close the open questions.** Ask one at a time, 2-4 concrete options with a recommendation. For several viable approaches, lay out the trade-offs and ask once.
+5. **Decompose.** 3-7 tasks. Each is one working unit: the code plus the tests for it, leaving the project green. Sequence by dependency - a task never calls what a later task creates. Every task earns its place; cut the rest.
+6. **Append `## Conventions` and `## Implementation`** to the ticket using the template below - before `## Comments` when that heading exists, at the end of the file otherwise.
+7. **Run the self-check** before handing the plan over.
 
-An open decision that would change the plan is marked in the file rather than guessed:
+With no ticket named and a `root-cause.md` that no existing ticket references, or with no `issues/` directory at all, open a new ticket first: `issues/<NN>-<slug>.md`, `NN` one past the highest number present and `01` when `issues/` is empty or absent. Five fields in this order: the heading `# <NN>: <title>`, `**What to build:**` as the end-to-end behavior in the user's terms, `**Blocked by:** None (can start immediately)`, `**Status:** ready-for-agent`, then the acceptance criteria as `- [ ]` lines. Then plan into it. Work too large for one unit of work goes back to `/dev:rnd`, which is where slicing lives.
+
+An open decision that would change the plan is marked in the ticket rather than guessed:
 
 ```
 [NEEDS CLARIFICATION: <specific question>]
 ```
 
-Mark only when the answer changes the decision. A marker answered in conversation is edited out in the same turn. `/dev:exec` refuses to start while one is open.
+Mark only when the answer changes the decision, and set the ticket to `**Status:** needs-info` while one is open. Before handing over, `rg NEEDS CLARIFICATION` over the ticket and the feature document: empty sets the ticket to `**Status:** ready-for-agent`, non-empty leaves it at `needs-info` and names the open question. Clearing the last marker out of `spec.md` flips every `needs-info` ticket in that feature, not only this one. `/dev:exec` refuses to start while one is open.
 
 ## TEMPLATE
 
 ````markdown
-# <Plan title>
-
-- Tracker: <key / URL, or the path to the local ticket this plan implements - drop the line if there is none>
-
-## Overview
-
-<what this plan does and why, in a few lines>
-
-## Acceptance criteria
-
-<verifiable readiness criteria for the whole plan: what the user, the API, or the system can do afterwards>
-
-## Context
-
-<the files, patterns, and dependencies the work leans on>
-
 ## Conventions
 
 <rules every task follows - style, naming, a repeated step, a standing preference. /dev:exec passes this
@@ -80,10 +73,6 @@ prompt. No such rules, no section.>
 - [ ] write tests: fresh email stores a hash and never the plaintext, duplicate gives 409, malformed gives 422
 - [ ] run `go test ./users/... ./api/...`
 
-### Task 2: <title>
-
-...
-
 ### Task N: Verify acceptance criteria
 
 - [ ] run the full suite: `go test ./...`
@@ -93,6 +82,7 @@ prompt. No such rules, no section.>
 Rules the template does not show:
 
 - `### Task N:` and `- [ ]` are structural - `/dev:exec` finds the work by them, so keep both exactly as written, in English, whatever language the plan body uses.
+- Position decides what a checkbox means. Above `## Implementation` a `- [ ]` line is an acceptance criterion, written when the ticket was created and flipped once by `/dev:exec` after the last task is green; inside a `### Task N:` section it is a unit of work. Never put a task heading above `## Implementation`, and never put a checkbox between `## Implementation` and `### Task 1:`.
 - Tests are their own checkbox, never bundled into the implementation step.
 - The last checkbox of a task names the concrete command this project runs, not a bare "run tests".
 - A config-only or declarative task has no tests to write; verification is that the change takes effect.
@@ -102,25 +92,27 @@ Rules the template does not show:
 
 Before handing the plan over, verify it against the repository and fix what fails. State the result in one line.
 
+- `rg "### Task" <ticket>` returned nothing before the append, and after it no `- [` line sits between `## Implementation` and `### Task 1:`;
+- the ticket's `**Blocked by:**` line names only lower numbers - a ticket blocked by a higher one is an authored cycle;
 - every `Modify:` path exists, every `Create:` path does not;
 - everything the plan leans on - a function it calls, an interface it implements, a seam it assumes - exists in the shape it expects;
 - a task with code changes has a checkbox for its tests;
 - dependencies run forward: no task calls what a later task creates;
-- every requirement from the brief, the root cause, or the ticket is covered by a task or explicitly deferred - read the other tasks for it under different words first;
+- every acceptance criterion above `## Implementation`, and every requirement from the spec or the root cause, is covered by a task or explicitly deferred - read the other tasks for it under different words first;
 - nothing the requirements never asked for: no abstraction with one consumer, no future-proofing, no fallback for a case that cannot happen;
-- `rg "NEEDS CLARIFICATION" <plan>` returns nothing.
+- `rg "NEEDS CLARIFICATION" <ticket>` returns nothing.
 
 ## ARTIFACT
 
-The plan is one file inside a story - one story is one whole unit of work, one directory:
+The plan is not a file of its own. It is two sections inside one ticket, and one ticket is one whole unit of work:
 
 ```
-docs/nxs/stories/YYYYMMDD-<slug>/plan.md
+.scratch/<feature-slug>/issues/NN-<slug>.md   ->   ## Conventions, ## Implementation
 ```
 
-Write it into the story the input names. Create the story when the input is a bare request with no prior brief or root cause: `YYYYMMDD` is that day, `<slug>` is two to four lowercase english words from the request, hyphenated. A tracker key names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/` - so the story stays navigable by the key. The files inside keep their fixed names.
+`<feature-slug>` is two to four lowercase english words from the request, hyphenated; a tracker key names the directory instead - `.scratch/<KEY>-<slug>/` - so the feature stays navigable by the key. `NN` is the ticket number, from `01`, in dependency order. Never write into a `.scratch/<x>/` that holds a `map.md`: that directory is a `/wayfinder` effort. Pick another slug and say why in one line.
 
-A story that already holds a `plan.md` is never overwritten silently. Say what is there and ask whether to replace it or open a new story.
+A ticket that already holds an `## Implementation` section is never overwritten silently - say what is there and ask whether to replace it. A ticket at `**Status:** claimed` or `**Status:** resolved` is never re-planned without asking either: its task checkboxes are execution history.
 
 ## NEXT
 

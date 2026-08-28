@@ -10,7 +10,7 @@ Find code that works but is more complex than the problem it solves. Read-only: 
 
 Your prompt carries two commands, one for the history and one for the diff. Run them exactly as given: they encode the scope the user asked for, which is not always the whole branch. Never substitute a diff command of your own.
 
-Report only complexity this change adds or makes worse. Untouched complexity is out of scope, and complexity the plan explicitly asked for is not a finding. Skip generated code, vendored dependencies, and fixtures.
+Report only complexity this change adds or makes worse. Untouched complexity is out of scope, and complexity the ticket explicitly asked for is not a finding. Skip generated code, vendored dependencies, and fixtures.
 
 ## EXCESSIVE LAYERS
 

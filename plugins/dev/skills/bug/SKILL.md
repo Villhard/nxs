@@ -60,23 +60,24 @@ Example. Symptom: the API returns 500 on payment. Unhandled exception in the pay
 
 ## ARTIFACT
 
-The root cause is one file inside a story - one story is one whole unit of work, one directory:
+The root cause is one file at the root of a feature directory - one feature is one directory:
 
 ```
-docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md
+.scratch/<feature-slug>/root-cause.md
 ```
 
-`YYYYMMDD` is the day the story is created and does not change on later writes into it. `<slug>` is two to four lowercase english words from the report, hyphenated. A tracker key names the directory - `docs/nxs/stories/YYYYMMDD-<KEY>-<slug>/`. The files inside keep their fixed names.
+`<feature-slug>` is two to four lowercase english words from the report, hyphenated. A tracker key names the directory - `.scratch/<KEY>-<slug>/`. The file name is fixed.
 
-Create the story when the report has none yet; write into the one the input names when it does.
+Create the feature directory when the report has none yet; write into the one the input names when it does. A `spec.md` already sitting there is left untouched - a bug that grew into a feature carries both documents side by side. Never write into a directory that holds a `map.md`: that one belongs to another tool's effort, so pick a different slug and say in one line why.
+
+Write no ticket here. Confirming the cause is the whole job - `/dev:plan` opens `issues/01-<slug>.md` for the fix.
 
 Keep the headings stable - `/dev:plan` reads the root cause by them:
 
 ```markdown
 # Root cause: <title>
 
-- Date: YYYY-MM-DD
-- Tracker: <key / URL, or the path to the local ticket this story implements - drop the line if there is none>
+- Tracker: <key / URL, or the path to the ticket this fix implements - drop the line if there is none>
 
 ## Symptom
 

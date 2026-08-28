@@ -26,13 +26,13 @@ Skip internal refactoring with no user-visible change, a bug fix that restores d
 
 Skip code that follows an existing pattern, simple fixes, and tests written the usual way.
 
-## THE PLAN
+## THE TICKET
 
-The plan path is in your prompt when the work has a plan; with no plan path, skip this section entirely. Given one, compare it against the diff and report, without editing it:
+The ticket paths are in your prompt when the work has them; with none, skip this section entirely. Given one, compare it against the diff and report, without editing it. It carries two sets of checkboxes and they are read under different rules:
 
-- work that is done and whose checkbox is still open;
-- a plan item the diff contradicts;
-- which plan items the diff covers.
+- under `## Implementation`, inside a `### Task N:` section, a checkbox is a unit of work: report work that is done and whose checkbox is still open;
+- above `## Implementation`, a checkbox is an acceptance criterion, flipped only after the last task is green. An open criterion on a ticket still in flight is not a finding;
+- a ticket item the diff contradicts, and which items the diff covers.
 
 ## BOUNDS
 
