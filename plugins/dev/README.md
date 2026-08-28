@@ -6,12 +6,12 @@ Why install it over ad-hoc prompts: the workflow is fixed and named (`/dev:plan`
 
 ## Quickstart
 
-One story through the loop:
+One ticket through the loop:
 
 ```
-/dev:rnd add rate limiting to the public API   # shape a fuzzy request into a plan-ready brief
-/dev:plan                                      # turn the brief into sequenced tasks
-/dev:exec                                      # run the plan to the end, one commit per task
+/dev:rnd add rate limiting to the public API   # a spec plus the tickets cut from it, under .scratch/
+/dev:plan                                      # plan the next ticket into sequenced tasks
+/dev:exec                                      # run one ticket to the end, one commit per task
 /dev:review                                    # five reviewers over the branch, findings reported
 /dev:review fix                                # same, and the confirmed findings get fixed
 ```
@@ -22,10 +22,10 @@ Six flat `/dev:<name>` commands:
 
 | command | when to use |
 | --- | --- |
-| `rnd` | Think a fuzzy request, feature idea, or open question through to a plan-ready brief - the entry point for new work. |
+| `rnd` | Shape a fuzzy request, feature idea, or open question into a spec and the tickets cut from it - the entry point for new work. |
 | `bug` | Investigate a bug to a confirmed root cause before any fix - the entry point for a bug report. |
-| `plan` | Decompose a request, a brief, or a root cause into sequenced tasks with checkboxes, then self-check the plan against the repository. |
-| `exec` | Execute the plan task by task and write the code, committing each finished task. |
+| `plan` | Decompose one ticket into sequenced tasks with checkboxes, written into the ticket itself, then self-check the plan against the repository. |
+| `exec` | Take the next unblocked ticket, execute its tasks and write the code, committing each finished task and marking the ticket resolved. |
 | `review` | Review the branch with five parallel agents, verify every finding, and report it. Writes nothing unless you add `fix`, which applies the confirmed findings and re-checks its own work with two agents. |
 | `commit` | Commit the current working changes, split into atomic commits - for edits made outside `exec`. |
 
@@ -36,7 +36,7 @@ Two tiers, nothing in between:
 1. Global `~/.claude/CLAUDE.md` - always-on rules (output language, style, safety). Hand-authored by you, NOT shipped by this plugin (see Setup). The commands defer output style and the safety rules on secrets and destructive operations to it, so they fire even when no skill loads.
 2. The six commands above. Each is self-contained: no shared background skills, no `reference/` files, no cross-skill injection. A rule lives in exactly one file.
 
-Three commands hand work to the next one, and each handoff is minimal: `plan` reads a brief by its `## Acceptance criteria` and `## Chosen approach` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a plan by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes - plus the plan's optional `## Conventions` section, which it hands to every worker. Nothing beyond that crosses between them.
+Commands hand work to the next one through four minimal contracts: `plan` reads a ticket by its `**What to build:**` line and its acceptance criteria, reads a spec by its `## Implementation Decisions` and `## Testing Decisions` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a ticket by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes - plus the optional `## Conventions` section it hands to every worker, and it drives the ticket's `**Status:**` and `**Blocked by:**` lines. Nothing beyond that crosses between them.
 
 Five of the six commands carry `disable-model-invocation: true`, so they run only when you type them. The workflow is yours to pick, not the model's to guess, and the plugin stays out of the way when you drive a session by hand or through another planning tool. `commit` is the exception: it fires on its own trigger, since "commit this" is a request to commit rather than a request for a command.
 
@@ -48,25 +48,30 @@ Agents (`agents/*.md`) - one write-capable `worker` used by `/dev:exec`, the onl
 | `review-implementation` | goal reached, wiring, completeness, scope creep |
 | `review-testing` | coverage over the changed code, fake tests, test quality |
 | `review-simplification` | over-engineering this branch introduces |
-| `review-documentation` | docs the change needs or made stale, plan checkboxes |
+| `review-documentation` | docs the change needs or made stale, ticket checkboxes |
 
-## Stories
+## Features and tickets
 
-One story is one whole unit of work, and it gets one directory under `docs/nxs/stories/` in the current repository. Three commands write an artifact into it, and an artifact is always one markdown file:
+One feature is one directory under `.scratch/<feature-slug>/` in the current repository: a feature document and the tickets cut from it. One ticket is one whole unit of work - a vertical slice, sized to a single fresh context window. With a tracker key the directory carries it, `<KEY>-<slug>/`, and the key names the directory, never the files inside it.
 
-| command | artifact | file |
+| command | writes | where |
 | --- | --- | --- |
-| `rnd` | brief | `docs/nxs/stories/YYYYMMDD-<slug>/brief.md` |
-| `bug` | root cause | `docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md` |
-| `plan` | plan | `docs/nxs/stories/YYYYMMDD-<slug>/plan.md` |
+| `rnd` | spec, plus one ticket per slice | `spec.md`, `issues/NN-<slug>.md` |
+| `bug` | root cause | `root-cause.md` |
+| `plan` | `## Conventions` and `## Implementation`, appended to one ticket | `issues/NN-<slug>.md` |
+| `exec` | the ticket's `**Status:**` line and its checkboxes | `issues/NN-<slug>.md` |
 
-`exec` and `review` write no artifact - what they produce lands in git. `exec` leaves code changes, flipped checkboxes, and one commit per task; `review` leaves nothing at all unless you ask for `fix`, and then commits as `fix: address review findings`. Follow-ups and the review report are spoken to you, not filed.
+`review` and `commit` write nothing here - what they produce lands in git. `review` leaves nothing at all unless you ask for `fix`, and then commits as `fix: address review findings`.
 
-With a tracker key the directory carries it: `YYYYMMDD-<KEY>-<slug>/`. The key names the directory, never the files inside it.
+A `- [ ]` line means two things inside a ticket, and its position decides which. Above `## Implementation` it is an acceptance criterion, written when the ticket is created and flipped once by `exec` after the last task is green. Inside a `### Task N:` section it is a unit of work, written by `plan` and flipped by `exec` as that task passes.
 
-You move a finished story to `docs/nxs/stories/completed/` yourself, when you decide it is finished. No command does it for you and none will ask - `exec` only knows to skip `completed/` when it looks for the latest plan.
+The `**Status:**` line carries one of seven values: `needs-triage`, `needs-info`, `ready-for-agent`, `claimed`, `ready-for-human`, `resolved`, `wontfix`. After the ticket is created `exec` is the only command that writes it - `claimed` when it takes the ticket, `resolved` when every task is green and every criterion verified. `resolved` says the tasks ran green at that commit; it does not claim a review happened. `wontfix` is yours to write by hand, and it is the only manual state act left.
 
-These are local working files - keep `docs/` out of git if you do not want them committed.
+`exec` picks the next ticket itself: numeric order, `ready-for-agent`, with every number on its `**Blocked by:**` line already `resolved`. Pass a ticket path to override. One ticket per run.
+
+This is the local-markdown layout of the `.scratch/` issue tracker, so the files stay readable by any toolchain that speaks it, and this plugin writes them with nothing else installed. It implements that layout only - no `gh` or `glab` dependency - and in a repository configured for GitHub or GitLab it names the tracker and asks before writing locally. Do not re-run an external slicing skill over a feature whose tickets already carry `## Implementation`: it rewrites those files and every plan in them is gone.
+
+These are local working files - keep `.scratch/` out of git if you do not want them committed, and `exec` will commit the code alone and say so once when they are ignored.
 
 ## Layout
 

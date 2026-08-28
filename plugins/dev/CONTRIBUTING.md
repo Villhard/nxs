@@ -35,20 +35,23 @@ One term, one meaning, everywhere in this plugin. A word in this table is never 
 | command | a `/dev:<name>` entry point the user invokes. There are six | a skill, in user-facing text |
 | skill | the `skills/<name>/SKILL.md` file implementing a command. An authoring word | a command, in CONTRIBUTING |
 | agent | a subagent a command spawns: `worker` and the five `review-*` | a skill |
-| story | one whole unit of work: one directory `docs/nxs/stories/YYYYMMDD-<slug>/` | a folder, a work item |
-| artifact | one durable markdown file a command writes into a story. There are exactly three | a commit, a report, a follow-up |
-| brief | the artifact `/dev:rnd` writes, `brief.md` | - |
-| root cause | the artifact `/dev:bug` writes, `root-cause.md` | a root-cause brief, a brief, a diagnosis |
-| plan | the artifact `/dev:plan` writes, `plan.md` | - |
-| task | one `### Task N:` block inside a plan | a step, the user's incoming work |
-| checkbox | one `- [ ]` / `- [x]` line inside a task | a step, an item |
+| feature | one directory `.scratch/<feature-slug>/`: a feature document and the tickets cut from it | a project, an epic, a story |
+| ticket | one whole unit of work: one file `.scratch/<feature-slug>/issues/NN-<slug>.md` | a story, a folder, a work item |
+| artifact | one durable markdown file a command writes, or the pair of sections `/dev:plan` appends to a ticket | a commit, a report, a follow-up |
+| spec | the feature document `/dev:rnd` writes, `spec.md` | a brief |
+| root cause | the feature document `/dev:bug` writes, `root-cause.md` | a root-cause brief, a brief, a diagnosis |
+| plan | the `## Conventions` and `## Implementation` sections `/dev:plan` appends to a ticket | a plan file, `plan.md` |
+| task | one `### Task N:` block under a ticket's `## Implementation` | a step, the user's incoming work |
+| task checkbox | one `- [ ]` / `- [x]` line inside a task: a unit of work `exec` executes | a criterion, an item |
+| acceptance criterion | one `- [ ]` / `- [x]` line above `## Implementation`: what the ticket delivers | a task, a step |
+| status | the ticket's `**Status:**` line, one of the seven values | a label, a state field |
 | request | what the user arrives with: a description, an idea, a question, a ticket | a task |
 | tracker key | the key or URL of an external ticket | a tracker identifier |
 | sweep | the first review pass: five agents over the diff as it arrived | a round, a first round |
 | re-check | the narrowed pass after fixes land: two agents, critical and major only | a second round, a retry |
 | fix mode | a `/dev:review` run carrying the `fix` argument, the only run that writes | a fix phase, auto-fix |
 
-Two collisions this table exists to prevent: `task` used to mean both the incoming work and a numbered block in a plan, and `brief` used to mean both artifacts that feed `/dev:plan`. Every term this plugin uses in that load-bearing way has a row here. Add one the moment you notice it missing; whether the skill or the row landed first does not matter.
+Three collisions this table exists to prevent: `task` used to mean both the incoming work and a numbered block under `## Implementation`; `brief` used to mean both feature documents that feed `/dev:plan`, which is why neither is called one now; and `- [ ]`, which is an acceptance criterion above `## Implementation` and a task checkbox inside a `### Task N:` section - one token, opposite meanings, separated by position and by nothing else. Every term this plugin uses in that load-bearing way has a row here. Add one the moment you notice it missing; whether the skill or the row landed first does not matter.
 
 ## PLACEMENT RULE
 
@@ -65,21 +68,23 @@ Security-critical content (never commit secrets, confirm destructive operations)
 
 ## THE HANDOFF CONTRACTS
 
-Three commands hand work to the next one, and each handoff is a named, minimal contract. Nothing beyond what a contract names crosses between them.
+Work is handed on through four named, minimal contracts. Nothing beyond what a contract names crosses between them.
 
-**`rnd` -> `plan`** - the headings of `brief.md`. `plan` reads `## Acceptance criteria` and `## Chosen approach`; the rest of the brief it reads as text.
+**`rnd` -> `plan`** - the ticket header block and two spec headings. `plan` reads the ticket's `**What to build:**` line and its acceptance criteria, plus `## Implementation Decisions` and `## Testing Decisions` from `spec.md`; the rest it reads as text.
 
-**`bug` -> `plan`** - the headings of `root-cause.md`. `plan` reads `## Root cause` and `## Fix direction`; the rest it reads as text.
+**`bug` -> `plan`** - the headings of `root-cause.md`. `plan` reads `## Root cause` and `## Fix direction`; the rest it reads as text. When a feature directory holds both documents, the fix comes from `root-cause.md` and the build conventions from `spec.md`, and a contradiction between them is a question rather than a merge.
 
-**`plan` -> `exec`** - two structural tokens and one optional section:
+**`plan` -> `exec`** - two structural tokens and one optional section, all inside the ticket:
 
-- `### Task N: <title>` - the task heading;
-- `- [ ]` / `- [x]` - the checkboxes;
-- `## Conventions` - optional. `exec` passes it verbatim to every worker, and a worker inherits nothing else, so a rule missing from it does not reach the code.
+- `### Task N: <title>` - the task heading, never written above `## Implementation`;
+- `- [ ]` / `- [x]` - the checkboxes. Inside a `### Task N:` section it is a task checkbox; above `## Implementation` it is an acceptance criterion. `exec` finds work only in the first kind;
+- `## Conventions` - optional, at h2 so the token survives verbatim. `exec` passes it to every worker, and a worker inherits nothing else, so a rule missing from it does not reach the code.
 
-`exec` takes the first task section with open checkboxes and reads the rest as text.
+**the ticket -> `exec`** - the fourth contract, and the only one shared with another toolchain: the `**Status:**` line, the `**Blocked by:**` line, and the acceptance criteria. `exec` is the only writer of all three after the ticket is created, and a blocker counts as satisfied only when the file it names carries `resolved`.
 
-Keep all three that narrow. Any new required section is a new coupling between two files that are otherwise independent, and a heading a reader depends on can no longer be renamed without a version bump.
+`exec` takes one ticket per run and, inside it, the first task section with open checkboxes; it reads the rest as text.
+
+Keep all four that narrow. Any new required section is a new coupling between two files that are otherwise independent, and a heading a reader depends on can no longer be renamed without a version bump.
 
 ## WHEN TO ADD SOMETHING NEW
 
@@ -102,6 +107,7 @@ Things that bloat the plugin and get rejected: copying an external skill wholesa
 - Write the body of `SKILL.md` in compact English. The global tier decides what language the user reads in the chat.
 - The body loads on invocation and stays for the whole session, so write standing instructions, not one-off steps.
 - A skill that grows past roughly 120 lines is doing more than one job. Split the job, do not add a reference file.
+- `skills/rnd/SKILL.md` is the file nearest that ceiling. 0.20.0 put slicing on top of shaping, so it now clarifies, explores, stresses, writes the spec, and cuts the tickets, and it is the next split candidate. Before splitting, run the four tests in WHEN TO ADD SOMETHING NEW against a `/dev:tickets` command: distinct intent already passes, frequency and settledness are the two that failed in 0.20.0.
 - Validate as you go, from the repository root: `claude plugin validate --strict plugins/dev`
 
 ### COMMAND SKILL FRONTMATTER
@@ -134,23 +140,23 @@ An agent is self-contained: it states its own subject, its own bounds, and its o
 
 ## ARTIFACT PATHS
 
-There are three artifacts, one per command that writes one:
+Everything a command writes goes under `.scratch/<feature-slug>/` in the current repository, which is the local-markdown layout of the issue tracker the wider toolchain uses. Two files and one appended pair of sections:
 
 | command | artifact | file |
 | --- | --- | --- |
-| `rnd` | brief | `docs/nxs/stories/YYYYMMDD-<slug>/brief.md` |
-| `bug` | root cause | `docs/nxs/stories/YYYYMMDD-<slug>/root-cause.md` |
-| `plan` | plan | `docs/nxs/stories/YYYYMMDD-<slug>/plan.md` |
+| `rnd` | spec, plus one ticket per slice | `.scratch/<feature-slug>/spec.md`, `.scratch/<feature-slug>/issues/NN-<slug>.md` |
+| `bug` | root cause | `.scratch/<feature-slug>/root-cause.md` |
+| `plan` | plan | `## Conventions` and `## Implementation`, appended to `.scratch/<feature-slug>/issues/NN-<slug>.md` |
 
 Each of those three skills states its own path in its `## ARTIFACT` section, and that is the only place the path lives. The table above is a map, not a second source. README carries the human-facing overview.
 
-`exec`, `review`, and `commit` write no artifact. They leave commits, flipped checkboxes, and a spoken report, none of which is a file this plugin owns - so none of them carries an `## ARTIFACT` section, and none should grow one.
+`review` and `commit` write no artifact. `exec` writes none either, but it is the exception this rule now has to name: it MUTATES a ticket another command wrote - the `**Status:**` line, the task checkboxes, the acceptance criteria, and one `## Comments` line on a stop. Creating a file and updating the state of one are different acts, and only the first earns an `## ARTIFACT` section. None of the three carries one, and none should grow one.
 
-Everything a skill writes goes under `docs/nxs/` in the current repository. Never create files outside those templates silently.
+`rnd` and `plan` resolve the tracker layout before their first write into a NEW feature directory: `docs/agents/issue-tracker.md` in the repository, then the global default at the same relative path, then local markdown. Local markdown is what the wider toolchain falls back to as well, so the fallback is copied rather than chosen. In a repository configured for GitHub or GitLab neither command picks silently. Neither ever writes that config file or runs a setup skill, and this plugin ships no `gh` or `glab` dependency.
 
-The path keeps the old plugin name on purpose. `dev` was called `nxs` until 0.17.0, and stories written under the old name live in repositories this plugin does not control - renaming the directory would hide every one of them from `plan` and `exec`. `docs/nxs/` is a fixed string now, not a name to keep in sync.
+Never create files outside those templates silently, and never write into a `.scratch/<x>/` that holds a `map.md` - that directory belongs to another skill's effort.
 
-Moving a finished story to `docs/nxs/stories/completed/` is the user's action, not a command's. No skill performs it or asks about it. `exec` skips `completed/` when it resolves the latest story, which is a resolution rule and nothing more.
+The pre-0.20.0 story directory is gone, and no command reads or writes it. Nothing is renamed, moved, or converted either: turning an old plan into a ticket means inventing acceptance criteria it wrote as prose, so an unfinished one is finished by hand or dropped. Moving a finished story to a `completed/` directory was the user's action and has no successor - `**Status:** resolved`, written by `exec`, is what it stood for.
 
 ## DEV LOOP
 
@@ -177,8 +183,8 @@ What a user or another plugin file depends on:
 
 1. command names `/dev:<name>`, their arguments and modes;
 2. agent names, since skills spawn them by name;
-3. artifact paths and naming schemes (`docs/nxs/stories/YYYYMMDD-<slug>/plan.md`);
-4. the three handoff contracts: the headings of `brief.md` and `root-cause.md` that `plan` reads, the two plan tokens `exec` depends on - `### Task N:` and `- [ ]` - and the plan's `## Conventions` heading, which `exec` passes on to every worker;
+3. artifact paths and naming schemes (`.scratch/<feature-slug>/issues/NN-<slug>.md`);
+4. the four handoff contracts: the ticket's `**What to build:**` line and the headings of `spec.md` and `root-cause.md` that `plan` reads, the two ticket tokens `exec` depends on - `### Task N:` and `- [ ]` with its positional meaning - the `## Conventions` heading `exec` passes on to every worker, and the `**Status:**` line, the `**Blocked by:**` line and the acceptance criteria that `exec` writes;
 5. the gates that govern git and files: when a commit is allowed, what counts as a stop condition, what a skill writes to disk.
 
 Everything else is internal: wording inside `SKILL.md`, agent criteria and focus areas, README and CONTRIBUTING.

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /dev:review
 
-Review a diff and report what is really wrong. This is the review gate for a whole plan, not for a single task.
+Review a diff and report what is really wrong. This is the review gate for a branch, which may span several tickets or none, not for a single task.
 
 Example: /dev:review
 Example: /dev:review fix
@@ -16,6 +16,7 @@ Example: /dev:review fix
 - **Reporting is the whole command.** Nothing is edited, staged, or committed. A review of someone else's PR is the normal case, and it must never touch their branch.
 - **`fix` in the arguments opts into changing code**, and only then. It applies the confirmed findings, commits them, and re-checks its own work.
 - Without `fix`, the run ends at the report even when every finding is trivial and obvious. Offer to fix; do not fix.
+- **A ticket's `Status:` line is never written here**, in either mode. `/dev:exec` is its only writer, and a second one turns two commands into a race. A fix that invalidates a resolved ticket's criteria is reopened by `/dev:exec <ticket path>`, which asks first.
 
 ## RESOLVE THE SCOPE
 
@@ -40,11 +41,11 @@ Read the context yourself with the two resolved commands before launching anythi
 - `dev:review-implementation` - goal reached, wiring, completeness, scope creep;
 - `dev:review-testing` - coverage over the changed code, fake tests, test quality;
 - `dev:review-simplification` - over-engineering this branch introduces;
-- `dev:review-documentation` - docs the change needs or made stale, plan checkboxes.
+- `dev:review-documentation` - docs the change needs or made stale, ticket checkboxes.
 
-Each prompt carries the two resolved scope commands verbatim, plus the goal in one sentence and the plan path when the work has them. Do not paste the diff into a prompt - each agent runs the commands itself, and an embedded diff makes the launch slow and expensive. An agent given no commands falls back to the whole branch, which is the wrong answer for every selector, so the commands are not optional.
+Each prompt carries the two resolved scope commands verbatim, plus the goal in one sentence and the ticket paths when the work has them. Do not paste the diff into a prompt - each agent runs the commands itself, and an embedded diff makes the launch slow and expensive. An agent given no commands falls back to the whole branch, which is the wrong answer for every selector, so the commands are not optional.
 
-The goal comes from the plan, or from what the user said when they invoked this. With neither - a branch handed to you, whose intent nobody stated - put `no stated goal` in the prompt and pass nothing more. Never manufacture one from commit messages, the branch name, or the diff: an invented goal becomes a requirement the reviewer holds the code to, and findings against a requirement nobody set are worse than no findings.
+The goal is the feature, not one ticket. From the scope's `git log <base>..HEAD`, collect the tickets under `.scratch/<feature-slug>/issues/` that the branch resolved, and pass all of their paths plus the `## Problem Statement` and `## Solution` of the `spec.md` beside them. Failing that, the goal is what the user said when they invoked this. With neither - a branch handed to you, whose intent nobody stated - put `no stated goal` in the prompt and pass nothing more. Never manufacture one from commit messages, the branch name, or the diff: an invented goal becomes a requirement the reviewer holds the code to, and findings against a requirement nobody set are worse than no findings.
 
 **The re-check** launches `dev:review-quality` and `dev:review-implementation` only, told to report critical and major findings and skip the rest. It exists to answer one question - did the fixes break something - so it runs in fix mode and nowhere else, after fixes landed in this same run. Re-running the full sweep there would pay five agents to re-read a diff that changed in three places.
 
