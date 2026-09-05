@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.1] - 2026-09-05
+
+### Changed
+
+- Worker results optionally include `Decisions` and `Deviations` with reasons. `/dev:exec` and `/dev:review fix` carry them into final reports, including unfinished runs, without changing worker authority or stop and approval rules.
+- `/dev:review` keeps finding verification and fix history in the current run's context and passes it to both re-check agents. Prior conclusions are checked against current code and may be challenged with new evidence.
+- These are internal instruction changes; public commands and ticket formats remain unchanged.
+
 ## [0.20.0] - 2026-08-29
 
 The story dies and a ticket becomes the unit of work. Every artifact moves to `.scratch/<feature-slug>/`, the local-markdown layout of the issue tracker the wider toolchain already uses, and the plan stops being a file: it becomes two sections inside the ticket it plans.
