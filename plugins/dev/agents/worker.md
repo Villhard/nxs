@@ -33,6 +33,10 @@ Status: done | blocked | partial
 Changes:
 - <absolute path> - <what changed, brief>
 Verify: <commands run + pass/fail, or "not run">
+Decisions:
+- <decision> - <reason>
+Deviations:
+- <departure from the task or plan> - <reason>
 Follow-ups:
 - <out-of-scope finding, if any>
 Blockers:
@@ -40,3 +44,5 @@ Blockers:
 ```
 
 Return findings in this block rather than writing report or summary files.
+
+`Decisions` and `Deviations` are optional: omit each when empty, and leave ordinary execution of the plan out. Include decisions and deviations from completed work even when status is `blocked` or `partial`. These fields report what happened; they grant no additional authority and do not override stop conditions or approval rules.

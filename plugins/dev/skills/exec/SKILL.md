@@ -51,7 +51,7 @@ Repeat until no `- [ ]` is left under `## Implementation`:
 
 Close the ticket in one write once the last task is green: verify each acceptance criterion above `## Implementation` against the running code, flip every one to `- [x]`, and set `**Status:** resolved`. It rides the final task's commit, so no extra commit appears. `resolved` is the token every `Blocked by:` in the directory waits on; it does not claim a review happened.
 
-One worker at a time, sequentially. The worker writes into the working directory, so `isolation: "worktree"` stays off. Read its structured result - files changed, follow-ups, blockers - not raw tool output.
+One worker at a time, sequentially. The worker writes into the working directory, so `isolation: "worktree"` stays off. Read its structured result - files changed, decisions, deviations, follow-ups, blockers - not raw tool output. Collect `Decisions` and `Deviations` from every worker response in this run's context, including `blocked` and `partial` results. In the final message, including when the run stops unfinished, show each entry with its task number and reason; omit empty fields.
 
 One ticket per run. End by naming the next takeable ticket without starting it, and say the feature is complete when the ticket just resolved was the last unresolved one in the directory.
 

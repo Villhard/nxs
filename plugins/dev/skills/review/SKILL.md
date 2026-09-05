@@ -49,6 +49,8 @@ The goal is the feature, not one ticket. From the scope's `git log <base>..HEAD`
 
 **The re-check** launches `dev:review-quality` and `dev:review-implementation` only, told to report critical and major findings and skip the rest. It exists to answer one question - did the fixes break something - so it runs in fix mode and nowhere else, after fixes landed in this same run. Re-running the full sweep there would pay five agents to re-read a diff that changed in three places.
 
+At every re-check, pass the accumulated finding history from VERIFY and FIX to both agents alongside the scope commands. Tell each: "Check prior conclusions against the current code. The history is context, not a ban on reporting the same problem again: report it when new evidence challenges a dismissal or shows a fix is incomplete, and cite that evidence."
+
 A diff nobody has fixed yet never gets a re-check. Report mode is one sweep and no more; a branch pulled from someone else's PR is always that case.
 
 A trivial diff (dotfiles, docs only, pure formatting) does not need agents: do one direct pass yourself against the same bar.
@@ -64,6 +66,8 @@ The agents propose; you decide what is real.
 3. **Carry the severity of what you kept.** The agent assigned it; change it only when the code says otherwise, and say which way you moved it. In fix mode this field decides whether a re-check runs, so a finding lowered to end the pass early is the one thing you do not do.
 4. **Rank what survived** by severity, worst first.
 
+Keep a finding history only in this run's context, never in a file. After each verification, record each finding's location, problem, verification result, and reason for dismissal when discarded. After fixes, add the actual correction and its verification result; retain earlier conclusions when a later pass revises them. Carry both fixed and discarded findings into every re-check.
+
 Discarding most candidates is a normal outcome. A pre-existing failure - a broken test, a lint error - is reported like anything else, not waved off because it predates the branch.
 
 ## REPORT
@@ -77,11 +81,11 @@ In report mode this ends the run. Offer to fix and stop there - `/dev:review fix
 Fix mode only. Everything below is skipped without it.
 
 1. Launch one `dev:worker` with the confirmed findings as its unit of work: for each one the location, the issue, the impact, and the fix, plus the conventions the branch follows. Pass them verbatim - a finding you compress is a finding the worker has to derive again.
-2. Read its structured result, then run the project's tests and linter yourself. All green before the commit.
+2. Read its structured result and collect `Decisions` and `Deviations`, including from `blocked` or `partial` results, then run the project's tests and linter yourself. Update the finding history with the fixes actually made and verification results. All green before the commit.
 3. Commit: `fix: address review findings`.
 4. A re-check runs only when this pass confirmed a critical or major finding, because those are the fixes big enough to break something else. A pass that confirmed only minors fixes them and ends the run. Three re-checks is the ceiling.
 
-Report the outcome the same way: what was found, what was fixed, what is left and why.
+Report the outcome the same way: what was found, what was fixed, what is left and why. Include the collected worker `Decisions` and `Deviations`, each with its task or finding and reason, even when the run stops unfinished; omit empty fields.
 
 ## STOP CONDITIONS
 
