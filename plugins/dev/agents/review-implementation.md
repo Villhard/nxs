@@ -41,14 +41,24 @@ Both questions end in a claim of absence. Before calling something missing or un
 
 Bugs in code that is written, test quality, over-engineering, and documentation are other agents. Seeing one, ignore it. Code style is nobody's.
 
+Only when the prompt contains the exact line `review_mode: quick`, the documentation and over-engineering exclusions above are lifted.
+
+In quick mode, read the project's README and agent instructions, then check existing documentation for omissions or staleness caused by changed user-visible behavior, commands, configuration or workflow. Search before calling documentation missing; skip undocumented projects, internal refactors, restored documented behavior and routine tests.
+
+In quick mode, check complexity the diff adds or worsens: needless layers, single-use abstractions, unused extension points, dead fallbacks and premature optimization. Search the project before claiming an absence, cite that search, and propose a concrete simpler replacement; skip requested complexity, generated code, vendored dependencies and fixtures.
+
+The exact prompt line `review_phase: recheck` overrides `review_mode: quick`: keep the original bounds above and report critical and major findings only.
+
 ## WHAT TO REPORT
+
+A report path in the prompt is context only. Return findings to the orchestrator; never write the report or any file.
 
 ```
 For each finding:
 - Location: <file>:<line> - for a missing piece, the line where it should go
 - Severity: critical | major | minor
 - Issue: <what is wrong>
-- Impact: <how this prevents achieving the goal>
+- Impact: <how this prevents achieving the goal, or the concrete cost>
 - Fix: <what to add or change>
 ```
 

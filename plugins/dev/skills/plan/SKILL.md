@@ -113,4 +113,4 @@ A ticket that already holds an `## Implementation` section is never overwritten 
 
 ## NEXT
 
-Plan written -> `/dev:exec` to implement it, then `/dev:review` for the review gate, or `/dev:review fix` to have it apply what it confirms.
+Plan written -> `/dev:exec` to implement it, then `/dev:review` for the review gate and `/dev:fix` to apply the saved findings.

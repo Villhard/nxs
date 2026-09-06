@@ -92,4 +92,4 @@ On any of these - stop and tell the user rather than guessing, and leave the tic
 
 ## NEXT
 
-Ticket resolved -> `/dev:review` for the review gate over the whole branch, or `/dev:review fix` to have the confirmed findings applied in the same run. Neither starts on its own; the user types it. The next ticket is another `/dev:exec`.
+Ticket resolved -> `/dev:review` for the review gate over the whole branch, then `/dev:fix` to apply the saved findings. Neither starts on its own; the user types it. The next ticket is another `/dev:exec`.

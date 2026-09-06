@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.0] - 2026-09-06
+
+### Added
+
+- `skills/fix/SKILL.md` - `/dev:fix` consumes a saved report without repeating the sweep, checks scope and requirement pins, verifies open findings, and commits code alone before recording the outcome. Incomplete attempts and unrelated worktree changes stop before another fix; empty reports make no commit.
+- `skills/review/SKILL.md` - `review.md` preserves confirmed findings, dismissal reasons and open follow-ups across sessions. Incomplete-first writes and a final currency check prevent an interrupted or stale sweep from becoming an applicable report.
+- `skills/review/SKILL.md`, `agents/review-quality.md`, `agents/review-implementation.md` - explicit `quick` uses two reviewers with wider duties and records that mode, so a small review need not launch five agents or masquerade as a full gate.
+
+### Changed
+
+- `skills/review/SKILL.md` - writes only the report; an unchanged complete unfixed report asks before another sweep. `skills/fix/SKILL.md` owns the bounded re-check, preserving the original base after staged changes are committed.
+- `agents/review-quality.md`, `agents/review-implementation.md` - `review_phase: recheck` keeps original bounds and critical/major severity; a report path is context, never permission for an agent to write it.
+- `README.md`, `CONTRIBUTING.md` - document seven commands, the report schema and state gates, and the `review -> fix` handoff. `skills/exec/SKILL.md` and `skills/plan/SKILL.md` send users to the separate commands.
+- `.claude-plugin/plugin.json` - version 0.22.0 and seven-command description; the repository `README.md` and `.claude-plugin/marketplace.json` carry the same command count.
+
+- `skills/review/SKILL.md` - test runs may create disposable caches and build output while source, tracked files and index stay untouched; the testing lens can still execute tests. `skills/review/SKILL.md`, `skills/fix/SKILL.md` and `CONTRIBUTING.md` use plain-text fields and only the disk/index sources the producer actually writes.
+
+### Removed
+
+- `skills/review/SKILL.md` - `fix` as a review argument; `/dev:fix` now applies the saved report without paying for a second sweep.
+
 ## [0.21.0] - 2026-09-06
 
 State transitions that produced a wrong result, and the repeated work between a worker and its orchestrator. Found in a joint read of the plugin with Codex; the two contract decisions that came out of the same read - persisting the review history and a two-agent sweep - are not in this release and wait on a separate decision.

@@ -1,102 +1,96 @@
 ---
-description: Review a diff with five parallel agents, verify every finding against the code, and report it. Add "fix" to apply the confirmed findings. Use after /dev:exec finishes a plan, or on any branch you want reviewed, including one you pulled from someone else's PR.
-argument-hint: "[scope: staged | path] [ticket path | feature dir] [fix]"
+description: Review a diff and save verified findings for /dev:fix. Use after /dev:exec or on any branch, including someone else's PR; quick selects a smaller review.
+argument-hint: "[scope: staged | path] [ticket path | feature dir] [quick]"
 disable-model-invocation: true
 ---
 
-# /dev:review
+# /DEV:REVIEW
 
-Review a diff and report what is really wrong. This is the review gate for a branch, which may span several tickets or none, not for a single task.
+Review a branch's diff, which may span several tickets or none, and leave a report for a later session.
 
-Example: /dev:review
-Example: /dev:review fix
+Example: /dev:review quick
 
 ## STANCE
 
-- **Reporting is the whole command.** Nothing is edited, staged, or committed. A review of someone else's PR is the normal case, and it must never touch their branch.
-- **`fix` in the arguments opts into changing code**, and only then. It applies the confirmed findings, commits them, and re-checks its own work.
-- Without `fix`, the run ends at the report even when every finding is trivial and obvious. Offer to fix; do not fix.
-- **A ticket's `Status:` line is never written here**, in either mode. `/dev:exec` owns its execution transitions, and a writer here turns two commands into a race. A fix that invalidates a resolved ticket's criteria is reopened by `/dev:exec <ticket path>`, which asks first.
+Edit only the report: no code, index, git objects or commits. Test-generated caches and build output are permitted under the check rule below. A review of someone else's PR is the normal case, and it must never touch their branch. `/dev:fix` applies the report; never invoke it automatically. Ticket status and acceptance criteria belong to `/dev:exec`.
+
+Use read-only inspection, with `GIT_OPTIONAL_LOCKS=0` for git. Checks may create disposable caches or build output, but must not change tracked files, source files or the index; pass this constraint to every agent. Use checks without auto-fix or snapshot updates. Agents return findings to you and never edit the report or any other file.
 
 ## RESOLVE THE SCOPE
 
-The word `fix` anywhere in the arguments turns on fix mode; its absence is report mode. Say which mode you are in before launching anything, so a run that will write is never a surprise.
+`quick` is the only mode word; otherwise use full. Say the mode before launching. Reject the retired `fix` argument and point to `/dev:fix`. A ticket or feature path under `.scratch/` identifies requirements, never the code selector; only a path outside it narrows the diff.
 
-Resolving the scope produces exactly two commands, a history command and a diff command. Everything downstream runs those two and nothing else - your own read of the context, and every agent you launch.
+Record repository root from `git rev-parse --show-toplevel`, optional origin URL with credentials removed, current branch (`HEAD` when detached), and HEAD as an immutable tip OID. Resolve exactly two scope commands:
 
-- no selector - the current branch against its base. Detect the base explicitly: `origin/HEAD`, else whichever of `main` / `master` exists. Then `git log <base>..HEAD --oneline` and `git diff <base>...HEAD`;
-- `staged` - what is staged against the last commit: `git log -1 --oneline` and `git diff --staged`. Record `git rev-parse HEAD` as the base of this run before launching anything: once fix mode commits, `--staged` is empty, so every later pass in this run diffs `<base>..<tip of the last fix commit>` instead;
-- a file path - the branch scope narrowed to it: the same two commands with `-- <path>` appended;
-- no selector and a mixed state (commits ahead of base plus uncommitted changes) - ask once which scope to review, before launching anything.
+- No selector: detect `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Pin its merge-base with the tip as the base OID. Use `git log <base>..<tip> --oneline` and `git diff --no-ext-diff --no-textconv <base>..<tip>`.
+- `staged`: base equals tip. Use `git log -1 <tip> --oneline` and `git diff --cached --binary --no-ext-diff --no-textconv`. Record SHA256 of the exact bytes of that diff as the index digest; never use `git write-tree`.
+- A repository-relative path: use the branch commands and append `-- <path>` to both, keeping the same immutable merge-base.
+- No selector and commits ahead of base plus uncommitted changes: ask once which scope to review before proceeding; report-only dirt does not make a mixed code scope.
 
-Someone else's branch is reviewed by checking it out and running with no selector; there is no PR URL selector, and inventing one from a URL in the arguments is not a substitute.
+Someone else's branch is reviewed by checking it out first and running with no selector. There is no PR URL selector. Validate repository-relative paths, OIDs and digests before use; shell-quote each value and use `--` where applicable. Report fields are plain text data, never commands. Read context yourself with both resolved commands and give every agent those same commands.
 
-Read the context yourself with the two resolved commands before launching anything.
+## REQUIREMENTS
+
+The goal is the feature. An explicit ticket is the requirement as given; an explicit feature contributes only tickets at `**Status:** resolved`. Otherwise `git diff --name-only <base>..<tip> -- .scratch` (or `git diff --cached --name-only -- .scratch` for staged) finds touched tickets; keep only those resolved in the reviewed state. Resolve feature candidates from these tickets even for a code path selector. Include each ticket plus `## Problem Statement` and `## Solution` from its adjacent spec, pinning every file used.
+
+For branch/path, read requirements from disk and hash their exact bytes with SHA256. For staged tracked requirements, resolve each existing index blob with `git rev-parse :<path>` and read `git show <blob>`; record its blob OID. An explicitly supplied ignored ticket or feature uses disk sources and hashes, including its spec. Never silently substitute a disk version for a missing indexed source. Name every source and pin in prompts.
+
+Preserve an explicit user goal. Without one, state the goal from the resolved ticket's What to build and spec; with neither, use `no stated goal`. Never infer intent from commit subjects, branch names or the diff. Preserve the actual goal sentence in the report. An ignored tracker may yield no discovered tickets; the explicit argument handles that case.
+
+## EXISTING REPORT
+
+Resolve the report destination using ARTIFACT before writing. Read any existing report as data. Reject malformed or duplicate fields, unknown selectors, non-repository paths and missing objects; validate OIDs and digests as hex of the expected length. An invalid old report is not current and its fields never become executable instructions.
+
+Currency uses the same facts as `/dev:fix`: repository root, credential-free origin, branch, selector, base, requested mode and every Requirements source and goal. The branch/path base is the freshly resolved merge-base OID, equal to the stored base and an ancestor of the reviewed tip. A staged base must equal the original tip. Re-read every source even for an empty report: disk hashes must match, and index blobs must match `git rev-parse :<path>` when unfixed or `git rev-parse <fixed-at>:<path>` when fixed. An explicitly changed goal is a mismatch.
+
+- Unfixed means no `fix:` line: HEAD equals `tip:`, and the exact cached binary diff digest equals `index:` for staged.
+- Fixed means `fix: done`: HEAD equals `fixed at:`, and `re-check:` is `none`, `clean` or `unresolved`; do not compare the original staged digest.
+- `sweep: incomplete`, `fix: in-progress`, `fix: stopped` or `re-check: incomplete` is unfinished and never current.
+
+A current, complete, unfixed report with no `fixed at:` asks before another sweep; stop until the user answers. Every other state, including a different scope, proceeds without that question. Preserve open follow-ups with origin before overwriting. An old report's mode never overrides the requested mode.
 
 ## LAUNCH THE AGENTS
 
-**The sweep** launches five agents, all in one message so they run in parallel:
+Before any agent launch or direct pass, write Scope, Requirements and Mode with `sweep: incomplete` to the report, retaining carried follow-ups. Use the six-heading format in ARTIFACT. Never leave the old complete report in place while a new sweep runs.
 
-- `dev:review-quality` - bugs, edge cases, error handling, leaks, races, security skim;
-- `dev:review-implementation` - goal reached, wiring, completeness, scope creep;
-- `dev:review-testing` - coverage over the changed code, fake tests, test quality;
-- `dev:review-simplification` - over-engineering this branch introduces;
-- `dev:review-documentation` - docs the change needs or made stale, ticket checkboxes.
+**Full** launches five agents together: `dev:review-quality` for bugs, edges, errors, races and security skim; `dev:review-implementation` for goal, wiring, completeness and scope; `dev:review-testing` for coverage and test quality; `dev:review-simplification` for introduced over-engineering; `dev:review-documentation` for stale or missing docs and ticket checkboxes.
 
-Each prompt carries the two resolved scope commands verbatim, plus the goal in one sentence and the ticket paths when the work has them. Do not paste the diff into a prompt - each agent runs the commands itself, and an embedded diff makes the launch slow and expensive. An agent given no commands falls back to the whole branch, which is the wrong answer for every selector, so the commands are not optional.
+**Quick** always launches exactly `dev:review-quality` and `dev:review-implementation` together, including on a trivial diff. Each prompt contains the exact line `review_mode: quick`; quality then covers tests too, implementation documentation and simplification too. Full prompts carry no quick marker.
 
-The goal is the feature, not one ticket. A path under `.scratch/` in the arguments - a ticket file or a feature directory - names it outright and never narrows the code diff; only a path outside `.scratch/` is a scope selector. An explicit ticket is the requirement as given; an explicit feature directory contributes its tickets at `**Status:** resolved`, never its whole backlog. Otherwise `git diff --name-only <base>...HEAD -- .scratch` - `git diff --cached --name-only -- .scratch` for `staged` - lists the tickets the scope touched, since `/dev:exec` commits the ticket with each task; keep those at `resolved` in the reviewed state, since `/dev:rnd` commits tickets nobody has started, and pass their paths plus the `## Problem Statement` and `## Solution` of the `spec.md` beside them. Name the source each ticket is read from in every prompt: for `staged`, `git show :<path>` in the sweep and `git show <tip>:<path>` after a fix commit, so the requirements match the version under review and not a working tree that moved on; from disk for the branch scope and for an explicit ticket that git ignores. Commit subjects carry no ticket key, so never mine `git log` for one. An ignored `.scratch/` leaves that list empty, which is why the argument exists. Failing both, the goal is what the user said when they invoked this. With neither - a branch handed to you, whose intent nobody stated - put `no stated goal` in the prompt and pass nothing more. Never manufacture one from commit messages, the branch name, or the diff: an invented goal becomes a requirement the reviewer holds the code to, and findings against a requirement nobody set are worse than no findings.
+Only without `quick`, a trivial diff (dotfiles, docs only, pure formatting) may receive a direct pass against the same bar, recorded as `mode: full`. There is one sweep and no re-check in this command.
 
-**The re-check** launches `dev:review-quality` and `dev:review-implementation` only, told to report critical and major findings and skip the rest. It exists to answer one question - did the fixes break something - so it runs in fix mode and nowhere else, after fixes landed in this same run. Re-running the full sweep there would pay five agents to re-read a diff that changed in three places.
-
-At every re-check, pass the accumulated finding history from VERIFY and FIX to both agents alongside the scope commands - for `staged`, the `<base>..<tip>` form, never `--staged`. Tell each: "Check prior conclusions against the current code. The history is context, not a ban on reporting the same problem again: report it when new evidence challenges a dismissal or shows a fix is incomplete, and cite that evidence."
-
-A diff nobody has fixed yet never gets a re-check. Report mode is one sweep and no more; a branch pulled from someone else's PR is always that case.
-
-A trivial diff (dotfiles, docs only, pure formatting) does not need agents: do one direct pass yourself against the same bar.
-
-Wait for every agent you launched before doing anything else.
+Every prompt carries both resolved commands verbatim, the goal sentence, requirement paths with their pinned source reads, and report path as read-only context. Never paste the diff. Tell agents to inspect the reviewed commit or index versions, not unrelated working changes. Wait for every launched agent before verification or further writes.
 
 ## VERIFY
 
 The agents propose; you decide what is real.
 
 1. **Merge duplicates.** Same place and same problem is one finding, whichever agents raised it.
-2. **Check each one against the code.** Read the file at the reported line with 20-30 lines of context. Confirm the problem exists and is not already handled by a guard, a validation, or a test elsewhere. Confirmed - keep it. Anything else - discard, do not downgrade.
-3. **Carry the severity of what you kept.** The agent assigned it; change it only when the code says otherwise, and say which way you moved it. In fix mode this field decides whether a re-check runs, so a finding lowered to end the pass early is the one thing you do not do.
+2. **Check each one against the code.** Read the reported location with 20-30 lines of context in the reviewed version. Confirm the problem exists and is not already handled by a guard, validation or test elsewhere. Confirmed - keep it. Anything else - discard, do not downgrade.
+3. **Carry the severity of what you kept.** Change it only when the code says otherwise, and record which way and why. Never lower severity to avoid the downstream re-check.
 4. **Rank what survived** by severity, worst first.
 
-Keep a finding history only in this run's context, never in a file. After each verification, record each finding's location, problem, verification result, and reason for dismissal when discarded. After fixes, add the actual correction and its verification result; retain earlier conclusions when a later pass revises them. Carry both fixed and discarded findings into every re-check.
+Persist each finding's location, problem, verification result and evidence, including dismissal reasons, in the report. Retain earlier conclusions when later evidence revises them. Discarding most candidates is normal. A pre-existing broken test or lint failure is reported like anything else, never waived because it predates the branch.
 
-Discarding most candidates is a normal outcome. A pre-existing failure - a broken test, a lint error - is reported like anything else, not waved off because it predates the branch.
+## ARTIFACT
 
-## REPORT
+Write `.scratch/<feature-slug>/review.md` when one feature resolves from an explicit ticket/feature or the scope's resolved tickets. Never create a feature directory for a report. Several candidate features require a choice before writing. With none, use `.scratch/reviews/<branch-slug>/review.md`; derive a filesystem-safe slug from the branch (`detached-<tip>` when detached). Never write into a directory holding `map.md`; validate that the destination stays inside the repository, including symlinks.
 
-Plain text, worst first: location, severity, what is wrong, what it costs, what to change. Say what the agents raised and you discarded, in one line, so a dismissed finding stays visible.
+Overwrite one report with the latest run; retain open follow-ups with the run that raised them and `not re-verified`. Do not silently drop them on a scope change. Use exactly these six headings with this field format:
 
-In report mode this ends the run. Offer to fix and stop there - `/dev:review fix` is the user's call, not yours.
+- `## Scope`: `repo: <repository root>`, `origin: <credential-free URL> | none`, `branch: <branch name; HEAD when detached>`, `selector: branch | staged | <repository-relative path>`, `base: <commit OID>`, `tip: <commit OID>`, and `index: <SHA256 hex>` for staged only.
+- `## Mode`: `mode: full | quick`, `sweep: complete | incomplete`. `/dev:fix` may add `fix: in-progress | done | stopped - <reason>`, `fixed at: <commit OID>`, `re-check: none | clean | unresolved | incomplete`; a new sweep writes none of those fields.
+- `## Requirements`: `goal: <goal sentence, or no stated goal>`, then source lines `- index: <path> @ <blob OID>`, or `- disk: <path> sha256 <SHA256 hex>`.
+- `## Findings`: confirmed entries with location, severity, issue, impact and fix, with verification evidence. Leave them open without `result:`; `/dev:fix` adds `result: fixed | dropped - <reason> | unresolved`.
+- `## Dismissed`: each rejected candidate with its verification result and reason.
+- `## Follow-ups`: open items with origin and any `not re-verified` label. Keep verification history beside its entry, without extra required headings.
 
-## FIX
-
-Fix mode only. Everything below is skipped without it.
-
-1. Launch one `dev:worker` with the confirmed findings as its unit of work: for each one the location, the issue, the impact, and the fix, plus the conventions the branch follows. Pass them verbatim - a finding you compress is a finding the worker has to derive again.
-2. Read its structured result and collect `Decisions` and `Deviations`, including from `blocked` or `partial` results, then run the project's tests and linter yourself. Update the finding history with the fixes actually made and verification results. All green before the commit.
-3. Commit: `fix: address review findings`.
-4. A re-check runs only when this pass confirmed a critical or major finding, because those are the fixes big enough to break something else. A pass that confirmed only minors fixes them and ends the run. Three re-checks is the ceiling: what the third one still confirms is reported as unresolved, with its location and severity, and the run ends there without a fourth fix and without calling the branch ready.
-
-Report the outcome the same way: what was found, what was fixed, what is left and why. Include the collected worker `Decisions` and `Deviations`, each with its task or finding and reason, even when the run stops unfinished; omit empty fields.
+After VERIFY, re-resolve repository identity, branch, selector, merge-base, HEAD, staged digest when applicable, requested mode, goal and all requirement sources and pins. Compare with the facts captured before the sweep. Write findings either way, but mark `sweep: complete` only when every fact still matches and all reviewers finished. If anything moved or the run was interrupted, retain `sweep: incomplete` and name what changed or remains unfinished. A hard kill leaves the incomplete report already on disk.
 
 ## STOP CONDITIONS
 
-- a finding whose fix goes well past the branch's scope - report it as a follow-up, do not fix it;
-- tests or linter that stay red after a reasonable attempt;
-- a destructive operation, a migration, or a dependency install needed for a fix;
-- an auth, payment, crypto, or migration diff - say plainly that it needs a manual security review beyond this pass;
-- fix mode over work the user did not write, a branch pulled from someone else's PR above all - confirm before writing anything.
-
-On any of these - stop and tell the user. The last four apply to fix mode; the first is a report-mode outcome too.
+A finding beyond the branch's scope goes to Follow-ups. An auth, payment, crypto or migration diff needs manual security review beyond this pass; say so in the report and do not call the branch ready. Missing or ambiguous scope or requirements stop before launch; incomplete verification keeps the sweep incomplete.
 
 ## NEXT
 
-A clean report, or a clean re-check - the branch is ready. A run that ended at the third re-check with findings left is not, and says so. `git push` and MR / PR creation happen only on your explicit request.
+Give the report path, confirmed findings worst first and a brief account of dismissals. `/dev:fix` applies the saved report on the user's request. A complete clean full report with no open follow-ups means ready; a quick report says its sweep was quick and is never a full review gate. Push and MR/PR creation require the user's explicit request.
