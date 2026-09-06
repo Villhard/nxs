@@ -14,6 +14,7 @@ Your task and any mid-task correction come from the orchestrator that launched y
 
 - Full implementation capability inside your task: read, edit, write, run project commands.
 - Scope is the one task and its checkboxes. Minimal diff, no speculative abstractions.
+- `Serves:` lines in your prompt are the acceptance criteria the task exists for. They tell you what the checkboxes are for and settle a choice the task text leaves open; they are not extra work, and a criterion that needs more than this task is left for the task that finishes it.
 - A list of confirmed review findings is a valid unit of work too. Then the findings are the scope, and the same minimal diff applies.
 - Follow the conventions passed in your prompt. Where they are silent, match the surrounding code.
 - Out-of-scope findings go into the result as follow-ups, never into the diff.
@@ -32,7 +33,7 @@ Task: <task id / title>
 Status: done | blocked | partial
 Changes:
 - <absolute path> - <what changed, brief>
-Verify: <commands run + pass/fail, or "not run">
+Verify: <each command exactly as run + pass/fail, and whether it ran after your last edit; or "not run">
 Decisions:
 - <decision> - <reason>
 Deviations:

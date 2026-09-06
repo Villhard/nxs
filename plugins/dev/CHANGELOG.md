@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-09-06
+
+State transitions that produced a wrong result, and the repeated work between a worker and its orchestrator. Found in a joint read of the plugin with Codex; the two contract decisions that came out of the same read - persisting the review history and a two-agent sweep - are not in this release and wait on a separate decision.
+
+### Added
+
+- `skills/exec/SKILL.md` - a `resolved` ticket passed as the argument is a reopen, not a skip: `exec` names the criteria the change invalidated and the task checkboxes that reopen with them, asks, then flips those and sets `claimed`. `/dev:review` had promised this reopen since 0.20.0 and `exec` had no such path.
+- `skills/exec/SKILL.md` - each worker receives the acceptance criteria its task serves, as `Serves:` lines in plain text, never as checkboxes. Before the commit the orchestrator checks the task's changes, recorded against the worktree state before the worker, against the task's checkboxes and those lines: every checkbox with its evidence - a diff, a command result, or observed behavior - nothing in the diff that serves none, one correction to the same worker, then a stop. A criterion spanning several tasks is verified at the close, not at every task on the way.
+- `skills/review/SKILL.md` - a ticket path or feature directory as an argument names the goal outright, for a repository where `.scratch/` is ignored and the branch carries no ticket file to read it from.
+- `agents/worker.md` - `Serves:` lines explained, and `Verify:` reports each command exactly as run and whether it ran after the last edit, so the orchestrator can decide not to run it again.
+
+### Changed
+
+- `skills/exec/SKILL.md` - the close moves before the last task's commit. It had been written after the loop, on top of a commit already made, so "rides the final task's commit" could not hold without an amend.
+- `skills/exec/SKILL.md` - a test command the worker reports as the exact one the task names, passing, run after its last edit, is not run again. `not run`, a failure, a narrower command, or any doubt still runs it. The full suite and the linter run once, by the orchestrator, at the close; a plan no longer carries a task for them.
+- `skills/plan/SKILL.md` - the `3-7 tasks` floor and ceiling go; a task exists only when the work has that unit. The template's `### Task N: Verify acceptance criteria` block goes with it, and the last checkbox of a task names that task's test command, never the whole suite.
+- `skills/plan/SKILL.md` - a small single-step request is offered a direct edit and is never routed to `/dev:exec`, which stops on a ticket without `## Implementation`.
+- `skills/plan/SKILL.md` - clearing the last `[NEEDS CLARIFICATION]` marker in `spec.md` flips only the `needs-info` tickets with no marker and no open question of their own. `plan` is now stated as the writer of `needs-info` and `ready-for-agent`, and of nothing else on the status line; README and CONTRIBUTING said `exec` was the only writer while `plan` had written those two values since 0.20.0.
+- `skills/review/SKILL.md` - for the `staged` scope, `git rev-parse HEAD` is recorded before launch and every pass after a fix commit diffs `<base>..<tip>`. The re-check had been handed `git diff --staged` after the commit, which is an empty diff.
+- `skills/review/SKILL.md`, `agents/review-implementation.md`, `agents/review-documentation.md` - the tickets a branch resolved come from `git diff --name-only <base>...HEAD -- .scratch`, `--cached` for `staged`, not from `git log`, whose subjects carry no ticket key; only tickets at `resolved` in the reviewed state count, and the prompt names where to read each one from - the index or the fix commit for `staged`, disk otherwise - so a reviewer holds staged code to the staged requirements and not to a working tree that moved on.
+- `skills/review/SKILL.md` - the third re-check ends the run with what it still confirms reported as unresolved; the branch is not called ready.
+- `skills/bug/SKILL.md` - the `3-5 hypotheses` floor goes: as many as there are checkable alternatives, one when a probe already confirmed it. The worked example no longer ends in "move to a queue" as the only right answer; the fix direction is the smallest change the evidence at that layer supports.
+- `README.md`, `CONTRIBUTING.md` - the status line's writer per value, the reopen, `Serves:` in the `plan -> exec` and ticket contracts, and the new `review` argument.
+
 ## [0.20.1] - 2026-09-05
 
 ### Changed

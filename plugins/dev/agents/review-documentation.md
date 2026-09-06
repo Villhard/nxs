@@ -28,7 +28,7 @@ Skip code that follows an existing pattern, simple fixes, and tests written the 
 
 ## THE TICKET
 
-The ticket paths are in your prompt when the work has them; with none, skip this section entirely. Given one, compare it against the diff and report, without editing it. It carries two sets of checkboxes and they are read under different rules:
+The ticket paths are in your prompt when the work has them, with the source to read each from - disk, or a `git show` of the reviewed version; with none, skip this section entirely. Given one, read it from that source, compare it against the diff and report, without editing it. It carries two sets of checkboxes and they are read under different rules:
 
 - under `## Implementation`, inside a `### Task N:` section, a checkbox is a unit of work: report work that is done and whose checkbox is still open;
 - above `## Implementation`, a checkbox is an acceptance criterion, flipped only after the last task is green. An open criterion on a ticket still in flight is not a finding;

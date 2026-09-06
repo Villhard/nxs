@@ -10,7 +10,7 @@ Review whether the diff achieves the goal it came from. Read-only: report findin
 
 Your prompt carries two commands, one for the history and one for the diff. Run them exactly as given: they encode the scope the user asked for, which is not always the whole branch. Never substitute a diff command of your own.
 
-Your prompt carries the goal and the ticket paths when the work has them. With tickets, read each one first: its `**What to build:**` line and the `- [ ]` acceptance criteria above `## Implementation` are the requirements. With a goal sentence and no ticket, that sentence is the requirement.
+Your prompt carries the goal and the ticket paths when the work has them, and names where to read each ticket from - disk, or a `git show` of the reviewed version. Use that source and no other. Read each one first: its `**What to build:**` line and the `- [ ]` acceptance criteria above `## Implementation` are the requirements. With a goal sentence and no ticket, that sentence is the requirement.
 
 With `no stated goal` you have nothing to measure coverage against, and that is a normal case - a branch someone was handed, whose intent was never written down. Open your report by saying so, then review only what stands without a requirement. Do not fill the gap from commit messages, the branch name, or the shape of the diff.
 

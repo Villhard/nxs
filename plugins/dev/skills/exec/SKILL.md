@@ -21,8 +21,9 @@ With no argument, list every `.scratch/<slug>/` that holds an `issues/` director
 Then walk `issues/*.md` in numeric order:
 
 - skip any file carrying a `Type:` line - that is a wayfinder decision ticket, not an implementation slice;
-- resume first: a ticket at `**Status:** claimed` with an open `- [ ]` under `## Implementation` is taken before anything on the frontier. One at `claimed` carrying an `## Implementation` section and no open task checkbox resumes at the closing step instead - verify the criteria, flip them, set `**Status:** resolved`;
+- resume first: a ticket at `**Status:** claimed` with an open `- [ ]` under `## Implementation` is taken before anything on the frontier. One at `claimed` carrying an `## Implementation` section and no open task checkbox resumes at the closing step instead - run the suite and the linter, verify the criteria, flip them, set `**Status:** resolved`. That close is committed with whatever of the last task is still uncommitted, and on its own as `chore(<scope>): close ticket NN` when the last task's commit already exists; under **no commits** it is written and not committed;
 - otherwise a candidate is `**Status:** ready-for-agent` and carries an `## Implementation` section. `needs-triage`, `needs-info`, `wontfix` and `resolved` are skipped; `ready-for-human` is never taken automatically - name it, read out its `## Comments` line, and ask;
+- a ticket path given as the argument at `**Status:** resolved` is a reopen, never a skip: say which acceptance criteria the change invalidated and which task checkboxes reopen with them, ask, and only after a yes and after the pre-task checks below flip those to `- [ ]`, set `**Status:** claimed`, and run the cycle over the reopened tasks. At least one task checkbox reopens, or nothing does: reopened criteria alone leave the cycle empty and the ticket closes again on the spot, so stop instead;
 - status is written `**Status:** <value>` and a bare `Status:` line reads the same;
 - `**Blocked by:**` reads as numbers: take every leading integer, comma separated, and resolve each `NN` against the single `issues/NN-*.md`; text after the number is a title and is ignored. A blocker is satisfied only when that file carries `resolved`. `None (can start immediately)`, or no line at all, is unblocked. An entry carrying no number is matched case-insensitively against the `# <NN>: <title>` headings in `issues/`, and only when nothing matches, ask once which ticket it means;
 - first unblocked candidate by number wins.
@@ -34,7 +35,7 @@ Four cases that are not a free choice:
 - `ready-for-agent` with no `## Implementation` - not an error, just unplanned: say `ticket NN has no plan, run /dev:plan <path>` and try the next number;
 - `claimed` or `resolved` with no `## Implementation` - stop. The section was removed, and a `to-tickets` re-run over the feature is the likely cause.
 
-Before the first task: the worktree is clean unless the user approved a dirty start, the ticket holds an `## Implementation` section, and `rg "NEEDS CLARIFICATION" <ticket>` returns nothing.
+Before the first task, and before any write to the ticket, a reopen included: the worktree is clean unless the user approved a dirty start, the ticket holds an `## Implementation` section, and `rg "NEEDS CLARIFICATION" <ticket>` returns nothing.
 
 ## THE CYCLE
 
@@ -43,13 +44,14 @@ Claim first: after the clean-worktree check and before the first worker, write `
 Repeat until no `- [ ]` is left under `## Implementation`:
 
 1. **Pick the task** - the first `### Task N:` section with open checkboxes. One section per cycle, all of its checkboxes, then move on. Work is found only inside `### Task N:` sections, and nothing above `## Implementation` is read as work or flipped during the cycle.
-2. **Delegate** - launch one `dev:worker` with the task text, the ticket's `## Conventions` section, the project rules bearing on how code is written, and any standing directive from this session. Assemble that set once and reuse it verbatim. What is not passed does not reach the code, and the acceptance criteria are deliberately not passed. Use a fresh subagent, never `subagent_type: "fork"` - a fork inherits this context and defeats the isolation.
-3. **Validate** - run the test and lint commands the task names. Fix failures and re-run until green.
-4. **Flip that task's checkboxes** to `- [x]`.
-5. **Commit** the code and the ticket together, one commit per task: `<type>(<scope>): <subject>`. When `.scratch/` is gitignored, commit the code alone and say so once - the ticket on disk, not git, is what a resume reads. Under **no commits**, skip this step and change nothing else.
-6. Next task.
+2. **Delegate** - record the worktree state first: `git diff HEAD`, plus the content of every file `git ls-files --others --exclude-standard` lists, since a file an earlier task created under **no commits** is untracked and its content before this task shows in no diff. That record is what the task's own changes are told apart from - the claim, an approved dirty start, or an earlier task. Then launch one `dev:worker` with the task text, the acceptance criteria this task serves written as plain lines under `Serves:` and never as checkboxes, the ticket's `## Conventions` section, the project rules bearing on how code is written, and any standing directive from this session. Assemble the conventions and rules once and reuse them verbatim; the task text and its `Serves:` lines change per task. What is not passed does not reach the code. Use a fresh subagent, never `subagent_type: "fork"` - a fork inherits this context and defeats the isolation.
+3. **Validate** - read the worker's `Verify:` line. A command counts as run when it is exactly the command the task names, it passed, and the worker ran it after its last edit to code, tests, or config; then do not run it again. `not run`, a failure, a different or narrower command, or any doubt - run it yourself. Fix failures and re-run until green.
+4. **Check the task diff** - what changed against the record from step 2, new and untracked files included, compared with the task's checkboxes and its `Serves:` lines. Every checkbox has its evidence - a change in the diff, a command result, or observed behavior, since a test-run checkbox leaves no diff and existing code can already satisfy one - and nothing in the diff serves no checkbox. A criterion that spans several tasks is not expected to hold until the last task it names, so read it for direction here and verify it at the close. A gap goes back to the same worker as a correction, once, and the cycle returns to step 3 after it; still open after that is a stop.
+5. **Flip that task's checkboxes** to `- [x]`. On the last task, close the ticket in the same write, before the commit: run the project's full test suite and linter once yourself, verify each acceptance criterion above `## Implementation` against the running code, flip every one to `- [x]`, and set `**Status:** resolved`.
+6. **Commit** the code and the ticket together, one commit per task: `<type>(<scope>): <subject>`. When `.scratch/` is gitignored, commit the code alone and say so once - the ticket on disk, not git, is what a resume reads. Under **no commits**, skip this step and change nothing else.
+7. Next task.
 
-Close the ticket in one write once the last task is green: verify each acceptance criterion above `## Implementation` against the running code, flip every one to `- [x]`, and set `**Status:** resolved`. It rides the final task's commit, so no extra commit appears. `resolved` is the token every `Blocked by:` in the directory waits on; it does not claim a review happened.
+The close rides the final task's commit because it is written before it, so no extra commit appears. `resolved` is the token every `Blocked by:` in the directory waits on; it does not claim a review happened. The full suite is this command's step, not a task: a plan never carries a task whose only job is to run it.
 
 One worker at a time, sequentially. The worker writes into the working directory, so `isolation: "worktree"` stays off. Read its structured result - files changed, decisions, deviations, follow-ups, blockers - not raw tool output. Collect `Decisions` and `Deviations` from every worker response in this run's context, including `blocked` and `partial` results. In the final message, including when the run stops unfinished, show each entry with its task number and reason; omit empty fields.
 
@@ -80,6 +82,7 @@ Stage the task's files by name, never `git add -A` and never `git add -f` - an i
 - a `Blocked by:` number with no matching ticket file;
 - tests or linter still failing after a reasonable attempt;
 - a destructive operation, a migration, or a dependency install;
+- a task checkbox still without evidence, or a task diff still carrying work no checkbox names, after one correction;
 - a diff reaching well past the task's goal, or unrelated files already changed;
 - a secret, a credential, or a large generated artifact in the diff;
 - an unclear requirement, or a merge conflict;

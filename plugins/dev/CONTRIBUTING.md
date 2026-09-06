@@ -80,7 +80,7 @@ Work is handed on through four named, minimal contracts. Nothing beyond what a c
 - `- [ ]` / `- [x]` - the checkboxes. Inside a `### Task N:` section it is a task checkbox; above `## Implementation` it is an acceptance criterion. `exec` finds work only in the first kind;
 - `## Conventions` - optional, at h2 so the token survives verbatim. `exec` passes it to every worker, and a worker inherits nothing else, so a rule missing from it does not reach the code.
 
-**the ticket -> `exec`** - the fourth contract, and the only one shared with another toolchain: the `**Status:**` line, the `**Blocked by:**` line, and the acceptance criteria. `exec` is the only writer of all three after the ticket is created, and a blocker counts as satisfied only when the file it names carries `resolved`.
+**the ticket -> `exec`** - the fourth contract, and the only one shared with another toolchain: the `**Status:**` line, the `**Blocked by:**` line, and the acceptance criteria. `exec` is the only writer of the criteria and of the execution transitions - `claimed`, `ready-for-human`, `needs-info` on a stop, `resolved`; `plan` writes the planning transitions - `needs-info` while a marker is open, `ready-for-agent` when none is - and nothing else on that line; `wontfix` is the user's. The value `needs-info` has two writers, one per transition, and that is deliberate. A blocker counts as satisfied only when the file it names carries `resolved`. The criteria also cross into the worker prompt as `Serves:` lines - plain text, never checkboxes, so the positional rule on `- [ ]` holds.
 
 `exec` takes one ticket per run and, inside it, the first task section with open checkboxes; it reads the rest as text.
 
@@ -184,7 +184,7 @@ What a user or another plugin file depends on:
 1. command names `/dev:<name>`, their arguments and modes;
 2. agent names, since skills spawn them by name;
 3. artifact paths and naming schemes (`.scratch/<feature-slug>/issues/NN-<slug>.md`);
-4. the four handoff contracts: the ticket's `**What to build:**` line and the headings of `spec.md` and `root-cause.md` that `plan` reads, the two ticket tokens `exec` depends on - `### Task N:` and `- [ ]` with its positional meaning - the `## Conventions` heading `exec` passes on to every worker, and the `**Status:**` line, the `**Blocked by:**` line and the acceptance criteria that `exec` writes;
+4. the four handoff contracts: the ticket's `**What to build:**` line and the headings of `spec.md` and `root-cause.md` that `plan` reads, the two ticket tokens `exec` depends on - `### Task N:` and `- [ ]` with its positional meaning - the `## Conventions` heading and the `Serves:` lines `exec` passes on to every worker, and the `**Status:**` line with its writer per value, the `**Blocked by:**` line and the acceptance criteria that `exec` writes;
 5. the gates that govern git and files: when a commit is allowed, what counts as a stop condition, what a skill writes to disk.
 
 Everything else is internal: wording inside `SKILL.md`, agent criteria and focus areas, README and CONTRIBUTING.
