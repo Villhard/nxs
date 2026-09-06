@@ -18,7 +18,7 @@ Example: /dev:plan .scratch/rate-limiting/issues/02-per-key-quota.md
 
 - Write the plan into the ticket and stop. Implementation code, the build, and any behavior change belong to `/dev:exec`.
 - The plan is a proposal, read-only until the user approves it.
-- A small single-step request needs no plan - route to `/dev:exec` or a direct edit instead of ceremony.
+- A small single-step request needs no plan - say so and offer a direct edit instead of ceremony. Never route it to `/dev:exec`, which stops on a ticket without `## Implementation`.
 
 ## TRACKER CONFIG
 
@@ -32,7 +32,7 @@ Local Markdown, or no such file anywhere: write under `.scratch/` without asking
 2. **Read the feature document.** `## Implementation Decisions` and `## Testing Decisions` from `spec.md`, or `## Root cause` and `## Fix direction` from `root-cause.md`. Those carry the decisions already made - the plan implements them rather than reopening them. A directory holding both takes the fix from `root-cause.md` and the build conventions from `spec.md`; a contradiction between the two is a question, not a call you make.
 3. **Read the code.** Inspect the files, patterns, and dependencies the work touches - directly or through the built-in Explore agent. Do not over-read. Clarify a fuzzy domain term before encoding it into the plan. Collect what belongs in `## Conventions` as you go: the decisions the feature document already made, the patterns the surrounding code follows, and anything the user has said in this session about how the work is to be done.
 4. **Close the open questions.** Ask one at a time, 2-4 concrete options with a recommendation. For several viable approaches, lay out the trade-offs and ask once.
-5. **Decompose.** 3-7 tasks. Each is one working unit: the code plus the tests for it, leaving the project green. Sequence by dependency - a task never calls what a later task creates. Every task earns its place; cut the rest.
+5. **Decompose.** As many tasks as the work has working units, no floor and no target. Each is one working unit: the code plus the tests for it, leaving the project green. Sequence by dependency - a task never calls what a later task creates. Every task earns its place; cut the rest. No task exists only to run the suite or the linter - `/dev:exec` runs both once itself at the close.
 6. **Append `## Conventions` and `## Implementation`** to the ticket using the template below - before `## Comments` when that heading exists, at the end of the file otherwise.
 7. **Run the self-check** before handing the plan over.
 
@@ -44,7 +44,9 @@ An open decision that would change the plan is marked in the ticket rather than 
 [NEEDS CLARIFICATION: <specific question>]
 ```
 
-Mark only when the answer changes the decision, and set the ticket to `**Status:** needs-info` while one is open. Before handing over, `rg NEEDS CLARIFICATION` over the ticket and the feature document: empty sets the ticket to `**Status:** ready-for-agent`, non-empty leaves it at `needs-info` and names the open question. Clearing the last marker out of `spec.md` flips every `needs-info` ticket in that feature, not only this one. `/dev:exec` refuses to start while one is open.
+Mark only when the answer changes the decision, and set the ticket to `**Status:** needs-info` while one is open. Before handing over, `rg NEEDS CLARIFICATION` over the ticket and the feature document, and read the ticket's `## Comments`. One rule decides the status, for this ticket and for every other `needs-info` ticket in the feature that the same answer touched: no marker in the ticket, none in `spec.md`, and no open question under its `## Comments` - `**Status:** ready-for-agent`; anything else - `needs-info`, naming what is still open. A ticket with a local reason keeps `needs-info` however the spec changed. `/dev:exec` refuses to start while a marker is open.
+
+This command writes `needs-info` and `ready-for-agent`, here and when it opens a ticket. The execution transitions - `claimed`, `ready-for-human`, `needs-info` on a stop, `resolved` - belong to `/dev:exec`, and this command never writes them.
 
 ## TEMPLATE
 
@@ -72,11 +74,6 @@ prompt. No such rules, no section.>
 - [ ] wire POST /api/users to the service and map errors to 201 / 409 / 422
 - [ ] write tests: fresh email stores a hash and never the plaintext, duplicate gives 409, malformed gives 422
 - [ ] run `go test ./users/... ./api/...`
-
-### Task N: Verify acceptance criteria
-
-- [ ] run the full suite: `go test ./...`
-- [ ] run the linter: `golangci-lint run`
 ````
 
 Rules the template does not show:
@@ -84,7 +81,7 @@ Rules the template does not show:
 - `### Task N:` and `- [ ]` are structural - `/dev:exec` finds the work by them, so keep both exactly as written, in English, whatever language the plan body uses.
 - Position decides what a checkbox means. Above `## Implementation` a `- [ ]` line is an acceptance criterion, written when the ticket was created and flipped once by `/dev:exec` after the last task is green; inside a `### Task N:` section it is a unit of work. Never put a task heading above `## Implementation`, and never put a checkbox between `## Implementation` and `### Task 1:`.
 - Tests are their own checkbox, never bundled into the implementation step.
-- The last checkbox of a task names the concrete command this project runs, not a bare "run tests".
+- The last checkbox of a task names the concrete command this project runs for that task's tests, not a bare "run tests" and not the whole suite - the whole suite and the linter run once, in `/dev:exec`, at the close.
 - A config-only or declarative task has no tests to write; verification is that the change takes effect.
 - `Files:` lists what the task is expected to touch. It bounds the task, it is not a contract - reaching one file further to finish the same capability is fine.
 

@@ -26,7 +26,7 @@ Six flat `/dev:<name>` commands:
 | `bug` | Investigate a bug to a confirmed root cause before any fix - the entry point for a bug report. |
 | `plan` | Decompose one ticket into sequenced tasks with checkboxes, written into the ticket itself, then self-check the plan against the repository. |
 | `exec` | Take the next unblocked ticket, execute its tasks and write the code, committing each finished task and marking the ticket resolved. |
-| `review` | Review the branch with five parallel agents, verify every finding, and report it. Writes nothing unless you add `fix`, which applies the confirmed findings and re-checks its own work with two agents. |
+| `review` | Review the branch with five parallel agents, verify every finding, and report it. Pass a ticket path or feature directory when `.scratch/` is ignored and the goal cannot be read from the branch. Writes nothing unless you add `fix`, which applies the confirmed findings and re-checks its own work with two agents. |
 | `commit` | Commit the current working changes, split into atomic commits - for edits made outside `exec`. |
 
 ## Model
@@ -65,9 +65,11 @@ One feature is one directory under `.scratch/<feature-slug>/` in the current rep
 
 A `- [ ]` line means two things inside a ticket, and its position decides which. Above `## Implementation` it is an acceptance criterion, written when the ticket is created and flipped once by `exec` after the last task is green. Inside a `### Task N:` section it is a unit of work, written by `plan` and flipped by `exec` as that task passes.
 
-The `**Status:**` line carries one of seven values: `needs-triage`, `needs-info`, `ready-for-agent`, `claimed`, `ready-for-human`, `resolved`, `wontfix`. After the ticket is created `exec` is the only command that writes it - `claimed` when it takes the ticket, `resolved` when every task is green and every criterion verified. `resolved` says the tasks ran green at that commit; it does not claim a review happened. `wontfix` is yours to write by hand, and it is the only manual state act left.
+The `**Status:**` line carries one of seven values: `needs-triage`, `needs-info`, `ready-for-agent`, `claimed`, `ready-for-human`, `resolved`, `wontfix`. Two commands write it, each its own transitions. `plan` writes `needs-info` while an open `[NEEDS CLARIFICATION: ...]` marker sits in the ticket and `ready-for-agent` once the last one is answered. `exec` writes the execution transitions - `claimed` when it takes the ticket, `ready-for-human` or `needs-info` when it stops on something it cannot clear, `resolved` when every task is green and every criterion verified. `resolved` says the tasks ran green at that commit; it does not claim a review happened. `wontfix` is yours to write by hand, and it is the only manual state act left.
 
-`exec` picks the next ticket itself: numeric order, `ready-for-agent`, with every number on its `**Blocked by:**` line already `resolved`. Pass a ticket path to override. One ticket per run.
+`exec` picks the next ticket itself: numeric order, `ready-for-agent`, with every number on its `**Blocked by:**` line already `resolved`. Pass a ticket path to override; a `resolved` ticket passed this way is reopened, after `exec` names which criteria and task checkboxes it reopens and you confirm. One ticket per run.
+
+Inside a ticket, `exec` hands each worker the task plus the acceptance criteria that task serves, checks the task's diff against its checkboxes before committing it, and runs the full suite and the linter once itself at the close. A worker's own test run is not repeated when it was the exact command the task names, run after the worker's last edit.
 
 This is the local-markdown layout of the `.scratch/` issue tracker, so the files stay readable by any toolchain that speaks it, and this plugin writes them with nothing else installed. It implements that layout only - no `gh` or `glab` dependency - and in a repository configured for GitHub or GitLab it names the tracker and asks before writing locally. Do not re-run an external slicing skill over a feature whose tickets already carry `## Implementation`: it rewrites those files and every plan in them is gone.
 

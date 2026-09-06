@@ -25,7 +25,7 @@ Example: /dev:bug PROJ-4213
 1. **Build the cheapest feedback loop** that reproduces the real symptom, not an adjacent failure. Scan the repo for what is already there - test runner, fixtures, local server - and pick the fastest: a failing test, a curl script against the API, a CLI invocation with a fixture, a replay of a captured trace, a throwaway wrapper around the suspect function, or a good-versus-broken differential run. A structured script for the user to run by hand is the last resort, for when the runtime is out of your reach.
 2. **Reproduce** exactly the symptom the report describes.
 3. **Minimize** it to the fewest steps, the least data, the fewest dependencies.
-4. **Form 3-5 ranked hypotheses**, each with a prediction: "if X is the cause, then change or observation Y produces Z". A hypothesis without a prediction is dropped.
+4. **Form ranked hypotheses**, each with a prediction: "if X is the cause, then change or observation Y produces Z". As many as there are checkable alternatives and no more - one, when a probe has already confirmed it. A hypothesis without a prediction is dropped.
 5. **Instrument one at a time** - one probe, one changed parameter, one added log. Parallel changes destroy the signal.
 6. **Run the 5-Why** on the hypothesis a probe confirmed, not on the original guess.
 7. **Confirm** - a root cause only once the predictions held and the evidence reproduces. Then, and only then, name the fix direction and propose a regression test at the nearest layer where the cause reproduces cheaply and stably.
@@ -50,7 +50,7 @@ Root cause: <statement>
 Fix direction: <what to actually fix>
 ```
 
-Example. Symptom: the API returns 500 on payment. Unhandled exception in the payment handler -> no catch for a provider timeout -> the provider never used to time out -> order volume grew and it responds slower -> the call is synchronous and RPS grew. Root cause: synchronous coupling to an external provider under increased load. The fix is not "add a catch" but "move to a queue".
+Example. Symptom: the API returns 500 on payment. Unhandled exception in the payment handler -> no catch for a provider timeout -> the provider never used to time out -> order volume grew and it responds slower -> the call is synchronous and RPS grew. Root cause: synchronous coupling to an external provider under increased load. The fix direction follows the evidence at that layer - a timeout with a handled error, a queue, or something else - and is named as the smallest change the evidence supports, never as the largest one the chain could justify.
 
 ## WHEN IT WILL NOT CONFIRM
 
