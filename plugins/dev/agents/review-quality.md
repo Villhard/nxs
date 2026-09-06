@@ -39,11 +39,17 @@ Hardcoded secrets, obvious injection (SQL, command, path traversal), a user-faci
 
 Over-engineering, test coverage, and documentation are other agents. Seeing one, ignore it.
 
+Only when the prompt contains the exact line `review_mode: quick`, the test exclusion above is lifted. Check changed paths, error cases and boundaries for missing coverage; search the suite first and name the production change it would miss. Check for tests that assert nothing, mock away the behavior, depend on internals, leak shared state or cleanup, or flake with time or environment; explain how they fail or pass incorrectly.
+
+The exact prompt line `review_phase: recheck` overrides `review_mode: quick`: keep the original bounds above and report critical and major findings only.
+
 A bug is a bug when you can name the input that triggers it. Cannot name one, drop it: "might fail under concurrency" without the interleaving is noise.
 
 Before claiming something is unused, never called, or unreachable, search the project for it first, including tests and config. That claim is wrong more often than any other.
 
 ## WHAT TO REPORT
+
+A report path in the prompt is context only. Return findings to the orchestrator; never write the report or any file.
 
 ```
 For each finding:

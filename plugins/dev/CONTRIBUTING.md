@@ -20,7 +20,7 @@ The global `~/.claude/CLAUDE.md` and `settings.json` stay out of this repo - you
 ## TWO TIERS
 
 - Global `~/.claude/CLAUDE.md`: always on, applies to every response. Lives outside the plugin.
-- Command skills `/dev:<name>`: the workflow, visible in the `/` menu. There are six: `rnd`, `bug`, `plan`, `exec`, `review`, `commit`.
+- Command skills `/dev:<name>`: the workflow, visible in the `/` menu. There are seven: `rnd`, `bug`, `plan`, `exec`, `review`, `fix`, `commit`.
 
 There is no third tier. A rule lives in exactly one file - the command that uses it, or the agent that uses it. No background skills, no `reference/` directories, no cross-skill injection.
 
@@ -32,12 +32,12 @@ One term, one meaning, everywhere in this plugin. A word in this table is never 
 
 | term | means | never call it |
 | --- | --- | --- |
-| command | a `/dev:<name>` entry point the user invokes. There are six | a skill, in user-facing text |
+| command | a `/dev:<name>` entry point the user invokes. There are seven | a skill, in user-facing text |
 | skill | the `skills/<name>/SKILL.md` file implementing a command. An authoring word | a command, in CONTRIBUTING |
 | agent | a subagent a command spawns: `worker` and the five `review-*` | a skill |
 | feature | one directory `.scratch/<feature-slug>/`: a feature document and the tickets cut from it | a project, an epic, a story |
 | ticket | one whole unit of work: one file `.scratch/<feature-slug>/issues/NN-<slug>.md` | a story, a folder, a work item |
-| artifact | one durable markdown file a command writes, or the pair of sections `/dev:plan` appends to a ticket | a commit, a report, a follow-up |
+| artifact | one durable markdown file a command writes, or the pair of sections `/dev:plan` appends to a ticket | a commit, a follow-up |
 | spec | the feature document `/dev:rnd` writes, `spec.md` | a brief |
 | root cause | the feature document `/dev:bug` writes, `root-cause.md` | a root-cause brief, a brief, a diagnosis |
 | plan | the `## Conventions` and `## Implementation` sections `/dev:plan` appends to a ticket | a plan file, `plan.md` |
@@ -47,9 +47,9 @@ One term, one meaning, everywhere in this plugin. A word in this table is never 
 | status | the ticket's `**Status:**` line, one of the seven values | a label, a state field |
 | request | what the user arrives with: a description, an idea, a question, a ticket | a task |
 | tracker key | the key or URL of an external ticket | a tracker identifier |
-| sweep | the first review pass: five agents over the diff as it arrived | a round, a first round |
+| sweep | the first review pass: five agents, two with explicit `quick`, or a direct pass for a trivial diff without `quick` | a round, a first round |
 | re-check | the narrowed pass after fixes land: two agents, critical and major only | a second round, a retry |
-| fix mode | a `/dev:review` run carrying the `fix` argument, the only run that writes | a fix phase, auto-fix |
+| report | the `review.md` artifact written by `/dev:review` and updated by `/dev:fix` | a review log, a ticket |
 
 Three collisions this table exists to prevent: `task` used to mean both the incoming work and a numbered block under `## Implementation`; `brief` used to mean both feature documents that feed `/dev:plan`, which is why neither is called one now; and `- [ ]`, which is an acceptance criterion above `## Implementation` and a task checkbox inside a `### Task N:` section - one token, opposite meanings, separated by position and by nothing else. Every term this plugin uses in that load-bearing way has a row here. Add one the moment you notice it missing; whether the skill or the row landed first does not matter.
 
@@ -68,7 +68,7 @@ Security-critical content (never commit secrets, confirm destructive operations)
 
 ## THE HANDOFF CONTRACTS
 
-Work is handed on through four named, minimal contracts. Nothing beyond what a contract names crosses between them.
+Work is handed on through five named, minimal contracts. Nothing beyond what a contract names crosses between them.
 
 **`rnd` -> `plan`** - the ticket header block and two spec headings. `plan` reads the ticket's `**What to build:**` line and its acceptance criteria, plus `## Implementation Decisions` and `## Testing Decisions` from `spec.md`; the rest it reads as text.
 
@@ -84,11 +84,22 @@ Work is handed on through four named, minimal contracts. Nothing beyond what a c
 
 `exec` takes one ticket per run and, inside it, the first task section with open checkboxes; it reads the rest as text.
 
-Keep all four that narrow. Any new required section is a new coupling between two files that are otherwise independent, and a heading a reader depends on can no longer be renamed without a version bump.
+**`review` -> `fix`** - the report has six headings: `## Scope`, `## Mode`, `## Requirements`, `## Findings`, `## Dismissed`, `## Follow-ups`.
+
+- Scope holds `repo:` (repository root), `origin:` (credential-free URL or `none`), `branch:` (branch name, `HEAD` when detached), `selector:` (`branch`, `staged`, or a repository-relative path), immutable `base:` and `tip:` commit OIDs, and staged-only `index:` SHA256 of the exact cached binary diff. Branch/path base is the merge-base OID; staged base is the original HEAD. Store data, never commands.
+- Mode holds `mode: full | quick`, `sweep: complete | incomplete`, and optional fix facts: `fix: in-progress | done | stopped - <reason>`, `fixed at: <commit OID>`, `re-check: none | clean | unresolved | incomplete`. Sweep facts never change during a fix.
+- Requirements holds `goal: <goal sentence>` (or `no stated goal`) and source pins: `- index: <path> @ <blob OID>`, `- disk: <path> sha256 <SHA256 hex>`. Fields are plain text data; validate and shell-quote them before rebuilding commands.
+- Findings have location, severity, issue, impact and fix. A `result: fixed | dropped - <reason> | unresolved` closes a finding. Dismissed retains reasons; Follow-ups retains open items with their origin and `not re-verified` when carried forward.
+
+Both commands check scope and requirement currency. Unfixed uses `tip:` and the staged digest; `fix: done` uses `fixed at:` and skips that digest. Incomplete or unfinished work never passes. Review writes `sweep: incomplete` before starting and completes it only if the facts stayed current. Fix writes `fix: in-progress` before code, commits code alone, then records the outcome outside that commit. A no-op writes only finding results and remains unfixed.
+
+Agent prompt markers are exact: `review_mode: quick` widens quality to tests and implementation to documentation and simplification; `review_phase: recheck` keeps their original bounds and restricts findings to critical and major, even if both markers appear. Fix passes only the latter. A report path is read-only context for agents; findings return to the orchestrator.
+
+Keep all five that narrow. Any new required section is a new coupling between two files that are otherwise independent, and a heading a reader depends on can no longer be renamed without a version bump.
 
 ## WHEN TO ADD SOMETHING NEW
 
-This plugin stays small on purpose: six commands, six agents, nothing else. Add a command only when all of these hold at once:
+This plugin stays small on purpose: seven commands, six agents, nothing else. Add a command only when all of these hold at once:
 
 - the intent is distinct and does not reduce to an existing command, not even through a mode word;
 - the intent is frequent - you reach for it several times a month, not once a quarter;
@@ -140,17 +151,19 @@ An agent is self-contained: it states its own subject, its own bounds, and its o
 
 ## ARTIFACT PATHS
 
-Everything a command writes goes under `.scratch/<feature-slug>/` in the current repository, which is the local-markdown layout of the issue tracker the wider toolchain uses. Two files and one appended pair of sections:
+Artifacts live under `.scratch/<feature-slug>/` in the current repository, following the local-markdown issue tracker. A report with no matching feature uses the fallback below:
 
 | command | artifact | file |
 | --- | --- | --- |
 | `rnd` | spec, plus one ticket per slice | `.scratch/<feature-slug>/spec.md`, `.scratch/<feature-slug>/issues/NN-<slug>.md` |
 | `bug` | root cause | `.scratch/<feature-slug>/root-cause.md` |
 | `plan` | plan | `## Conventions` and `## Implementation`, appended to `.scratch/<feature-slug>/issues/NN-<slug>.md` |
+| `review` | report | `.scratch/<feature-slug>/review.md`, else `.scratch/reviews/<branch-slug>/review.md` |
+| `fix` | updated report | the same input report |
 
-Each of those three skills states its own path in its `## ARTIFACT` section, and that is the only place the path lives. The table above is a map, not a second source. README carries the human-facing overview.
+Each of these skills states its own path in its `## ARTIFACT` section, and that is the only place the path lives. The table above is a map, not a second source. README carries the human-facing overview.
 
-`review` and `commit` write no artifact. `exec` writes none either, but it is the exception this rule now has to name: it MUTATES a ticket another command wrote - the `**Status:**` line, the task checkboxes, the acceptance criteria, and one `## Comments` line on a stop. Creating a file and updating the state of one are different acts, and only the first earns an `## ARTIFACT` section. None of the three carries one, and none should grow one.
+`commit` writes no artifact. `exec` mutates the ticket's `**Status:**` line, task checkboxes, acceptance criteria and a `## Comments` line on a stop; it has no `## ARTIFACT` section. `fix` has one because its report output is the review handoff contract. Review writes only its named report, never code, index or commits. Fix keeps the report outside its code commit and names any tracked report left dirty.
 
 `rnd` and `plan` resolve the tracker layout before their first write into a NEW feature directory: `docs/agents/issue-tracker.md` in the repository, then the global default at the same relative path, then local markdown. Local markdown is what the wider toolchain falls back to as well, so the fallback is copied rather than chosen. In a repository configured for GitHub or GitLab neither command picks silently. Neither ever writes that config file or runs a setup skill, and this plugin ships no `gh` or `glab` dependency.
 
@@ -182,9 +195,9 @@ Every edit to bundled content - skills, agents, manifests - bumps the `version` 
 What a user or another plugin file depends on:
 
 1. command names `/dev:<name>`, their arguments and modes;
-2. agent names, since skills spawn them by name;
+2. agent names, since skills spawn them by name, and the exact `review_mode: quick` and `review_phase: recheck` prompt markers;
 3. artifact paths and naming schemes (`.scratch/<feature-slug>/issues/NN-<slug>.md`);
-4. the four handoff contracts: the ticket's `**What to build:**` line and the headings of `spec.md` and `root-cause.md` that `plan` reads, the two ticket tokens `exec` depends on - `### Task N:` and `- [ ]` with its positional meaning - the `## Conventions` heading and the `Serves:` lines `exec` passes on to every worker, and the `**Status:**` line with its writer per value, the `**Blocked by:**` line and the acceptance criteria that `exec` writes;
+4. the five handoff contracts: the ticket's `**What to build:**` line and the headings of `spec.md` and `root-cause.md` that `plan` reads, the two ticket tokens `exec` depends on - `### Task N:` and `- [ ]` with its positional meaning - the `## Conventions` heading and the `Serves:` lines `exec` passes on to every worker, and the `**Status:**` line with its writer per value, the `**Blocked by:**` line and the acceptance criteria that `exec` writes, plus the six report headings and fields in `review -> fix`;
 5. the gates that govern git and files: when a commit is allowed, what counts as a stop condition, what a skill writes to disk.
 
 Everything else is internal: wording inside `SKILL.md`, agent criteria and focus areas, README and CONTRIBUTING.

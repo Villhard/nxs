@@ -12,13 +12,13 @@ One ticket through the loop:
 /dev:rnd add rate limiting to the public API   # a spec plus the tickets cut from it, under .scratch/
 /dev:plan                                      # plan the next ticket into sequenced tasks
 /dev:exec                                      # run one ticket to the end, one commit per task
-/dev:review                                    # five reviewers over the branch, findings reported
-/dev:review fix                                # same, and the confirmed findings get fixed
+/dev:review                                    # review the branch and write review.md
+/dev:fix                                       # apply the saved findings and record the outcome
 ```
 
 ## Commands
 
-Six flat `/dev:<name>` commands:
+Seven flat `/dev:<name>` commands:
 
 | command | when to use |
 | --- | --- |
@@ -26,7 +26,8 @@ Six flat `/dev:<name>` commands:
 | `bug` | Investigate a bug to a confirmed root cause before any fix - the entry point for a bug report. |
 | `plan` | Decompose one ticket into sequenced tasks with checkboxes, written into the ticket itself, then self-check the plan against the repository. |
 | `exec` | Take the next unblocked ticket, execute its tasks and write the code, committing each finished task and marking the ticket resolved. |
-| `review` | Review the branch with five parallel agents, verify every finding, and report it. Pass a ticket path or feature directory when `.scratch/` is ignored and the goal cannot be read from the branch. Writes nothing unless you add `fix`, which applies the confirmed findings and re-checks its own work with two agents. |
+| `review` | Review the diff and write `review.md`, changing no code, index or commits. Pass a ticket path or feature directory to name requirements. Add `quick` for two reviewers with wider duties; otherwise five, or a direct pass for a trivial diff. |
+| `fix` | Read the saved report, verify its currency and open findings, apply the confirmed fixes, commit code alone and record the outcome. Critical or major fixes get a two-agent re-check. |
 | `commit` | Commit the current working changes, split into atomic commits - for edits made outside `exec`. |
 
 ## Model
@@ -34,13 +35,13 @@ Six flat `/dev:<name>` commands:
 Two tiers, nothing in between:
 
 1. Global `~/.claude/CLAUDE.md` - always-on rules (output language, style, safety). Hand-authored by you, NOT shipped by this plugin (see Setup). The commands defer output style and the safety rules on secrets and destructive operations to it, so they fire even when no skill loads.
-2. The six commands above. Each is self-contained: no shared background skills, no `reference/` files, no cross-skill injection. A rule lives in exactly one file.
+2. The seven commands above. Each is self-contained: no shared background skills, no `reference/` files, no cross-skill injection. A rule lives in exactly one file.
 
-Commands hand work to the next one through four minimal contracts: `plan` reads a ticket by its `**What to build:**` line and its acceptance criteria, reads a spec by its `## Implementation Decisions` and `## Testing Decisions` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a ticket by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes - plus the optional `## Conventions` section it hands to every worker, and it drives the ticket's `**Status:**` and `**Blocked by:**` lines. Nothing beyond that crosses between them.
+Commands hand work to the next one through five minimal contracts: `plan` reads a ticket by its `**What to build:**` line and its acceptance criteria, reads a spec by its `## Implementation Decisions` and `## Testing Decisions` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a ticket by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes - plus the optional `## Conventions` section it hands to every worker, and it drives the ticket's `**Status:**` and `**Blocked by:**` lines. The fifth contract is `review -> fix`: the report carries the reviewed scope, mode, pinned requirements, findings, dismissals and follow-ups. Nothing beyond those contracts crosses between them.
 
-Five of the six commands carry `disable-model-invocation: true`, so they run only when you type them. The workflow is yours to pick, not the model's to guess, and the plugin stays out of the way when you drive a session by hand or through another planning tool. `commit` is the exception: it fires on its own trigger, since "commit this" is a request to commit rather than a request for a command.
+Six of the seven commands carry `disable-model-invocation: true`, so they run only when you type them. The workflow is yours to pick, not the model's to guess, and the plugin stays out of the way when you drive a session by hand or through another planning tool. `commit` is the exception: it fires on its own trigger, since "commit this" is a request to commit rather than a request for a command.
 
-Agents (`agents/*.md`) - one write-capable `worker` used by `/dev:exec`, the only agent that writes, plus five read-only reviewers used by `/dev:review`:
+Agents (`agents/*.md`) - one write-capable `worker` used by `/dev:exec` and `/dev:fix`, the only agent that writes, plus five read-only reviewers used by `/dev:review`:
 
 | agent | lens |
 | --- | --- |
@@ -60,8 +61,14 @@ One feature is one directory under `.scratch/<feature-slug>/` in the current rep
 | `bug` | root cause | `root-cause.md` |
 | `plan` | `## Conventions` and `## Implementation`, appended to one ticket | `issues/NN-<slug>.md` |
 | `exec` | the ticket's `**Status:**` line and its checkboxes | `issues/NN-<slug>.md` |
+| `review` | report | `review.md` (fallback below) |
+| `fix` | finding results and fix outcome | the same `review.md` |
 
-`review` and `commit` write nothing here - what they produce lands in git. `review` leaves nothing at all unless you ask for `fix`, and then commits as `fix: address review findings`.
+`review` writes `.scratch/<feature-slug>/review.md` for one matching feature, or `.scratch/reviews/<branch-slug>/review.md` when there is none. Several matching features require a choice. `fix` updates that same report after committing code as `fix: address review findings`; the report stays outside the commit, even when tracked. `commit` writes no artifact.
+
+Run `/dev:review quick` to request two reviewers explicitly. The report says `quick`; it is not a full review gate. Quality also covers tests and implementation also covers docs and simplification. A fix re-check uses their original bounds, with critical and major findings only.
+
+A repeated review asks before sweeping a current, complete, unfixed report again. `fix` stops when the scope or requirements changed, the sweep or an earlier fix is unfinished, or unrelated worktree changes would enter the fix. Run review again after a stale or unfinished report. An already-applied report runs no worker; an empty report or findings all dropped by verification make no commit. Each new sweep overwrites the report and carries open follow-ups forward as not re-verified.
 
 A `- [ ]` line means two things inside a ticket, and its position decides which. Above `## Implementation` it is an acceptance criterion, written when the ticket is created and flipped once by `exec` after the last task is green. Inside a `### Task N:` section it is a unit of work, written by `plan` and flipped by `exec` as that task passes.
 

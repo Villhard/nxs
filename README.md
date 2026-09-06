@@ -4,7 +4,7 @@ A Claude Code plugin marketplace. One plugin lives here, versioned and released 
 
 | plugin | what it gives you |
 | --- | --- |
-| [`dev`](plugins/dev) | An opinionated plan -> exec -> review loop. Six flat `/dev` commands, a single write-capable worker, five review agents over the finished branch. |
+| [`dev`](plugins/dev) | An opinionated plan -> exec -> review loop. Seven flat `/dev` commands, a single write-capable worker, five review agents over the finished branch. |
 
 ## Install
 
