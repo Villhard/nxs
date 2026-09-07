@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.23.0] - 2026-09-07
+
+### Added
+
+- Exec saves substantive worker decisions and deviations in the ticket's Comments and passes applicable notes to later workers, including across sessions.
+- Exec records the current task, git mode, starting commit and remaining step. A repeated invocation reconciles interrupted work once at entry, including checked tasks awaiting a commit and interrupted ticket closes. Completed tasks are not re-reviewed between workers.
+
+### Changed
+
+- A resume preserves `no commits` and permits only changes attributable to the interrupted work. Ambiguous or foreign changes stop before staging; an unfinished close is handled before reopening a resolved ticket or taking a dependent ticket.
+- Execution notes share existing ticket writes and task commits. Ignored tickets keep their records on disk; tracked tickets use the task commit as their receipt without another bookkeeping commit.
+
 ## [0.22.2] - 2026-09-07
 
 ### Changed
