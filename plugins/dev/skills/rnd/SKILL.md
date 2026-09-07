@@ -23,7 +23,7 @@ Example: /dev:rnd add rate limiting to the public API
 
 ## CLARIFY
 
-Read the relevant code, patterns, and integration points first - directly or through the built-in Explore agent. Ask only about what the code does not answer. Do not over-read. Clarify a fuzzy domain term before anything else.
+Read the relevant code, patterns, and integration points first - directly or through the built-in Explore agent. Scale the reading to the request: trace the current behavior and likely change points, look for reusable code, and check affected consumers and tests for a migration. Before discussing approaches, show a short account of those findings with repository-relative paths and symbol names where applicable. If no suitable implementation was found, say where you looked; do not invent an analogue. Ask only about what the code does not answer. Do not over-read. Clarify a fuzzy domain term before anything else.
 
 Ask one question at a time, 2-4 concrete options with a recommendation, open-ended only where a choice is unnatural. After each answer, revise the understanding and derive the next question from the updated picture.
 
@@ -85,7 +85,7 @@ The spec carries these seven headings, in this order, and nothing else at `##`:
 ## Further Notes
 ```
 
-`## Solution` holds the chosen approach with the answers integrated. `## Implementation Decisions` holds the facts from the code and the decisions every ticket inherits. `## Out of Scope` names what is explicitly not being done. `## Further Notes` takes the options with their rejection reasons, the stress verdict when the stress step ran, and a `- Q: <question> -> A: <answer>` log when at least one question was asked. Sections scale with the request, an empty one is dropped, headings keep their names.
+`## Solution` holds the chosen approach with the answers integrated. `## Implementation Decisions` holds the findings that influenced the approach, with their code references, and the decisions every ticket inherits, each with a brief reason; keep assumptions distinguishable from confirmed facts. `## Testing Decisions` holds the relevant test findings and chosen checks. `## Out of Scope` names what is explicitly not being done. `## Further Notes` takes the options with their rejection reasons, the stress verdict when the stress step ran, and a `- Q: <question> -> A: <answer>` log when at least one question was asked. Sections scale with the request, an empty one is dropped, headings keep their names.
 
 Nothing durable is written before the user approves it.
 
