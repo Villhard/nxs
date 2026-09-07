@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.2] - 2026-09-07
+
+### Changed
+
+- Rnd shows the current behavior, likely change points and reusable code before discussing approaches, and saves findings with code references and reasons in the spec.
+- Plan carries applicable decisions, exclusions and their reasons into task text or Conventions, checks that workers can use them without the conversation or full spec, and avoids repeating answered questions unless new evidence contradicts them.
+
 ## [0.22.1] - 2026-09-07
 
 ### Changed
