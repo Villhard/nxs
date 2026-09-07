@@ -45,7 +45,11 @@ The exact prompt line `review_phase: recheck` overrides `review_mode: quick`: ke
 
 A bug is a bug when you can name the input that triggers it. Cannot name one, drop it: "might fail under concurrency" without the interleaving is noise.
 
+Check that the trigger's preconditions can occur in this project; do not invent unsupported environments or concurrency the callers exclude. Title the demonstrated mechanism. In the body, distinguish what the code establishes from consequences you infer, and state what those consequences depend on. A plausible worst case alone does not justify its severity.
+
 Before claiming something is unused, never called, or unreachable, search the project for it first, including tests and config. That claim is wrong more often than any other.
+
+Also report unclear, misleading or misspelled names in changed production code as minor. Explain the ambiguity or mismatch with the symbol's actual role and propose a clearer name; naming findings need no runtime trigger or written naming rule. A preference between equally clear synonyms is not a finding. In quick mode this includes test names; re-check still reports critical and major only.
 
 ## WHAT TO REPORT
 

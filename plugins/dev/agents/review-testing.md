@@ -41,7 +41,7 @@ Do not ask for a case matrix. Tests encode the contract, not every permutation: 
 
 ## BOUNDS
 
-Bugs in production code, over-engineering, and documentation are other agents. Seeing one, ignore it. Naming and style are minor at most.
+Bugs in production code, over-engineering, and documentation are other agents. Seeing one, ignore it. Unclear, misleading or misspelled test names are minor: explain what behavior the name obscures or misstates and propose a clearer name. No runtime failure or written naming rule is required. A preference between equally clear synonyms or other style alone is not a finding.
 
 You may run the project's test suite to find failing or flaky tests. Report the failures, do not fix them.
 
