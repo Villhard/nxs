@@ -45,9 +45,21 @@ Before any edit, confirm foreign work when the user has not already authorized f
 
 Anything else - stop, list the files, ask the user to save or scope that work first. Do not stash or snapshot it. Report-only dirt is permitted, but an already-staged report must be safely excluded from the eventual commit without losing either version; if that cannot be isolated safely, stop and ask the user to unstage the report first. Never silently include it.
 
+## SEVERITY BAR
+
+Rate the demonstrated consequence under reachable conditions:
+
+- **critical** - data loss or corruption, a security breach, or a crash on an ordinary user path.
+- **major** - wrong behavior or a broken contract, beyond contained minor impact.
+- **minor** - a real defect with contained impact.
+
+For a test finding, name the concrete defect it would miss or the way the test fails incorrectly. A coverage gap over currently correct behavior is minor unless evidence shows a broader present failure in the test process; do not rate a hypothetical production defect as though it already existed. For documentation, name the reader's wrong action or misunderstanding. Rate instructions a machine or agent executes by what their consumer does wrong. Unclear, misleading or misspelled identifiers and test names are minor: explain the ambiguity or mismatch with their actual role and propose a clearer name. A runtime failure or written naming rule is not required. A synonym preference or prose taste alone is not a finding; a prose typo with no changed meaning is not a finding.
+
+Severity measures the defect, not the cost of fixing it. Keep a confirmed in-scope defect in Findings even when its fix is expensive or risky; describe that reach and risk under Fix. Out-of-scope defects belong in Follow-ups.
+
 ## VERIFY AGAIN
 
-Read each open finding's location with 20-30 lines of context and trace guards, validation and tests. An uncertain location is a stop. Gone or already handled - add `result: dropped - <reason>`. Merge duplicates by place and problem; retain a dismissal reason. Keep severity unless code warrants a change, recording why; never lower it to avoid a re-check.
+Read each open finding's location with 20-30 lines of context in the version being checked. Trace a reachable input or state through callers and guards to the claimed consequence; cite the locations that establish or disprove it. For naming claims, compare the name with its actual role and uses; cite the ambiguity or mismatch instead of requiring a runtime failure. For coverage or documentation claims, inspect the relevant tests or contract too. A passing test alone does not disprove a runtime defect. Separate what the code proves from inferred consequences. An uncertain location is a stop. Gone or already handled - add `result: dropped - <reason>` with evidence. Merge duplicates by place and problem; retain a dismissal reason. Apply SEVERITY BAR; change severity only when the evidence warrants it, recording the old and new levels and why. Never lower it to avoid a re-check.
 
 Keep the original sweep facts and all earlier conclusions. Accumulate each verification result, dismissal reason, actual correction and check result as finding history for the report and re-check prompts. A pre-existing test or lint failure is still a failure.
 
@@ -63,7 +75,7 @@ No open findings, or all dropped - successful no-op. Write only the new `result:
 
 ## RE-CHECK
 
-After each applicable commit, launch `dev:review-quality` and `dev:review-implementation` together. Pass `review_phase: recheck`, critical and major only, and never `review_mode: quick`. Wait for both before proceeding.
+After each applicable commit, launch `dev:review-quality` and `dev:review-implementation` together. Pass SEVERITY BAR verbatim and `review_phase: recheck`, critical and major only, and never `review_mode: quick`. Wait for both before proceeding.
 
 Rebuild both commands from the validated, immutable Scope base and the latest fix commit: `git log <base>..<tip> --oneline` and `git diff <base>..<tip>`. Append `-- <path>` to both for a path selector. Staged also uses this range, never the now-empty index. Pass both commands verbatim, the pinned requirement sources, recorded goal, report path as read-only context and accumulated finding history. Never paste the diff.
 

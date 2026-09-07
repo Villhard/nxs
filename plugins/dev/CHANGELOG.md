@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.1] - 2026-09-07
+
+### Changed
+
+- Review and fix use the same severity bar, passed to every sweep and re-check reviewer. Test and documentation findings need concrete consequences; executable instructions are rated by what their consumer does wrong.
+- Verification traces reachable triggers through callers and guards, cites evidence, and separates demonstrated defects from inferred consequences. Expensive or risky fixes remain in Findings with their cost under Fix.
+- Quality findings name the demonstrated mechanism and check its preconditions. Unclear, misleading or misspelled identifiers and test names are minor; equally clear synonym preferences and other style alone are not findings.
+
 ## [0.22.0] - 2026-09-06
 
 ### Added
