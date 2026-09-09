@@ -10,6 +10,12 @@
       "source": "./plugins/dev",
       "category": "development",
       "description": "An opinionated plan -> exec -> review loop: seven flat /dev commands, a single write-capable worker, and five review agents over the finished branch"
+    },
+    {
+      "name": "std",
+      "source": "./plugins/std",
+      "category": "education",
+      "description": "Conversational learning from books, courses, and trusted sources, with a mission and durable progress"
     }
   ]
 }

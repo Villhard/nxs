@@ -1,0 +1,11 @@
+{
+  "name": "std",
+  "version": "0.1.0",
+  "description": "Conversational learning from books, courses, and trusted sources, with a mission and durable progress",
+  "author": {
+    "name": "Victor Ryabov"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/Villhard/nxs",
+  "homepage": "https://github.com/Villhard/nxs/tree/main/plugins/std"
+}
