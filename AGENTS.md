@@ -1,5 +1,5 @@
 # AGENTS
 
-Read `CONTRIBUTING.md` and the relevant plugin's `CONTRIBUTING.md` before editing. They define the shared authoring rules, house style, verification, versioning, and public-safety requirements for this repository.
+Before editing, read the [shared rules](CONTRIBUTING.md) and the relevant plugin's instructions: [dev](plugins/dev/CONTRIBUTING.md), [std](plugins/std/CONTRIBUTING.md).
 
-Keep client-specific setup documented for both Claude Code and Codex. Do not infer complete workflow compatibility from successful plugin installation.
+Document shared operations for both Claude Code and Codex. State compatibility only at the level verified.

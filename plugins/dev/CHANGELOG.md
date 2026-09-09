@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.23.3] - 2026-09-10
+
+### Changed
+
+- Rewrite guides concisely, centralize client setup, and link detailed contracts to their source instructions; behavior is unchanged.
+
 ## [0.23.2] - 2026-09-10
 
 ### Changed
