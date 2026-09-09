@@ -4,7 +4,7 @@ Learn from books, courses, and topics through conversation in Claude Code or Cod
 
 ## Install
 
-After this version is published to `Villhard/nxs`, refresh your existing `nxs` marketplace and install:
+Follow the marketplace [install instructions](../../README.md#install), selecting `std@nxs`:
 
 ```bash
 # Claude Code
@@ -14,15 +14,9 @@ claude plugin install std@nxs
 codex plugin add std@nxs
 ```
 
-If `nxs` is not configured yet, add `https://github.com/Villhard/nxs.git` with your client's `plugin marketplace add` command first. Start a new session after installation so the plugin is loaded.
+The shared [update instructions](../../README.md#update) give the marketplace-refresh and plugin-update commands for both clients. Start a new session after installing or updating.
 
-For a local Claude Code preview before publishing:
-
-```bash
-claude --plugin-dir ./plugins/std
-```
-
-Run that command from the marketplace checkout; it does not install a global plugin. The Codex manifest points at the same skill directory.
+Installation and skill discovery are verified in both clients. Sample learning dialogues were exercised in Claude Code and in Codex using the same skill; these are spot checks, not a guarantee of every lesson's correctness. Both manifests use the shared `skills/teach` implementation.
 
 ## Use
 
@@ -70,4 +64,10 @@ These are independently written instructions informed by the following public sk
 
 ## Development
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the versioned contract and verification scenarios.
+For a local Claude Code preview from the marketplace checkout:
+
+```bash
+claude --plugin-dir ./plugins/std
+```
+
+This loads local content for that session without changing an installed plugin. See [CONTRIBUTING.md](CONTRIBUTING.md) for the versioned contract and verification scenarios, and the repository [development guidance](../../CONTRIBUTING.md#local-development-and-release) for source and cache behavior.
