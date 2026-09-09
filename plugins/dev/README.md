@@ -6,13 +6,13 @@ Why install it over ad-hoc prompts: the workflow is fixed and named (`/dev:plan`
 
 ## Compatibility
 
-The workflow below targets Claude Code. Installation and skill discovery in Codex are verified, but the complete execution/review/fix flow with its named agents has not been verified there. The plugin currently ships `.claude-plugin/plugin.json` and Claude Code agent definitions; it does not ship a separate Codex manifest or agent adapter.
+The commands and named-agent definitions were authored for Claude Code. Installation and skill discovery in Codex are verified, but the complete execution/review/fix flow with its named agents has not been verified there. The plugin currently ships `.claude-plugin/plugin.json` and Claude Code agent definitions; it does not ship a separate Codex manifest or agent adapter.
 
-The `/dev:<name>` examples, `~/.claude/CLAUDE.md`, and `settings.json` instructions below are Claude Code conventions. In Codex, select the plugin's skill or request its instructions by name; use Codex's own global instructions and permissions. Skill discovery alone does not verify named-agent delegation or identical activation rules.
+The `/dev:<name>` examples, `~/.claude/CLAUDE.md`, and `settings.json` instructions below are Claude Code conventions. Codex setup and invocation examples are included below. Skill discovery alone does not verify named-agent delegation or identical activation rules.
 
 ## Quickstart
 
-For a new feature, one ticket through the loop:
+In Claude Code, one new-feature ticket through the loop:
 
 ```
 /dev:rnd add rate limiting to the public API   # a spec plus the tickets cut from it, under .scratch/
@@ -21,6 +21,18 @@ For a new feature, one ticket through the loop:
 /dev:review                                    # review the branch and write review.md
 /dev:fix                                       # apply the saved findings and record the outcome
 ```
+
+In Codex, select the corresponding `dev` skill with `/skills` or the `$` picker in CLI/IDE, or name it explicitly in the prompt. For example:
+
+```text
+Use the rnd skill from the dev plugin to shape rate limiting for the public API.
+Use the plan skill from the dev plugin for .scratch/rate-limiting/issues/01-rate-limit.md.
+Use the exec skill from the dev plugin for that ticket, no commits.
+Use the review skill from the dev plugin on this branch, quick.
+Use the fix skill from the dev plugin for the saved review report.
+```
+
+These requests select the same workflow instructions; they do not establish that Codex can launch every Claude Code named agent. The compatibility limit above applies when a step reaches delegation.
 
 For a bug, start with `/dev:bug <description>` to establish the root cause, then `/dev:plan` to create and plan the fix ticket. A sufficiently clear request can start at `/dev:plan`; the full shaping loop is optional. Each command stops at its handoff; the next command is not started automatically.
 
@@ -48,14 +60,14 @@ Seven flat `/dev:<name>` commands in Claude Code:
 
 ## Model
 
-In Claude Code, two tiers define the workflow:
+Two instruction tiers define the workflow:
 
-1. Global `~/.claude/CLAUDE.md` - always-on rules (output language, style, safety). Hand-authored by you, NOT shipped by this plugin (see Setup). The commands defer output style and the safety rules on secrets and destructive operations to it, so they fire even when no skill loads.
+1. Your global and project instructions - `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex (see Setup). They carry language, style, and working agreements. The client's sandbox and permission controls enforce execution access separately.
 2. The seven commands above. Each is self-contained: no shared background skills, no `reference/` files, no cross-skill injection. A rule lives in exactly one file.
 
 Commands hand work to the next one through five minimal contracts: `plan` reads a ticket by its `**What to build:**` line and its acceptance criteria, reads a spec by its `## Implementation Decisions` and `## Testing Decisions` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a ticket by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes - plus the optional `## Conventions` section it hands to every worker, and it updates the ticket's `**Status:**`, reads dependencies from `**Blocked by:**`, and records execution history in `## Comments`. The fifth contract is `review -> fix`: the report carries the reviewed scope, mode, pinned requirements, findings, dismissals and follow-ups. Nothing beyond those contracts crosses between them.
 
-Six of the seven commands carry `disable-model-invocation: true`, so they run only when you type them. The workflow is yours to pick, not the model's to guess, and the six explicit commands stay out of the way when you drive a session by hand or through another planning tool. `commit` is the exception: it fires on its own trigger, since "commit this" is a request to commit rather than a request for a command.
+In Claude Code, six of the seven commands carry `disable-model-invocation: true`, so they run only when you type them. The workflow is yours to pick, not the model's to guess, and the six explicit commands stay out of the way when you drive a session by hand or through another planning tool. `commit` is the exception: it fires on its own trigger, since "commit this" is a request to commit rather than a request for a command.
 
 Agents (`agents/*.md`) - one write-capable `worker` used by `/dev:exec` and `/dev:fix`, the only agent that writes, plus five read-only reviewers used by `/dev:review`:
 
@@ -98,7 +110,7 @@ Inside a ticket, `exec` hands each worker the task plus the acceptance criteria 
 
 Worker decisions and deviations that affect later work are saved with their reasons in the ticket's Comments. Each subsequent worker receives the notes relevant to its task. The same section records the current task, git mode, starting commit, verification results and remaining step.
 
-After an interruption, invoke `/dev:exec` again. The orchestrator checks the stopping point once, before selecting more work; workers do not check previous tasks. Checked boxes with uncommitted code can resume at validation or commit, and an existing task commit is not repeated. An interrupted final close is finished without reopening completed criteria. The recorded `no commits` mode survives a new session. Foreign changes or uncertain ownership stop automatic recovery, and old tickets without notes resume only when their state is unambiguous.
+After an interruption, invoke `/dev:exec` in Claude Code or select/request the `dev` exec skill again in Codex. The orchestrator checks the stopping point once, before selecting more work; workers do not check previous tasks. Checked boxes with uncommitted code can resume at validation or commit, and an existing task commit is not repeated. An interrupted final close is finished without reopening completed criteria. The recorded `no commits` mode survives a new session. Foreign changes or uncertain ownership stop automatic recovery, and old tickets without notes resume only when their state is unambiguous.
 
 This is the local-markdown layout of the `.scratch/` issue tracker, so the files stay readable by any toolchain that speaks it, and this plugin writes them with nothing else installed. It implements that layout only - no `gh` or `glab` dependency - and in a repository configured for GitHub or GitLab it names the tracker and asks before writing locally. Do not re-run an external slicing skill over a feature whose tickets already carry `## Implementation`: it rewrites those files and every plan in them is gone.
 
@@ -128,20 +140,24 @@ claude plugin install dev@nxs
 codex plugin add dev@nxs
 ```
 
-For the Claude Code workflow:
+### Claude Code
 
-1. **Global rules (your own).** Commands defer output language and style to your global `~/.claude/CLAUDE.md`, along with secret safety and destructive-operation confirmation. The plugin does not install that file or replace the host's permission controls. Without your own global rules, those delegated instructions are absent.
-2. **Optional permissions.** The skills prefer `rg` / `fd` / `jq`. Configure approved tools in `~/.claude/settings.json` if you want fewer prompts. Plugins cannot ship your permission grants.
-3. Start a new session so the installed snapshot and global rules load.
+1. Put global language, style, and working agreements in `~/.claude/CLAUDE.md`, with project-specific rules in the project's `CLAUDE.md`.
+2. Configure any optional tool permission rules in `~/.claude/settings.json`. The preferred shell utilities are `rg`, `fd`, and `jq`; install them separately if needed.
+3. Start a new session and invoke `/dev:<command>`.
+
+### Codex
+
+1. Put global language, style, and working agreements in `~/.codex/AGENTS.md`, with project-specific rules in the project's `AGENTS.md`. Use your actual Codex home if `CODEX_HOME` is customized.
+2. Configure execution access and approvals in `~/.codex/config.toml`, or use the CLI's `--sandbox` and `--ask-for-approval` options. Optional command-prefix rules belong in `~/.codex/rules/*.rules`; Claude Code's permission syntax does not transfer directly.
+3. Start a new session and select/request the corresponding `dev` skill.
+
+For shared tracker settings, put `docs/agents/issue-tracker.md` in the project. The current `rnd` and `plan` instructions otherwise look for their global fallback under the Claude configuration directory; adding Codex `AGENTS.md` does not redirect that lookup.
+
+See the shared [client setup guide](../../README.md#client-setup) for project config, overrides, official Codex references, and verification steps. Neither plugin installs your personal instructions or permission grants.
 
 ## Development and updates
 
 Use the marketplace [update instructions](../../README.md#update), selecting `dev@nxs`. Refresh the configured marketplace first, then update the installed plugin; uninstalling is not required. Start a new session afterward.
 
-For a local Claude Code preview from the repository root:
-
-```bash
-claude --plugin-dir ./plugins/dev
-```
-
-This previews the working checkout. An installed GitHub-backed plugin uses its cached snapshot, so edits here do not change that installation. See [CONTRIBUTING.md](CONTRIBUTING.md) for authoring rules and the versioned contract.
+For a local preview, use the repository's [Claude Code or isolated Codex procedure](../../CONTRIBUTING.md#local-development-and-release), selecting `dev`. The Codex procedure tests loading the plugin; it does not adapt the named-agent workflow. See [CONTRIBUTING.md](CONTRIBUTING.md) for authoring rules and the versioned contract.

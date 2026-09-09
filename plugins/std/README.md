@@ -26,7 +26,13 @@ In Claude Code:
 /std:teach Help me understand this chapter. Start with the author's example.
 ```
 
-In Codex, select the plugin's `teach` skill or explicitly ask to use `teach` from `std`. In either client, continue naturally:
+In Codex, select `teach` from `std` (CLI/IDE: `/skills` or the `$` picker), or request it explicitly:
+
+```text
+Use the teach skill from the std plugin to help me understand this chapter. Start with the author's example.
+```
+
+Global instructions, permissions, and how to verify setup are covered for both clients in the [client setup guide](../../README.md#client-setup). In either client, continue naturally:
 
 - "I don't understand why that step works. Explain it more simply."
 - "Show the complete example, then let me try a variation."
@@ -64,10 +70,4 @@ These are independently written instructions informed by the following public sk
 
 ## Development
 
-For a local Claude Code preview from the marketplace checkout:
-
-```bash
-claude --plugin-dir ./plugins/std
-```
-
-This loads local content for that session without changing an installed plugin. See [CONTRIBUTING.md](CONTRIBUTING.md) for the versioned contract and verification scenarios, and the repository [development guidance](../../CONTRIBUTING.md#local-development-and-release) for source and cache behavior.
+Use the repository's [local preview procedures for Claude Code and Codex](../../CONTRIBUTING.md#local-development-and-release), selecting `std`. See [CONTRIBUTING.md](CONTRIBUTING.md) for the versioned contract and verification scenarios.

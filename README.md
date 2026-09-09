@@ -38,6 +38,25 @@ If `nxs` is already configured, skip the marketplace-add command. For a newly pu
 
 Start a new session after installation. In Claude Code, invoke `/std:teach` or a `/dev:<command>`. In Codex, select the plugin's skill or ask for it by plugin and skill name; do not assume Claude Code slash-command syntax is identical. Each plugin's README covers its own setup and usage.
 
+## Client setup
+
+Plugins supply workflows. Keep your own language, coding, and confirmation preferences in the instruction files your client reads; neither plugin creates them or grants tool permissions.
+
+| Task | Claude Code | Codex |
+| --- | --- | --- |
+| Global instructions | `~/.claude/CLAUDE.md` | `~/.codex/AGENTS.md` |
+| Project instructions | `CLAUDE.md` in the project | `AGENTS.md` in the project |
+| User configuration | `~/.claude/settings.json` | `~/.codex/config.toml` |
+| Project configuration | `.claude/settings.json` | `.codex/config.toml` in a trusted project |
+| Command permissions | Permission rules in `settings.json` | Sandbox and approval settings; optional command-prefix rules in `~/.codex/rules/*.rules` |
+| Choose a plugin skill | `/std:teach` or `/dev:<command>` | Select the installed skill; in CLI/IDE use `/skills` or type `$` and choose the matching plugin entry |
+
+Codex paths above assume the default `CODEX_HOME`. If it is customized, use that directory for global instructions and configuration. `AGENTS.override.md` takes precedence over `AGENTS.md` at the same level; a `CLAUDE.md` file is not a default Codex instruction filename. See OpenAI's [AGENTS.md guide](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
+
+For Codex, use [config.toml](https://learn.chatgpt.com/docs/config-file/config-basic) for persistent settings. A one-session CLI example is `codex --sandbox workspace-write --ask-for-approval on-request`. These settings control execution access and approvals; prose in `AGENTS.md` does not replace them. Optional [command rules](https://learn.chatgpt.com/docs/agent-configuration/rules) govern execution outside the sandbox and are not a direct copy of Claude Code permission syntax. `rg`, `fd`, and `jq` need to be available on `PATH`; listing them in instructions does not install them.
+
+Start a new session after changing setup. To verify instruction discovery, ask the agent to list the instruction files it loaded. To verify a skill, select it explicitly and ask which `SKILL.md` it is using. See the [Codex skill invocation guide](https://learn.chatgpt.com/docs/build-skills#how-codex-uses-skills).
+
 ## Update
 
 Marketplace refresh fetches the catalog and sources. The next command updates the installed plugin snapshot. Use the pair for your client, replacing `std@nxs` with `dev@nxs` when needed.

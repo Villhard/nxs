@@ -15,12 +15,12 @@ plugins/dev/
   README.md CONTRIBUTING.md CHANGELOG.md
 ```
 
-The global `~/.claude/CLAUDE.md` and `settings.json` stay out of this repo - you write those yourself. These paths, slash-command rules, and agent definitions describe the Claude Code workflow. Codex installation and skill discovery are verified; the complete named-agent workflow is not. See the README's compatibility section before documenting broader support.
+Personal instructions and configuration stay outside the plugin: `~/.claude/CLAUDE.md` and `~/.claude/settings.json` for Claude Code; `~/.codex/AGENTS.md` and `~/.codex/config.toml` for Codex. See the shared [client setup](../../README.md#client-setup). The slash-command rules and named-agent definitions below describe the Claude Code workflow. Codex installation and skill discovery are verified; the complete named-agent workflow is not. See the README's compatibility section before documenting broader support.
 
 ## TWO TIERS
 
-- Global `~/.claude/CLAUDE.md`: always on, applies to every response. Lives outside the plugin.
-- Command skills `/dev:<name>`: the workflow, visible in the `/` menu. There are seven: `rnd`, `bug`, `plan`, `exec`, `review`, `fix`, `commit`.
+- Global/project instructions: `CLAUDE.md` in Claude Code, `AGENTS.md` in Codex; loaded by the client and kept outside the plugin.
+- Command skills: the workflow, invoked as `/dev:<name>` in Claude Code or selected/requested by skill name in Codex. There are seven: `rnd`, `bug`, `plan`, `exec`, `review`, `fix`, `commit`.
 
 There is no third tier. A rule lives in exactly one file - the command that uses it, or the agent that uses it. No background skills, no `reference/` directories, no cross-skill injection.
 
@@ -57,14 +57,14 @@ Three collisions this table exists to prevent: `task` used to mean both the inco
 
 Where a rule, policy, or term belongs:
 
-- always on (language, style, safety) -> global `CLAUDE.md`, outside the plugin;
+- persistent working agreements (language, style, safety) -> the client's global instructions, outside the plugin;
 - one command needs it -> inline in that skill's `SKILL.md`;
 - one agent needs it -> inline in that agent's file;
 - two commands need it -> write it twice.
 
 That last one is deliberate. The plugin used to carry four background skills and six `reference/` files, and one change meant editing four places to keep them consistent. A few duplicated lines cost less than another layer of indirection. If duplication ever gets genuinely painful, the fix is a narrower contract between the two commands, not a shared file.
 
-Security-critical content (never commit secrets, confirm destructive operations) lives in the global tier, which always fires. A skill can state workflow detail around it - that a push needs an explicit request - but never carries the protection itself.
+Working agreements such as keeping secrets out of commits and confirming destructive operations belong in global instructions for the chosen client. Execution permissions are enforced by that client's own controls. A skill can state workflow detail around it - that a push needs an explicit request - but never carries the protection itself.
 
 ## THE HANDOFF CONTRACTS
 
@@ -135,7 +135,7 @@ disable-model-invocation: true
 
 Keep `description` to the trigger plus a short clause on what the skill produces. Do not list phases or explain how the body works: a description that retells the workflow makes the model follow the retelling and skip the body, which is where the actual procedure lives. Every command skill also carries one `Example:` line with a real invocation right after the intro.
 
-`disable-model-invocation: true` is the default for a workflow command, and it takes the command out of the model's skill listing - it runs only when the user types `/dev:<name>`. Leave the flag off only when the intent is one a user expresses without naming a command; `commit` is the sole case, and a second one needs an argument here first.
+In Claude Code, `disable-model-invocation: true` is the default for a workflow command, and it takes the command out of the model's skill listing - it runs only when the user types `/dev:<name>`. Leave the flag off only when the intent is one a user expresses without naming a command; `commit` is the sole case, and a second one needs an argument here first.
 
 ### AGENT FRONTMATTER
 
@@ -167,7 +167,7 @@ Each of these skills states its own path in its `## ARTIFACT` section, and that 
 
 `commit` writes no artifact. `exec` mutates the ticket's `**Status:**` line, task checkboxes, acceptance criteria and `## Comments` for execution notes and stops; it has no `## ARTIFACT` section. `fix` has one because its report output is the review handoff contract. Review writes only its named report, never code, index or commits. Fix keeps the report outside its code commit and names any tracked report left dirty.
 
-`rnd` and `plan` resolve the tracker layout before their first write into a NEW feature directory: `docs/agents/issue-tracker.md` in the repository, then the global default at the same relative path, then local markdown. Local markdown is what the wider toolchain falls back to as well, so the fallback is copied rather than chosen. In a repository configured for GitHub or GitLab neither command picks silently. Neither ever writes that config file or runs a setup skill, and this plugin ships no `gh` or `glab` dependency.
+The current `rnd` and `plan` instructions use the Claude configuration directory for their global tracker fallback. Setting up Codex `AGENTS.md` does not change that lookup. Use a repository-local tracker declaration for a client-independent source. The lookup before their first write into a NEW feature directory is: `docs/agents/issue-tracker.md` in the repository, then the global default at the same relative path, then local markdown. Local markdown is what the wider toolchain falls back to as well, so the fallback is copied rather than chosen. In a repository configured for GitHub or GitLab neither command picks silently. Neither ever writes that config file or runs a setup skill, and this plugin ships no `gh` or `glab` dependency.
 
 Never create files outside those templates silently, and never write into a `.scratch/<x>/` that holds a `map.md` - that directory belongs to another skill's effort.
 
@@ -175,13 +175,9 @@ The pre-0.20.0 story directory is gone, and no command reads or writes it. Nothi
 
 ## DEV LOOP
 
-Use the repository [local development guidance](../../CONTRIBUTING.md#local-development-and-release). For a Claude Code preview from the checkout root:
+Use the repository [local development procedures](../../CONTRIBUTING.md#local-development-and-release), selecting `dev`: a `--plugin-dir` session in Claude Code, or an isolated Codex home with the local marketplace. Keep both procedures in the shared guide. A successful Codex install or load is not proof that its named-agent steps work.
 
-```bash
-claude --plugin-dir ./plugins/dev
-```
-
-For an installed release, use the shared [update instructions](../../README.md#update) with `dev@nxs`. Check the configured source before refreshing: a GitHub marketplace will not read edits in a separate local checkout. Update the installed snapshot after refreshing the marketplace, then start a new session. Do not connect a second source with the same marketplace name as a routine preview step.
+For an installed release, use the shared [update instructions](../../README.md#update) with `dev@nxs`, then start a new session.
 
 ## VERSIONING
 
