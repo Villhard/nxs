@@ -1,6 +1,6 @@
 # CONTRIBUTING
 
-Rules for the repository. Each plugin sets its own authoring rules on top of these, in its own `CONTRIBUTING.md`, and those apply to that plugin alone: [dev](plugins/dev/CONTRIBUTING.md) and [std](plugins/std/CONTRIBUTING.md).
+`CLAUDE.md` and `AGENTS.md` are the client entry points for these repository rules. Each plugin sets its own authoring rules on top of these, in its own `CONTRIBUTING.md`, and those apply to that plugin alone: [dev](plugins/dev/CONTRIBUTING.md) and [std](plugins/std/CONTRIBUTING.md).
 
 ## LAYOUT
 
@@ -72,6 +72,24 @@ Document compatibility at the level exercised: catalog acceptance, installation,
 
 ## LOCAL DEVELOPMENT AND RELEASE
 
-For a Claude Code preview, run `claude --plugin-dir ./plugins/std` or `claude --plugin-dir ./plugins/dev` from the checkout. This loads local plugin content for that session without changing the configured marketplace source. Restart the preview after edits.
+### CLAUDE CODE
+
+From the checkout root, run `claude --plugin-dir ./plugins/std` (replace `std` with `dev` for that plugin). This loads local content for the session without changing the configured marketplace. Restart the preview after edits.
+
+### CODEX
+
+The checked Codex CLI has no `--plugin-dir` option. Test the complete local package with a temporary Codex home, leaving the normal installation and configuration alone. Run from the checkout root:
+
+```bash
+nxs_preview_home=$(mktemp -d)
+CODEX_HOME="$nxs_preview_home" codex plugin marketplace add "$PWD"
+CODEX_HOME="$nxs_preview_home" codex plugin add std@nxs
+CODEX_HOME="$nxs_preview_home" codex plugin list --marketplace nxs
+CODEX_HOME="$nxs_preview_home" codex
+```
+
+Replace `std@nxs` with `dev@nxs` to load `dev`. The temporary home does not copy your usual authentication or global settings; sign in if required and configure only the test settings needed. Local project instructions still apply. Inspect the installed version before exercising a skill. Repeat `plugin add` after a versioned source change and start a new session. This verifies package loading; `dev` agent delegation still needs a separate workflow check. Keep temporary credentials out of commits and remove the preview directory when finished.
+
+### INSTALLED RELEASES
 
 For cached installations, first verify the configured source with `claude plugin marketplace list` or `codex plugin marketplace list`. A GitHub source sees published changes; editing a different local checkout does not update it. Refreshing a catalog alone does not update the installed plugin snapshot. Use the [installation and update instructions](README.md#update) after publishing the new version. Do not replace a user's configured marketplace or reinstall their plugins as part of a documentation or source edit unless requested.
