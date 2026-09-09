@@ -1,24 +1,20 @@
-# CONTRIBUTING
+# CONTRIBUTING (STD)
 
-Follow the repository's [authoring and public-safety rules](../../CONTRIBUTING.md). Shared installation and update commands live in the marketplace README.
+Follow the [shared rules and checks](../../CONTRIBUTING.md).
 
 ## CONTRACT
 
-The contract is the plugin name `std`, the `teach` skill, conversational teaching by default, and the workspace artifacts documented in the README. Changes to those interfaces are minor releases; internal instruction refinements and documentation corrections are patches. Update both plugin manifest versions together and add a CHANGELOG entry for bundled changes.
+The contract is the `std` plugin, `teach` skill, conversational teaching by default, and [learning artifacts](skills/teach/references/workspace.md). Keep both manifests pointed at one shared skill; do not add platform-specific lessons or require other skills for the core dialogue.
 
-Keep the Claude Code and Codex manifests pointed at one shared skill. Do not introduce platform-specific lesson implementations or require additional skills for the core dialogue.
+## BEHAVIOR CHECKS
 
-## VERIFICATION
+When teaching behavior changes, run real conversations in temporary learning directories. Judge responses and saved state:
 
-Run the repository house-style and frontmatter checks, strict Claude Code marketplace/plugin validation, and Codex plugin and skill validation. The Codex validators are additional local checks; the current GitHub CI runs house-style, frontmatter, and Claude Code validation only. Include new Markdown files explicitly in the house-style check before they are tracked. Check both manifests agree on name/version and all relative references resolve.
+1. Book excerpt: a small chat explanation and grounded mission/resources.
+2. Confusion and full-example request: explain instead of continuing the quiz.
+3. Valid objection: recheck assumptions/sources and correct the example.
+4. Partly correct answer, then "understood": record the supported insight and remaining gap without claiming mastery.
+5. Pause mid-exercise, then a fresh session: resume from saved files without revealing the answer.
+6. Nontechnical topic and inaccessible source: disclose limits; do not require code.
 
-When teaching behavior changes, exercise the skill in temporary learning directories using real agent conversations. Documentation-only changes need checks of the described behavior, commands, and links, without repeating all dialogues. Judge behavior and saved artifacts, not exact wording:
-
-1. Start from a supplied book excerpt with a clear goal. Observe a small in-chat explanation and grounded mission/resources.
-2. Say you are confused and request a complete example. Observe an explanation rather than more interrogation.
-3. Challenge an ambiguous or wrong example with a valid counterexample. Observe source/assumption rechecking and correction.
-4. Give a partly correct answer, then say "understood". Inspect that progress separates the supported insight from the remaining gap and does not invent independent mastery.
-5. Pause with an unfinished exercise. Start a fresh session from saved files and observe continuation without leaking its answer.
-6. Study a nontechnical topic with an inaccessible source. Observe honest source limitations, suitable examples, and no requirement to write code.
-
-Also try a one-off factual question without explicitly invoking the skill: it should not create learning files. Validate discovery in both clients without changing a user's working plugin configuration. Record actual limits of the checks; format validation alone is not a behavioral evaluation.
+Also check that a factual question without skill invocation creates no learning files. Verify discovery in both clients. Record actual limits; format validation does not evaluate teaching.

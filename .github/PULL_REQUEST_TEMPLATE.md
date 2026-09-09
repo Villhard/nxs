@@ -1,10 +1,10 @@
 # Summary
 
-<!-- One line: what this PR changes and why. -->
+<!-- What changed and why. -->
 
-## Checklist
+## Checks
 
-- [ ] PUBLIC SAFETY: no `/Users/...` paths, real emails, tracker keys, or secrets in committed docs / artifacts
-- [ ] Ran `claude plugin validate --strict .` and `claude plugin validate --strict plugins/<name>` for every touched plugin
-- [ ] Ran `bash .github/scripts/lint-house-style.sh` locally and it is clean
-- [ ] Bumped `version` and added a `CHANGELOG.md` entry in every touched plugin
+- [ ] Public-safe diff; no private data or raw sessions
+- [ ] House-style, frontmatter, links, and applicable manifest checks pass
+- [ ] Bundled changes have matching version bumps and CHANGELOG entries
+- [ ] Behavior checks or documentation-only scope recorded

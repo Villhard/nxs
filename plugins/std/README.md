@@ -1,73 +1,53 @@
 # std
 
-Learn from books, courses, and topics through conversation in Claude Code or Codex. One shared `teach` skill explains small pieces, answers follow-up questions, and checks understanding when the learner is ready.
+Study books, courses, or topics through conversation with `teach`. [Install and configure](../../README.md#install) `std@nxs`; see [compatibility](../../README.md#compatibility).
 
-## Install
+## Start
 
-Follow the marketplace [install instructions](../../README.md#install), selecting `std@nxs`:
-
-```bash
-# Claude Code
-claude plugin install std@nxs
-
-# Codex
-codex plugin add std@nxs
-```
-
-The shared [update instructions](../../README.md#update) give the marketplace-refresh and plugin-update commands for both clients. Start a new session after installing or updating.
-
-Installation and skill discovery are verified in both clients. Sample learning dialogues were exercised in Claude Code and in Codex using the same skill; these are spot checks, not a guarantee of every lesson's correctness. Both manifests use the shared `skills/teach` implementation.
-
-## Use
-
-In Claude Code:
+**Claude Code**
 
 ```text
 /std:teach Help me understand this chapter. Start with the author's example.
 ```
 
-In Codex, select `teach` from `std` (CLI/IDE: `/skills` or the `$` picker), or request it explicitly:
+**Codex**
+
+Select `teach` from `std` with `/skills` or the `$` picker in CLI/IDE, or ask:
 
 ```text
-Use the teach skill from the std plugin to help me understand this chapter. Start with the author's example.
+Use the teach skill from the std plugin to help me understand this chapter.
 ```
 
-Global instructions, permissions, and how to verify setup are covered for both clients in the [client setup guide](../../README.md#client-setup). In either client, continue naturally:
+Continue naturally in either client:
 
-- "I don't understand why that step works. Explain it more simply."
-- "Show the complete example, then let me try a variation."
+- "Explain that more simply. Show the complete example."
 - "I think your example assumes something the book does not say."
 - "Let's pause. Save where we stopped."
-- "Continue from the previous session."
 
-A plain factual question does not require a learning workspace. During a lesson, questions get direct answers; checks do not replace explanations. Theory stays in chat. HTML is optional when requested or agreed for an interactive demonstration.
+The agent explains one idea at a time, answers follow-ups, and checks understanding when useful. Theory stays in chat; HTML requires a request or agreement. A factual question alone creates no learning workspace. Coding or an applied project is not required.
 
-## What is saved
+## Saved progress
 
-| Artifact | Purpose |
+| File | Contents |
 | --- | --- |
-| `MISSION.md` | Learning purpose, desired outcomes, and boundaries |
-| `RESOURCES.md` | Anchor material and inspected additional sources with annotations |
-| `PROGRESS.md` | Current focus, evidence of understanding, gaps, and next step |
-| `learning-records/` | Consequential insights, corrections, and goal changes |
+| `MISSION.md` | Purpose, desired outcomes, boundaries |
+| `RESOURCES.md` | Main material and inspected sources with annotations |
+| `PROGRESS.md` | Current topic, understanding, gaps, unfinished exercise, next step |
+| `learning-records/` | Demonstrated understanding, corrections, goal changes |
 
-Existing Matt Pocock `teach` workspaces are reused, including preferences from `NOTES.md`. No migration or deletion is required. Progress is a compact checkpoint, not a transcript or a generated textbook. Demonstrated understanding is recorded separately from material merely discussed or self-reported as understood.
+To resume, open the same learning directory and request `teach`: "Continue from the previous session." It reads saved progress. Records distinguish discussed, self-reported, and demonstrated understanding; they are not transcripts.
 
-## Requirements and limits
+Existing Matt Pocock `teach` workspaces, including `NOTES.md`, are reused without migration or deletion.
 
-The agent needs read access to the material and write access to the chosen learning directory to save progress. Web search helps verify supplementary sources. If a source is unavailable, the skill says so and works from accessible material or asks for the needed excerpt.
+The agent needs material access and permission to save files. It searches for useful supplementary sources, separates them from the author's explanation, and identifies unavailable material. Extraction depends on host tools. No additional skills, MCP, hooks, scheduler, or automatic commits are required.
 
-There are no required MCP servers, hooks, scheduler, separate teaching agents, or automatic commits. Document extraction depends on the host's available tools. Skill instructions guide behavior; source grounding and progress records do not guarantee factual correctness or objectively measure mastery.
+## Sources of ideas
 
-## Design influences
+Independently written instructions informed by:
 
-These are independently written instructions informed by the following public skills:
+- [Matt Pocock: teach](https://github.com/mattpocock/skills/tree/main/skills/productivity/teach): mission, sources, learning records.
+- [Learning Opportunities](https://github.com/DrCatHicks/learning-opportunities): prediction and waiting for an answer.
+- [supertutor](https://github.com/cskwork/supertutor-skill): explain-back and transfer to new examples.
+- [misconception-detector](https://github.com/yugash007/edu-agent-skills/tree/main/skills/assessment/misconception-detector): examine and correct mental models.
 
-- [Matt Pocock: teach](https://github.com/mattpocock/skills/tree/main/skills/productivity/teach) - mission, trusted resources, and durable learning records.
-- [Dr. Cat Hicks: Learning Opportunities](https://github.com/DrCatHicks/learning-opportunities) - prediction, active recall, and waiting for the learner's answer.
-- [cskwork: supertutor](https://github.com/cskwork/supertutor-skill) - explaining back, specific gaps, and checking transfer to a new example.
-- [edu-agent-skills: misconception-detector](https://github.com/yugash007/edu-agent-skills/tree/main/skills/assessment/misconception-detector) - examining and correcting the learner's mental model.
-
-## Development
-
-Use the repository's [local preview procedures for Claude Code and Codex](../../CONTRIBUTING.md#local-development-and-release), selecting `std`. See [CONTRIBUTING.md](CONTRIBUTING.md) for the versioned contract and verification scenarios.
+[Update](../../README.md#update) · [Local preview](../../CONTRIBUTING.md#local-development-and-release) · [Authoring](CONTRIBUTING.md)

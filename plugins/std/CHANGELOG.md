@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3] - 2026-09-10
+
+### Changed
+
+- Rewrite guides concisely, centralize client setup, and link detailed contracts to their source instructions; behavior is unchanged.
+
 ## [0.1.2] - 2026-09-10
 
 ### Changed
