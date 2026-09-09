@@ -1,16 +1,18 @@
 # CONTRIBUTING
 
-Rules for the repository. Each plugin sets its own authoring rules on top of these, in its own `CONTRIBUTING.md`, and those apply to that plugin alone: [dev](plugins/dev/CONTRIBUTING.md).
+Rules for the repository. Each plugin sets its own authoring rules on top of these, in its own `CONTRIBUTING.md`, and those apply to that plugin alone: [dev](plugins/dev/CONTRIBUTING.md) and [std](plugins/std/CONTRIBUTING.md).
 
 ## LAYOUT
 
 ```
 .claude-plugin/
-  marketplace.json     # one entry per plugin
+  marketplace.json     # shared catalog, one entry per plugin
 plugins/
   <name>/
     .claude-plugin/
       plugin.json      # name, version, description
+    .codex-plugin/     # present in std; not currently shipped by dev
+      plugin.json      # Codex metadata; points at the shared skills directory
     skills/<skill>/SKILL.md
     README.md CHANGELOG.md
 .github/               # CI, house-style linter, PR template
@@ -22,16 +24,17 @@ Everything a plugin ships lives under its own directory. Nothing at the reposito
 ## ADDING A PLUGIN
 
 1. `plugins/<name>/.claude-plugin/plugin.json` - `name`, `description`, `version` starting at `0.1.0`, `author`, `license`, `repository`, `homepage` pointing at the plugin directory.
-2. Content in the directories Claude Code discovers: `skills/`, and `agents/`, `hooks/`, `commands/` if the plugin needs them.
-3. `README.md` and `CHANGELOG.md` in the plugin directory.
-4. An entry in `.claude-plugin/marketplace.json` with `name`, `source: "./plugins/<name>"`, `category`, `description`.
-5. `CONTRIBUTING.md` in the plugin directory, once the plugin has authoring rules of its own worth stating.
+2. For an explicit Codex manifest, add `.codex-plugin/plugin.json` with the same name/version and `skills: "./skills/"`; `std` is the current example. Keep one shared skill implementation when behavior is shared. Document and verify platform-specific components instead of assuming that installation proves compatibility.
+3. Content in the client-discovered directories: `skills/`, plus agents or other components only when the plugin needs them and the intended client supports them.
+4. `README.md` and `CHANGELOG.md` in the plugin directory.
+5. An entry in `.claude-plugin/marketplace.json` with `name`, `source: "./plugins/<name>"`, `category`, `description`.
+6. `CONTRIBUTING.md` in the plugin directory, once the plugin has authoring rules of its own worth stating.
 
 A plugin gets its own directory when its subject does not belong to an existing plugin. A new command inside an existing subject is an addition to that plugin, not a new plugin.
 
 ## VERSIONING
 
-Plugins version independently. An edit to bundled content bumps `version` in that plugin's `plugin.json` and adds an entry to that plugin's `CHANGELOG.md` (Keep a Changelog, newest section on top). Nothing at the repository root carries a version.
+Plugins version independently. An edit to bundled content, including plugin documentation, bumps `version` and adds an entry to that plugin's `CHANGELOG.md` (Keep a Changelog, newest section on top). Keep every manifest shipped by that plugin at the same name/version; `std` has two, `dev` currently has one. Documentation fixes are patches when the contract is unchanged. Preserve historical changelog entries. Nothing at the repository root carries a version.
 
 What counts as a contract, and therefore as a minor rather than a patch, is defined per plugin. Renaming a plugin is a contract change: it renames every command and agent it ships.
 
@@ -45,14 +48,30 @@ Headings split by reader, not by level. Anything the model loads as instructions
 
 This repository is public. Before committing, strip local paths like `/Users/<name>`, private git remotes, real tracker keys and URLs, secrets, tokens, `.env` values, colleague names and emails, and raw session or tool output. Swap in neutral placeholders: `<user_home>`, `<github_owner>/<repo>`, `PROJ-123`.
 
-## CI
+## VERIFICATION
 
-Three checks run on push and pull request, and all three run locally:
+GitHub CI runs two jobs in `.github/workflows/ci.yml`:
 
-```
+- House style plus frontmatter: every skill needs a non-empty `description`; `user-invocable`, when present, must be a boolean.
+- Strict Claude Code validation of the marketplace and every plugin directory.
+
+Run the same checks locally from the repository root:
+
+```bash
 bash .github/scripts/lint-house-style.sh
 claude plugin validate --strict .
-claude plugin validate --strict plugins/<name>
+claude plugin validate --strict plugins/dev
+claude plugin validate --strict plugins/std
 ```
 
-The workflow also checks that every `plugins/*/skills/*/SKILL.md` carries a non-empty `description` and, when present, a well-formed `user-invocable`.
+Run the workflow's Frontmatter lint shell block as well; it is the source of that check. Pass new Markdown paths explicitly to the house-style script before they are tracked. Check relative links, instruction-heading case, and `git diff --check`, including new files before committing.
+
+Codex-specific checks are additional local checks, not part of the current GitHub CI. For `std`, use the `validate_plugin.py` and `quick_validate.py` validators supplied with Codex's `plugin-creator` and `skill-creator` system skills when available. Resolve them from the installed skill locations rather than committing machine-specific paths. Check matching manifest names/versions and that both clients discover the same `teach` implementation. Report a missing validator as unverified, not as a pass.
+
+Document compatibility at the level exercised: catalog acceptance, installation, skill discovery, and complete workflows are separate checks. A manifest validator does not exercise learning or named-agent delegation. Use temporary projects for behavior checks and follow each plugin's verification scenarios when behavior changes. Documentation-only changes need source/command/link checks, not another full dialogue or execution run.
+
+## LOCAL DEVELOPMENT AND RELEASE
+
+For a Claude Code preview, run `claude --plugin-dir ./plugins/std` or `claude --plugin-dir ./plugins/dev` from the checkout. This loads local plugin content for that session without changing the configured marketplace source. Restart the preview after edits.
+
+For cached installations, first verify the configured source with `claude plugin marketplace list` or `codex plugin marketplace list`. A GitHub source sees published changes; editing a different local checkout does not update it. Refreshing a catalog alone does not update the installed plugin snapshot. Use the [installation and update instructions](README.md#update) after publishing the new version. Do not replace a user's configured marketplace or reinstall their plugins as part of a documentation or source edit unless requested.

@@ -4,9 +4,15 @@ An opinionated plan -> exec -> review loop for Claude Code, packaged as a plugin
 
 Why install it over ad-hoc prompts: the workflow is fixed and named (`/dev:plan`, `/dev:exec`, `/dev:review`), each command is self-contained, and the human stays in the loop - you approve the plan before execution and the review runs before you push.
 
+## Compatibility
+
+The workflow below targets Claude Code. Installation and skill discovery in Codex are verified, but the complete execution/review/fix flow with its named agents has not been verified there. The plugin currently ships `.claude-plugin/plugin.json` and Claude Code agent definitions; it does not ship a separate Codex manifest or agent adapter.
+
+The `/dev:<name>` examples, `~/.claude/CLAUDE.md`, and `settings.json` instructions below are Claude Code conventions. In Codex, select the plugin's skill or request its instructions by name; use Codex's own global instructions and permissions. Skill discovery alone does not verify named-agent delegation or identical activation rules.
+
 ## Quickstart
 
-One ticket through the loop:
+For a new feature, one ticket through the loop:
 
 ```
 /dev:rnd add rate limiting to the public API   # a spec plus the tickets cut from it, under .scratch/
@@ -16,9 +22,19 @@ One ticket through the loop:
 /dev:fix                                       # apply the saved findings and record the outcome
 ```
 
+For a bug, start with `/dev:bug <description>` to establish the root cause, then `/dev:plan` to create and plan the fix ticket. A sufficiently clear request can start at `/dev:plan`; the full shaping loop is optional. Each command stops at its handoff; the next command is not started automatically.
+
+To implement without commits:
+
+```text
+/dev:exec .scratch/rate-limiting/issues/01-rate-limit.md no commits
+```
+
+This still writes code and updates the ticket. The saved mode survives an interruption; invoke `/dev:exec` again to resume. With commits enabled, the orchestrator commits each completed task; the worker never commits. None of these commands pushes or creates a PR without an explicit user request.
+
 ## Commands
 
-Seven flat `/dev:<name>` commands:
+Seven flat `/dev:<name>` commands in Claude Code:
 
 | command | when to use |
 | --- | --- |
@@ -32,14 +48,14 @@ Seven flat `/dev:<name>` commands:
 
 ## Model
 
-Two tiers, nothing in between:
+In Claude Code, two tiers define the workflow:
 
 1. Global `~/.claude/CLAUDE.md` - always-on rules (output language, style, safety). Hand-authored by you, NOT shipped by this plugin (see Setup). The commands defer output style and the safety rules on secrets and destructive operations to it, so they fire even when no skill loads.
 2. The seven commands above. Each is self-contained: no shared background skills, no `reference/` files, no cross-skill injection. A rule lives in exactly one file.
 
-Commands hand work to the next one through five minimal contracts: `plan` reads a ticket by its `**What to build:**` line and its acceptance criteria, reads a spec by its `## Implementation Decisions` and `## Testing Decisions` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a ticket by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes - plus the optional `## Conventions` section it hands to every worker, and it drives the ticket's `**Status:**` and `**Blocked by:**` lines with execution history in `## Comments`. The fifth contract is `review -> fix`: the report carries the reviewed scope, mode, pinned requirements, findings, dismissals and follow-ups. Nothing beyond those contracts crosses between them.
+Commands hand work to the next one through five minimal contracts: `plan` reads a ticket by its `**What to build:**` line and its acceptance criteria, reads a spec by its `## Implementation Decisions` and `## Testing Decisions` headings, reads a root cause by its `## Root cause` and `## Fix direction` headings, and `exec` finds the work in a ticket by two structural tokens - a `### Task N:` heading and `- [ ]` checkboxes - plus the optional `## Conventions` section it hands to every worker, and it updates the ticket's `**Status:**`, reads dependencies from `**Blocked by:**`, and records execution history in `## Comments`. The fifth contract is `review -> fix`: the report carries the reviewed scope, mode, pinned requirements, findings, dismissals and follow-ups. Nothing beyond those contracts crosses between them.
 
-Six of the seven commands carry `disable-model-invocation: true`, so they run only when you type them. The workflow is yours to pick, not the model's to guess, and the plugin stays out of the way when you drive a session by hand or through another planning tool. `commit` is the exception: it fires on its own trigger, since "commit this" is a request to commit rather than a request for a command.
+Six of the seven commands carry `disable-model-invocation: true`, so they run only when you type them. The workflow is yours to pick, not the model's to guess, and the six explicit commands stay out of the way when you drive a session by hand or through another planning tool. `commit` is the exception: it fires on its own trigger, since "commit this" is a request to commit rather than a request for a command.
 
 Agents (`agents/*.md`) - one write-capable `worker` used by `/dev:exec` and `/dev:fix`, the only agent that writes, plus five read-only reviewers used by `/dev:review`:
 
@@ -65,6 +81,8 @@ One feature is one directory under `.scratch/<feature-slug>/` in the current rep
 | `fix` | finding results and fix outcome | the same `review.md` |
 
 `review` writes `.scratch/<feature-slug>/review.md` for one matching feature, or `.scratch/reviews/<branch-slug>/review.md` when there is none. Several matching features require a choice. `fix` updates that same report after committing code as `fix: address review findings`; the report stays outside the commit, even when tracked. `commit` writes no artifact.
+
+Review the whole committed branch by default. Use `/dev:review staged` for the index, or `/dev:review <repository-relative-path>` to narrow a branch diff. A ticket or feature path supplies requirements, not the code selector. To review another PR, check out its branch first; the command does not accept a PR URL as a selector. Review writes only its report; it does not edit code or commit. Run `/dev:fix` separately to apply confirmed findings.
 
 Run `/dev:review quick` to request two reviewers explicitly. The report says `quick`; it is not a full review gate. Quality also covers tests and implementation also covers docs and simplification. A fix re-check uses their original bounds, with critical and major findings only.
 
@@ -100,30 +118,30 @@ agents/
 
 ## Setup
 
-1. Install the plugin:
-   ```
-   claude plugin marketplace add Villhard/nxs
-   claude plugin install dev@nxs
-   ```
+Follow the marketplace [install instructions](../../README.md#install), selecting `dev@nxs`. The plugin install commands are:
 
-2. **Global rules (your own)**. The commands defer output language and style to your global `~/.claude/CLAUDE.md`, along with secret safety and destructive-op confirmation. The plugin does not ship a block (plugins cannot write `~/.claude/CLAUDE.md`), so set up your own. Without them the commands still run, but they lose those delegated protections and fall back to the default output style.
+```bash
+# Claude Code
+claude plugin install dev@nxs
 
-3. **Optional - permissions**. The skills prefer `rg` / `fd` / `jq`. Allow them in `~/.claude/settings.json` to avoid prompts. Plugins cannot ship permissions.
-
-4. Restart Claude Code so the plugin snapshot and the global rules load.
-
-## Dev loop
-
-The installed plugin reads a cached snapshot, not the live repo, so a session picks up repo edits only after the snapshot is refreshed and the session restarts.
-
-```
-# simplest - reinstall (no version bump)
-claude plugin uninstall dev@nxs && claude plugin install dev@nxs
-
-# or version-based
-# bump "version" in plugins/dev/.claude-plugin/plugin.json, then:
-claude plugin marketplace update nxs
-claude plugin update dev@nxs
+# Codex: see Compatibility above for the workflow limits
+codex plugin add dev@nxs
 ```
 
-A restart is required either way. `claude plugin validate --strict plugins/dev`, run from the repository root, checks the manifest and skills before install.
+For the Claude Code workflow:
+
+1. **Global rules (your own).** Commands defer output language and style to your global `~/.claude/CLAUDE.md`, along with secret safety and destructive-operation confirmation. The plugin does not install that file or replace the host's permission controls. Without your own global rules, those delegated instructions are absent.
+2. **Optional permissions.** The skills prefer `rg` / `fd` / `jq`. Configure approved tools in `~/.claude/settings.json` if you want fewer prompts. Plugins cannot ship your permission grants.
+3. Start a new session so the installed snapshot and global rules load.
+
+## Development and updates
+
+Use the marketplace [update instructions](../../README.md#update), selecting `dev@nxs`. Refresh the configured marketplace first, then update the installed plugin; uninstalling is not required. Start a new session afterward.
+
+For a local Claude Code preview from the repository root:
+
+```bash
+claude --plugin-dir ./plugins/dev
+```
+
+This previews the working checkout. An installed GitHub-backed plugin uses its cached snapshot, so edits here do not change that installation. See [CONTRIBUTING.md](CONTRIBUTING.md) for authoring rules and the versioned contract.

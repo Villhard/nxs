@@ -1,18 +1,18 @@
 # CONTRIBUTING
 
-Follow the repository's authoring and public-safety rules.
+Follow the repository's [authoring and public-safety rules](../../CONTRIBUTING.md). Shared installation and update commands live in the marketplace README.
 
 ## CONTRACT
 
-The contract is the plugin name `std`, the `teach` skill, conversational teaching by default, and the workspace artifacts documented in the README. Changes to those interfaces are minor releases; internal instruction refinements are patches. Update both plugin manifest versions together and add a CHANGELOG entry for bundled changes.
+The contract is the plugin name `std`, the `teach` skill, conversational teaching by default, and the workspace artifacts documented in the README. Changes to those interfaces are minor releases; internal instruction refinements and documentation corrections are patches. Update both plugin manifest versions together and add a CHANGELOG entry for bundled changes.
 
 Keep the Claude Code and Codex manifests pointed at one shared skill. Do not introduce platform-specific lesson implementations or require additional skills for the core dialogue.
 
 ## VERIFICATION
 
-Run the repository house-style and frontmatter checks, strict Claude Code marketplace/plugin validation, and Codex plugin and skill validation. Include new Markdown files explicitly in the house-style check before they are tracked. Check both manifests agree on name/version and all relative references resolve.
+Run the repository house-style and frontmatter checks, strict Claude Code marketplace/plugin validation, and Codex plugin and skill validation. The Codex validators are additional local checks; the current GitHub CI runs house-style, frontmatter, and Claude Code validation only. Include new Markdown files explicitly in the house-style check before they are tracked. Check both manifests agree on name/version and all relative references resolve.
 
-Exercise the skill in temporary learning directories using real agent conversations. Judge behavior and saved artifacts, not exact wording:
+When teaching behavior changes, exercise the skill in temporary learning directories using real agent conversations. Documentation-only changes need checks of the described behavior, commands, and links, without repeating all dialogues. Judge behavior and saved artifacts, not exact wording:
 
 1. Start from a supplied book excerpt with a clear goal. Observe a small in-chat explanation and grounded mission/resources.
 2. Say you are confused and request a complete example. Observe an explanation rather than more interrogation.

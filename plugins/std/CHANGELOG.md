@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.1] - 2026-09-10
+
+### Changed
+
+- Update published installation, shared update guidance, and the scope of compatibility checks in Claude Code and Codex. Teaching behavior is unchanged.
+
 ## [0.1.0] - 2026-09-09
 
 ### Added

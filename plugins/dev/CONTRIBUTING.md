@@ -1,4 +1,4 @@
-# CONTRIBUTING (dev)
+# CONTRIBUTING (DEV)
 
 How to author a skill or an agent for the `dev` plugin. The rules here govern this plugin only - the other plugins in this marketplace have their own. Repository-wide rules (house style, public safety, how a plugin is added) live in the root `CONTRIBUTING.md`.
 
@@ -15,7 +15,7 @@ plugins/dev/
   README.md CONTRIBUTING.md CHANGELOG.md
 ```
 
-The global `~/.claude/CLAUDE.md` and `settings.json` stay out of this repo - you write those yourself.
+The global `~/.claude/CLAUDE.md` and `settings.json` stay out of this repo - you write those yourself. These paths, slash-command rules, and agent definitions describe the Claude Code workflow. Codex installation and skill discovery are verified; the complete named-agent workflow is not. See the README's compatibility section before documenting broader support.
 
 ## TWO TIERS
 
@@ -24,7 +24,7 @@ The global `~/.claude/CLAUDE.md` and `settings.json` stay out of this repo - you
 
 There is no third tier. A rule lives in exactly one file - the command that uses it, or the agent that uses it. No background skills, no `reference/` directories, no cross-skill injection.
 
-Nothing sits alongside the tiers. The plugin ships no hook and injects nothing into a session it was not invoked in.
+The plugin ships no hook. Six command skills require explicit invocation in Claude Code; `commit` also activates on a natural-language request to commit. Do not describe the entire plugin as explicit-invocation-only.
 
 ## UBIQUITOUS LANGUAGE
 
@@ -115,12 +115,12 @@ Things that bloat the plugin and get rejected: copying an external skill wholesa
 ## AUTHORING PLAYBOOK
 
 - The command name is the skill DIRECTORY name. `skills/plan/` -> `/dev:plan`.
-- The `dev` namespace comes from the `name` field in `plugin.json`. Invocation is always namespaced; there is no bare alias.
+- The `dev` namespace comes from the `name` field in `plugin.json`. Claude Code slash invocation is namespaced; there is no bare alias. `commit` can also activate from its natural-language trigger.
 - Leave the frontmatter `name` field out of bundled skills. It is a display label, and setting it hides the namespace prefix in the `/` menu; without it the menu shows `dev:<dir>`.
 - Write the body of `SKILL.md` in compact English. The global tier decides what language the user reads in the chat.
 - The body loads on invocation and stays for the whole session, so write standing instructions, not one-off steps.
-- A skill that grows past roughly 120 lines is doing more than one job. Split the job, do not add a reference file.
-- `skills/rnd/SKILL.md` is the file nearest that ceiling. 0.20.0 put slicing on top of shaping, so it now clarifies, explores, stresses, writes the spec, and cuts the tickets, and it is the next split candidate. Before splitting, run the four tests in WHEN TO ADD SOMETHING NEW against a `/dev:tickets` command: distinct intent already passes, frequency and settledness are the two that failed in 0.20.0.
+- Aim for roughly 120 lines per skill. Reassess scope beyond that guideline; do not add a reference file just to hide the length.
+- Some current skills exceed that authoring guideline. Before proposing a split, measure the current file and apply the four tests in WHEN TO ADD SOMETHING NEW; length alone does not justify another command.
 - Validate as you go, from the repository root: `claude plugin validate --strict plugins/dev`
 
 ### COMMAND SKILL FRONTMATTER
@@ -175,22 +175,17 @@ The pre-0.20.0 story directory is gone, and no command reads or writes it. Nothi
 
 ## DEV LOOP
 
-Install caches a SNAPSHOT of the plugin rather than reading the repo live:
+Use the repository [local development guidance](../../CONTRIBUTING.md#local-development-and-release). For a Claude Code preview from the checkout root:
 
-```
-# once - connect the local dev marketplace
-claude plugin marketplace add ~/dev/nxs
-claude plugin install dev@nxs
-
-# after every edit
-claude plugin marketplace update nxs   # then reinstall the plugin
+```bash
+claude --plugin-dir ./plugins/dev
 ```
 
-An edited skill only becomes invocable after the session restarts.
+For an installed release, use the shared [update instructions](../../README.md#update) with `dev@nxs`. Check the configured source before refreshing: a GitHub marketplace will not read edits in a separate local checkout. Update the installed snapshot after refreshing the marketplace, then start a new session. Do not connect a second source with the same marketplace name as a routine preview step.
 
 ## VERSIONING
 
-Every edit to bundled content - skills, agents, manifests - bumps the `version` field in `plugin.json` and adds an entry to `CHANGELOG.md` (Keep a Changelog, newest section on top). The size of the diff does not decide which part of the version moves. Whether the CONTRACT changed does.
+Every edit to bundled content - skills, agents, manifests, plugin documentation - bumps the `version` field in `plugin.json` and adds an entry to `CHANGELOG.md` (Keep a Changelog, newest section on top). The size of the diff does not decide which part of the version moves. Whether the CONTRACT changed does.
 
 ### WHAT THE CONTRACT IS
 

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.23.1] - 2026-09-10
+
+### Changed
+
+- Document installation in both clients and the limits of the unverified named-agent workflow in Codex.
+- Clarify command routing, no-commit execution, review scope, automatic commit activation, and snapshot updates; workflow behavior is unchanged.
+
 ## [0.23.0] - 2026-09-07
 
 ### Added
