@@ -1,0 +1,27 @@
+{
+  "name": "std",
+  "version": "0.1.0",
+  "description": "Conversational learning from books, courses, and trusted sources, with a mission and durable progress",
+  "author": {
+    "name": "Victor Ryabov"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/Villhard/nxs",
+  "homepage": "https://github.com/Villhard/nxs/tree/main/plugins/std",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Study",
+    "shortDescription": "Learn through conversation, examples, and adaptive checks",
+    "longDescription": "Study books and courses in small conversational blocks. Keep a learning mission, verified sources, demonstrated understanding, and a place to resume.",
+    "developerName": "Victor Ryabov",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use teach to help me understand this chapter through conversation."
+    ]
+  }
+}
