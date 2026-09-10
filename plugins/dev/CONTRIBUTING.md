@@ -6,7 +6,7 @@ Follow the [shared rules](../../CONTRIBUTING.md). This file defines `dev` termin
 
 Seven command skills and six agents: one [worker](agents/worker.md) and five reviewers ([quality](agents/review-quality.md), [implementation](agents/review-implementation.md), [testing](agents/review-testing.md), [simplification](agents/review-simplification.md), [documentation](agents/review-documentation.md)).
 
-Keep language, style, and safety agreements in client/global instructions. Put workflow rules inline in the skill or agent that uses them; if two need a rule, write it twice. No background skills, reference directories, cross-skill injection, or hooks. Workflow instructions may require explicit push requests; host permission controls enforce access.
+Keep language, style, and safety agreements in client/global instructions. Keep process, guards, and output contracts in the skill or agent that owns them; if two need a rule, write it twice. Skills may use purposeful local `references/` for supporting detail, `assets/` for output templates, and `scripts/` for executable helpers. Link resources from the owning skill and require reads at the point of use, resolving paths relative to the installed skill directory. Named agents stay at plugin-level `agents/` and remain self-contained. No background skills, cross-skill injection, or hooks. Workflow instructions may require explicit push requests; host permission controls enforce access.
 
 ## TERMINOLOGY
 
@@ -39,9 +39,9 @@ Keep handoffs limited to these interfaces. Their headings, fields, markers, and 
 
 | Handoff | Interface and source |
 | --- | --- |
-| `rnd` to `plan` | Ticket `What to build` and acceptance criteria; spec Implementation Decisions and Testing Decisions. [Spec](skills/rnd/SKILL.md#artifact), [ticket](skills/rnd/SKILL.md#slice), [reader](skills/plan/SKILL.md#procedure). |
+| `rnd` to `plan` | Ticket `What to build` and acceptance criteria; spec Implementation Decisions and Testing Decisions. [Spec template](skills/rnd/assets/spec.md), [spec rules](skills/rnd/SKILL.md#artifact), [ticket template](skills/rnd/assets/ticket.md), [ticket rules](skills/rnd/SKILL.md#slice), [reader](skills/plan/SKILL.md#procedure). |
 | `bug` to `plan` | Root cause and Fix direction headings. [Artifact](skills/bug/SKILL.md#artifact), [reader and conflict handling](skills/plan/SKILL.md#procedure). |
-| `plan` to `exec` | Task headings, positional checkboxes, Conventions, and plain-text `Serves:` passed to workers. [Template](skills/plan/SKILL.md#template), [execution](skills/exec/SKILL.md#the-cycle), [worker](agents/worker.md#stance). |
+| `plan` to `exec` | Task headings, positional checkboxes, Conventions, and plain-text `Serves:` passed to workers. [Template](skills/plan/assets/implementation.md), [template rules](skills/plan/SKILL.md#template), [execution](skills/exec/SKILL.md#the-cycle), [worker](agents/worker.md#stance). |
 | Ticket to `exec` | Status writers, blockers, acceptance criteria, execution record and notes. [Planning transitions](skills/plan/SKILL.md#procedure), [selection](skills/exec/SKILL.md#resolve-the-ticket), [resume](skills/exec/SKILL.md#resume), [notes](skills/exec/SKILL.md#execution-notes), [closure](skills/exec/SKILL.md#the-cycle). |
 | `review` to `fix` | Six report headings: Scope, Mode, Requirements, Findings, Dismissed, Follow-ups. [Schema and writes](skills/review/SKILL.md#artifact), [validation](skills/fix/SKILL.md#check-the-report), [fix outcome](skills/fix/SKILL.md#artifact). |
 
@@ -61,6 +61,7 @@ For skill files:
 - Omit frontmatter `name` to retain the namespace in Claude Code's menu. Give `description` a concise trigger and result, without retelling phases. `argument-hint` is optional.
 - Use `disable-model-invocation: true` except for `commit`, which also handles natural-language requests. Justify any second exception here first.
 - Include a real `Example:` invocation after the intro. Write compact English standing instructions; client instructions determine response language.
+- Output-template assets retain the artifact heading case and are exempt from UPPERCASE instruction headings; instructional references still use UPPERCASE headings.
 - Aim for roughly 120 lines. Measure before proposing a split; length alone does not satisfy the four addition criteria.
 
 For agent files:

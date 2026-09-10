@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.23.4] - 2026-09-10
+
+### Changed
+
+- Move rnd and plan templates into skill-local assets and document optional supporting resources; artifact contracts and workflow gates are unchanged.
+
 ## [0.23.3] - 2026-09-10
 
 ### Changed

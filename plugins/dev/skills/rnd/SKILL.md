@@ -65,25 +65,7 @@ Never write into a `.scratch/<x>/` that holds a `map.md` - that directory belong
 
 Before the first write into a NEW feature directory, resolve the tracker layout from the first line of `docs/agents/issue-tracker.md` in this repo, else the same relative path under the user's Claude config directory, else local markdown. `# Issue tracker: Local Markdown`, or no such file anywhere: proceed silently. GitHub or GitLab: name the tracker, say in one sentence that writing under `.scratch/` here leaves the shaping in local files while the issues live on that tracker, then let the user pick - write under `.scratch/` anyway, or stop and drive the tracker with `/to-spec` and `/to-tickets` and come back with the ticket path. Ask once; the answer holds for the session. Never invent a `gh` or `glab` call.
 
-The spec carries these seven headings, in this order, and nothing else at `##`:
-
-```markdown
-# <Feature title>
-
-## Problem Statement
-
-## Solution
-
-## User Stories
-
-## Implementation Decisions
-
-## Testing Decisions
-
-## Out of Scope
-
-## Further Notes
-```
+Before writing the spec, read [assets/spec.md](assets/spec.md), resolved relative to this installed skill directory. Use its seven headings in their given order, and nothing else at `##`.
 
 `## Solution` holds the chosen approach with the answers integrated. `## Implementation Decisions` holds the findings that influenced the approach, with their code references, and the decisions every ticket inherits, each with a brief reason; keep assumptions distinguishable from confirmed facts. `## Testing Decisions` holds the relevant test findings and chosen checks. `## Out of Scope` names what is explicitly not being done. `## Further Notes` takes the options with their rejection reasons, the stress verdict when the stress step ran, and a `- Q: <question> -> A: <answer>` log when at least one question was asked. Sections scale with the request, an empty one is dropped, headings keep their names.
 
@@ -93,20 +75,7 @@ Nothing durable is written before the user approves it.
 
 Cut the chosen approach into tickets under `issues/`, numbered from `01` in dependency order so a blocker always carries a lower number than what it blocks. Each ticket is one vertical slice: end-to-end behavior a user or an API can exercise, demoable on its own, sized to fit one fresh context window. Never a layer - not the schema, then the service, then the route. A wide refactor is the exception: expand, migrate in batches, contract, one ticket per batch. One ticket is the normal outcome for small work and gets no ceremony - same file, same shape.
 
-Write each one exactly like this:
-
-```markdown
-# <NN>: <Ticket title>
-
-**What to build:** <the end-to-end behavior this ticket makes work, from the user's perspective, not a layer-by-layer implementation list>
-
-**Blocked by:** <the numbers and titles of the tickets that gate this one, or "None (can start immediately)">
-
-**Status:** ready-for-agent
-
-- [ ] <acceptance criterion>
-- [ ] <acceptance criterion>
-```
+Before writing tickets, read [assets/ticket.md](assets/ticket.md), resolved relative to this installed skill directory. Write each ticket exactly in that shape.
 
 Rules the template does not show:
 
