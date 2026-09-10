@@ -2,12 +2,15 @@
 """Regression checks through the public CLI, using disposable Git repositories."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
 import tempfile
 
 CLI = Path(__file__).with_name('check-marketplace.sh').resolve()
+ROOT = CLI.parents[2]
+HOOK = ROOT / '.claude/hooks/check-version-bump.sh'
 
 
 def git(repo, *args):
@@ -85,9 +88,120 @@ def fresh(root, name):
     return repo
 
 
+def hook(repo, command=None, diagnostic='', payload=None):
+    if payload is None:
+        payload = json.dumps({'tool_input': {'command': command}})
+    before = state(repo)
+    result = subprocess.run(['bash', str(HOOK)], input=payload, cwd=repo,
+                            capture_output=True, text=True)
+    assert state(repo) == before, 'hook modified repository state'
+    assert result.returncode == 0, result.stderr
+    if diagnostic:
+        output = json.loads(result.stdout)['hookSpecificOutput']
+        assert output['permissionDecision'] == 'deny', output
+        assert diagnostic in output['permissionDecisionReason'], output
+    else:
+        assert not result.stdout, result.stdout
+
+
+def ci_check(repo, event, head, before='', target='', default='main', expected=True):
+    # Execute the actual CI block, without a YAML dependency or a second baseline algorithm.
+    workflow = (ROOT / '.github/workflows/ci.yml').read_text()
+    block = workflow.split('      - name: Check release snapshots\n', 1)[1]
+    block = block.split('        run: |\n', 1)[1].split('\n      - name:', 1)[0]
+    script = '\n'.join(line[10:] for line in block.splitlines())
+    env = dict(os.environ, EVENT_NAME=event, HEAD_SHA=head, BEFORE_SHA=before,
+               TARGET_SHA=target, DEFAULT_BRANCH=default)
+    snapshot = state(repo)
+    result = subprocess.run(['bash', '-c', script], cwd=repo, env=env,
+                            capture_output=True, text=True)
+    assert state(repo) == snapshot, 'CI check modified repository state'
+    assert (result.returncode == 0) == expected, result.stdout + result.stderr
+
+
+def integration(root):
+    repo = fresh(root, 'integration')
+    for name in ('check-marketplace.sh', 'check-marketplace.py'):
+        write(repo, '.github/scripts/' + name, CLI.with_name(name).read_text())
+    base = commit(repo)
+    hook(repo, 'git status')
+    hook(repo, 'git log --grep commit')
+    hook(repo, 'git show HEAD:README.md | rg commit')
+    hook(repo, 'git -C /tmp log --grep commit')
+    hook(repo, 'echo "git commit"')
+    hook(repo, "rg 'git commit' CONTRIBUTING.md")
+    hook(repo, payload='{broken', diagnostic='Invalid Bash hook payload')
+    write(repo, 'plugins/sample/skills/one/SKILL.md', '[asset](asset.md)\n')
+    git(repo, 'add', '.')
+    hook(repo, 'git commit -m update', diagnostic='version must increase')
+    release(repo)
+    write(repo, 'plugins/sample/skills/one/asset.md', 'Asset\n')
+    git(repo, 'add', '.')
+    (repo / 'plugins/sample/skills/one/asset.md').unlink()
+    hook(repo, 'git commit -m "valid staged release"')
+    hook(repo, "git commit -m 'refactor(dev): extract artifact templates'")
+    hook(repo, "git commit -m 'fix(dev): literal $ and & and ;'")
+    hook(repo, 'git commit -m "refactor(dev): extract templates"')
+    for command in ('git commit -a', 'git commit -am update', 'git commit --all',
+                    'git commit --only README.md', 'git commit --include README.md',
+                    'git commit README.md', 'git commit --amend',
+                    'git commit -m update && git status', 'cd /tmp && git commit',
+                    'git status\ngit commit',
+                    'git -C /tmp commit', 'git commit -m "$MESSAGE"',
+                    'git commit -m "$(echo substituted)"',
+                    'env GIT_INDEX_FILE=other git commit', 'bash -c "git commit"'):
+        hook(repo, command, diagnostic='Stage the intended files first')
+    git(repo, 'commit', '-qm', 'valid index')
+    head = git(repo, 'rev-parse', 'HEAD')
+    ci_check(repo, 'push', head, before=base)
+    ci_check(repo, 'pull_request', head, target=base)
+    git(repo, 'update-ref', 'refs/remotes/origin/main', base)
+    ci_check(repo, 'push', head, before='0' * 40)
+    skill = repo / 'plugins/sample/skills/one/SKILL.md'
+    current_skill = skill.read_text()
+    skill.write_text('Previous release implementation.\n')
+    git(repo, 'add', str(skill))
+    previous_tree = git(repo, 'write-tree')
+    git(repo, 'read-tree', head)
+    skill.write_text(current_skill)
+    previous = git(repo, 'commit-tree', previous_tree,
+                   '-p', base, '-m', 'rewritten previous tip')
+    # The old CI baseline falsely rejected differing content at the same version.
+    check(repo, False, '--base', previous, '--head', head, diagnostic='version must increase')
+    ci_check(repo, 'push', head, before=previous)
+    ci_check(repo, 'push', head, before='f' * 40)
+    git(repo, 'update-ref', 'refs/remotes/origin/main', head)
+    ci_check(repo, 'push', head, before='0' * 40)
+    ci_check(repo, 'push', head, before='0' * 40, default='missing')
+    # A real missing bump must still fail under all release baselines.
+    write(repo, 'plugins/sample/skills/one/SKILL.md', 'Unreleased change\n')
+    bad = commit(repo)
+    ci_check(repo, 'push', bad, before=head, expected=False)
+    ci_check(repo, 'push', bad, before=previous, expected=False)
+    ci_check(repo, 'push', bad, before='f' * 40, expected=False)
+    ci_check(repo, 'pull_request', bad, target=head, expected=False)
+    ci_check(repo, 'push', bad, before='0' * 40, expected=False)
+    ci_check(repo, 'push', bad, before='0' * 40, default='missing', expected=False)
+
+    repo = root / 'initial'
+    repo.mkdir()
+    git(repo, 'init', '-q')
+    git(repo, 'config', 'user.name', 'Fixture')
+    git(repo, 'config', 'user.email', 'fixture@example.invalid')
+    git(repo, 'config', 'commit.gpgsign', 'false')
+    git(repo, 'config', 'core.hooksPath', str(repo / 'disabled-hooks'))
+    catalog(repo, ['sample'])
+    plugin(repo, value='0.1.0')
+    for name in ('check-marketplace.sh', 'check-marketplace.py'):
+        write(repo, '.github/scripts/' + name, CLI.with_name(name).read_text())
+    head = commit(repo)
+    ci_check(repo, 'push', head, before='0' * 40)
+
+
 def main():
     with tempfile.TemporaryDirectory(prefix='marketplace-check-') as directory:
         root = Path(directory)
+        integration(root)
         repo = fresh(root, 'releases')
         check(repo)
         write(repo, 'README.md', 'Root-only change.\n')
@@ -100,13 +214,44 @@ def main():
         release(repo, '0.23.9')
         check(repo, False, diagnostic='never regress')
 
+        for edit in ('readme', 'manifest-description', 'changelog-text', 'executable-bit'):
+            repo = fresh(root, edit)
+            if edit == 'readme':
+                write(repo, 'plugins/sample/README.md', 'Documentation edit.\n')
+            elif edit == 'manifest-description':
+                path = repo / 'plugins/sample/.claude-plugin/plugin.json'
+                data = json.loads(path.read_text())
+                data['description'] = 'Updated description'
+                path.write_text(json.dumps(data))
+            elif edit == 'changelog-text':
+                path = repo / 'plugins/sample/CHANGELOG.md'
+                path.write_text(path.read_text().replace('Initial.', 'Corrected wording.'))
+            else:
+                path = repo / 'plugins/sample/skills/one/SKILL.md'
+                path.chmod(path.stat().st_mode | 0o111)
+            check(repo, False, diagnostic='version must increase')
+            git(repo, 'add', '.')
+            check(repo, False, '--staged', diagnostic='version must increase')
+            release(repo)
+            check(repo)
+            git(repo, 'add', '.')
+            check(repo, True, '--staged')
+
         repo = fresh(root, 'metadata')
         path = repo / 'plugins/sample/.codex-plugin/plugin.json'
         path.write_text('{"name": "wrong", "version": "0.23.9"}')
         check(repo, False, diagnostic='name/version must match')
         path.write_text('{"name": "sample", "version": "0.23.10"}')
         check(repo, False, diagnostic='name/version must match')
-        path.unlink()  # Codex metadata is optional.
+        path.unlink()  # Optional metadata removal still changes the bundle.
+        check(repo, False, diagnostic='version must increase')
+        release(repo)
+        check(repo)
+        commit(repo)
+        check(repo)  # An existing plugin without Codex metadata is valid.
+        path.write_text('{"name": "sample", "version": "0.23.10"}')
+        check(repo, False, diagnostic='version must increase')
+        release(repo, '0.23.11')
         check(repo)
         path = repo / 'plugins/sample/.claude-plugin/plugin.json'
         path.write_text('{broken')
@@ -126,10 +271,12 @@ def main():
         check(repo, False, diagnostic='missing required file')
 
         repo = fresh(root, 'reused-entry')
+        release(repo)
         path = repo / 'plugins/sample/CHANGELOG.md'
-        path.write_text(path.read_text() + '\n## [0.23.10] - 2026-09-10\n\n- Already here.\n')
+        path.write_text(path.read_text() + '\n## [0.23.11] - 2026-09-10\n\n- Already here.\n')
+        check(repo)
         commit(repo)
-        release(repo, body=False)
+        release(repo, '0.23.11', body=False)
         check(repo, False, diagnostic='must be new relative to base')
 
         repo = fresh(root, 'semver')
@@ -144,7 +291,6 @@ def main():
         release(repo, '1.0.0')
         check(repo)
         commit(repo)
-        write(repo, 'plugins/sample/skills/one/new.md', 'change')
         release(repo, '1.0.0+build')
         check(repo, False, diagnostic='version must increase')
 

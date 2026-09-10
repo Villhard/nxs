@@ -147,7 +147,7 @@ def check(base, current):
         old_version = object_at(base, manifest).get('version')
         old = version(old_version, manifest + ' (base)')
         changed = any(base.get(path) != current.get(path) for path in base.keys() | current.keys()
-                      if path.startswith(prefix) and path not in {manifest, codex, changelog})
+                      if path.startswith(prefix))
         if new < old or (changed and new <= old):
             raise Invalid(f'{manifest}: version must increase for bundled changes and never regress ({old_version} -> {new_version})')
         if new > old and new_version in releases(read(base, changelog), changelog + ' (base)'):

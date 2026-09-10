@@ -71,3 +71,43 @@ jobs:
             claude plugin validate --strict "${p%/}" || status=1
           done
           exit $status
+
+  marketplace:
+    name: Marketplace snapshots + regression checks (Python 3)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check release snapshots
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          TARGET_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = pull_request ]; then
+            base=$(git merge-base "$TARGET_SHA" "$HEAD_SHA")
+          elif [ -n "$BEFORE_SHA" ] &&
+               git rev-parse --verify --end-of-options "$BEFORE_SHA^{commit}" >/dev/null 2>&1 &&
+               git merge-base --is-ancestor "$BEFORE_SHA" "$HEAD_SHA"; then
+            base=$BEFORE_SHA
+          else
+            base=$(git merge-base "refs/remotes/origin/$DEFAULT_BRANCH" "$HEAD_SHA" 2>/dev/null || true)
+            if [ -z "$base" ] || [ "$base" = "$HEAD_SHA" ]; then
+              if git rev-parse --verify "$HEAD_SHA^" >/dev/null 2>&1; then
+                base=$(git rev-parse "$HEAD_SHA^")
+              else
+                # No parent: the actual initial commit. Hash without writing an object.
+                base=$(git hash-object -t tree --stdin </dev/null)
+              fi
+            fi
+          fi
+          bash .github/scripts/check-marketplace.sh --base "$base" --head "$HEAD_SHA"
+
+      - name: Run regression fixtures (Python 3 standard library)
+        run: python3 .github/scripts/test_check_marketplace.py
