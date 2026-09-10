@@ -1,6 +1,6 @@
 # ADAPTATION EXAMPLES
 
-Use these illustrative trajectories to choose a teaching move from evidence. They are invented cases, not scripts or claims about the learner. Cases 1 and 2 share a task: their different answers warrant different responses. Each teacher response stops where learner participation is useful; it does not supply an answer to its own check.
+Use these illustrative trajectories to choose a teaching move from evidence. They are invented cases, not scripts or claims about the learner. Cases 1 and 2 share a task: their different answers warrant different responses. Each teacher response stops where learner participation is useful; it does not supply an answer to its own check. The rationale and checkpoint notes are for the agent, not lines to say to the learner.
 
 ## 1. SOUND REASONING: BEGIN A DEEPER APPLICATION
 
@@ -8,7 +8,11 @@ Context: the learner wants to apply the open/closed principle (OCP), not only de
 
 Learner: "Add a JSON exporter and select it where we assemble the application. `send_report` already calls `encode`, so it doesn't need a JSON branch. The setup still changes; OCP can't mean no file ever changes."
 
-Teacher: "That separates the extension point from application setup correctly. For this format change, the sending policy stays untouched because both exporters meet the same contract. Let's test the limit: a proposed exporter returns a background job ID immediately, and the bytes become available later. The sender still expects bytes it can send now. What must we establish before treating this as another interchangeable exporter?"
+Teacher:
+
+> Yes, that would work. `send_report` keeps calling `encode(rows)` and gets bytes back, whether you pass it CSV or JSON. You still change which object gets passed in when you assemble the application. That's fine: the part you wanted to leave alone was the sender.
+>
+> Now suppose someone adds an exporter that does the encoding in the background. It returns a job ID straight away; the bytes won't be ready until later. The sender still expects to send them now. Would you plug this one in the same way, or is there something we'd need to sort out first?
 
 Why: the learner explained the mechanism and its boundary, so another definition check adds little. The changed return behavior tests whether they can reason about the contract, not merely count new classes. The setup edit is correctly acknowledged, not treated as a misconception.
 
@@ -20,7 +24,13 @@ Same explanation and task as case 1.
 
 Learner: "Add a JSON exporter class, then add an `if format == 'json'` branch in `send_report` to call it. The new class makes this follow OCP."
 
-Teacher: "A separate JSON encoder is a useful part of that design. The branch still makes the sender change for every new format, though. Here the sender already receives an exporter, so it can always call `encode(rows)` without knowing whether it got CSV or JSON. Setup chooses the object; that object supplies the format-specific behavior. Moving encoding into a class only protects the sender if the sender uses that shared contract. In your version with a format branch still inside the sender, what would happen to `send_report` when XML is added?"
+Teacher:
+
+> The separate JSON exporter makes sense. The part I'd change is that `if` inside `send_report`: the sender is still choosing the format itself. Every new format means going back into this function.
+>
+> We can make that choice earlier, when we assemble the application, and pass in the exporter we've picked. Then the sender just calls `encode(rows)`. It doesn't need to know who turned the rows into bytes.
+>
+> So you've already moved the encoding out. The format choice is still inside the function you wanted to leave alone. If we kept your version and added XML tomorrow, where would you have to edit it?
 
 Why: the answer identifies a useful component but explicitly equates a new class with OCP. Explain the dependency mechanism before asking about a small consequence of their own design. The job-ID challenge from case 1 would add difficulty before this gap is resolved. If the learner had only said "add a class," the gap would be ambiguous; ask where it is selected before diagnosing branch-based dispatch.
 
@@ -32,7 +42,15 @@ Context: the learner wants to evaluate causal claims. Twice, the teacher has con
 
 Learner: "But if that comparison group is younger, age could still explain the difference. Your comparison doesn't fix it."
 
-Teacher: "You're right: I did not specify comparable groups, so that comparison is inadequate. Here is a better hypothetical. Pupils from the same year are randomly assigned to tutoring or ordinary study; both groups take the same test before and after the same term. The tutoring group's average rises by 12 points, the other group's by 8. The 12-point rise includes improvement that can happen without tutoring; the 8-point rise makes that visible. The difference in gains is 4 points, an estimate of the tutoring effect under these conditions, not proof from timing alone. Random assignment helps make the groups comparable on average, but a small sample can still differ by chance. Which part of this comparison was missing from the original claim that scores rose after tutoring?"
+Teacher:
+
+> Yes - I left that out. Comparing older pupils with younger ones could leave us with exactly the problem you pointed out. Let's fix the example.
+>
+> Suppose we take pupils from the same year and randomly split them into two groups. One gets tutoring, the other studies as usual. Both take the same test before and after the term. The first group's average goes up by 12 points. The second group's goes up by 8.
+>
+> Those 8 points matter: the pupils without tutoring improved too. So we can't credit tutoring with the whole 12-point rise. The extra gain is 4 points, which gives us an estimate of its effect in this setup. Random assignment helps make the groups comparable on average, though a small group can still differ by chance.
+>
+> Back in the original story, we only knew that scores went up after tutoring. What does seeing the second group's result let us account for that we couldn't before?
 
 Why: a numerical worked comparison replaces the failed verbal distinction. The learner's objection is valid evidence of reasoning about comparability, not continued confusion about everything. The teacher repairs its own underspecified example and qualifies the estimate. It does not claim this explanation has resolved the original gap.
 
@@ -42,12 +60,18 @@ Checkpoint: retain the unresolved inference from before/after improvement, note 
 
 Context: the goal is to reason about relative changes. On a price falling from 100 to 80, then rising by 20%, the learner correctly found 80 but claimed the final price was 100 because the percentages cancel. The teacher worked through 20% of 80 as 16, giving 96, and explained that the two percentages use different bases.
 
-Learner: "Understood."
+Learner: "Okay, I get it now."
 
-Teacher: "Let's use that changing base in a related situation. A town of 1,000 grows by 10% in each of two years. The first increase is 100, making 1,100; the second is 110, making 1,210. The same rate adds more people when it starts from a larger population. This is why repeated percentage changes multiply: here the factor is 1.1 each year. For comparison, adding exactly 100 people each year would give 1,200."
+Teacher:
+
+> That same changing base shows up when something keeps growing. Suppose a town has 1,000 people and grows by 10% each year for two years.
+>
+> In the first year, it gains 100 people and reaches 1,100. Next year, 10% means another 110 people, so it reaches 1,210. Same percentage, bigger starting number, bigger increase.
+>
+> That's why we multiply the current population by 1.1 each year. If we added a fixed 100 people each time instead, we'd end up at 1,200. The difference comes from those extra people becoming part of next year's starting number too.
 
 The teacher leaves room to discuss this distinction; it need not demand another confirmation or immediately retest the worked price problem. Checkpoint now distinguishes the independently correct first discount, the assisted changing-base explanation, self-reported understanding, and unverified application. Current focus is repeated growth, not an unanswered price question.
 
-Later, after discussing the growth example, the teacher returns to the gap through a new application: "A shop raises a price from 80 to 100. It now wants to return to 80 using one percentage discount from the current price. What discount would do that, and which amount is its base?"
+Later, after discussing the growth example, the teacher returns to the gap through a new application: "Let's go back to prices, but this time we're trying to undo a change. A shop raised a price from 80 to 100 and now wants it back at 80. What percentage discount would get it there? Tell me which price you're taking the percentage of."
 
 Why: "understood" permits forward teaching without establishing mastery. The later reverse calculation probes the base in a changed case and does not reveal the answer. Record the actual response and any help before updating demonstrated understanding; do not invent a successful transfer. If the learner pauses before this check is issued, save it only as a proposed next step.
