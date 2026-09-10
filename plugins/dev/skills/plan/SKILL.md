@@ -33,7 +33,7 @@ Local Markdown, or no such file anywhere: write under `.scratch/` without asking
 3. **Read the code.** Inspect the files, patterns, and dependencies the work touches - directly or through the built-in Explore agent. Do not over-read. Clarify a fuzzy domain term before encoding it into the plan. Carry applicable decisions, constraints and their reasons from the feature document and this session into the plan: shared ones in `## Conventions`, task-specific ones in that task's text. Include the code references needed to act on them. Preserve exclusions and reasons for rejecting alternatives when they constrain the work; omit unrelated history. Collect the surrounding code patterns every task follows in `## Conventions` too.
 4. **Close the open questions.** Ask one at a time, 2-4 concrete options with a recommendation. For several viable approaches, lay out the trade-offs and ask once.
 5. **Decompose.** As many tasks as the work has working units, no floor and no target. Each is one working unit: the code plus the tests for it, leaving the project green. Sequence by dependency - a task never calls what a later task creates. Every task earns its place; cut the rest. No task exists only to run the suite or the linter - `/dev:exec` runs both once itself at the close.
-6. **Append `## Conventions` and `## Implementation`** to the ticket using the template below - before `## Comments` when that heading exists, at the end of the file otherwise.
+6. **Read [assets/implementation.md](assets/implementation.md)** relative to this installed skill directory before writing. Append `## Conventions` and `## Implementation` to the ticket using that template and the rules below - before `## Comments` when that heading exists, at the end of the file otherwise.
 7. **Run the self-check** before handing the plan over.
 
 With no ticket named and a `root-cause.md` that no existing ticket references, or with no `issues/` directory at all, open a new ticket first: `issues/<NN>-<slug>.md`, `NN` one past the highest number present and `01` when `issues/` is empty or absent. Five fields in this order: the heading `# <NN>: <title>`, `**What to build:**` as the end-to-end behavior in the user's terms, `**Blocked by:** None (can start immediately)`, `**Status:** ready-for-agent`, then the acceptance criteria as `- [ ]` lines. Then plan into it. Work too large for one unit of work goes back to `/dev:rnd`, which is where slicing lives.
@@ -50,31 +50,7 @@ This command writes `needs-info` and `ready-for-agent`, here and when it opens a
 
 ## TEMPLATE
 
-````markdown
-## Conventions
-
-<rules every task follows - style, naming, a repeated step, a standing preference. /dev:exec passes this
-section to every worker, so what is missing here does not reach the code. Do not copy in what the project's
-CLAUDE.md already says: exec passes the project rules separately, and a duplicate only inflates every worker
-prompt. No such rules, no section.>
-
-## Implementation
-
-### Task 1: A visitor registers with an email and lands in the database
-
-**Files:**
-- Create: migrations/0007_users.sql
-- Create: src/auth/hash.go
-- Modify: src/users/service.go
-- Modify: src/api/routes.go
-
-- [ ] add the users migration with a unique index on email
-- [ ] add HashPassword in src/auth/hash.go (bcrypt, configurable cost)
-- [ ] add service.Register: normalize, hash, persist, ErrEmailTaken on a duplicate
-- [ ] wire POST /api/users to the service and map errors to 201 / 409 / 422
-- [ ] write tests: fresh email stores a hash and never the plaintext, duplicate gives 409, malformed gives 422
-- [ ] run `go test ./users/... ./api/...`
-````
+Before writing, read [assets/implementation.md](assets/implementation.md), resolved relative to this installed skill directory, and use its template.
 
 Rules the template does not show:
 
@@ -89,6 +65,7 @@ Rules the template does not show:
 
 Before handing the plan over, verify it against the repository and fix what fails. State the result in one line.
 
+- `assets/implementation.md` was read from this installed skill directory before writing, and the plan follows its structure and the template rules above;
 - `rg "### Task" <ticket>` returned nothing before the append, and after it no `- [` line sits between `## Implementation` and `### Task 1:`;
 - the ticket's `**Blocked by:**` line names only lower numbers - a ticket blocked by a higher one is an authored cycle;
 - every `Modify:` path exists, every `Create:` path does not;
