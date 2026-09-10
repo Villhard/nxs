@@ -12,6 +12,9 @@ plugins/<name>/
   .claude-plugin/plugin.json
   .codex-plugin/plugin.json     # explicit Codex manifest; currently std only
   skills/<skill>/SKILL.md
+  skills/<skill>/references/   # optional supporting instructions
+  skills/<skill>/assets/       # optional output templates
+  skills/<skill>/scripts/      # optional executable helpers
   README.md CONTRIBUTING.md CHANGELOG.md
 ```
 
@@ -24,13 +27,13 @@ Create a plugin only for a distinct subject; otherwise extend the existing plugi
 
 ## STYLE AND SAFETY
 
-Write concise English with ASCII hyphens and straight quotes. Use UPPERCASE headings in instructions, including skill references, agents, CONTRIBUTING, CLAUDE, and AGENTS. Use sentence case in README and CHANGELOG. Fenced artifact templates retain their required heading case.
+Write concise English with ASCII hyphens and straight quotes. Use UPPERCASE headings in instructions, including skill references, agents, CONTRIBUTING, CLAUDE, and AGENTS. Use sentence case in README and CHANGELOG. Fenced artifact templates and output-template assets retain their required heading case; instructional references use UPPERCASE headings.
 
 Before committing to this public repository, remove private paths/remotes, tracker keys/URLs, secrets, environment values, personal contact details, and raw session output. Use neutral placeholders such as `<user_home>`, `<github_owner>/<repo>`, and `PROJ-123`.
 
 ## VERSIONS
 
-Plugins version independently; root files have no version. Every bundled edit, including documentation, requires matching versions in all plugin manifests and a new CHANGELOG entry. Preserve history; use Keep a Changelog with newest entries first.
+Plugins version independently; root files have no version. Every bundled edit, including documentation, requires matching versions in all plugin manifests and a new CHANGELOG entry. Even a changelog typo correction requires a release bump. Adding or removing optional Codex metadata and changing bundled executable bits also require a release bump. Preserve history; use Keep a Changelog with newest entries first.
 
 An unchanged contract is a patch. During `0.x`, contract changes require a minor release. Declare stability at `1.0.0`; subsequent breaking changes require a major release. Plugin CONTRIBUTING defines its contract. Renaming a plugin changes its command and agent names.
 
@@ -39,6 +42,8 @@ An unchanged contract is a patch. During `0.x`, contract changes require a minor
 From the repository root:
 
 ```bash
+bash .github/scripts/check-marketplace.sh
+python3 .github/scripts/test_check_marketplace.py
 bash .github/scripts/lint-house-style.sh
 claude plugin validate --strict .
 claude plugin validate --strict plugins/dev
@@ -46,7 +51,21 @@ claude plugin validate --strict plugins/std
 git diff --check
 ```
 
-Also run the Frontmatter lint shell block in [CI](.github/workflows/ci.yml). Every skill needs a nonempty `description`; `user-invocable`, if present, must be boolean. GitHub CI runs house-style/frontmatter and strict Claude Code catalog/plugin validation.
+Also run the Frontmatter lint shell block in [CI](.github/workflows/ci.yml). Every skill needs a nonempty `description`; `user-invocable`, if present, must be boolean. GitHub CI runs these checks, snapshot release checks, regression fixtures, and strict Claude Code catalog/plugin validation.
+
+The shared marketplace checker works from either Claude Code or Codex and requires Git, Bash, and `python3` (standard library only):
+
+```bash
+bash .github/scripts/check-marketplace.sh                        # working files against HEAD
+bash .github/scripts/check-marketplace.sh --staged               # index against HEAD
+bash .github/scripts/check-marketplace.sh --base REF --head REF  # two Git snapshots
+```
+
+Default and staged modes require an existing HEAD. Explicit refs may identify commits or trees. The checker never stages files or writes Git objects. Staged and explicit modes read their selected snapshots, even when working files differ. CI uses the pull request target/head merge-base or push before/head when before is available and an ancestor of head. New branches, rewritten history, and unavailable before commits use the merge-base with the default branch. If the default ref is unavailable or resolves to head, it uses head's first parent; only an actual initial commit uses an empty tree.
+
+Checks cover catalog membership, manifest names and matching versions, SemVer increases and new dated changelog entries for bundled edits, local inline Markdown links/reference definitions outside code in skill Markdown files, and identical review/fix SEVERITY BAR text. Link checks verify destination files, not fragment anchors or arbitrary prose paths; other Markdown syntax forms are not guaranteed. These structural checks do not demonstrate installation, discovery, agent behavior, or complete workflow compatibility.
+
+The optional Claude Code Bash hook calls the same checker with `--staged`; Codex users run it directly. Supported hook invocations are plain `git commit` with `-m`/`--message`, `-q`/`--quiet`, `-v`/`--verbose`, `--allow-empty`, `-n`/`--no-verify`, or `-s`/`--signoff`. Stage first: Git global options, pathspecs, `-a`/`--all`, `--include`/`--only`, `--amend`, compound commands, and shell expansions/operators are rejected; quoted literal message punctuation is supported. This narrow adapter is not a general shell interpreter or a security boundary.
 
 Pass untracked Markdown paths explicitly to the house-style script. Check links, anchors, instruction-heading case, and the final diff, including new files.
 

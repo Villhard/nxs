@@ -1,49 +1,92 @@
 #!/usr/bin/env bash
-# PreToolUse/Bash hook. Blocks a commit that edits a plugin's bundled content
-# without bumping that plugin's version and logging the change, the rule in
-# CONTRIBUTING.md "VERSIONING". Reads the hook payload on stdin, writes a deny
-# decision on stdout, and stays silent for every command that is not a commit.
-set -uo pipefail
+# Optional PreToolUse/Bash adapter. Only plain staged git commit is supported.
+set -euo pipefail
+exec python3 -c '
+import json
+from pathlib import Path
+import re
+import shlex
+import subprocess
+import sys
 
-payload=$(cat)
-command=$(printf '%s' "$payload" | jq -r '.tool_input.command // ""')
 
-case "$command" in
-  *"git commit"*) ;;
-  *) exit 0 ;;
-esac
+def deny(reason):
+    print(json.dumps({"hookSpecificOutput": {
+        "hookEventName": "PreToolUse", "permissionDecision": "deny",
+        "permissionDecisionReason": reason}}))
+    sys.exit(0)
 
-root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
-cd "$root" || exit 0
 
-files=$(git diff --cached --name-only)
+try:
+    payload = json.load(sys.stdin)
+    command = payload["tool_input"]["command"]
+    if not isinstance(command, str):
+        raise ValueError("command must be a string")
+except (ValueError, KeyError, TypeError) as error:
+    deny(f"Invalid Bash hook payload: {error}")
+try:
+    lexer = shlex.shlex(command, posix=True, punctuation_chars="();<>|&\n")
+    lexer.whitespace = " \t\r"
+    lexer.whitespace_split = True
+    lexer.commenters = ""
+    words = list(lexer)
+except ValueError as error:
+    deny(f"Cannot parse Bash hook command: {error}")
+def is_commit(args):
+    # Git global options precede the subcommand; later arguments are not commands.
+    args = iter(args)
+    for arg in args:
+        if arg in ("-C", "-c", "--git-dir", "--work-tree", "--namespace", "--config-env"):
+            next(args, None)
+        elif not arg.startswith("-"):
+            return arg == "commit"
+    return False
 
-# -a and -am stage every tracked change at commit time, so those files are part
-# of the commit even though they are not in the index yet.
-case "$command" in
-  *" -a"*|*" --all"*) files=$(printf '%s\n%s' "$files" "$(git diff --name-only)") ;;
-esac
 
-plugins=$(printf '%s\n' "$files" | sed -n 's#^plugins/\([^/]*\)/.*#\1#p' | sort -u)
-[ -z "$plugins" ] && exit 0
-
-missing=""
-for plugin in $plugins; do
-  manifest="plugins/$plugin/.claude-plugin/plugin.json"
-  changelog="plugins/$plugin/CHANGELOG.md"
-
-  # Content only. A commit touching the manifest or the changelog alone is a
-  # release commit or a changelog fix, and neither owes a bump.
-  content=$(printf '%s\n' "$files" | grep "^plugins/$plugin/" | grep -v -e "^$manifest\$" -e "^$changelog\$")
-  [ -z "$content" ] && continue
-
-  lacks=""
-  printf '%s\n' "$files" | grep -qx "$manifest" || lacks="$manifest"
-  printf '%s\n' "$files" | grep -qx "$changelog" || lacks="${lacks:+$lacks and }$changelog"
-  [ -n "$lacks" ] && missing="${missing}The commit edits $plugin but does not stage $lacks. "
-done
-
-[ -z "$missing" ] && exit 0
-
-jq -n --arg reason "${missing}CONTRIBUTING.md: every edit to bundled content bumps the version in plugin.json and adds a CHANGELOG.md entry, in the same change. Patch when the contract is untouched, minor when it changed - plugins/<name>/CONTRIBUTING.md defines the contract." \
-  '{hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: $reason}}'
+# Detect explicit git commit invocations, including wrappers and Git options.
+# This is an invocation guard, not a general shell interpreter.
+commit = any(Path(word).name == "git" and is_commit(words[i + 1:])
+             and (i == 0 or words[i - 1] in (";", "&&", "||", "|", "(", "\n")
+                  or words[0] in ("env", "command", "sudo")
+                  or "=" in words[0])
+             for i, word in enumerate(words))
+if words and Path(words[0]).name in ("bash", "sh", "zsh"):
+    commit = commit or bool(re.search(r"\bgit\s+commit\b", command))
+if not commit:
+    sys.exit(0)
+unsupported = "Stage the intended files first, then use plain git commit -m MESSAGE. The hook supports only staged commits without shell operators, expansions, Git global options, pathspecs, -a/--all, --include/--only or --amend."
+if words[:2] != ["git", "commit"]:
+    deny(unsupported)
+# shlex removes quotes; inspect only shell syntax here, preserving literal messages.
+quote = None
+escaped = False
+for char in command:
+    if escaped:
+        escaped = False
+        continue
+    if char == chr(92) and quote != chr(39):
+        escaped = True
+    elif char in (chr(39), chr(34)) and (quote is None or quote == char):
+        quote = None if quote else char
+    elif quote != chr(39) and char in "$`":
+        deny(unsupported)
+    elif quote is None and char in "\n;<>|&()":
+        deny(unsupported)
+args = iter(words[2:])
+for arg in args:
+    if arg in ("-m", "--message"):
+        if next(args, None) is None:
+            deny(unsupported)
+    elif arg.startswith("--message=") or (arg.startswith("-m") and len(arg) > 2):
+        continue
+    elif arg not in ("-q", "--quiet", "-v", "--verbose", "--allow-empty",
+                     "-n", "--no-verify", "-s", "--signoff"):
+        deny(unsupported)
+root = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+if root.returncode:
+    deny("Cannot locate repository for staged marketplace validation.")
+result = subprocess.run(["bash", str(Path(root.stdout.strip()) / ".github/scripts/check-marketplace.sh"), "--staged"],
+                        cwd=root.stdout.strip(), capture_output=True, text=True)
+if result.returncode:
+    deny("Marketplace staged check failed:\n" + result.stdout + result.stderr)
+'
