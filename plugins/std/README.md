@@ -24,7 +24,9 @@ Continue naturally in either client:
 - "I think your example assumes something the book does not say."
 - "Let's pause. Save where we stopped."
 
-The agent explains one idea at a time, answers follow-ups, and checks understanding when useful. Theory stays in chat; HTML requires a request or agreement. A factual question alone creates no learning workspace. Coding or an applied project is not required.
+The teacher chooses and begins the next useful learning step after a sound answer; you do not need to keep asking it to continue. It uses your reasoning and saved evidence to deepen a case, introduce an application, or explain a specific gap. Repeated confusion calls for a different example or approach. Your questions, requests for a full solution, and pauses take priority. Checks are useful when they guide the lesson, not after every explanation.
+
+Theory stays in chat; HTML requires a request or agreement. A factual question alone creates no learning workspace. Coding or an applied project is not required.
 
 ## Saved progress
 
@@ -32,10 +34,10 @@ The agent explains one idea at a time, answers follow-ups, and checks understand
 | --- | --- |
 | `MISSION.md` | Purpose, desired outcomes, boundaries |
 | `RESOURCES.md` | Main material and inspected sources with annotations |
-| `PROGRESS.md` | Current topic, understanding, gaps, unfinished exercise, next step |
-| `learning-records/` | Demonstrated understanding, corrections, goal changes |
+| `PROGRESS.md` | Current focus, evidence, self-reports, gaps, assistance, unsuccessful explanations, pending task or proposed next step |
+| `learning-records/` | Consequential demonstrated insights with evidence and assistance, corrections, goal changes |
 
-To resume, open the same learning directory and request `teach`: "Continue from the previous session." It reads saved progress. Records distinguish discussed, self-reported, and demonstrated understanding; they are not transcripts.
+To resume, open the same learning directory and request `teach`: "Continue from the previous session." It reads saved progress to choose the next move and its difficulty. The current checkpoint replaces answered questions and stale focus. Saying "understood" allows progress but stays distinct from independent application; later examples can revisit an unverified gap. These files are not transcripts or overall ability scores.
 
 Existing Matt Pocock `teach` workspaces, including `NOTES.md`, are reused without migration or deletion.
 

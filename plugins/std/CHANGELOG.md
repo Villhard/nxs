@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.0] - 2026-09-10
+
+### Changed
+
+- Make teach responsible for beginning the next useful learning step and adapting explanations and difficulty to demonstrated understanding, assistance, and recurring confusion.
+- Reconcile progress with the actual conversation, distinguish self-reports from demonstrated understanding, and use saved gaps and unsuccessful explanations on resume.
+
+### Added
+
+- Paired adaptation examples and multi-turn behavior scenarios for teaching and saved state in Claude Code and Codex.
+
 ## [0.1.3] - 2026-09-10
 
 ### Changed
