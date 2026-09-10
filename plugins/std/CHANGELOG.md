@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.1] - 2026-09-10
+
+### Changed
+
+- Rewrite adaptation example dialogue in a conversational tone, keeping the teaching decisions, factual conditions, and checkpoint guidance unchanged.
+
 ## [0.2.0] - 2026-09-10
 
 ### Changed
