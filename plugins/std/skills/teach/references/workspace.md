@@ -48,14 +48,20 @@ A current checkpoint, updated in place rather than appended after every turn. Om
 <Unresolved questions or gaps, including uncertainty in our own explanation.>
 
 ## Resume here
-<Pending task/question, necessary scenario or file reference, help already given,
-and the next action. Do not store an answer the learner has not seen, even inside a note about what not to reveal.>
+<Task/question actually issued, or a clearly labeled proposed next step;
+necessary scenario or file reference, help already given, explanations that did
+not resolve the gap, and the next action. Do not store an answer the learner
+has not seen, even inside a note about what not to reveal.>
 
 ## Preferences
 <Only preferences actually stated or confirmed by the learner.>
 ```
 
-Revise the snapshot as evidence changes. If there is no pending exercise, save the next topic or question. Do not infer a misconception from a typo or infer mastery from agreement.
+Reconcile this snapshot before ending a turn that changes understanding, focus, the pending task, or the teaching approach. Replace stale current focus and pending state in place; remove resolved questions while retaining unresolved gaps. If there is no pending exercise, label the next topic or question as proposed. A saved proposal is not an exercise already presented to the learner.
+
+Record evidence at the concept and case level, including relevant hints or worked solutions. Keep self-reports separate from demonstrated reasoning; "understood" does not resolve an unverified gap. Store unsuccessful explanations compactly with that gap or pending task so a returning teacher can change approach. Do not infer a misconception from a typo, overall ability from one answer, or mastery from agreement.
+
+On resume, read the checkpoint and relevant records before choosing the next action. Use prior assistance and failed explanations to set the difficulty and representation, not merely to repeat the last question. Treat missing, old, or contradictory evidence as uncertain; check only what would change the next teaching move. Verify writes succeeded, and disclose unsaved changes if they did not. Continue teaching where possible without claiming state will persist.
 
 ## LEARNING RECORDS
 
