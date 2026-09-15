@@ -1,6 +1,6 @@
 # CONTRIBUTING
 
-Read these shared rules and the relevant plugin's rules: [dev](plugins/dev/CONTRIBUTING.md) or [std](plugins/std/CONTRIBUTING.md). `CLAUDE.md` and `AGENTS.md` are equivalent entry points.
+Read these shared rules and the plugin's rules: [dev](plugins/dev/CONTRIBUTING.md). `CLAUDE.md` and `AGENTS.md` are equivalent entry points.
 
 ## STRUCTURE
 
@@ -10,7 +10,7 @@ Everything bundled lives under `plugins/<name>/`; root files are not bundled.
 .claude-plugin/marketplace.json
 plugins/<name>/
   .claude-plugin/plugin.json
-  .codex-plugin/plugin.json     # explicit Codex manifest; currently std only
+  .codex-plugin/plugin.json     # optional explicit Codex manifest
   skills/<skill>/SKILL.md
   skills/<skill>/references/   # optional supporting instructions
   skills/<skill>/assets/       # optional output templates
@@ -47,7 +47,6 @@ python3 .github/scripts/test_check_marketplace.py
 bash .github/scripts/lint-house-style.sh
 claude plugin validate --strict .
 claude plugin validate --strict plugins/dev
-claude plugin validate --strict plugins/std
 git diff --check
 ```
 
@@ -69,18 +68,18 @@ The optional Claude Code Bash hook calls the same checker with `--staged`; Codex
 
 Pass untracked Markdown paths explicitly to the house-style script. Check links, anchors, instruction-heading case, and the final diff, including new files.
 
-For `std`, additionally run `validate_plugin.py` from Codex's `plugin-creator` system skill and `quick_validate.py` from `skill-creator`. Resolve their installed locations locally. Check matching manifests and shared skill discovery in both clients. These Codex checks are local, outside current CI; report missing validators as unverified.
+For a plugin with a Codex manifest, additionally run `validate_plugin.py` from Codex's `plugin-creator` system skill and `quick_validate.py` from `skill-creator`. Resolve their installed locations locally. These Codex checks are local, outside current CI; report missing validators as unverified.
 
 For behavior changes, use temporary projects and the plugin's scenarios. Record installation, discovery, and complete workflow results separately. Documentation-only changes need source, command, and link checks, without repeating full workflows.
 
 ## LOCAL DEVELOPMENT AND RELEASE
 
-Run previews from the checkout root; replace `std` with `dev` as needed.
+Run previews from the checkout root.
 
 **Claude Code**
 
 ```bash
-claude --plugin-dir ./plugins/std
+claude --plugin-dir ./plugins/dev
 ```
 
 Restart after edits.
@@ -92,7 +91,7 @@ Use a temporary home for the local package; the checked CLI has no `--plugin-dir
 ```bash
 nxs_preview_home=$(mktemp -d)
 CODEX_HOME="$nxs_preview_home" codex plugin marketplace add "$PWD"
-CODEX_HOME="$nxs_preview_home" codex plugin add std@nxs
+CODEX_HOME="$nxs_preview_home" codex plugin add dev@nxs
 CODEX_HOME="$nxs_preview_home" codex plugin list --marketplace nxs
 CODEX_HOME="$nxs_preview_home" codex
 ```
