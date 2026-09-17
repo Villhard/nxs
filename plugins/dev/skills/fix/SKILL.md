@@ -61,7 +61,7 @@ Severity measures the defect, not the cost of fixing it. Keep a confirmed in-sco
 
 ## VERIFY AGAIN
 
-Read each open finding's location with 20-30 lines of context in the version being checked. Trace a reachable input or state through callers and guards to the claimed consequence; cite the locations that establish or disprove it. For naming claims, compare the name with its actual role and uses; cite the ambiguity or mismatch instead of requiring a runtime failure. For coverage or documentation claims, inspect the relevant tests or contract too. A passing test alone does not disprove a runtime defect. Separate what the code proves from inferred consequences. An uncertain location is a stop. Gone or already handled - add `result: dropped - <reason>` with evidence. Merge duplicates by place and problem; retain a dismissal reason. Apply SEVERITY BAR; change severity only when the evidence warrants it, recording the old and new levels and why. Never lower it to avoid a re-check.
+Read each open finding's location with 20-30 lines of context in the version being checked. Trace a reachable input or state through callers and guards to the claimed consequence; cite the locations that establish or disprove it. For naming claims, compare the name with its actual role and uses; cite the ambiguity or mismatch instead of requiring a runtime failure. For coverage or documentation claims, inspect the relevant tests or contract too. A passing test alone does not disprove a runtime defect. Separate what the code proves from inferred consequences. An uncertain location is a stop. Gone or already handled - prepare `result: dropped - <reason>` with evidence; persist it only after the launch capability check below, or in the successful no-op write. Merge duplicates by place and problem; retain a dismissal reason. Apply SEVERITY BAR; change severity only when the evidence warrants it, recording the old and new levels and why. Never lower it to avoid a re-check.
 
 Keep the original sweep facts and all earlier conclusions. Accumulate each verification result, dismissal reason, actual correction and check result as finding history for the report and re-check prompts. A pre-existing test or lint failure is still a failure.
 
@@ -69,15 +69,17 @@ No open findings, or all dropped - successful no-op. Write only the new `result:
 
 ## FIX
 
+After the no-op check and before any report or code edit for surviving findings, read [agent launch](../../references/agent-launch.md) and complete its capability check for the worker and any required re-check roles. Use its adapters and complete packets for FIX and RE-CHECK. A no-op needs no agents.
+
 1. Write `fix: in-progress` before launching a worker or changing code. Re-check preflight if checkout changes occurred during verification.
-2. Launch one `dev:worker` with the surviving findings verbatim, each location, severity, issue, impact and fix, plus the branch's conventions and pinned requirements. Findings are its entire unit of work. It neither commits nor edits the report or ticket status.
+2. Launch one `dev:worker` with the surviving findings verbatim, each location, severity, issue, impact and fix, plus the branch's conventions, applicable project rules, current user directives, goal, pinned requirements and relevant correction history. Findings are its entire unit of work. It neither commits nor edits the report or ticket status.
 3. Wait for the worker. Collect its `Decisions` and `Deviations`, including from blocked or partial results, with finding and reason. Inspect the actual diff and run project tests and linter yourself after its last edit. Record actual corrections and verification results; all green before committing. A blocked or partial worker stops the run.
 4. Check the staged and working diff against the intended changes before committing. Stage explicit intended code paths only. For staged scope, include the original reviewed staged set and its fixes; no foreign work or report. Commit `fix: address review findings`. Record the actual commit OID. Do not create an empty commit if the worker made no correction; record dropped findings or stop if it did not resolve them.
 5. Continue to RE-CHECK only if a finding actually fixed in this pass was critical or major. Minors-only fixes finish with `re-check: none`.
 
 ## RE-CHECK
 
-After each applicable commit, launch `dev:review-quality` and `dev:review-implementation` together. Pass SEVERITY BAR verbatim and `review_phase: recheck`, critical and major only, and never `review_mode: quick`. Wait for both before proceeding.
+After each applicable commit, launch fresh `dev:review-quality` and `dev:review-implementation` agents, concurrently when capacity permits. Pass SEVERITY BAR verbatim and `review_phase: recheck`, critical and major only, and never `review_mode: quick`. Wait for both before proceeding.
 
 Rebuild both commands from the validated, immutable Scope base and the latest fix commit: `git log <base>..<tip> --oneline` and `git diff <base>..<tip>`. Append `-- <path>` to both for a path selector. Staged also uses this range, never the now-empty index. Pass both commands verbatim, the pinned requirement sources, recorded goal, report path as read-only context and accumulated finding history. Never paste the diff.
 

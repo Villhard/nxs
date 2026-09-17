@@ -47,7 +47,17 @@ After setup changes, start a new session. Ask the agent which instruction files 
 
 ## Compatibility
 
-Both clients accept the catalog. `dev` has a Claude Code manifest and named-agent workflow. Codex installation and skill discovery are verified; complete execution, review, and fixes with those agents remain unverified. Installation alone does not establish workflow compatibility.
+Both clients use shared skills and agent roles with native named-agent and generic `collaboration` launch adapters. Six commands require explicit invocation; `commit` remains eligible for natural-language commit requests. A generic prompt does not enforce the native role's tool allowlist.
+
+Verification on 2026-09-17 for `dev` 0.25.0:
+
+| Client | Verified | Not established |
+| --- | --- | --- |
+| Claude Code CLI 2.1.273 | Plugin validation and discovery of seven commands and six named roles | Complete native workflows; the isolated session had no login |
+| Codex CLI 0.154.0 | Temporary installation, skill discovery, actual request assembly for explicit-only selection and the commit exception | Model behavior and complete CLI workflows; the isolated session had no login |
+| Collaboration-enabled session | Synthetic fresh-worker tasks and correction, five-role full review in groups, fix and two-role re-check | Native tool-allowlist enforcement, complete exec recovery and quick-review workflows |
+
+Installation and request assembly do not establish complete workflow compatibility. See the [launch contract](plugins/dev/references/agent-launch.md) and [client scenarios](plugins/dev/tests/client-scenarios.md).
 
 ## Update
 

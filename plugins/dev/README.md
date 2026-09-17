@@ -59,9 +59,17 @@ This writes code and ticket progress. The recorded mode survives a new session. 
 
 The default reviews the committed branch; `staged` selects the index, and a repository-relative path narrows the branch diff. A ticket or feature path supplies requirements, not a code selector. To review another PR, check out its branch first. In Codex, pass the same selectors when requesting `review`.
 
-A normal sweep uses five reviewers, or a direct pass for a trivial diff. `quick` uses two reviewers with broader duties and is not a full review gate. Run `fix` separately; critical or major fixes get a two-agent re-check.
+A normal sweep uses five reviewers, in groups when agent capacity is limited, or a direct pass for a trivial diff. `quick` uses two reviewers with broader duties and is not a full review gate. Run `fix` separately; critical or major fixes get a two-agent re-check.
 
 A stale or unfinished report requires another review. Already-applied reports and findings all dropped during verification produce no commit. Fix commits exclude the report, even when tracked. See [report validation](skills/fix/SKILL.md#check-the-report) and [git checks](skills/fix/SKILL.md#preflight).
+
+## Agent execution
+
+Both clients use the same worker and reviewer instructions and explicit context packets. Each new task gets a fresh worker without the parent conversation; an in-task correction returns to the same worker. Workers write sequentially in the shared checkout; the orchestrator validates, updates workflow state and commits.
+
+The [launch adapter](references/agent-launch.md) selects exposed native named-agent support or `collaboration.spawn_agent` with `fork_turns: "none"`. The generic route passes the full role file and task packet explicitly. An unsupported interface stops before agent-dependent ticket/report mutations. Native `tools:` restrictions are not enforced by copying them into a generic prompt; host permissions remain authoritative. CLI and desktop support must be checked separately.
+
+See the [client scenarios](tests/client-scenarios.md) and [verified compatibility limits](../../README.md#compatibility).
 
 ## Working files and resume
 
