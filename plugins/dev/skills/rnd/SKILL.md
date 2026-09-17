@@ -1,5 +1,5 @@
 ---
-description: Think a request through to a spec and a set of tickets - the entry point for new work. Use to shape a fuzzy request, feature idea, or open question before planning.
+description: Explicitly invoked /dev:rnd workflow. Think a request through to a spec and a set of tickets - the entry point for new work. Use to shape a fuzzy request, feature idea, or open question before planning.
 argument-hint: "[request | tracker key | question]"
 disable-model-invocation: true
 ---
@@ -13,6 +13,8 @@ Accepted input: a request in words, a feature idea, a tracker key / URL / pasted
 A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
 
 Example: /dev:rnd add rate limiting to the public API
+
+Run only when the user selects this command or directly asks to use it. Discussion, quotations, handoffs and mentions are not invocation. Suggest the next command at a handoff; never start it automatically.
 
 ## STANCE
 

@@ -34,7 +34,7 @@ Use the same selection method for every command below. For a bug, start with `bu
 | [fix](skills/fix/SKILL.md) | Reverified findings applied, code committed, and report updated separately. |
 | [commit](skills/commit/SKILL.md) | Existing changes split into atomic commits; use outside `exec`. |
 
-In Claude Code, six commands require explicit invocation. `commit` also activates on requests such as "commit this".
+In both clients, `rnd`, `bug`, `plan`, `exec`, `review` and `fix` require explicit invocation: select the command or directly ask to use that skill. Discussing or quoting a command, including in a handoff, does not invoke it. Each workflow stops at its handoff. `commit` alone also activates on requests such as "commit this"; discussing commits is not a request to create one.
 
 ## Modes
 

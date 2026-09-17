@@ -59,7 +59,7 @@ For skill files:
 
 - The directory names the command; the manifest supplies `dev`. Claude Code has no bare slash alias.
 - Omit frontmatter `name` to retain the namespace in Claude Code's menu. Give `description` a concise trigger and result, without retelling phases. `argument-hint` is optional.
-- Use `disable-model-invocation: true` except for `commit`, which also handles natural-language requests. Justify any second exception here first.
+- Require explicit invocation for `rnd`, `bug`, `plan`, `exec`, `review` and `fix` in both clients: retain `disable-model-invocation: true` for Claude Code and add `policy.allow_implicit_invocation: false` in each skill's `agents/openai.yaml` for Codex. A command selection or direct request to use that skill is invocation; discussion, quotations and mentions are not. Never start the next workflow at a handoff. `commit` alone also handles natural-language requests to commit; justify any second exception here first.
 - Include a real `Example:` invocation after the intro. Write compact English standing instructions; client instructions determine response language.
 - Output-template assets retain the artifact heading case and are exempt from UPPERCASE instruction headings; instructional references still use UPPERCASE headings.
 - Aim for roughly 120 lines. Measure before proposing a split; length alone does not satisfy the four addition criteria.

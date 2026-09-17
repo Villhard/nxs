@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.24.0] - 2026-09-17
+
+### Changed
+
+- Require explicit invocation of rnd, bug, plan, exec, review and fix in Codex as in Claude Code; keep commit eligible for natural-language commit requests.
+- Distinguish invocation from discussion or quoted handoffs and keep transitions between workflows user-directed.
+
 ## [0.23.4] - 2026-09-10
 
 ### Changed

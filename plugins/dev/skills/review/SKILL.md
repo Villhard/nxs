@@ -1,5 +1,5 @@
 ---
-description: Review a diff and save verified findings for /dev:fix. Use after /dev:exec or on any branch, including someone else's PR; quick selects a smaller review.
+description: Explicitly invoked /dev:review workflow. Review a diff and save verified findings for /dev:fix. Use after /dev:exec or on any branch, including someone else's PR; quick selects a smaller review.
 argument-hint: "[scope: staged | path] [ticket path | feature dir] [quick]"
 disable-model-invocation: true
 ---
@@ -9,6 +9,8 @@ disable-model-invocation: true
 Review a branch's diff, which may span several tickets or none, and leave a report for a later session.
 
 Example: /dev:review quick
+
+Run only when the user selects this command or directly asks to use it. Discussion, quotations, handoffs and mentions are not invocation. Suggest the next command at a handoff; never start it automatically.
 
 ## STANCE
 

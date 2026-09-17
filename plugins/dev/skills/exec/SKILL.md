@@ -1,5 +1,5 @@
 ---
-description: Execute a planned ticket task by task and write the code, committing each finished task and marking the ticket resolved. Use after a plan is ready; add "no commits" to skip git.
+description: Explicitly invoked /dev:exec workflow. Execute a planned ticket task by task and write the code, committing each finished task and marking the ticket resolved. Use after a plan is ready; add "no commits" to skip git.
 argument-hint: "[feature dir | ticket path] [no commits]"
 disable-model-invocation: true
 ---
@@ -11,6 +11,8 @@ Execute one planned ticket to the end, one task per cycle. This is the command t
 A ticket is one unit of work: `.scratch/<feature-slug>/issues/NN-<slug>.md`, carrying its acceptance criteria above `## Implementation` and its tasks inside it.
 
 Example: /dev:exec .scratch/auth-refactor/issues/02-register-endpoint.md
+
+Run only when the user selects this command or directly asks to use it. Discussion, quotations, handoffs and mentions are not invocation. Suggest the next command at a handoff; never start it automatically.
 
 ## RESOLVE THE TICKET
 

@@ -1,5 +1,5 @@
 ---
-description: Plan a ticket - decompose a spec, a root cause, or a request into sequenced tasks with checkboxes written into the ticket file. Use before executing non-trivial work, after a brainstorm or an investigation.
+description: Explicitly invoked /dev:plan workflow. Plan a ticket - decompose a spec, a root cause, or a request into sequenced tasks with checkboxes written into the ticket file. Use before executing non-trivial work, after a brainstorm or an investigation.
 argument-hint: "[request | ticket path | feature dir | tracker key]"
 disable-model-invocation: true
 ---
@@ -13,6 +13,8 @@ Accepted input: a ticket path under `.scratch/<feature-slug>/issues/`, a feature
 A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
 
 Example: /dev:plan .scratch/rate-limiting/issues/02-per-key-quota.md
+
+Run only when the user selects this command or directly asks to use it. Discussion, quotations, handoffs and mentions are not invocation. Suggest the next command at a handoff; never start it automatically.
 
 ## STANCE
 
