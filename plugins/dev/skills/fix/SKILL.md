@@ -1,5 +1,5 @@
 ---
-description: Apply the confirmed findings in a saved review report. Use after /dev:review, including in a later session.
+description: Explicitly invoked /dev:fix workflow. Apply the confirmed findings in a saved review report. Use after /dev:review, including in a later session.
 argument-hint: "[report path]"
 disable-model-invocation: true
 ---
@@ -9,6 +9,8 @@ disable-model-invocation: true
 Read a report, verify its open findings, fix them and record the outcome. Never run a sweep. A ticket's status and acceptance criteria belong to `/dev:exec` and are never changed here.
 
 Example: /dev:fix
+
+Run only when the user selects this command or directly asks to use it. Discussion, quotations, handoffs and mentions are not invocation. Suggest the next command at a handoff; never start it automatically.
 
 ## RESOLVE THE REPORT
 

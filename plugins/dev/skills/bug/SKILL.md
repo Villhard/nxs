@@ -1,5 +1,5 @@
 ---
-description: Investigate a bug to a confirmed root cause - the bug entry point. Use when handed a bug report, a tracker bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
+description: Explicitly invoked /dev:bug workflow. Investigate a bug to a confirmed root cause - the bug entry point. Use when handed a bug report, a tracker bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
 argument-hint: "[tracker key | bug description | path]"
 disable-model-invocation: true
 ---
@@ -13,6 +13,8 @@ Accepted input: a tracker key / URL, pasted bug text, observed behavior, a stack
 A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
 
 Example: /dev:bug PROJ-4213
+
+Run only when the user selects this command or directly asks to use it. Discussion, quotations, handoffs and mentions are not invocation. Suggest the next command at a handoff; never start it automatically.
 
 ## STANCE
 
