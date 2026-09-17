@@ -53,11 +53,13 @@ A current, complete, unfixed report with no `fixed at:` asks before another swee
 
 ## LAUNCH THE AGENTS
 
+Before mutating the report for an agent-based sweep, read [agent launch](../../references/agent-launch.md) and complete its capability check for every required role. A direct trivial full pass needs no agents. Use the selected adapter and complete reviewer packet for every launch.
+
 Before any agent launch or direct pass, write Scope, Requirements and Mode with `sweep: incomplete` to the report, retaining carried follow-ups. Use the six-heading format in ARTIFACT. Never leave the old complete report in place while a new sweep runs.
 
-**Full** launches five agents together: `dev:review-quality` for bugs, edges, errors, races and security skim; `dev:review-implementation` for goal, wiring, completeness and scope; `dev:review-testing` for coverage and test quality; `dev:review-simplification` for introduced over-engineering; `dev:review-documentation` for stale or missing docs and ticket checkboxes.
+**Full** launches all five roles concurrently within available capacity, in successive groups when necessary: `dev:review-quality` for bugs, edges, errors, races and security skim; `dev:review-implementation` for goal, wiring, completeness and scope; `dev:review-testing` for coverage and test quality; `dev:review-simplification` for introduced over-engineering; `dev:review-documentation` for stale or missing docs and ticket checkboxes.
 
-**Quick** always launches exactly `dev:review-quality` and `dev:review-implementation` together, including on a trivial diff. Each prompt contains the exact line `review_mode: quick`; quality then covers tests too, implementation documentation and simplification too. Full prompts carry no quick marker.
+**Quick** always launches exactly `dev:review-quality` and `dev:review-implementation`, concurrently when capacity permits, including on a trivial diff. Each prompt contains the exact line `review_mode: quick`; quality then covers tests too, implementation documentation and simplification too. Full prompts carry no quick marker.
 
 Only without `quick`, a trivial diff (dotfiles, docs only, pure formatting) may receive a direct pass against the same bar, recorded as `mode: full`. There is one sweep and no re-check in this command.
 

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.25.0] - 2026-09-17
+
+### Changed
+
+- Share explicit context packets and capability checks across exec, review and fix, retaining native named agents and adding fresh-context collaboration launches.
+- Keep worker ownership and correction rules while scheduling every required reviewer within available agent capacity.
+- Document prompt-only tool restrictions, client compatibility limits and reproducible client scenarios.
+
 ## [0.24.0] - 2026-09-17
 
 ### Changed

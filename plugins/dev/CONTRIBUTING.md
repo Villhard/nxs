@@ -6,7 +6,7 @@ Follow the [shared rules](../../CONTRIBUTING.md). This file defines `dev` termin
 
 Seven command skills and six agents: one [worker](agents/worker.md) and five reviewers ([quality](agents/review-quality.md), [implementation](agents/review-implementation.md), [testing](agents/review-testing.md), [simplification](agents/review-simplification.md), [documentation](agents/review-documentation.md)).
 
-Keep language, style, and safety agreements in client/global instructions. Keep process, guards, and output contracts in the skill or agent that owns them; if two need a rule, write it twice. Skills may use purposeful local `references/` for supporting detail, `assets/` for output templates, and `scripts/` for executable helpers. Link resources from the owning skill and require reads at the point of use, resolving paths relative to the installed skill directory. Named agents stay at plugin-level `agents/` and remain self-contained. No background skills, cross-skill injection, or hooks. Workflow instructions may require explicit push requests; host permission controls enforce access.
+Keep language, style, and safety agreements in client/global instructions. Keep process, guards, and output contracts in the skill or agent that owns them. Shared agent-launch mechanics live in [references/agent-launch.md](references/agent-launch.md), read by exec, review and fix before agent-dependent mutations; do not duplicate client-specific workflows. Skills may use purposeful local `references/` for supporting detail, `assets/` for output templates, and `scripts/` for executable helpers. Link resources from the owning skill and require reads at the point of use, resolving paths relative to the installed skill directory. Named agents stay at plugin-level `agents/` and remain self-contained. No background skills, cross-skill injection, or hooks. Workflow instructions may require explicit push requests; host permission controls enforce access.
 
 ## TERMINOLOGY
 
@@ -67,7 +67,7 @@ For skill files:
 For agent files:
 
 - Require frontmatter `name` matching the filename, a role/caller `description`, and the exact permitted `tools`.
-- Keep subject, bounds, and output self-contained; do not require injected instruction files.
+- Keep subject, bounds, and output self-contained; do not require injected instruction files. Native hosts load the role; generic adapters explicitly pass this same complete file and the caller's context packet without inherited conversation.
 - End every reviewer with `## WHAT TO REPORT`. Reviewers fetch their own diff using supplied commands and return findings to the orchestrator; report paths are read-only context.
 
 ## FILE AND GIT BOUNDARIES
@@ -80,4 +80,10 @@ Keep git gates and stop conditions in their owning skills: [exec discipline](ski
 
 ## VERSIONED SURFACE
 
-The contract includes command names/arguments/modes, agent names and prompt markers, artifact paths, the five handoffs, execution recovery, and gates for files, commits, and stops. Wording, reviewer focus, and documentation are internal when those interfaces remain unchanged. Apply the [shared version rules](../../CONTRIBUTING.md#versions).
+The contract includes invocation policy, supported agent-launch routes and context packets, command names/arguments/modes, agent names and prompt markers, artifact paths, the five handoffs, execution recovery, and gates for files, commits, and stops. Wording, reviewer focus, and documentation are internal when those interfaces remain unchanged. Apply the [shared version rules](../../CONTRIBUTING.md#versions).
+
+## CLIENT CHECKS
+
+Run the [client scenarios](tests/client-scenarios.md) for invocation or agent-launch changes. Use disposable repositories and temporary installations; report structural validation, installation/discovery and actual workflows separately for each client. Never infer host tool restrictions from a generic prompt.
+
+From the checkout root, `python3 .github/scripts/test_dev_invocation.py` checks the actual Codex CLI request context through a loopback stub and temporary installation, without calling a model. It requires Codex CLI and permission to bind localhost; it checks ordinary discovery, all six explicit selections and the commit exception, not model behavior. An optional marketplace path tests a separate candidate snapshot.
