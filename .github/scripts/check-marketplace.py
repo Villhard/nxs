@@ -107,6 +107,101 @@ def releases(text, path):
     return entries
 
 
+def frontmatter(files, path):
+    """Inspect the bounded top-level fields used by this marketplace, not general YAML."""
+    match = re.match(r'\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)', read(files, path), re.S)
+    if not match:
+        raise Invalid(f'{path}: missing or unclosed frontmatter')
+    fields = {}
+    key = None
+    for line in match[1].splitlines():
+        if not line.strip() or line.lstrip().startswith('#'):
+            continue
+        field = re.match(r'^([A-Za-z][\w-]*):[ \t]*(.*)$', line)
+        if field:
+            key, value = field.groups()
+            if key in fields:
+                raise Invalid(f'{path}: duplicate frontmatter field {key}')
+            fields[key] = value
+        elif line.startswith(' ') and key:
+            fields[key] += '\n' + line
+        else:
+            raise Invalid(f'{path}: unsupported frontmatter line {line!r}')
+    return fields
+
+
+def scalar(fields, key, path):
+    value = fields.get(key, '').strip()
+    if re.match(r'^[>|][+-]?(?:\n|$)', value):
+        value = ' '.join(line.strip() for line in value.splitlines()[1:])
+    elif value.startswith('"'):
+        try:
+            value = json.loads(value)
+        except ValueError as error:
+            raise Invalid(f'{path}: invalid quoted {key}') from error
+    elif value.startswith("'"):
+        if not re.fullmatch(r"'(?:[^']|'')*'", value):
+            raise Invalid(f'{path}: invalid quoted {key}')
+        value = value[1:-1].replace("''", "'")
+    else:
+        value = re.split(r'\s+#', value, maxsplit=1)[0].strip()
+        if value.startswith('#'):
+            value = ''
+        if value in ('null', '~', 'true', 'false') or value.startswith(('[', '{', '&', '*', '!')):
+            raise Invalid(f'{path}: {key} must be a text scalar')
+    if not isinstance(value, str) or not value.strip():
+        raise Invalid(f'{path}: missing or empty {key} frontmatter field')
+    return value
+
+
+def check_instructions(files):
+    for path in sorted(files):
+        skill = re.fullmatch(r'plugins/([^/]+)/skills/([^/]+)/SKILL\.md', path)
+        agent = re.fullmatch(r'plugins/([^/]+)/agents/([^/]+)\.md', path)
+        if not (skill or agent):
+            continue
+        fields = frontmatter(files, path)
+        scalar(fields, 'description', path)
+        for flag in ('user-invocable', 'disable-model-invocation'):
+            if flag in fields and fields[flag] not in ('true', 'false'):
+                raise Invalid(f'{path}: {flag} must be an unquoted boolean')
+        if agent:
+            if scalar(fields, 'name', path) != agent[2]:
+                raise Invalid(f'{path}: agent name must match filename')
+            declared = [item.strip() for item in scalar(fields, 'tools', path).split(',')]
+            if len(declared) != len(set(declared)) or not all(declared):
+                raise Invalid(f'{path}: duplicate or empty agent tools')
+            if agent[1] == 'dev':
+                expected = {'Read', 'Grep', 'Glob', 'Bash'}
+                if agent[2] == 'worker':
+                    expected |= {'Write', 'Edit'}
+                if set(declared) != expected:
+                    raise Invalid(f'{path}: unexpected dev role tools')
+        if skill and skill[1] == 'dev':
+            if 'name' in fields:
+                raise Invalid(f'{path}: dev skills omit name to retain the command namespace')
+            if fields.get('user-invocable') == 'false':
+                raise Invalid(f'{path}: dev commands must remain user-invocable')
+            explicit = skill[2] != 'commit'
+            if (fields.get('disable-model-invocation') == 'true') != explicit:
+                raise Invalid(f'{path}: incorrect dev invocation policy')
+            policy = posixpath.dirname(path) + '/agents/openai.yaml'
+            if explicit or policy in files:
+                text = read(files, policy)
+                blocks = re.findall(r'^policy:[ \t]*\n((?:[ \t]+[^\n]*\n?|\n)*)', text, re.M)
+                values = re.findall(r'^  allow_implicit_invocation:[ \t]*(\S+)[ \t]*$', blocks[0], re.M) if len(blocks) == 1 else []
+                if values != (['false'] if explicit else ['true']):
+                    raise Invalid(f'{policy}: incorrect dev invocation policy')
+    if 'dev' in plugin_names(files):
+        expected_skills = {'rnd', 'bug', 'plan', 'exec', 'review', 'fix', 'commit'}
+        expected_agents = {'worker', 'review-quality', 'review-implementation',
+                           'review-testing', 'review-simplification', 'review-documentation'}
+        skills = {p.split('/')[3] for p in files if re.fullmatch(r'plugins/dev/skills/[^/]+/SKILL\.md', p)}
+        agents = {Path(p).stem for p in files if re.fullmatch(r'plugins/dev/agents/[^/]+\.md', p)}
+        if skills != expected_skills or agents != expected_agents:
+            raise Invalid('plugins/dev: expected seven command skills and six agent roles')
+
+
 def check(base, current):
     names = plugin_names(current)
     catalog_path = '.claude-plugin/marketplace.json'
@@ -152,8 +247,9 @@ def check(base, current):
             raise Invalid(f'{manifest}: version must increase for bundled changes and never regress ({old_version} -> {new_version})')
         if new > old and new_version in releases(read(base, changelog), changelog + ' (base)'):
             raise Invalid(f'{changelog}: release entry [{new_version}] must be new relative to base')
+    check_instructions(current)
     for path in sorted(current):
-        if not re.match(r'^plugins/[^/]+/skills/.+\.md$', path, re.I):
+        if not re.match(r'^plugins/[^/]+/(?:skills|agents|references)/.+\.md$', path, re.I):
             continue
         text = read(current, path)
         # Only Markdown destinations, not arbitrary paths mentioned in prose or code.
@@ -166,6 +262,9 @@ def check(base, current):
             if url.scheme or url.netloc or not url.path:
                 continue
             target = posixpath.normpath(posixpath.join(posixpath.dirname(path), unquote(url.path)))
+            plugin_root = '/'.join(path.split('/')[:2]) + '/'
+            if target != plugin_root.rstrip('/') and not target.startswith(plugin_root):
+                raise Invalid(f'{path}: bundled Markdown resource escapes plugin: {destination}')
             if target not in current and not any(p.startswith(target.rstrip('/') + '/') for p in current):
                 raise Invalid(f'{path}: missing local Markdown resource {destination} ({target})')
     if 'dev' in names:
