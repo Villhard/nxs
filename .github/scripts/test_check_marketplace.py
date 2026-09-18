@@ -25,6 +25,14 @@ def write(repo, path, text):
     target.write_text(text)
 
 
+def write_skill(repo, path, body):
+    explicit = path.startswith('plugins/dev/') and '/commit/' not in path
+    header = '---\ndescription: Fixture skill.\n'
+    if explicit:
+        header += 'disable-model-invocation: true\n'
+    write(repo, path, header + '---\n' + body)
+
+
 def catalog(repo, names):
     write(repo, '.claude-plugin/marketplace.json', json.dumps({'plugins': [
         {'name': name, 'source': f'./plugins/{name}'} for name in names]}))
@@ -36,7 +44,22 @@ def plugin(repo, name='sample', value='0.23.9', codex=True):
     if codex:
         write(repo, f'plugins/{name}/.codex-plugin/plugin.json', manifest)
     write(repo, f'plugins/{name}/CHANGELOG.md', f'# Changelog\n\n## [{value}] - 2026-09-10\n\n- Initial.\n')
-    write(repo, f'plugins/{name}/skills/one/SKILL.md', '# ONE\n\nA skill.\n')
+    skills = ('rnd', 'bug', 'plan', 'exec', 'review', 'fix', 'commit') if name == 'dev' else ('one',)
+    for skill in skills:
+        path = f'plugins/{name}/skills/{skill}/SKILL.md'
+        body = '# SKILL\n\nA skill.\n'
+        if name == 'dev' and skill in ('review', 'fix'):
+            body += '\n## SEVERITY BAR\n\nExact text.\n'
+        write_skill(repo, path, body)
+        if name == 'dev' and skill != 'commit':
+            write(repo, f'plugins/dev/skills/{skill}/agents/openai.yaml',
+                  'policy:\n  allow_implicit_invocation: false\n')
+    if name == 'dev':
+        for role in ('worker', 'review-quality', 'review-implementation', 'review-testing',
+                     'review-simplification', 'review-documentation'):
+            tools = 'Read, Grep, Glob, Bash' + (', Write, Edit' if role == 'worker' else '')
+            write(repo, f'plugins/dev/agents/{role}.md',
+                  f'---\nname: {role}\ndescription: Fixture role.\ntools: {tools}\n---\n# ROLE\n')
 
 
 def commit(repo):
@@ -131,7 +154,7 @@ def integration(root):
     hook(repo, 'echo "git commit"')
     hook(repo, "rg 'git commit' CONTRIBUTING.md")
     hook(repo, payload='{broken', diagnostic='Invalid Bash hook payload')
-    write(repo, 'plugins/sample/skills/one/SKILL.md', '[asset](asset.md)\n')
+    write_skill(repo, 'plugins/sample/skills/one/SKILL.md', '[asset](asset.md)\n')
     git(repo, 'add', '.')
     hook(repo, 'git commit -m update', diagnostic='version must increase')
     release(repo)
@@ -174,7 +197,7 @@ def integration(root):
     ci_check(repo, 'push', head, before='0' * 40)
     ci_check(repo, 'push', head, before='0' * 40, default='missing')
     # A real missing bump must still fail under all release baselines.
-    write(repo, 'plugins/sample/skills/one/SKILL.md', 'Unreleased change\n')
+    write_skill(repo, 'plugins/sample/skills/one/SKILL.md', 'Unreleased change\n')
     bad = commit(repo)
     ci_check(repo, 'push', bad, before=head, expected=False)
     ci_check(repo, 'push', bad, before=previous, expected=False)
@@ -312,7 +335,7 @@ def main():
 
         repo = fresh(root, 'links')
         skill = 'plugins/sample/skills/one/SKILL.md'
-        write(repo, skill, '# ONE\n\n[asset](assets/file.md#part)\n[site](https://example.invalid)\n[section](#part)\n')
+        write_skill(repo, skill, '# ONE\n\n[asset](assets/file.md#part)\n[site](https://example.invalid)\n[section](#part)\n')
         release(repo)
         check(repo, False, diagnostic='missing local Markdown resource')
         write(repo, 'plugins/sample/skills/one/assets/file.md', '# File\n')
@@ -322,20 +345,89 @@ def main():
         write(repo, 'plugins/sample/skills/one/assets/file.md', '[nested](../missing.md)\n')
         check(repo, False, diagnostic='missing local Markdown resource')
 
+        repo = fresh(root, 'instruction-metadata')
+        release(repo)
+        path = repo / 'plugins/sample/skills/one/SKILL.md'
+        for text, diagnostic in (
+            ('# SKILL\ndescription: Outside frontmatter\n', 'missing or unclosed'),
+            ('---\ndescription: Never closed\n', 'missing or unclosed'),
+            ('---\ndescription: ""\n---\ndescription: Body decoy\n', 'missing or empty description'),
+            ('---\ndescription: # only a comment\n---\n', 'missing or empty description'),
+            ('---\ndescription: One\ndescription: Two\n---\n', 'duplicate frontmatter'),
+            ('---\ndescription: Fine\nuser-invocable: "false"\n---\n', 'unquoted boolean'),
+            ('---\ndescription: Fine\ndisable-model-invocation: yes\n---\n', 'unquoted boolean'),
+        ):
+            path.write_text(text)
+            check(repo, False, diagnostic=diagnostic)
+        for description in ('Plain text', '"Quoted text"', "'Single quoted text'", '>\n  Folded text', '|\n  Literal text'):
+            path.write_text(f'---\ndescription: {description}\n---\n# SKILL\n')
+            check(repo)
+        git(repo, 'add', '.')
+        base = git(repo, 'rev-parse', 'HEAD')
+        path.write_text('# Broken working frontmatter\n')
+        check(repo, False, diagnostic='missing or unclosed')
+        check(repo, True, '--staged')
+        git(repo, 'commit', '-qm', 'valid metadata snapshot')
+        check(repo, True, '--base', base, '--head', 'HEAD')
+
+        repo = fresh(root, 'role-links')
+        release(repo)
+        role = 'plugins/sample/agents/reader.md'
+        role_text = '---\nname: reader\ndescription: Read files.\ntools: Read\n---\n# READER\n'
+        write(repo, role, role_text + '[reference](../references/rules.md)\n')
+        check(repo, False, diagnostic='missing local Markdown resource')
+        write(repo, 'plugins/sample/references/rules.md', '[missing](absent.md)\n')
+        check(repo, False, diagnostic='missing local Markdown resource')
+        write(repo, 'plugins/sample/references/rules.md', 'Rules\n')
+        check(repo)
+        write(repo, role, role_text.replace('name: reader', 'name: other'))
+        check(repo, False, diagnostic='name must match')
+        write(repo, role, role_text.replace('tools: Read', 'tools: Read, Read'))
+        check(repo, False, diagnostic='duplicate or empty agent tools')
+        write(repo, 'README.md', 'Not bundled\n')
+        write(repo, role, role_text + '[outside](../../../README.md)\n')
+        check(repo, False, diagnostic='escapes plugin')
+
         repo = fresh(root, 'severity')
         plugin(repo, 'dev', '0.1.0', codex=False)
         catalog(repo, ['sample', 'dev'])
         for skill in ('review', 'fix'):
-            write(repo, f'plugins/dev/skills/{skill}/SKILL.md', '# SKILL\n\n## SEVERITY BAR\n\nExact text.\n\n## END\n')
+            write_skill(repo, f'plugins/dev/skills/{skill}/SKILL.md', '# SKILL\n\n## SEVERITY BAR\n\nExact text.\n\n## END\n')
         check(repo)
-        write(repo, 'plugins/dev/skills/fix/SKILL.md', '# FIX\n')
+        write_skill(repo, 'plugins/dev/skills/fix/SKILL.md', '# FIX\n')
         check(repo, False, diagnostic='missing SEVERITY BAR')
-        write(repo, 'plugins/dev/skills/fix/SKILL.md', '## SEVERITY BAR\n\nDifferent.\n\n## END\n')
+        write_skill(repo, 'plugins/dev/skills/fix/SKILL.md', '## SEVERITY BAR\n\nDifferent.\n\n## END\n')
         check(repo, False, diagnostic='must match exactly')
+
+        repo = fresh(root, 'dev-contract')
+        plugin(repo, 'dev', '0.1.0', codex=False)
+        catalog(repo, ['sample', 'dev'])
+        check(repo)
+        policy = repo / 'plugins/dev/skills/plan/agents/openai.yaml'
+        policy.write_text('policy:\n  allow_implicit_invocation: true\n')
+        check(repo, False, diagnostic='incorrect dev invocation policy')
+        policy.write_text('interface:\n  allow_implicit_invocation: false\n')
+        check(repo, False, diagnostic='incorrect dev invocation policy')
+        policy.write_text('policy:\n  allow_implicit_invocation: false\n')
+        skill = repo / 'plugins/dev/skills/plan/SKILL.md'
+        good = skill.read_text()
+        skill.write_text(good.replace('disable-model-invocation: true', 'disable-model-invocation: false'))
+        check(repo, False, diagnostic='incorrect dev invocation policy')
+        skill.write_text(good.replace('description:', 'name: plan\ndescription:'))
+        check(repo, False, diagnostic='omit name')
+        skill.write_text(good.replace('description:', 'user-invocable: false\ndescription:'))
+        check(repo, False, diagnostic='must remain user-invocable')
+        skill.write_text(good)
+        role = repo / 'plugins/dev/agents/review-quality.md'
+        good_role = role.read_text()
+        role.write_text(good_role.replace('tools: Read', 'tools: Write, Read'))
+        check(repo, False, diagnostic='unexpected dev role tools')
+        role.unlink()
+        check(repo, False, diagnostic='seven command skills and six agent roles')
 
         repo = fresh(root, 'snapshots')
         base = git(repo, 'rev-parse', 'HEAD')
-        write(repo, 'plugins/sample/skills/one/SKILL.md', '[resource](asset.md)\n')
+        write_skill(repo, 'plugins/sample/skills/one/SKILL.md', '[resource](asset.md)\n')
         git(repo, 'add', '.')
         release(repo)
         write(repo, 'plugins/sample/skills/one/asset.md', 'Asset\n')
