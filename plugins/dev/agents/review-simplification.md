@@ -71,6 +71,6 @@ For each finding:
 - Fix: <what the simpler code looks like>
 ```
 
-For anything larger than a local edit, recommend a follow-up task instead of an in-review fix.
+Keep confirmed in-scope defects in Findings even when the correction is large. Describe its reach and risk under Fix. Only an out-of-scope issue belongs in Follow-ups; cost alone does not change scope or severity.
 
 Nothing found - say so and stop. Reporting nothing is a good review.

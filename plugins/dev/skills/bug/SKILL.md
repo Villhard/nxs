@@ -1,12 +1,12 @@
 ---
-description: Explicitly invoked /dev:bug workflow. Investigate a bug to a confirmed root cause - the bug entry point. Use when handed a bug report, a tracker bug key/URL, stack trace, log, or observed misbehavior, before any fix is proposed.
+description: Investigate a reported failure when explicitly asked to use /dev:bug. Save reproducible evidence and a confirmed root cause, or the evidence still missing. Do not implement a fix; a confirmed cause can go to /dev:plan.
 argument-hint: "[tracker key | bug description | path]"
 disable-model-invocation: true
 ---
 
 # /dev:bug
 
-Reach a confirmed root cause, then stop. The bug entry point.
+Investigate the reported symptom and save the conclusion, then stop. A confirmed cause and an incomplete investigation are different outcomes.
 
 Accepted input: a tracker key / URL, pasted bug text, observed behavior, a stack trace or log, or a path.
 
@@ -52,13 +52,17 @@ Root cause: <statement>
 Fix direction: <what to actually fix>
 ```
 
-Example. Symptom: the API returns 500 on payment. Unhandled exception in the payment handler -> no catch for a provider timeout -> the provider never used to time out -> order volume grew and it responds slower -> the call is synchronous and RPS grew. Root cause: synchronous coupling to an external provider under increased load. The fix direction follows the evidence at that layer - a timeout with a handled error, a queue, or something else - and is named as the smallest change the evidence supports, never as the largest one the chain could justify.
+Example: a request with `limit=0` returns ten records. The minimized test reproduces it; the parser uses `limit or 10`; a probe shows that testing for `None` preserves zero. This confirms default substitution as the cause. It does not establish increased traffic or justify redesigning the request pipeline.
 
 ## WHEN IT WILL NOT CONFIRM
 
-- Reproduction fails - mark it an assumption, continue carefully, record the missing evidence.
-- Several plausible causes - describe them all, pick the more likely one with a justification, mark the rest rejected with a reason.
-- Requested evidence unavailable - work with what is there and mark the gap as an assumption.
+| Evidence | Conclusion and next action |
+| --- | --- |
+| The reported symptom reproduces and a discriminating probe supports the cause | Record the confirmed cause, smallest supported fix direction and regression check. |
+| Reproduction fails or required evidence is unavailable | State that the cause is unconfirmed. Record attempted checks, hypotheses and the specific missing evidence. |
+| Several causes still fit | Keep them open and rank them with reasons. State the next probe that distinguishes them; reject a cause only when evidence disproves it. |
+
+For an unconfirmed result, `## Fix direction` and `## Regression test` say that they are pending confirmation. Conditional ideas may be recorded as hypotheses, never as an approved implementation direction. Save the incomplete investigation and stop for the missing evidence; do not hand it to plan as ready.
 
 ## ARTIFACT
 
@@ -72,7 +76,7 @@ The root cause is one file at the root of a feature directory - one feature is o
 
 Create the feature directory when the report has none yet; write into the one the input names when it does. A `spec.md` already sitting there is left untouched - a bug that grew into a feature carries both documents side by side. Never write into a directory that holds a `map.md`: that one belongs to another tool's effort, so pick a different slug and say in one line why.
 
-Write no ticket here. Confirming the cause is the whole job - `/dev:plan` opens `issues/01-<slug>.md` for the fix.
+Write no ticket here. Once the cause is confirmed, `/dev:plan` selects or creates the fix ticket using its numbering rules.
 
 Keep the headings stable - `/dev:plan` reads the root cause by them:
 
@@ -91,7 +95,7 @@ Keep the headings stable - `/dev:plan` reads the root cause by them:
 
 ## Hypotheses
 
-<ranked, each with its prediction and the probe that confirmed or killed it>
+<ranked, each with its prediction and probe result; untested alternatives say "not tested" and name the next probe>
 
 ## 5-Why
 
@@ -112,4 +116,4 @@ Every other heading stays even when the investigation fell short: an unconfirmed
 
 ## NEXT
 
-Root cause confirmed -> `/dev:plan` for the fix plan, then `/dev:exec` to implement it.
+Return the root-cause path and state whether the cause is confirmed or unconfirmed. A confirmed result names the evidence and suggests `/dev:plan`; an unconfirmed result names the missing evidence or next discriminating probe. Do not invoke another command.

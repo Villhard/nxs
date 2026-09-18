@@ -1,5 +1,5 @@
 ---
-description: Explicitly invoked /dev:review workflow. Review a diff and save verified findings for /dev:fix. Use after /dev:exec or on any branch, including someone else's PR; quick selects a smaller review.
+description: Inspect a branch, staged diff or code path when explicitly asked to use /dev:review. Save verified findings without changing code or Git state. "quick" selects two reviewers; use /dev:fix separately to apply a report.
 argument-hint: "[scope: staged | path] [ticket path | feature dir] [quick]"
 disable-model-invocation: true
 ---
@@ -45,11 +45,14 @@ Resolve the report destination using ARTIFACT before writing. Read any existing 
 
 Currency uses the same facts as `/dev:fix`: repository root, credential-free origin, branch, selector, base, requested mode and every Requirements source and goal. The branch/path base is the freshly resolved merge-base OID, equal to the stored base and an ancestor of the reviewed tip. A staged base must equal the original tip. Re-read every source even for an empty report: disk hashes must match, and index blobs must match `git rev-parse :<path>` when unfixed or `git rev-parse <fixed-at>:<path>` when fixed. An explicitly changed goal is a mismatch.
 
-- Unfixed means no `fix:` line: HEAD equals `tip:`, and the exact cached binary diff digest equals `index:` for staged.
-- Fixed means `fix: done`: HEAD equals `fixed at:`, and `re-check:` is `none`, `clean` or `unresolved`; do not compare the original staged digest.
-- `sweep: incomplete`, `fix: in-progress`, `fix: stopped` or `re-check: incomplete` is unfinished and never current.
+| Report state | Currency check | Next action |
+| --- | --- | --- |
+| Complete, no `fix:` or `fixed at:` | HEAD equals `tip:`; staged digest also matches for staged scope; identity and requirements above match | Ask before repeating the same sweep, unless the user already explicitly requested a fresh sweep of it. |
+| `fix: done` | HEAD equals `fixed at:`; final re-check is `none`, `clean` or `unresolved`; identity and requirements above match | A fresh invocation may review the resulting code. Do not compare the original staged digest. |
+| `sweep: incomplete`, `fix: in-progress`, `fix: stopped` or `re-check: incomplete` | Unfinished, never current | Start a new sweep under the newly resolved scope. Preserve follow-ups as historical context. |
+| Changed scope, goal, requirements or Git pins; malformed report | Not reusable as current | Start a new sweep; never execute or trust old fields. |
 
-A current, complete, unfixed report with no `fixed at:` asks before another sweep; stop until the user answers. Every other state, including a different scope, proceeds without that question. Preserve open follow-ups with origin before overwriting. An old report's mode never overrides the requested mode.
+Preserve open follow-ups with origin before overwriting. An old report's mode never overrides the requested mode. A request to use review is not by itself approval to overwrite a current unfixed report; a request to review it again is.
 
 ## LAUNCH THE AGENTS
 
@@ -57,7 +60,13 @@ Before mutating the report for an agent-based sweep, read [agent launch](../../r
 
 Before any agent launch or direct pass, write Scope, Requirements and Mode with `sweep: incomplete` to the report, retaining carried follow-ups. Use the six-heading format in ARTIFACT. Never leave the old complete report in place while a new sweep runs.
 
-**Full** launches all five roles concurrently within available capacity, in successive groups when necessary: `dev:review-quality` for bugs, edges, errors, races and security skim; `dev:review-implementation` for goal, wiring, completeness and scope; `dev:review-testing` for coverage and test quality; `dev:review-simplification` for introduced over-engineering; `dev:review-documentation` for stale or missing docs and ticket checkboxes.
+**Full** launches all five roles within available capacity, in successive groups when necessary:
+
+- `dev:review-quality`: bugs, edges, errors, races and security skim;
+- `dev:review-implementation`: goal, wiring, completeness and scope;
+- `dev:review-testing`: coverage and test quality;
+- `dev:review-simplification`: introduced over-engineering;
+- `dev:review-documentation`: stale or missing docs and ticket checkboxes.
 
 **Quick** always launches exactly `dev:review-quality` and `dev:review-implementation`, concurrently when capacity permits, including on a trivial diff. Each prompt contains the exact line `review_mode: quick`; quality then covers tests too, implementation documentation and simplification too. Full prompts carry no quick marker.
 

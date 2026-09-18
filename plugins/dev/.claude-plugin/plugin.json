@@ -1,7 +1,7 @@
 {
   "name": "dev",
-  "description": "Development workflow for Claude Code and Codex - seven flat /dev commands, each self-contained, plus a worker and five review agents",
-  "version": "0.25.0",
+  "description": "Seven development commands for Claude Code and Codex with explicit handoffs, one worker role, five review roles and resumable ticket execution",
+  "version": "0.26.0",
   "author": {
     "name": "Victor Ryabov",
     "email": "victorwillhard@gmail.com"

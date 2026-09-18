@@ -1,91 +1,79 @@
 # dev
 
-Seven commands for development work. [Install and configure](../../README.md#install) `dev@nxs`; read the [client compatibility limits](../../README.md#compatibility).
+Choose where to start:
 
-## Start
-
-In Claude Code, run each command when ready for the next step:
-
-```text
-/dev:rnd add rate limiting to the public API
-/dev:plan
-/dev:exec
-/dev:review
-/dev:fix
-```
-
-In Codex, select the corresponding `dev` skill with `/skills` or the `$` picker in CLI/IDE, or name it:
+- An idea that needs shaping: `rnd`, then `plan`.
+- A bug to investigate: `bug`, then `plan` once the cause is confirmed.
+- A clear task: `plan`, which can create a ticket directly.
 
 ```text
-Use the plan skill from the dev plugin for .scratch/rate-limiting/issues/01-rate-limit.md.
+plan -> exec -> review -> fix (if there are findings)
 ```
 
-Use the same selection method for every command below. For a bug, start with `bug`, then `plan`. A clear request can start with `plan`. Review the plan before execution; commands stop at their handoff instead of starting the next command automatically.
+Read the plan before execution. Start each step explicitly; commands do not start the next step for you. Mentioning or quoting a command does not invoke it.
+
+[Install dev@nxs](../../README.md#install).
 
 ## Commands
 
-| Command | Result |
+| Command | When to use it | Result |
+| --- | --- | --- |
+| [rnd](skills/rnd/SKILL.md) | Shape a feature or open question | Agreed spec and tickets. |
+| [bug](skills/bug/SKILL.md) | Investigate a failure | Confirmed cause, or missing evidence to investigate next. |
+| [plan](skills/plan/SKILL.md) | Prepare one clear task or ticket | Implementation steps inside the ticket. |
+| [exec](skills/exec/SKILL.md) | Implement or resume a planned ticket | Verified changes, committed per completed task by default. |
+| [review](skills/review/SKILL.md) | Check changes | Saved findings; code and Git state unchanged. |
+| [fix](skills/fix/SKILL.md) | Apply a current review report | Verified fixes committed and outcomes recorded. |
+| [commit](skills/commit/SKILL.md) | Commit changes made outside `exec` and `fix` | Atomic commits from existing changes. |
+
+`commit` also accepts a direct request such as "commit this". `exec` and `fix` handle their own commits. Push and PR creation require a separate request.
+
+## Example
+
+For an existing greeting CLI, add an uppercase option without new dependencies.
+
+In Claude Code, start with:
+
+```text
+/dev:plan Add --uppercase to the greeting CLI, using its existing tests and no new dependencies.
+```
+
+Read the saved plan. Replace `<ticket-path>` with the returned path, then run these commands one at a time:
+
+```text
+/dev:exec <ticket-path>
+/dev:review <ticket-path>
+```
+
+If review finds issues, run `/dev:fix <report-path>` with the returned report path.
+
+In Codex, select the corresponding `dev` skill with `/skills` or the `$` picker in CLI/IDE, or request it directly: "Use the plan skill from dev to add --uppercase to the greeting CLI, using its existing tests and no new dependencies." Use the same method for `exec`, `review` and `fix`, passing the saved path.
+
+## Options
+
+| Option | Effect |
 | --- | --- |
-| [rnd](skills/rnd/SKILL.md) | A spec and tickets from a feature request or open question. |
-| [bug](skills/bug/SKILL.md) | A confirmed root cause before proposing a fix. |
-| [plan](skills/plan/SKILL.md) | Sequenced tasks and checkboxes inside one ticket. |
-| [exec](skills/exec/SKILL.md) | One unblocked ticket implemented and verified, with a commit per completed task. |
-| [review](skills/review/SKILL.md) | A saved review report; no code, index, or commit changes. |
-| [fix](skills/fix/SKILL.md) | Reverified findings applied, code committed, and report updated separately. |
-| [commit](skills/commit/SKILL.md) | Existing changes split into atomic commits; use outside `exec`. |
+| `exec <ticket-path> no commits` | Change code and save progress without creating commits. Git inspection still runs. |
+| `review` | Review the committed branch changes. |
+| `review staged` | Review changes staged for commit. |
+| `review src/api` | Review committed branch changes under that code path. |
+| `review quick` | Run a narrower review; this does not replace a full review. |
 
-In both clients, `rnd`, `bug`, `plan`, `exec`, `review` and `fix` require explicit invocation: select the command or directly ask to use that skill. Discussing or quoting a command, including in a handoff, does not invoke it. Each workflow stops at its handoff. `commit` alone also activates on requests such as "commit this"; discussing commits is not a request to create one.
+Use these arguments with `/dev:` in Claude Code or with the selected Codex skill. A ticket or feature path supplies review requirements, not a code filter. `no commits` does not change review scope: unstaged edits are not included by either branch or staged review.
 
-## Modes
-
-**Execution without commits**
-
-```text
-/dev:exec .scratch/rate-limiting/issues/01-rate-limit.md no commits
-```
-
-Codex: "Use the exec skill from dev for that ticket, no commits."
-
-This writes code and ticket progress. The recorded mode survives a new session. With commits enabled, the orchestrator commits completed tasks; workers never commit. Push and PR creation require an explicit request.
-
-**Review scope**
-
-```text
-/dev:review
-/dev:review staged
-/dev:review src/api
-/dev:review quick
-```
-
-The default reviews the committed branch; `staged` selects the index, and a repository-relative path narrows the branch diff. A ticket or feature path supplies requirements, not a code selector. To review another PR, check out its branch first. In Codex, pass the same selectors when requesting `review`.
-
-A normal sweep uses five reviewers, in groups when agent capacity is limited, or a direct pass for a trivial diff. `quick` uses two reviewers with broader duties and is not a full review gate. Run `fix` separately; critical or major fixes get a two-agent re-check.
-
-A stale or unfinished report requires another review. Already-applied reports and findings all dropped during verification produce no commit. Fix commits exclude the report, even when tracked. See [report validation](skills/fix/SKILL.md#check-the-report) and [git checks](skills/fix/SKILL.md#preflight).
-
-## Agent execution
-
-Both clients use the same worker and reviewer instructions and explicit context packets. Each new task gets a fresh worker without the parent conversation; an in-task correction returns to the same worker. Workers write sequentially in the shared checkout; the orchestrator validates, updates workflow state and commits.
-
-The [launch adapter](references/agent-launch.md) selects exposed native named-agent support or `collaboration.spawn_agent` with `fork_turns: "none"`. The generic route passes the full role file and task packet explicitly. An unsupported interface stops before agent-dependent ticket/report mutations. Native `tools:` restrictions are not enforced by copying them into a generic prompt; host permissions remain authoritative. CLI and desktop support must be checked separately.
-
-See the [client scenarios](tests/client-scenarios.md) and [verified compatibility limits](../../README.md#compatibility).
+If a report is stale or unfinished, run `review` again before `fix`.
 
 ## Working files and resume
 
-Files live under `.scratch/<feature-slug>/`, or `.scratch/<KEY>-<slug>/` with a tracker key.
+Working files live under `.scratch/<feature-slug>/`, or `.scratch/<KEY>-<slug>/` for a tracker key:
 
-| File | Written by |
-| --- | --- |
-| `spec.md`, `issues/NN-<slug>.md` | `rnd`: spec and tickets |
-| `root-cause.md` | `bug`: investigation |
-| `issues/NN-<slug>.md` | `plan`: plan sections; `exec`: status, checkboxes, execution notes |
-| `review.md` | `review`: findings; `fix`: outcomes |
+- `spec.md`: feature definition.
+- `root-cause.md`: bug investigation.
+- `issues/NN-<slug>.md`: ticket, plan and execution progress.
+- `review.md`: findings and fix outcomes.
 
-Without a matching feature, reports go to `.scratch/reviews/<branch-slug>/review.md`. `commit` writes no artifact. Ignore `.scratch/` in git to keep working records local; `exec` then commits code alone. Do not rerun an external slicer over planned tickets: it can overwrite their plans.
+Reviews without a matching feature use `.scratch/reviews/<branch-slug>/review.md`. Ignore `.scratch/` in Git to keep these records local.
 
-After a pause, invoke `exec` again with the same ticket, using your client's method above. It reads the saved stopping point, keeps `no commits`, and finishes interrupted validation, commits, or ticket closure before selecting more work. Completed commits are not repeated. Uncertain or foreign changes stop recovery. `resolved` means verified implementation, not completed review. See [resume rules](skills/exec/SKILL.md#resume).
+After a pause, invoke `exec` with the same ticket. It reads saved progress and retains `no commits` when selected. A `resolved` ticket means implementation is verified; review is still a separate step.
 
-For shared tracker configuration, use `docs/agents/issue-tracker.md` in the project. The current `rnd` and `plan` global fallback uses the Claude configuration directory; Codex `AGENTS.md` does not redirect it. The plugin writes local Markdown, requires no `gh`/`glab`, and asks before doing so in GitHub/GitLab-configured projects.
-
-[Update](../../README.md#update) · [Local preview](../../CONTRIBUTING.md#local-development-and-release) · [Authoring](CONTRIBUTING.md)
+[Update](../../README.md#update) | [Contribute](CONTRIBUTING.md)

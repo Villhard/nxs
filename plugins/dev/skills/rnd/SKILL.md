@@ -1,5 +1,5 @@
 ---
-description: Explicitly invoked /dev:rnd workflow. Think a request through to a spec and a set of tickets - the entry point for new work. Use to shape a fuzzy request, feature idea, or open question before planning.
+description: Shape a feature or open question when explicitly asked to use /dev:rnd. Save an agreed spec and one or more tickets, without implementation tasks or code. Use /dev:bug for a reported failure and /dev:plan for an already clear single ticket.
 argument-hint: "[request | tracker key | question]"
 disable-model-invocation: true
 ---
@@ -19,7 +19,7 @@ Run only when the user selects this command or directly asks to use it. Discussi
 ## STANCE
 
 - Produce the spec and the tickets and stop. The plan, the code, and any behavior change belong to the commands that own them.
-- Four steps in order: clarify, explore, stress-test, slice. The first three scale with the request - a clear one collapses to zero questions, one obvious approach, and no stress pass. The slice step always runs, even when it yields one ticket.
+- Four steps in order: clarify, explore, stress-test, slice. A clear request may need zero questions, one obvious approach and no stress pass. After agreement, slice always runs, even when it yields one ticket.
 - Full collapse makes the spec ceremony. Say so out loud and offer to route straight to `/dev:plan` instead.
 - For a bug rather than a request, route to `/dev:bug`.
 
@@ -50,7 +50,7 @@ Pressure-test the recommended approach before writing it down:
 3. **Kill criteria** - the observable signal that says stop or scope this down, decided now rather than defended later.
 4. **Verdict** - `holds` | `fails` | `holds only when ...`.
 
-Every concern carries a concrete justification. If the approach clearly survives, say so. A fatal finding sends you back once - to explore if the approach must change, to clarify if a new uncertainty opened. After that single loop the spec is frozen.
+Every concern needs concrete evidence or an explicitly named assumption. A fatal finding sends you back once: to explore for another approach, or to clarify for missing information. If it still fails after that loop, stop with the unresolved decision. A loop limit never turns a failed approach into an agreed spec.
 
 ## ARTIFACT
 
@@ -67,11 +67,11 @@ Never write into a `.scratch/<x>/` that holds a `map.md` - that directory belong
 
 Before the first write into a NEW feature directory, resolve the tracker layout from the first line of `docs/agents/issue-tracker.md` in this repo, else the same relative path under the user's Claude config directory, else local markdown. `# Issue tracker: Local Markdown`, or no such file anywhere: proceed silently. GitHub or GitLab: name the tracker, say in one sentence that writing under `.scratch/` here leaves the shaping in local files while the issues live on that tracker, then let the user pick - write under `.scratch/` anyway, or stop and drive the tracker with `/to-spec` and `/to-tickets` and come back with the ticket path. Ask once; the answer holds for the session. Never invent a `gh` or `glab` call.
 
-Before writing the spec, read [assets/spec.md](assets/spec.md), resolved relative to this installed skill directory. Use its seven headings in their given order, and nothing else at `##`.
+Before writing the spec, read [assets/spec.md](assets/spec.md), resolved relative to this installed skill directory. It lists the seven permitted `##` headings in order. Keep Problem Statement and Solution; omit any other section only when it has no content. Do not invent other `##` headings.
 
 `## Solution` holds the chosen approach with the answers integrated. `## Implementation Decisions` holds the findings that influenced the approach, with their code references, and the decisions every ticket inherits, each with a brief reason; keep assumptions distinguishable from confirmed facts. `## Testing Decisions` holds the relevant test findings and chosen checks. `## Out of Scope` names what is explicitly not being done. `## Further Notes` takes the options with their rejection reasons, the stress verdict when the stress step ran, and a `- Q: <question> -> A: <answer>` log when at least one question was asked. Sections scale with the request, an empty one is dropped, headings keep their names.
 
-Nothing durable is written before the user approves it.
+Before the first durable write, show the proposed spec and ticket breakdown. Obtain approval unless the user has already approved that content or explicitly authorized writing it from the agreed decisions. Reuse that authorization. Material unanswered decisions still block ready tickets; permission to save a draft does not answer them or invoke plan.
 
 ## SLICE
 
@@ -88,4 +88,4 @@ Rules the template does not show:
 
 ## NEXT
 
-Spec and tickets written -> `/dev:plan` plans one ticket, then `/dev:exec` executes it and marks it resolved.
+Return the spec path, created ticket paths and any unresolved clarification. Suggest `/dev:plan` for the first ready ticket; an incomplete spec with no tickets has no ready handoff. Do not invoke another command.
