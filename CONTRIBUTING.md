@@ -39,7 +39,9 @@ README explains how to use the plugin; CONTRIBUTING explains how to change it. S
 
 ## VERSIONS
 
-Plugins version independently; root files have no version. Every bundled edit, including documentation, metadata and file modes, needs a release bump, matching manifest versions and a dated CHANGELOG entry. Start new plugins at `0.1.0`; preserve past entries, newest first.
+Plugins version independently; root files have no version. Every bundled edit, including documentation, metadata and file modes, needs a release bump, matching manifest versions and a dated CHANGELOG entry. Start new plugins at `0.1.0`. Keep every past version heading and date, newest first; past entries may be condensed but never dropped.
+
+A CHANGELOG entry lists what changed under Keep a Changelog headings (`Added`, `Changed`, `Fixed`, `Removed`, `Deprecated`). One line per bullet, naming the command, role or artifact that changed. No introductory paragraphs, rationale, before/after comparisons or file listings: the commit and the owning instruction carry those.
 
 An unchanged contract is a patch. During `0.x`, contract changes require a minor release; after `1.0.0`, breaking changes require a major release. Each plugin defines its versioned contract.
 
