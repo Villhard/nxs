@@ -5,6 +5,7 @@ Choose where to start:
 - An idea that needs shaping: `rnd`, then `plan`.
 - A bug to investigate: `bug`, then `plan` once the cause is confirmed.
 - A clear task: `plan`, which can create a ticket directly.
+- An approved spec: `plan` for one implementation unit, or `rnd` to reuse it and split several tickets.
 
 ```text
 plan -> exec -> review -> fix (if there are findings)
@@ -48,6 +49,24 @@ Read the saved plan. Replace `<ticket-path>` with the returned path, then run th
 If review finds issues, run `/dev:fix <report-path>` with the returned report path.
 
 In Codex, select the corresponding `dev` skill with `/skills` or the `$` picker in CLI/IDE, or request it directly: "Use the plan skill from dev to add --uppercase to the greeting CLI, using its existing tests and no new dependencies." Use the same method for `exec`, `review` and `fix`, passing the saved path.
+
+## Shaping routes
+
+NXS provides the complete local route without another shaping package or tracker setup. Each arrow below is a user-selected handoff:
+
+```text
+Idea -> rnd [spec + tickets] -> plan <ticket-path> -> exec <ticket-path>
+Clear request -> plan [ticket + tasks] -> exec <ticket-path>
+Approved spec -> rnd <spec-path> [reuse + slice] -> plan <ticket-path>
+```
+
+For one implementation unit, `/dev:plan docs/approved-spec.md` can create the ticket and plan directly. For several units, `/dev:rnd docs/approved-spec.md` reuses settled decisions and creates the breakdown. An external spec is preserved in the authorized local feature so later sessions retain its context; existing spec and ticket history are protected. See [rnd input and slicing rules](skills/rnd/SKILL.md) and [plan entry rules](skills/plan/SKILL.md).
+
+If you explicitly choose a detailed workflow such as `grill-me -> to-spec -> to-tickets`, pass its compatible local `.scratch/<feature>/issues/01-<slug>.md` to `plan`. Compatibility depends on the spec/ticket content, decisions, Comments and blockers, not a package name or ready label. This is not a guarantee for every external workflow revision. Decision maps and typed decision tickets supply context for a separate implementation deliverable.
+
+Once tickets have plans or execution history, do not run an external slicer over them without a concrete preservation/revision decision. NXS preserves existing work when re-slicing; it cannot enforce that behavior in an independently selected external tool. Every implementation ticket must leave passing checks, including refactor batches. A sequence that becomes green only at final integration needs a different breakdown.
+
+NXS always saves Markdown under `.scratch/`, without tracker configuration, backend selection or separate storage approval. Existing tracker preferences do not redirect the workflow; content approval and readiness checks still apply. Remote issues can supply requirements through an available read interface or pasted content, with source/parent constraints and blocker evidence retained. NXS does not publish or synchronize tracker issues. See [local storage and remote-input rules](skills/plan/SKILL.md).
 
 ## Options
 

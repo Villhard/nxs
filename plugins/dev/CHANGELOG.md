@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.27.0] - 2026-09-18
+
+### Changed
+
+- Keep shaping and planning self-contained with local Markdown storage, no tracker configuration or backend selection, and no assumed external commands.
+- Accept explicit approved specs and compatible local artifacts while preserving decisions, blockers and existing planning/execution history during slicing.
+- Classify decision inputs, require remote source/parent/blocker evidence and reject breakdowns that pass checks only at final integration.
+- Describe standalone and explicitly selected detailed shaping routes, and add native handoff/preservation scenarios with scoped compatibility evidence.
+- Report missing execution plans from observed state without guessing which producer changed them.
+
 ## [0.26.0] - 2026-09-18
 
 ### Changed

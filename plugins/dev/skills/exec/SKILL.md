@@ -37,7 +37,7 @@ Four cases that are not a free choice:
 - a `Blocked by:` number with no matching file - stop and say which ticket names which missing number. Missing is never read as satisfied;
 - nothing takeable while open tickets remain - report each open ticket's status and its first unsatisfied blocker, then stop. That one rule covers a cycle, a blocker parked at `ready-for-human` and a blocker at `wontfix` alike; break none of them yourself;
 - `ready-for-agent` with no `## Implementation` - not an error, just unplanned: say `ticket NN has no plan, run /dev:plan <path>` and try the next number;
-- `claimed` or `resolved` with no `## Implementation` - stop. The section was removed, and a `to-tickets` re-run over the feature is the likely cause.
+- `claimed` or `resolved` with no `## Implementation` - stop and report the observed status and missing section. Inspect available history to establish what changed; do not infer a removal or its author without evidence. Require recovery of the plan and reconciliation of execution history before continuing.
 
 Before any write, including a claim, reopen or recovery update:
 
