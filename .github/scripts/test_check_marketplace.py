@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import tempfile
@@ -222,6 +223,17 @@ def integration(root):
 
 
 def main():
+    # These check names are required by main branch protection.
+    workflow = (ROOT / '.github/workflows/ci.yml').read_text()
+    jobs = re.split(r'^  [\w-]+:\n', workflow, flags=re.M)
+    required = [job for job in jobs if job.startswith('    name: House style + frontmatter\n')]
+    assert len(required) == 1, 'missing or duplicate required House style + frontmatter job'
+    for command in ('bash .github/scripts/lint-house-style.sh',
+                    'bash .github/scripts/check-marketplace.sh --base "$base" --head "$HEAD_SHA"',
+                    'python3 .github/scripts/test_check_marketplace.py'):
+        assert command in required[0], f'required CI job no longer runs {command}'
+    assert workflow.count('    name: Plugin validate\n') == 1, 'missing or duplicate required Plugin validate job'
+
     with tempfile.TemporaryDirectory(prefix='marketplace-check-') as directory:
         root = Path(directory)
         integration(root)

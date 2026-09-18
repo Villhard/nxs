@@ -5,16 +5,6 @@ on:
   pull_request:
 
 jobs:
-  lint:
-    name: House style
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: House-style lint
-        run: bash .github/scripts/lint-house-style.sh
-
   validate:
     name: Plugin validate
     runs-on: ubuntu-latest
@@ -47,14 +37,18 @@ jobs:
           done
           exit $status
 
+  # Keep the check name required by main branch protection.
   marketplace:
-    name: Marketplace snapshots + regression checks (Python 3)
+    name: House style + frontmatter
     runs-on: ubuntu-latest
     steps:
       - name: Checkout full history
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      - name: House-style lint
+        run: bash .github/scripts/lint-house-style.sh
 
       - name: Check release snapshots
         env:
