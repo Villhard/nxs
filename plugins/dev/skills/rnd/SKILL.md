@@ -98,4 +98,4 @@ Rules the template does not show:
 
 ## NEXT
 
-Return the spec path, created or preserved ticket paths and any unresolved clarification. Suggest `/dev:plan` for the first unplanned ready ticket whose local blockers are resolved with no unfinished execution close. An incomplete spec or unknown/unmapped remote blocker has no ready handoff; existing plans or execution history do not become new work on a repeat. Do not invoke another command.
+Return the spec path, created or preserved ticket paths and any unresolved clarification. Suggest `/dev:plan` for the first unplanned ready implementation ticket that has no bare or Markdown-bold `Type:` field and whose local blockers are resolved with no unfinished execution close. An incomplete spec or unknown/unmapped remote blocker has no ready handoff; existing plans or execution history do not become new work on a repeat. Do not invoke another command.
