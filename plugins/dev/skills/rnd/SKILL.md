@@ -1,6 +1,6 @@
 ---
 description: Shape a feature or open question when explicitly asked to use /dev:rnd. Save an agreed spec and one or more tickets, without implementation tasks or code. Use /dev:bug for a reported failure and /dev:plan for an already clear single ticket.
-argument-hint: "[request | tracker key | question]"
+argument-hint: "[request | spec path | tracker key | question]"
 disable-model-invocation: true
 ---
 
@@ -8,9 +8,9 @@ disable-model-invocation: true
 
 Think a request through to a spec and its tickets, then stop. The entry point for new work.
 
-Accepted input: a request in words, a feature idea, a tracker key / URL / pasted ticket, or an open question. With nothing given, work from the current session context.
+Accepted input: a request in words, a feature idea, a spec path, a tracker key / URL / pasted ticket, or an open question. With nothing given, work from the current session context.
 
-A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
+A tracker key or URL is read before anything else through an available read interface; otherwise ask the user to paste the ticket. Never infer its content from the key.
 
 Example: /dev:rnd add rate limiting to the public API
 
@@ -22,6 +22,14 @@ Run only when the user selects this command or directly asks to use it. Discussi
 - Four steps in order: clarify, explore, stress-test, slice. A clear request may need zero questions, one obvious approach and no stress pass. After agreement, slice always runs, even when it yields one ticket.
 - Full collapse makes the spec ceremony. Say so out loud and offer to route straight to `/dev:plan` instead.
 - For a bug rather than a request, route to `/dev:bug`.
+
+## EXISTING INPUT
+
+Read an explicit spec path before shaping; a missing or unreadable file stops, never becomes a new request. Inspect its decisions, exclusions, testing requirements, answers and open questions regardless of its producer or ready label. Check them against relevant code. An approved spec with no unresolved decision enters ARTIFACT and SLICE directly: do not repeat settled clarification, explore or stress steps. New contradictory evidence reopens only the affected decision; show the evidence and ask before changing it. An unresolved spec follows CLARIFY and cannot produce tickets while a material question remains open.
+
+Keep the source unchanged. Reuse an existing local feature's `spec.md` in place. For a source outside the target feature, include preserving its applicable content in the proposed local `spec.md` before approval to write; copy a compatible spec unchanged. Use the existing spec headings if a different layout needs adaptation, without dropping decisions, exclusions or answers. Inspect the target first: reuse an identical existing spec, but a different existing spec requires a concrete revision decision, never an overwrite. ARTIFACT's directory and map guards apply before any copy.
+
+For remote input, establish the source identity, applicable parent decisions/comments (or that no parent applies) and blocker state through an available read interface or supplied content. Ask for missing context; a key, a ready label or an omitted blocker field is not evidence of no blockers. Preserve this evidence in the spec's existing sections. A known open remote blocker needs a verified mapping to a local ticket in the target feature; retain that local dependency and check its state. Never interpret remote issue numbers as local ticket numbers. Unknown or unmapped blockers prevent a ready handoff; an authorized draft records the missing evidence as a clarification and produces no tickets. This command does not publish or synchronize remote issues.
 
 ## CLARIFY
 
@@ -54,18 +62,18 @@ Every concern needs concrete evidence or an explicitly named assumption. A fatal
 
 ## ARTIFACT
 
-One feature is one directory in the issue tracker, holding the spec and one file per ticket:
+One feature is one local directory, holding the spec and one file per ticket:
 
 ```
 .scratch/<feature-slug>/spec.md
 .scratch/<feature-slug>/issues/NN-<slug>.md
 ```
 
-`<feature-slug>` is two to four lowercase english words from the request, hyphenated; a tracker key names the directory instead - `.scratch/<KEY>-<slug>/`. Write into the directory the input names when it has one, leave a `root-cause.md` already sitting there untouched, and never replace an existing `spec.md` without asking.
+`<feature-slug>` is two to four lowercase english words from the request, hyphenated; a tracker key names the directory instead - `.scratch/<KEY>-<slug>/`. Write into the directory the input names when it has one, leave a `root-cause.md` already sitting there untouched, and never replace an existing `spec.md` without approval of that concrete revision.
 
-Never write into a `.scratch/<x>/` that holds a `map.md` - that directory belongs to `/wayfinder`. Pick another slug and say why in one line.
+Never write into a `.scratch/<x>/` that holds a `map.md` - that directory holds decision work. Pick another slug and say why in one line. Decision documents, including tickets carrying a bare or Markdown-bold `Type:` field, supply context for a distinct implementation deliverable; never convert them in place.
 
-Before the first write into a NEW feature directory, resolve the tracker layout from the first line of `docs/agents/issue-tracker.md` in this repo, else the same relative path under the user's Claude config directory, else local markdown. `# Issue tracker: Local Markdown`, or no such file anywhere: proceed silently. GitHub or GitLab: name the tracker, say in one sentence that writing under `.scratch/` here leaves the shaping in local files while the issues live on that tracker, then let the user pick - write under `.scratch/` anyway, or stop and drive the tracker with `/to-spec` and `/to-tickets` and come back with the ticket path. Ask once; the answer holds for the session. Never invent a `gh` or `glab` call.
+Always save Markdown under `.scratch/`. Do not look up repository/global tracker preferences or ask for a storage backend or separate local-storage consent. An unrelated tracker preference does not redirect this workflow. Content approval and the input, clarification and preservation gates still apply. Do not change settings, run setup or publish/synchronize remote issues.
 
 Before writing the spec, read [assets/spec.md](assets/spec.md), resolved relative to this installed skill directory. It lists the seven permitted `##` headings in order. Keep Problem Statement and Solution; omit any other section only when it has no content. Do not invent other `##` headings.
 
@@ -75,7 +83,9 @@ Before the first durable write, show the proposed spec and ticket breakdown. Obt
 
 ## SLICE
 
-Cut the chosen approach into tickets under `issues/`, numbered from `01` in dependency order so a blocker always carries a lower number than what it blocks. Each ticket is one vertical slice: end-to-end behavior a user or an API can exercise, demoable on its own, sized to fit one fresh context window. Never a layer - not the schema, then the service, then the route. A wide refactor is the exception: expand, migrate in batches, contract, one ticket per batch. One ticket is the normal outcome for small work and gets no ceremony - same file, same shape.
+Inspect every existing `issues/*.md` before proposing a breakdown. Match existing scope and dependencies; preserve file names, ticket IDs, blockers, statuses, checked criteria, plans and Comments/execution notes byte-for-byte on a repeat. Existing tickets that cover the spec are the output, not files to regenerate. General permission to save tickets does not authorize replacing their history. If changed scope or dependencies cannot preserve the existing graph, show the affected files and decisions and stop for a concrete revision decision; reuse only authorization that covers that revision. Never renumber, reset or silently replace existing work, including ready tickets without plans.
+
+Cut genuinely new authorized work into tickets under `issues/`, numbered from `01` when empty or after the highest existing number, in dependency order so a blocker always carries a lower number than what it blocks. Each ticket is one vertical slice: end-to-end behavior a user or an API can exercise, demoable on its own, sized to fit one fresh context window. Never a layer - not the schema, then the service, then the route. A wide refactor is the exception: expand, migrate in batches, contract, one ticket per batch, with passing checks after each ticket. If only final integration can pass, ask for a compatible breakdown instead of promising execution with failing intermediate tickets. One ticket is the normal outcome for small work and gets no ceremony - same file, same shape.
 
 Before writing tickets, read [assets/ticket.md](assets/ticket.md), resolved relative to this installed skill directory. Write each ticket exactly in that shape.
 
@@ -88,4 +98,4 @@ Rules the template does not show:
 
 ## NEXT
 
-Return the spec path, created ticket paths and any unresolved clarification. Suggest `/dev:plan` for the first ready ticket; an incomplete spec with no tickets has no ready handoff. Do not invoke another command.
+Return the spec path, created or preserved ticket paths and any unresolved clarification. Suggest `/dev:plan` for the first unplanned ready ticket whose local blockers are resolved with no unfinished execution close. An incomplete spec or unknown/unmapped remote blocker has no ready handoff; existing plans or execution history do not become new work on a repeat. Do not invoke another command.
