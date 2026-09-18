@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.27.1] - 2026-09-18
+
+### Fixed
+
+- Skip tickets with bare or Markdown-bold Type fields when rnd selects an implementation ticket for its plan handoff; cover mixed decision/implementation directories in local handoff scenarios.
+
 ## [0.27.0] - 2026-09-18
 
 ### Changed

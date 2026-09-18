@@ -1,7 +1,7 @@
 {
   "name": "dev",
   "description": "Seven development commands for Claude Code and Codex with explicit handoffs, one worker role, five review roles and resumable ticket execution",
-  "version": "0.27.0",
+  "version": "0.27.1",
   "author": {
     "name": "Victor Ryabov",
     "email": "victorwillhard@gmail.com"
