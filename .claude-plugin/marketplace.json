@@ -9,7 +9,7 @@
       "name": "dev",
       "source": "./plugins/dev",
       "category": "development",
-      "description": "An opinionated plan -> exec -> review loop: seven flat /dev commands, a single write-capable worker, and five review agents over the finished branch"
+      "description": "Shape, plan, implement and review development work with seven commands, explicit handoffs, one worker role and five review roles"
     }
   ]
 }

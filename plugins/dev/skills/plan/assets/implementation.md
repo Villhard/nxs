@@ -1,23 +1,17 @@
 ## Conventions
 
-<rules every task follows - style, naming, a repeated step, a standing preference. /dev:exec passes this
-section to every worker, so what is missing here does not reach the code. Do not copy in what the project's
-CLAUDE.md already says: exec passes the project rules separately, and a duplicate only inflates every worker
-prompt. No such rules, no section.>
+<task-independent decisions and constraints, with their reasons and relevant code references.
+Exec passes these to every worker and passes applicable CLAUDE.md/AGENTS.md rules separately.
+Omit Conventions only when there are no additional shared rules.>
 
 ## Implementation
 
-### Task 1: A visitor registers with an email and lands in the database
+### Task 1: A caller can preserve a zero limit
 
 **Files:**
-- Create: migrations/0007_users.sql
-- Create: src/auth/hash.go
-- Modify: src/users/service.go
-- Modify: src/api/routes.go
+- Modify: limits.py
+- Create: test_limits.py
 
-- [ ] add the users migration with a unique index on email
-- [ ] add HashPassword in src/auth/hash.go (bcrypt, configurable cost)
-- [ ] add service.Register: normalize, hash, persist, ErrEmailTaken on a duplicate
-- [ ] wire POST /api/users to the service and map errors to 201 / 409 / 422
-- [ ] write tests: fresh email stores a hash and never the plaintext, duplicate gives 409, malformed gives 422
-- [ ] run `go test ./users/... ./api/...`
+- [ ] update resolve_limit so None uses the default and zero remains zero
+- [ ] write unittest checks for None, zero and a positive limit
+- [ ] run `python3 -m unittest test_limits`

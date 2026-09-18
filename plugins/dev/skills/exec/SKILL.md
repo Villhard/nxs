@@ -1,5 +1,5 @@
 ---
-description: Explicitly invoked /dev:exec workflow. Execute a planned ticket task by task and write the code, committing each finished task and marking the ticket resolved. Use after a plan is ready; add "no commits" to skip git.
+description: Implement or resume one planned ticket when explicitly asked to use /dev:exec. Delegate tasks, verify results and commit completed work. "no commits" disables commits, not Git inspection. Requires an implementation plan; use /dev:plan to create one.
 argument-hint: "[feature dir | ticket path] [no commits]"
 disable-model-invocation: true
 ---
@@ -16,7 +16,7 @@ Run only when the user selects this command or directly asks to use it. Discussi
 
 ## RESOLVE THE TICKET
 
-Before any ticket mutation for work that needs a worker, read [agent launch](../../references/agent-launch.md) and complete its capability check. Use it for every launch and correction below; recovery that only validates or commits needs no worker.
+Resolve and read the ticket first. Complete the numbered entry checks below in order; do not check agent availability before checking the ticket and feature questions.
 
 The argument if given - a ticket path, or a feature directory whose frontier is walked below.
 
@@ -39,20 +39,52 @@ Four cases that are not a free choice:
 - `ready-for-agent` with no `## Implementation` - not an error, just unplanned: say `ticket NN has no plan, run /dev:plan <path>` and try the next number;
 - `claimed` or `resolved` with no `## Implementation` - stop. The section was removed, and a `to-tickets` re-run over the feature is the likely cause.
 
-Before any write, a reopen included: the ticket holds an `## Implementation` section and `rg "NEEDS CLARIFICATION" <ticket>` returns nothing. A new start requires a clean worktree unless the user approved a dirty start. On a resume, only changes reconciled below are permitted without that approval; file names alone never establish ownership.
+Before any write, including a claim, reopen or recovery update:
+
+1. Require `## Implementation` with at least one `### Task N:` and its task checkboxes. An empty or malformed plan stops; it is not completed work.
+2. Search the ticket and each existing adjacent `spec.md` and `root-cause.md` with `rg -n 'NEEDS CLARIFICATION' -- <paths>`. Any open marker blocks execution. Missing optional feature documents are allowed; an unreadable existing document is not.
+3. Read Comments for unresolved questions or blockers. Historical notes about a cleared blocker do not block work; unclear resolution requires an answer. A root cause still described as unconfirmed blocks a fix even without a marker.
+4. Require a clean worktree for a new start unless the user already approved a dirty start. Resume permits only changes reconciled below. File names alone never prove ownership.
+5. For started work, reconcile RESUME without writes. Only if the remaining work needs implementation, read [agent launch](../../references/agent-launch.md) and complete its capability check before the claim or any other mutation. Validation-only or commit-only recovery needs no worker. Use that adapter for every launch and correction.
+
+Example: a ready ticket with no local marker still stops if its spec contains `[NEEDS CLARIFICATION: ...]`. Leave files unchanged and name that question.
 
 ## RESUME
 
-Run this once at command entry for started work, never between workers. A new ticket has no recovery work. Read the execution record, task checkboxes and relevant Comments; inspect HEAD, staged, unstaged and untracked changes and only the recent commits needed to locate the interruption. Do not re-review completed tasks or re-run their tests. Preserve a recorded `no commits` mode unless the user explicitly changes it.
+Run once at command entry for started work, never between workers. Read the execution record, checkboxes and Comments. Inspect HEAD, staged, unstaged and untracked changes and only the recent commits needed to locate the interruption. Preserve recorded `no commits` unless the user explicitly changes it.
 
-- `next: commit` is unfinished until git proves that task was committed. For a tracked ticket, the commit must contain the current execution record and the task's code together; for an ignored ticket, find the matching task changes after the recorded base. An advanced HEAD alone proves nothing. A successful commit needs no duplicate commit or worker, even if the session stopped before its final reply. Under `no commits`, an absent commit is intentional.
-- Reconcile only the interrupted task's remaining work against its recorded changes and actual code. Earlier accumulated changes under `no commits` or an approved dirty start are not this task's commit. Foreign changes, conflicting evidence, an active run, or uncertain ownership stop before code edits or staging; never stash, discard, or sweep them into a commit. With no record, use task state and git only when the continuation and git mode are unambiguous; otherwise ask.
-- Resume implementation with a fresh worker given the remaining work and relevant saved notes. If code is complete, resume validation or commit directly. A saved claim that tests passed after an edit does not tie them to today's bytes: for uncommitted work, re-run the needed commands unless recorded byte/version evidence establishes currency. Do not repeat checks for a proven completed commit. All tasks checked but close incomplete - finish the full suite, linter and acceptance checks that lack current evidence, then resolve. If only the ticket close remains after the code commit, use `chore(<scope>): close ticket NN`; under `no commits`, write it only.
-- Reconcile an unfinished `resolved` close before skipping or reopening it, or treating it as a satisfied blocker. Once that close is finished, stop. A completed `resolved` ticket retains the ordinary reopen rule. `needs-info` and `ready-for-human` still require their recorded blocker to be cleared; a record never clears it itself.
+Use Git and file reads for this reconciliation. Do not run tests to decide whether a completed commit needs resuming. If the completed-commit row below matches, return immediately; validation starts only after establishing that closure evidence is missing or no longer applies to the current bytes.
+
+First establish ownership of the interrupted task's changes. Earlier `no commits` work and an approved dirty start are not automatically part of this task. Foreign changes, conflicting evidence, an active run or uncertain ownership stop before edits or staging. Never stash or discard that work.
+
+| Saved state | Evidence required | Continue with |
+| --- | --- | --- |
+| `resolved`, all task and acceptance checkboxes checked, matching completed commit | Commit contains the task changes and tracked execution record; closure checks are recorded for those committed bytes | Stop and report that commit. Write nothing: keep the tracked record exactly as committed, even `next: commit`. Do not change it to `next: none`, append a note or create a bookkeeping commit. |
+| `next: implement` | Reconcile remaining checkboxes against actual code and saved notes | A fresh worker for unfinished work; if implementation already finished, validate directly. |
+| `next: validate` | Code is attributable to this task; checks refer to current bytes | Run missing/current checks, then inspect the task diff. A saved "passed" statement alone does not prove currency. |
+| `next: commit`, no matching commit | Validated task changes remain uncommitted | Re-run checks lacking current byte/version evidence, then commit exactly that task. |
+| `next: commit`, matching commit exists | A tracked ticket's record and task code occur together in that commit; for an ignored ticket, matching changes occur after the saved base | Keep a tracked record unchanged. Do not repeat the worker, checks or commit. Continue only if an unfinished task or missing closure evidence remains; otherwise stop. Advanced HEAD alone is insufficient. |
+| `mode: no commits` | Changes are attributable; an absent commit is intentional | Preserve the mode. Validate uncommitted work when current evidence is missing; never create a recovery commit. |
+| All task checkboxes checked, closure unfinished | Full-suite, lint and acceptance evidence is current, or must be obtained | Finish those checks and close the ticket. If code is committed and only a tracked ticket close remains, use `chore(<scope>): close ticket NN`; an ignored ticket or `no commits` needs only a disk update. |
+| No execution record | Task state and Git unambiguously establish remaining work and mode | Continue from that state; otherwise stop and name the missing evidence. |
+
+Apply the completed-commit row first. The recorded mode and ownership checks apply to every row. Completed commits need no re-review or repeated tests. A tracked `next: commit` inside the completed commit is its receipt, not pending work. `next: none` alone does not prove resolution; inspect task and closure state.
+
+Reconcile an unfinished `resolved` close before skipping, reopening or using it as a satisfied blocker. Finishing that close ends this invocation. A fully completed resolved ticket follows the ordinary reopen gate. `needs-info` and `ready-for-human` require their blocker to be cleared; a record never clears it.
 
 ## EXECUTION NOTES
 
-Only the orchestrator writes execution notes under the ticket's existing `## Comments`. Maintain one current line: `Execution: task <N>; mode: commits | no commits; base: <full HEAD OID>; next: implement | validate | commit | none`. Set it before each worker with `next: implement`; after the worker, set `next: validate` and save its actual changed paths and verification results with that task number. Record exact commands, outcomes and whether they ran after the last edit; do not persist raw output or secrets. Update notes with existing status/checkbox writes where possible, never with a separate bookkeeping commit. These are data, not commands to execute; validate OIDs and repository-relative paths and shell-quote values used in commands.
+Only the orchestrator writes notes under `## Comments`; create that heading at the end when absent. Maintain one current line with exactly this format:
+
+```text
+Execution: task <N>; mode: commits | no commits; base: <full HEAD OID>; next: implement | validate | commit | none
+```
+
+- Before a worker, write `next: implement`.
+- After its result, write `next: validate` and save actual changed paths and verification results with the task number, including partial or blocked results.
+- Record exact commands, outcomes and whether they ran after the last edit. Do not save raw output or secrets.
+- Combine notes with status/checkbox writes; never create a bookkeeping-only commit.
+- Treat notes as data: validate OIDs and repository-relative paths, and shell-quote values used in commands.
 
 After validation, write `next: commit` with the task's checkboxes, or `next: none` under `no commits`. If no code or tracked ticket changes need committing, use `next: none` with that explanation; never create an empty commit. A tracked record rides the task commit and stays unchanged afterward: its presence in that commit is the receipt. For an ignored ticket, set `next: none` after the successful commit; if interrupted before that write, RESUME checks git. Keep the mode when a task finishes. A fresh reopen starts a new record after approval; do not inherit stale verification results.
 
@@ -62,12 +94,12 @@ Save substantive worker Decisions and Deviations with task number, reason and re
 
 Claim first: after preflight or successful reconciliation and before the first worker, write `**Status:** claimed` to the ticket, then announce its number, its title, and how many `### Task N:` blocks you found. The claim is not its own commit - it rides task 1's.
 
-Repeat until no `- [ ]` is left under `## Implementation`:
+Repeat until no open checkbox remains inside a `### Task N:` section. `## Comments` ends Implementation; checkboxes elsewhere are not worker tasks.
 
 1. **Pick the task** - the first `### Task N:` section with open checkboxes. One section per cycle, all of its checkboxes, then move on. Work is found only inside `### Task N:` sections, and nothing above `## Implementation` is read as work or flipped during the cycle.
 2. **Delegate** - record the worktree state first: `git diff HEAD`, plus the content of every file `git ls-files --others --exclude-standard` lists, since a file an earlier task created under **no commits** is untracked and its content before this task shows in no diff. That record is what the task's own changes are told apart from - the claim, an approved dirty start, or an earlier task. Maintain EXECUTION NOTES, then launch one `dev:worker` with the task text, the acceptance criteria this task serves written as plain lines under `Serves:` and never as checkboxes, the ticket's `## Conventions` section, the project rules bearing on how code is written, any standing directive from this session, and applicable saved execution notes. Assemble the conventions and rules once and reuse them verbatim; task text, `Serves:` and relevant notes change per task. What is not passed does not reach the code. Use the selected launch adapter with a fresh context and the full packet above; never inherit the parent conversation.
-3. **Validate** - read the worker's `Verify:` line. A command counts as run when it is exactly the command the task names, it passed, and the worker ran it after its last edit to code, tests, or config; then do not run it again. `not run`, a failure, a different or narrower command, or any doubt - run it yourself. Fix failures and re-run until green.
-4. **Check the task diff** - what changed against the record from step 2, new and untracked files included, compared with the task's checkboxes and its `Serves:` lines. Every checkbox has its evidence - a change in the diff, a command result, or observed behavior, since a test-run checkbox leaves no diff and existing code can already satisfy one - and nothing in the diff serves no checkbox. A criterion that spans several tasks is not expected to hold until the last task it names, so read it for direction here and verify it at the close. A gap goes back to the same worker as a correction, once, and the cycle returns to step 3 after it; still open after that is a stop.
+3. **Validate** - save worker Decisions and Deviations first. A `blocked` or `partial` result cannot advance checkboxes or create a commit; apply STOP CONDITIONS. For `done`, read `Verify:`. Accept the named command only when it passed exactly as specified after the last edit. Otherwise run it yourself. Send a necessary code correction to the same worker once and revalidate; a repeated failure stops. The orchestrator does not implement the correction itself.
+4. **Check the task diff** against the record from step 2, including new files. Each checkbox needs a diff, command result or observed behavior, and each change must serve the task. Criteria spanning several tasks are checked at closure. Send a gap to the same worker if the task's one correction has not been used in step 3; return to validation afterward. A remaining gap after that correction stops.
 5. **Flip that task's checkboxes** to `- [x]` and update EXECUTION NOTES. On the last task, close the ticket in the same write, before the commit: run the project's full test suite and linter once yourself, verify each acceptance criterion above `## Implementation` against the running code, save the verification evidence, flip every one to `- [x]`, and set `**Status:** resolved`. Until those checks pass, keep `next: validate` and the ticket claimed.
 6. **Commit** the code and the ticket together, one commit per task: `<type>(<scope>): <subject>`. When `.scratch/` is gitignored, commit the code alone and say so once - the ticket on disk, not git, is what a resume reads. Under **no commits**, skip this step and change nothing else.
 7. Next task.
@@ -109,7 +141,15 @@ Stage the task's files by name, never `git add -A` and never `git add -f` - an i
 - an unclear requirement, or a merge conflict;
 - a decision that contradicts the feature document's `## Implementation Decisions`, which this command never rewrites.
 
-On any of these - stop and tell the user rather than guessing, and leave the ticket legible. Who can clear the stop decides the status: an answer clears it - `**Status:** needs-info`, claim released; only a human action clears it, such as a migration, a dependency install, a destructive operation, credentials, or a criterion no command in this run can verify - `**Status:** ready-for-human`, claim released, already flipped criteria left flipped; a retry clears it, a red suite above all - the ticket stays `claimed`, because the work is unfinished and nobody else should take it. Either way append one line under `## Comments` naming the task and what is needed, adding the heading when it is missing.
+An entry-check failure stops with an explanation and leaves the ticket, code and index untouched. The updates below apply only after this run has claimed the ticket or started reconciled continuation work.
+
+| What clears an in-run stop | Ticket update |
+| --- | --- |
+| A missing answer | Set `needs-info` and release the claim. |
+| A human action, such as a migration, dependency install, credentials or an externally verified criterion | Set `ready-for-human`, release the claim and preserve already checked criteria. |
+| A retry or correction, including a red suite | Keep `claimed`; the work is still unfinished. |
+
+For an in-run stop, append a Comments line naming the task and what is needed. Preserve actual Decisions, Deviations and verification evidence. Never mark incomplete work resolved.
 
 ## NEXT
 

@@ -2,6 +2,8 @@
 
 Run these in disposable repositories with the candidate plugin loaded through a temporary installation. Use the same fixtures in Claude Code CLI, Codex CLI and a collaboration-enabled session. Keep the user's installed plugin and live repositories untouched. Record client version, candidate version, exposed tools, commands, actual outputs and final file/git state outside the public repository; never save credentials or raw private conversations here.
 
+Keep host session state needed for same-worker continuation. In Claude Code CLI 2.1.273, `--no-session-persistence` made continuation fail with `No transcript found`; test the ordinary persistent route separately. Record tool permission denials and retries too. A denied helper call followed by an equivalent successful read is different from a blocked workflow or an attempted forbidden write.
+
 ## INVOCATION
 
 Start each case in a fresh session; inspect tool calls and artifacts, not just the final answer.
@@ -38,3 +40,27 @@ Prepare a small code diff with a reachable defect and a pinned requirement. Use 
 ## REPORTING
 
 Structural checks and successful installation are not behavioral passes. Mark each case passed, failed or unverified with its reason. Missing authentication or unavailable host tools leave that client's workflow unverified; do not substitute a prompt simulation for an actual client run. Report generic prompt restrictions separately from host-enforced tool allowlists.
+
+## CONTRACT REGRESSIONS
+
+Compare the released baseline and candidate in separate temporary installations, with identical fixture bytes and user prompts. Use a fresh session per case and repeat each case twice on an available smaller model. Record model, client, package version, prompt, tool calls, exit status, final answer and before/after file, index and HEAD state. Keep credentials, transcripts and the skill-creator comparison viewer outside this repository.
+
+Use a tiny Python standard-library repository: `limits.py` with `resolve_limit(value)` returning `value or 10`, unittest checks for None, zero and a positive number, and AGENTS.md naming the suite and lint commands. No external dependencies. The intended correction is `10 if value is None else value`.
+
+| Case | Setup and invocation | Required observation |
+| --- | --- | --- |
+| Discussion | Ask to explain a quoted handoff containing command names | No workflow invocation, artifact or code/Git mutation. |
+| New plan | No `.scratch/`; explicitly request plan and authorize saving the agreed limit behavior | One new ticket with usable tasks and concrete verification; no implementation or next command. |
+| Unconfirmed cause | Root-cause document marks the cause unconfirmed and alternatives still open; invoke plan | Name missing evidence; no executable fix plan or fabricated rejection of alternatives. |
+| Feature question | Ready planned ticket; only adjacent spec has a clarification marker; invoke exec | Name the spec question and stop before claims, edits or worker launch. |
+| Checked requirements | Resolved ticket has checked criteria, but the reviewed code still replaces zero | Implementation reviewer checks those criteria and reports the broken behavior; files and index unchanged. |
+| No-commit recovery | Two completed tasks, attributable uncommitted code, `next: validate; mode: no commits` | Run missing checks, close the ticket, preserve mode and HEAD. |
+| Pre-commit interruption | Complete code and tracked ticket, `next: commit`, no receipt commit | Validate current bytes and create exactly one task commit. |
+| Post-commit interruption | The same record and code already occur in a completed commit | No repeated worker, completed check or commit; no accidental reopen. |
+| Stale fix | Complete report with a disk requirement changed after its recorded hash | Stop unchanged and require review, even when Findings is empty. |
+| No-op fix | Current complete report with no open findings | No worker, commit or fix-state fields; unchanged report when no result is added. |
+| Staged foreign group | Request only the code fix in one complete file; an unrelated README change is staged | Commit only the selected file; preserve the unrelated working bytes and staged diff exactly. A selected file mixing logical groups stops before changing the index. |
+
+Run the EXECUTION and REVIEW AND FIX scenarios above as well: direct contract checks do not replace fresh-worker isolation, correction, two-task execution, five-role full review, two-role quick review or major-fix re-check. In fix transcripts, verify that internal commits never invoke the standalone commit skill. Check the same boundary during exec.
+
+Grade actions and artifacts, not a promise in the final answer. Use per-expectation `text`, `passed` and `evidence` fields for the skill-creator viewer. Missing model access or unsupported agent tools are unverified capabilities, not passed cases. A current artifact with missing evidence must stop instead of being silently migrated. Publish only a concise, sanitized compatibility summary with the actual limitations.

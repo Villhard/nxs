@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.26.0] - 2026-09-18
+
+### Changed
+
+- Simplify user and contributor guides around command selection, workflow and links to the owning instructions.
+- Separate new-ticket planning from frontier selection, block fix plans on unconfirmed causes, and retain unresolved hypotheses until evidence rejects them.
+- Check ticket and feature clarification markers before execution; reconcile completed commits before running checks again, without changing execution-record fields or no-commit behavior.
+- Require complete worker packets, preserve workflow-record ownership, and prevent partial results from advancing execution.
+- Read checked acceptance criteria as requirements; align review/fix report gates and keep costly in-scope findings in Findings.
+- Limit commit activation to standalone requests, classify mixed working-tree paths before staging, and preserve unrelated staged and unstaged changes.
+- Document instruction contracts and repeatable baseline/candidate scenarios instead of using line count as an authoring target.
+
 ## [0.25.0] - 2026-09-17
 
 ### Changed

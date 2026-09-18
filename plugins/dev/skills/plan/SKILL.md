@@ -1,5 +1,5 @@
 ---
-description: Explicitly invoked /dev:plan workflow. Plan a ticket - decompose a spec, a root cause, or a request into sequenced tasks with checkboxes written into the ticket file. Use before executing non-trivial work, after a brainstorm or an investigation.
+description: Plan one ticket from a request, spec, or confirmed root cause when explicitly asked to use /dev:plan. Save sequenced tasks in the ticket; do not implement them. Use /dev:rnd to split a larger request into tickets.
 argument-hint: "[request | ticket path | feature dir | tracker key]"
 disable-model-invocation: true
 ---
@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Turn a ticket into an implementation plan and stop. The plan is written into the ticket itself, as `## Conventions` and `## Implementation`, and `/dev:exec` executes it from there.
 
-Accepted input: a ticket path under `.scratch/<feature-slug>/issues/`, a feature directory `.scratch/<feature-slug>/`, a request in words, or a tracker key / URL / pasted ticket. With no input, take the frontier ticket of the feature in play.
+Accepted input: a ticket path under `.scratch/<feature-slug>/issues/`, a feature directory or its `root-cause.md`, a request in words, or a tracker key / URL / pasted ticket. With no input, resolve the feature and its frontier under PROCEDURE.
 
 A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
 
@@ -19,7 +19,7 @@ Run only when the user selects this command or directly asks to use it. Discussi
 ## STANCE
 
 - Write the plan into the ticket and stop. Implementation code, the build, and any behavior change belong to `/dev:exec`.
-- The plan is a proposal, read-only until the user approves it.
+- Inspect and draft the proposal before writing. Show the concrete plan and obtain approval to save it unless the user has already authorized that plan or explicitly asked you to write it. Reuse that authorization; do not ask again. Permission to save a plan does not invoke exec.
 - A small single-step request needs no plan - say so and offer a direct edit instead of ceremony. Never route it to `/dev:exec`, which stops on a ticket without `## Implementation`.
 
 ## TRACKER CONFIG
@@ -30,15 +30,30 @@ Local Markdown, or no such file anywhere: write under `.scratch/` without asking
 
 ## PROCEDURE
 
-1. **Read the ticket.** Its `**What to build:**` line and the `- [ ]` acceptance criteria above `## Implementation` are the requirements. With no ticket named, resolve the feature first: the directory the argument names, else the single `.scratch/<slug>/` that holds an `issues/` directory and no `map.md` - several of those, list them and ask; none, say so and stop. Then take its frontier ticket: `**Status:** ready-for-agent`, no `## Implementation` yet, every number on its `**Blocked by:**` line at `**Status:** resolved`, lowest first. Say which ticket you took.
-2. **Read the feature document.** `## Implementation Decisions` and `## Testing Decisions` from `spec.md`, or `## Root cause` and `## Fix direction` from `root-cause.md`. Read the rest of the document for applicable agreements too, including exclusions in `## Out of Scope` and answers or rejection reasons in `## Further Notes` when present. Those carry the decisions already made - the plan implements them rather than reopening them. Do not ask an answered question again unless new evidence contradicts the answer; then show that evidence. A directory holding both takes the fix from `root-cause.md` and the build conventions from `spec.md`; a contradiction between the two is a question, not a call you make.
+1. **Resolve the input** using the table below, before requiring an existing ticket. Read an existing ticket's `**What to build:**` and every acceptance criterion above `## Implementation`, whether `- [ ]` or `- [x]`. A checked criterion remains a requirement. Say which ticket will be planned or created.
+2. **Read the feature document when present.** Read `## Implementation Decisions` and `## Testing Decisions` from `spec.md`, or `## Root cause`, `## Evidence` and `## Fix direction` from `root-cause.md`. Also read applicable exclusions, answers and rejected alternatives in the rest of the document. Preserve these decisions unless new evidence contradicts them; show that evidence before reopening a question. With both documents, take the fix from root cause and conventions from spec; ask about a contradiction. With neither, use the explicit request and inspected code.
+
+   A root cause described as unconfirmed, conditional or unsupported by its recorded evidence blocks an executable fix plan. Name the missing evidence and return to `/dev:bug`; do not create tasks that assume the hypothesis is true. An older document without a clear conclusion gets the same evidence check, not an automatic rewrite.
 3. **Read the code.** Inspect the files, patterns, and dependencies the work touches - directly or through the built-in Explore agent. Do not over-read. Clarify a fuzzy domain term before encoding it into the plan. Carry applicable decisions, constraints and their reasons from the feature document and this session into the plan: shared ones in `## Conventions`, task-specific ones in that task's text. Include the code references needed to act on them. Preserve exclusions and reasons for rejecting alternatives when they constrain the work; omit unrelated history. Collect the surrounding code patterns every task follows in `## Conventions` too.
 4. **Close the open questions.** Ask one at a time, 2-4 concrete options with a recommendation. For several viable approaches, lay out the trade-offs and ask once.
 5. **Decompose.** As many tasks as the work has working units, no floor and no target. Each is one working unit: the code plus the tests for it, leaving the project green. Sequence by dependency - a task never calls what a later task creates. Every task earns its place; cut the rest. No task exists only to run the suite or the linter - `/dev:exec` runs both once itself at the close.
 6. **Read [assets/implementation.md](assets/implementation.md)** relative to this installed skill directory before writing. Append `## Conventions` and `## Implementation` to the ticket using that template and the rules below - before `## Comments` when that heading exists, at the end of the file otherwise.
 7. **Run the self-check** before handing the plan over.
 
-With no ticket named and a `root-cause.md` that no existing ticket references, or with no `issues/` directory at all, open a new ticket first: `issues/<NN>-<slug>.md`, `NN` one past the highest number present and `01` when `issues/` is empty or absent. Five fields in this order: the heading `# <NN>: <title>`, `**What to build:**` as the end-to-end behavior in the user's terms, `**Blocked by:** None (can start immediately)`, `**Status:** ready-for-agent`, then the acceptance criteria as `- [ ]` lines. Then plan into it. Work too large for one unit of work goes back to `/dev:rnd`, which is where slicing lives.
+Input resolution, in priority order:
+
+| Input | Action |
+| --- | --- |
+| Explicit ticket path | Read that ticket. A missing explicit file is an error; do not silently create a replacement. Apply ARTIFACT's re-plan gates. |
+| Explicit request, pasted tracker content or a successfully read tracker item | Plan a new ticket for that request. Use a named feature, otherwise derive its directory under ARTIFACT. Do not require a pre-existing `issues/` directory. If that directory exists, inspect its tickets and ask before duplicating existing work. |
+| Feature directory, or its `root-cause.md` path | Inspect its documents and tickets. Reuse the ticket referencing this root cause; if several match, ask. Create a ticket for a confirmed root cause with no matching ticket, or when no tickets exist and the feature document defines one unit of work. Otherwise select the frontier below. |
+| No input | Use the feature explicitly established in this session, else the single `.scratch/<slug>/` with `issues/`, `spec.md` or `root-cause.md`, excluding directories with `map.md`. Several candidates: ask. None: request a ticket, feature or description and stop. Apply the feature-directory row. |
+
+The frontier is the lowest-numbered `ready-for-agent` ticket without `## Implementation`, whose numbered blockers are all resolved with no unfinished execution close. Missing or ambiguous blockers stop selection. With no eligible ticket, report why; do not create extra work to bypass a blocker.
+
+For a new ticket, draft `issues/<NN>-<slug>.md`, where `NN` is one past the highest existing number, or `01` when none exist. Use five fields in order: `# <NN>: <title>`, `**What to build:**`, `**Blocked by:** None (can start immediately)`, `**Status:** ready-for-agent`, then acceptance criteria as `- [ ]` lines. Add the plan only after the evidence, questions and approval gates pass. Work requiring several tickets goes to `/dev:rnd` instead.
+
+Example: an explicit request in a repository without `.scratch/` can create `issues/01-<slug>.md`; invoking plan with no request and no feature stops for input.
 
 An open decision that would change the plan is marked in the ticket rather than guessed:
 
@@ -46,7 +61,9 @@ An open decision that would change the plan is marked in the ticket rather than 
 [NEEDS CLARIFICATION: <specific question>]
 ```
 
-Mark only when the answer changes the decision, and set the ticket to `**Status:** needs-info` while one is open. Before handing over, `rg NEEDS CLARIFICATION` over the ticket and the feature document, and read the ticket's `## Comments`. One rule decides the status, for this ticket and for every other `needs-info` ticket in the feature that the same answer touched: no marker in the ticket, none in `spec.md`, and no open question under its `## Comments` - `**Status:** ready-for-agent`; anything else - `needs-info`, naming what is still open. A ticket with a local reason keeps `needs-info` however the spec changed. `/dev:exec` refuses to start while a marker is open.
+Mark only when the answer changes the decision. An approved saved draft with an open question has status `needs-info` and is not an executable handoff. Before handing over, search the ticket and each existing feature document with `rg -n 'NEEDS CLARIFICATION' -- <paths>` and read the ticket's `## Comments`.
+
+Set `ready-for-agent` only when no clarification marker remains in those documents and no unresolved question or blocker remains in that ticket's Comments. Otherwise keep `needs-info` and name what remains open. Apply this rule to other `needs-info` tickets only when the same answer cleared their blocker; local blockers still count. Historical execution notes alone are not open questions.
 
 This command writes `needs-info` and `ready-for-agent`, here and when it opens a ticket. The execution transitions - `claimed`, `ready-for-human`, `needs-info` on a stop, `resolved` - belong to `/dev:exec`, and this command never writes them.
 
@@ -68,16 +85,16 @@ Rules the template does not show:
 Before handing the plan over, verify it against the repository and fix what fails. State the result in one line.
 
 - `assets/implementation.md` was read from this installed skill directory before writing, and the plan follows its structure and the template rules above;
-- `rg "### Task" <ticket>` returned nothing before the append, and after it no `- [` line sits between `## Implementation` and `### Task 1:`;
+- for a new plan, no `### Task` heading existed before the append; an approved replacement replaces the old plan rather than appending another one. Afterward no `- [` line sits between `## Implementation` and `### Task 1:`;
 - the ticket's `**Blocked by:**` line names only lower numbers - a ticket blocked by a higher one is an authored cycle;
-- every `Modify:` path exists, every `Create:` path does not;
-- everything the plan leans on - a function it calls, an interface it implements, a seam it assumes - exists in the shape it expects;
+- walk tasks in execution order: a `Modify:` path exists now or is created by an earlier task; a `Create:` path does not exist now and is not already created by an earlier task;
+- each required function, interface or seam exists in the expected shape or is explicitly established by an earlier task; no task depends on later work;
 - a task with code changes has a checkbox for its tests;
 - dependencies run forward: no task calls what a later task creates;
 - every acceptance criterion above `## Implementation`, and every requirement from the spec or the root cause, is covered by a task or explicitly deferred - read the other tasks for it under different words first;
 - a worker given only its task, the acceptance criteria it serves, and `## Conventions` has every applicable decision, constraint and reason; none depends on reading the conversation or the full feature document;
 - nothing the requirements never asked for: no abstraction with one consumer, no future-proofing, no fallback for a case that cannot happen;
-- `rg "NEEDS CLARIFICATION" <ticket>` returns nothing.
+- no clarification marker remains in the ticket or existing feature documents, and Comments contain no unresolved question or blocker. A saved incomplete draft stays `needs-info` and is not handed to exec.
 
 ## ARTIFACT
 
@@ -93,4 +110,4 @@ A ticket that already holds an `## Implementation` section is never overwritten 
 
 ## NEXT
 
-Plan written -> `/dev:exec` to implement it, then `/dev:review` for the review gate and `/dev:fix` to apply the saved findings.
+Return the ticket path, whether it is ready or blocked, and a one-line self-check result. Name any check that could not be completed; do not call that plan ready. For a ready plan, suggest `/dev:exec`, followed later by review and fix. Do not invoke another command.

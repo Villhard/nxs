@@ -1,5 +1,5 @@
 ---
-description: Explicitly invoked /dev:fix workflow. Apply the confirmed findings in a saved review report. Use after /dev:review, including in a later session.
+description: Apply a saved, current review report when explicitly asked to use /dev:fix. Reverify findings, delegate code changes, commit and update the report separately. Do not start a new sweep; use /dev:review for stale or unfinished reports.
 argument-hint: "[report path]"
 disable-model-invocation: true
 ---
@@ -27,7 +27,14 @@ Read this field format:
 
 ## CHECK THE REPORT
 
-Check these gates before an already-applied or no-op answer. Require `sweep: complete`. An incomplete sweep, `fix: in-progress`, `fix: stopped` or `re-check: incomplete` stops here: name the unfinished attempt and point to `/dev:review`; never resume it yourself.
+Check these gates before an already-applied or no-op answer:
+
+| Report state | Action |
+| --- | --- |
+| `sweep: incomplete`, `fix: in-progress`, `fix: stopped` or `re-check: incomplete` | Stop before writes; name the unfinished attempt and request a new `/dev:review`. Do not resume it here. |
+| `sweep: complete`, no `fix:` line | Verify all identity, source and Git pins below, then PREFLIGHT and VERIFY AGAIN. A stray `fixed at:` or `re-check:` field is malformed. |
+| `sweep: complete`, `fix: done` | Verify all pins, `fixed at:` and a final re-check outcome. Then report already applied, list unresolved findings and stop without writes or a worker. |
+| Missing, duplicate or unsupported state fields | Stop before writes and name the invalid fields. |
 
 Rebuild identity from the checkout: `git rev-parse --show-toplevel`, optional origin URL with credentials removed, current branch (`HEAD` when detached), selector and base. For branch/path, detect `origin/HEAD`, else the existing `main` or `master`; the base is its merge-base with the current HEAD, pinned as an OID. It must equal the stored base, which must be an ancestor of the reviewed tip. For staged, the stored base must equal the original tip. Keep this base and the path selector for the whole run. Ambiguous base resolution is a stop.
 
@@ -65,7 +72,7 @@ Read each open finding's location with 20-30 lines of context in the version bei
 
 Keep the original sweep facts and all earlier conclusions. Accumulate each verification result, dismissal reason, actual correction and check result as finding history for the report and re-check prompts. A pre-existing test or lint failure is still a failure.
 
-No open findings, or all dropped - successful no-op. Write only the new `result:` lines and stop: no worker, commit, `fix:`, `fixed at:` or re-check field. The report stays unfixed, with its original tip and staged digest.
+No open findings, or all dropped, is a successful no-op after all gates above pass. Add only newly established `result: dropped - <reason>` lines with their verification evidence; with no new results, do not rewrite the file. No worker, commit, `fix:`, `fixed at:` or re-check field is added. Preserve the original tip, staged digest and unfixed state.
 
 ## FIX
 
@@ -81,7 +88,7 @@ After the no-op check and before any report or code edit for surviving findings,
 
 After each applicable commit, launch fresh `dev:review-quality` and `dev:review-implementation` agents, concurrently when capacity permits. Pass SEVERITY BAR verbatim and `review_phase: recheck`, critical and major only, and never `review_mode: quick`. Wait for both before proceeding.
 
-Rebuild both commands from the validated, immutable Scope base and the latest fix commit: `git log <base>..<tip> --oneline` and `git diff <base>..<tip>`. Append `-- <path>` to both for a path selector. Staged also uses this range, never the now-empty index. Pass both commands verbatim, the pinned requirement sources, recorded goal, report path as read-only context and accumulated finding history. Never paste the diff.
+Rebuild both commands from the validated, immutable Scope base and the latest fix commit: `git log <base>..<tip> --oneline` and `git diff --no-ext-diff --no-textconv <base>..<tip>`. Append `-- <path>` to both for a path selector. Staged also uses this range, never the now-empty index. Pass both commands verbatim, pinned requirement sources, recorded goal, read-only report path and accumulated finding history. Never paste the diff.
 
 Tell both: "Check prior conclusions against the current code. The history is context, not a ban on reporting the same problem again: report it when new evidence challenges a dismissal or shows a fix is incomplete, and cite that evidence."
 
