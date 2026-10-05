@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.28.0] - 2026-10-05
+
+### Changed
+
+- `rnd`, `plan` and `bug` read an existing domain glossary and decision records for the affected area, read-only.
+- `rnd` marks an approach that contradicts a recorded decision; `plan` carries applicable terms and decisions into Conventions.
+- `review-documentation`, and `review-implementation` in quick mode, report a glossary or decision record the diff made stale.
+
 ## [0.27.2] - 2026-09-18
 
 ### Changed

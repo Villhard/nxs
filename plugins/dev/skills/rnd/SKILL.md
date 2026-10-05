@@ -35,6 +35,8 @@ For remote input, establish the source identity, applicable parent decisions/com
 
 Read the relevant code, patterns, and integration points first - directly or through the built-in Explore agent. Scale the reading to the request: trace the current behavior and likely change points, look for reusable code, and check affected consumers and tests for a migration. Before discussing approaches, show a short account of those findings with repository-relative paths and symbol names where applicable. If no suitable implementation was found, say where you looked; do not invent an analogue. Ask only about what the code does not answer. Do not over-read. Clarify a fuzzy domain term before anything else.
 
+When the project keeps a domain glossary or decision records - typically `GLOSSARY.md` or `GLOSSARY-MAP.md` at the root and `docs/adr/`, or wherever project instructions point - read the entries for the affected area before asking. Use the glossary's terms in the spec and tickets, not a synonym it avoids, and ask only about a term it leaves undefined or the request contradicts. Their absence is normal: do not ask about it. Never create or edit these files here; name a missing term or a decision worth recording in the reply.
+
 Ask one question at a time, 2-4 concrete options with a recommendation, open-ended only where a choice is unnatural. After each answer, revise the understanding and derive the next question from the updated picture.
 
 Stop as soon as the next question would not change a decision. Zero questions is a normal and frequent outcome.
@@ -48,6 +50,8 @@ An axis deliberately left open goes into the spec as `[NEEDS CLARIFICATION: <spe
 Lay out 2-4 real approaches with pros and cons, and show the trade-offs. Give a recommendation with a rationale and leave the choice to the user.
 
 The recommended approach is the minimal viable one, built on how the project already solves this. If there is genuinely one reasonable approach, say so - a stretched alternative is worse than none.
+
+Mark an approach that contradicts a recorded project decision as such, with the record's path and what it would reopen. The user decides whether to reopen it; never drop the approach or the record silently.
 
 ## STRESS
 
@@ -77,7 +81,7 @@ Always save Markdown under `.scratch/`. Do not look up repository/global tracker
 
 Before writing the spec, read [assets/spec.md](assets/spec.md), resolved relative to this installed skill directory. It lists the seven permitted `##` headings in order. Keep Problem Statement and Solution; omit any other section only when it has no content. Do not invent other `##` headings.
 
-`## Solution` holds the chosen approach with the answers integrated. `## Implementation Decisions` holds the findings that influenced the approach, with their code references, and the decisions every ticket inherits, each with a brief reason; keep assumptions distinguishable from confirmed facts. `## Testing Decisions` holds the relevant test findings and chosen checks. `## Out of Scope` names what is explicitly not being done. `## Further Notes` takes the options with their rejection reasons, the stress verdict when the stress step ran, and a `- Q: <question> -> A: <answer>` log when at least one question was asked. Sections scale with the request, an empty one is dropped, headings keep their names.
+`## Solution` holds the chosen approach with the answers integrated. `## Implementation Decisions` holds the findings that influenced the approach, with their code references, and the decisions every ticket inherits, each with a brief reason, including applicable recorded project decisions with their paths; keep assumptions distinguishable from confirmed facts. `## Testing Decisions` holds the relevant test findings and chosen checks. `## Out of Scope` names what is explicitly not being done. `## Further Notes` takes the options with their rejection reasons, the stress verdict when the stress step ran, and a `- Q: <question> -> A: <answer>` log when at least one question was asked. Sections scale with the request, an empty one is dropped, headings keep their names.
 
 Before the first durable write, show the proposed spec and ticket breakdown. Obtain approval unless the user has already approved that content or explicitly authorized writing it from the agreed decisions. Reuse that authorization. Material unanswered decisions still block ready tickets; permission to save a draft does not answer them or invoke plan.
 
