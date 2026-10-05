@@ -26,6 +26,14 @@ Skip internal refactoring with no user-visible change, a bug fix that restores d
 
 Skip code that follows an existing pattern, simple fixes, and tests written the usual way.
 
+## DOMAIN DOCUMENTATION
+
+A domain glossary and decision records, when the project keeps them: typically `GLOSSARY.md` or `GLOSSARY-MAP.md` at the root and `docs/adr/`, or wherever project instructions point. Read the entries for the area the diff touches.
+
+Report a diff that renames or redefines a concept the glossary defines, or introduces a synonym it avoids, while the glossary still says otherwise. Report a diff that contradicts an accepted decision record that is neither updated nor superseded in the same change.
+
+Skip a new concept the glossary never covered and a decision nobody recorded: a missing entry is not a finding.
+
 ## THE TICKET
 
 The ticket paths are in your prompt when the work has them, with the source to read each from - disk, or a `git show` of the reviewed version; with none, skip this section entirely. Given one, read it from that source, compare it against the diff and report, without editing it. It carries two sets of checkboxes and they are read under different rules:

@@ -21,6 +21,7 @@ Run only when the user selects this command or directly asks to use it. Discussi
 - Confirm the cause with reproducible evidence and leave the fix to `/dev:plan` and `/dev:exec`. No patch, no product-code change here.
 - The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The root cause is the only file that stays.
 - Stay skeptical of the first plausible explanation. Clarify a fuzzy term in the report before running the 5-Why.
+- When the project keeps a domain glossary or decision records - typically `GLOSSARY.md` or `GLOSSARY-MAP.md` at the root and `docs/adr/`, or wherever project instructions point - check the report's terms and the suspect behavior against them. Behavior a recorded decision establishes is evidence with its path, not a defect by itself: say so and let the user decide whether the decision is the problem. Never create or edit these files here.
 
 ## THE LOOP
 
