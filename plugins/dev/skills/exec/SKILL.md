@@ -44,7 +44,7 @@ Before any write, including a claim, reopen or recovery update:
 1. Require `## Implementation` with at least one `### Task N:` and its task checkboxes. An empty or malformed plan stops; it is not completed work.
 2. Search the ticket and each existing adjacent `spec.md` and `root-cause.md` with `rg -n 'NEEDS CLARIFICATION' -- <paths>`. Any open marker blocks execution. Missing optional feature documents are allowed; an unreadable existing document is not.
 3. Read Comments for unresolved questions or blockers. Historical notes about a cleared blocker do not block work; unclear resolution requires an answer. A root cause still described as unconfirmed blocks a fix even without a marker.
-4. Require a clean worktree for a new start unless the user already approved a dirty start. Resume permits only changes reconciled below. File names alone never prove ownership.
+4. Require a clean worktree for a new start unless the user already approved a dirty start. Resume permits only changes reconciled below. File names alone never prove ownership. For a new start with commits enabled, resolve the branch `/dev:review` takes as its base: `origin/HEAD`, else an existing `main` or `master`. With HEAD on that branch, name it, say that task commits will land on the review base, and ask once: continue there, or create a branch from HEAD and continue. Name the new branch by the project's branch rule, else `<type>/<feature-slug>`, and create it only on that answer. Record an approval to continue with the claim as a Comments line `Branch: commits on <name> approved`; the same line in another ticket of this feature answers the question for that branch.
 5. For started work, reconcile RESUME without writes. Only if the remaining work needs implementation, read [agent launch](../../references/agent-launch.md) and complete its capability check before the claim or any other mutation. Validation-only or commit-only recovery needs no worker. Use that adapter for every launch and correction.
 
 Example: a ready ticket with no local marker still stops if its spec contains `[NEEDS CLARIFICATION: ...]`. Leave files unchanged and name that question.
@@ -108,7 +108,7 @@ The close rides the final task's commit because it is written before it, so no e
 
 One worker at a time, sequentially. The worker writes into the working directory, so `isolation: "worktree"` stays off. Read its structured result - files changed, decisions, deviations, follow-ups, blockers - not raw tool output. Persist useful `Decisions` and `Deviations` through EXECUTION NOTES, including `blocked` and `partial` results. In the final message, including when the run stops unfinished, show each entry from this run with its task number and reason; omit empty fields.
 
-One ticket per run. End by naming the next takeable ticket without starting it, and say the feature is complete when the ticket just resolved was the last unresolved one in the directory.
+One ticket per run. End by re-reading `issues/*.md` and naming the next ticket without starting it: the lowest-numbered ticket with no `Type:` line, not `resolved` or `wontfix`, whose blockers are all satisfied. Give its full path and the command its file calls for: `/dev:exec <path>` when it carries `## Implementation`, `/dev:plan <path>` when it does not. Report plan presence from that read alone. For a ticket at `needs-triage`, `needs-info` or `ready-for-human`, name the status and what clears it in place of a command. When blockers hold every remaining ticket, report each one's status and first unsatisfied blocker. Say the feature is complete when the ticket just resolved was the last unresolved one in the directory.
 
 ## DISCIPLINE
 
@@ -130,7 +130,7 @@ Stage the task's files by name, never `git add -A` and never `git add -f` - an i
 
 ## STOP CONDITIONS
 
-- dirty worktree at a new start without explicit approval, or changes a resume cannot safely attribute;
+- dirty worktree at a new start without explicit approval, a new start with commits on the review base branch without an answer, or changes a resume cannot safely attribute;
 - no takeable ticket, a ticket with no `## Implementation` section, or an open `[NEEDS CLARIFICATION: ...]` marker in it;
 - a `Blocked by:` number with no matching ticket file;
 - tests or linter still failing after a reasonable attempt;
@@ -153,4 +153,4 @@ For an in-run stop, append a Comments line naming the task and what is needed. P
 
 ## NEXT
 
-Ticket resolved -> `/dev:review` for the review gate over the whole branch, then `/dev:fix` to apply the saved findings. Neither starts on its own; the user types it. The next ticket is another `/dev:exec`.
+Ticket resolved -> `/dev:review` for the review gate over the whole branch, then `/dev:fix` to apply the saved findings. Neither starts on its own; the user types it. The next ticket gets `/dev:plan` or `/dev:exec`, as the close of THE CYCLE determined.

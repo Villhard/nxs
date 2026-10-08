@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.29.0] - 2026-10-08
+
+### Changed
+
+- `exec` names the next ticket from a fresh read, with `plan` for an unplanned ticket and `exec` for a planned one.
+- `exec` asks once before committing a new start on the review base branch.
+- `plan` writes without a separate approval turn when invoked on an existing ticket path with no open question.
+- `plan` pairs each acceptance criterion with its task checkbox before writing and asks when their literal values differ.
+- `plan` proposes a concrete spec revision when an answer changes a recorded decision.
+- Client scenarios cover unplanned tickets at `exec`, the next-ticket handoff, default-branch starts, named-ticket plans and spec revisions.
+
 ## [0.28.0] - 2026-10-05
 
 ### Changed
