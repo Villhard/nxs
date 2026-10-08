@@ -11,7 +11,7 @@ Choose where to start:
 plan -> exec -> review -> fix (if there are findings)
 ```
 
-Read the plan before execution. Start each step explicitly; commands do not start the next step for you. Mentioning or quoting a command does not invoke it.
+Read the plan before execution: `plan <ticket-path>` saves it without a separate approval step, so this read is the check. Start each step explicitly; commands do not start the next step for you. Mentioning or quoting a command does not invoke it.
 
 [Install dev@nxs](../../README.md#install).
 
@@ -78,7 +78,7 @@ NXS always saves Markdown under `.scratch/`, without tracker configuration, back
 | `review src/api` | Review committed branch changes under that code path. |
 | `review quick` | Run a narrower review; this does not replace a full review. |
 
-Use these arguments with `/dev:` in Claude Code or with the selected Codex skill. A ticket or feature path supplies review requirements, not a code filter. `no commits` does not change review scope: unstaged edits are not included by either branch or staged review.
+Use these arguments with `/dev:` in Claude Code or with the selected Codex skill. A ticket or feature path supplies review requirements, not a code filter. `no commits` does not change review scope: unstaged edits are not included by either branch or staged review. Branch review compares against the default branch, so `exec` asks once before committing a new ticket there: continue, or create a branch.
 
 If a report is stale or unfinished, run `review` again before `fix`.
 
