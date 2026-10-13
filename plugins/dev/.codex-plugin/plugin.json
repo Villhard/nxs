@@ -1,0 +1,18 @@
+{
+  "name": "dev",
+  "description": "Seven development commands for Claude Code and Codex with explicit handoffs, one worker role, five review roles and resumable ticket execution",
+  "version": "0.29.1",
+  "author": {
+    "name": "Victor Ryabov"
+  },
+  "keywords": [
+    "workflow",
+    "planning",
+    "review",
+    "development"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/Villhard/nxs",
+  "homepage": "https://github.com/Villhard/nxs/tree/main/plugins/dev",
+  "skills": "./skills/"
+}
