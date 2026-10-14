@@ -19,6 +19,7 @@ Read the changed files around each hunk, not the hunk alone. Read the enclosing 
 - error handling: unchecked errors, swallowed failures, lost context;
 - resource management: leaks, missing cleanup, unclosed handles;
 - concurrency: races, deadlocks, unsafe shared access;
+- repetition: a retry, a restart after a crash mid-operation, two instances running at once, and the state each leaves behind;
 - data integrity: inconsistent state, wrong transaction boundary.
 
 A comment that actively misleads counts here too: an old API, an assumption that no longer holds. Merely terse is style, and style is nobody's finding.
@@ -31,9 +32,13 @@ For every line the diff deletes or replaces, name the invariant it held, then fi
 
 For every function the diff changes, Grep its callers and check what the change costs them: a new precondition, a different return shape, a new exception, a dependency on order. Then the other direction - whether another change in this same diff makes a call the function itself makes unsafe.
 
+Read the comments on and around the changed code as stated contracts: a "callers must", an ordering, a "never do X here", a `TODO` or `FIXME` naming a known hazard. A change that breaks such a contract without updating it is a finding. Quote the comment and the line that contradicts it, and say which of the two is wrong.
+
+Name the assumption the new code relies on and nothing enforces: an order of calls, a non-empty input, a single caller. Then find the input that breaks it.
+
 ## SECURITY SKIM
 
-Hardcoded secrets, obvious injection (SQL, command, path traversal), a user-facing entry point with no validation, secrets or PII in logs. Anything deeper - crypto, the authorization model, threat modeling - is out of scope: on an auth, payment, crypto, or migration diff, say plainly that it needs a manual security review instead of covering it here.
+Hardcoded secrets, obvious injection (SQL, command, path traversal), a user-facing entry point or data read from a file, the network, a subprocess or the environment used with no validation, secrets or PII in logs. Anything deeper - crypto, the authorization model, threat modeling - is out of scope: on an auth, payment, crypto, or migration diff, say plainly that it needs a manual security review instead of covering it here.
 
 ## BOUNDS
 
