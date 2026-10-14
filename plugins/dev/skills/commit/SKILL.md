@@ -42,6 +42,8 @@ Example: a requested fix entirely in `limits.py` can use `--only` while an unrel
 
 Single line, no body unless explicitly requested. Subject as short as possible and fully lowercase, abbreviations included ("seo", not "SEO"). Types: `feat` (new functionality), `fix` (bug fix), `refactor` (no behavior change), `chore` (deps, configs), `docs` (documentation).
 
+Scope names the area the group changes: a module, a plugin, or in a notes repository the topic or skill name. Prefer a scope already used in `git log --oneline -20`.
+
 Plain simple verbs: add, fix, remove, update, show, hide, validate. Never tighten, strengthen, refine, streamline, leverage, harden.
 
 ## RULES
@@ -50,15 +52,14 @@ Plain simple verbs: add, fix, remove, update, show, hide, validate. Never tighte
 - do not commit unrelated files, large generated artifacts, foreign-branch files, or merge artifacts;
 - do not amend a published commit;
 - `--no-verify` only with explicit approval;
-- after a failed hook, inspect the resulting state. No commit is assumed to exist. If fixing code is needed, stop and report it; once corrected, retry with a normal commit, never amend a prior commit;
-- branches are `<type>/<short-desc>`, or `<type>/vr/<short-desc>` for work branches.
+- after a failed hook, inspect the resulting state. No commit is assumed to exist. If fixing code is needed, stop and report it; once corrected, retry with a normal commit, never amend a prior commit.
 
 ## STOP CONDITIONS
 
 - nothing to commit;
 - a secret, a credential, a large generated artifact, a foreign-branch file, or a merge artifact in the diff;
 - a hunk spanning two logical changes that will not split cleanly;
-- a group whose type or scope is unclear.
+- a group whose type is unclear.
 
 With nothing to commit, report a successful no-op without a question. For other stops, name the concrete blocker and request the missing choice or action.
 
