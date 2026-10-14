@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.29.2] - 2026-10-14
+
+### Added
+
+- `review-quality` checks the contracts that comments on the changed code state.
+- `review-quality` checks retries, restarts, concurrent instances, unenforced assumptions and unvalidated data from files, the network, subprocesses and the environment.
+
 ## [0.29.1] - 2026-10-13
 
 ### Fixed
