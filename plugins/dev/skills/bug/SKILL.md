@@ -126,7 +126,7 @@ Before writing, read [ticket](../../references/ticket.md): it owns the template,
 - `**Blocked by:**` `None (can start immediately)` unless an existing ticket of this feature must land first; then its number.
 - `**Branch:**` `fix/<feature-slug>` by the rule in the reference.
 
-On a repeat, an existing ticket in `issues/` that already names this `root-cause.md` is the fix ticket: leave it unchanged and write no second one.
+On a repeat, an open ticket in `issues/` - any status but `resolved` and `wontfix` - that already names this `root-cause.md` is the fix ticket: leave it unchanged and write no second one. A `resolved` or `wontfix` ticket is not: write the next number by NUMBERING.
 
 ## NEXT
 
