@@ -36,7 +36,7 @@ Someone else's branch is reviewed by checking it out first with nothing staged. 
 
 ## REQUIREMENTS
 
-The goal is the feature. An explicit ticket is the requirement as given; an explicit feature contributes only tickets at `**Status:** resolved`. Without an argument, read `.scratch/*/issues/*.md` on disk, skipping directories that hold `map.md`, and keep the tickets at `**Status:** resolved` whose `**Branch:**` value equals the current branch exactly; a detached HEAD matches none. Include each ticket plus `## Problem Statement` and `## Solution` from its adjacent spec, pinning every file used.
+The goal is the feature. An explicit ticket is the requirement as given; an explicit feature contributes only tickets at `**Status:** resolved`. Without an argument, read `.scratch/*/issues/*.md` and `.scratch/reviews/*/issues/*.md` on disk, skipping directories that hold `map.md`, and keep the tickets at `**Status:** resolved` whose `**Branch:**` value equals the current branch exactly; a detached HEAD matches none. Include each ticket plus `## Problem Statement` and `## Solution` from its adjacent spec, pinning every file used. A ticket under `.scratch/reviews/` has no spec and resolves no feature.
 
 For branch scope, read requirements from disk and hash their exact bytes with SHA256. For staged scope, a requirement with an index entry is read from the index: resolve the blob with `git rev-parse :<path>`, read `git show <blob>` and record its blob OID; other requirements use disk sources and hashes. Never silently substitute a disk version for a missing indexed source. Name every source and pin in prompts.
 
@@ -87,9 +87,9 @@ Persist each finding's location, problem, verification result and evidence, incl
 
 ## ARTIFACT
 
-Write `.scratch/<feature-slug>/review.md` when one feature resolves from the argument or the matched tickets. Never create a feature directory for a report. Several candidate features require a choice before writing. With none, use `.scratch/reviews/<branch-slug>/review.md`; derive a filesystem-safe slug from the branch (`detached-<tip>` when detached). Never write into a directory holding `map.md`; validate that the destination stays inside the repository, including symlinks.
+Write `.scratch/<feature-slug>/review.md` when one feature resolves from the argument or the matched tickets; a ticket under `.scratch/reviews/` resolves none. Never create a feature directory for a report. Several candidate features require a choice before writing. With none, use `.scratch/reviews/<branch-slug>/review.md`; derive a filesystem-safe slug from the branch (`detached-<tip>` when detached). Never write into a directory holding `map.md`; validate that the destination stays inside the repository, including symlinks.
 
-Overwrite one report with the latest run; retain open follow-ups with the run that raised them and `not re-verified`. Do not silently drop them on a scope change. Write the review report FORMAT with each finding's `ticket:` set to `proposed` and the finding numbers of its group from PROPOSE TICKETS.
+Overwrite one report with the latest run; retain open follow-ups with the run that raised them and `not re-verified`. Do not silently drop them on a scope change. Write the review report FORMAT with each finding's `ticket:` set to `proposed` and the finding numbers of its group from PROPOSE TICKETS, or to the path of the open ticket that already covers it.
 
 After VERIFY, re-resolve repository identity, branch, scope, merge-base, HEAD, staged digest when applicable, goal and all requirement sources and pins. Compare with the facts captured before the sweep. Write findings either way, but mark `sweep: complete` only when every fact still matches and all reviewers finished. If anything moved or the run was interrupted, retain `sweep: incomplete` and name what changed or remains unfinished. A hard kill leaves the incomplete report already on disk.
 
@@ -112,6 +112,8 @@ With no findings: `What this change does:`, then `Looks good. Ship.` (or the sec
 
 ## PROPOSE TICKETS
 
+Before grouping, read the open tickets, any status but `resolved` and `wontfix`, in the target `issues/` from CREATE TICKETS. A finding whose fix an open ticket's What to build or criteria already require is covered: set its `ticket:` to that ticket's path and leave the ticket unchanged. List covered findings in the summary under `Already ticketed:`, one `- <number>: <ticket path>` line each; they join no group. When every finding is covered, skip `Recommended tickets:` and the question.
+
 The user picks findings by their numbers; tickets have no labels of their own. End the summary with `Recommended tickets:`, one group per line, led by its finding numbers:
 
 ```text
@@ -119,7 +121,7 @@ The user picks findings by their numbers; tickets have no labels of their own. E
 - 3, 4 (minor): <title> - choice for 4: <question>; recommended: <option>
 ```
 
-A ticket is one change the user runs in one `/plan` session and commits whole. Every finding belongs to exactly one group; a group takes the severity of its worst finding. Group in this order:
+A ticket is one change the user runs in one `/plan` session and commits whole. Every uncovered finding belongs to exactly one group; a group takes the severity of its worst finding. Group in this order:
 
 1. Each critical or major finding opens its own group. Join two of them only for a reason named in the line: one cause, one fix, edits in one place, or one end-to-end path that a single check proves.
 2. A minor finding joins the critical or major group whose fix touches the same command, module or file.
@@ -143,7 +145,7 @@ Create tickets only for the findings the answer selects:
 | "4: <option>", "with the recommendation" | The choice is settled. A selected finding whose choice the answer leaves open gets its own `needs-info` ticket; its group stays `ready-for-agent`. |
 | "none" | Nothing. |
 
-An answer naming an unknown finding, or one you cannot read unambiguously, gets one question back before any write.
+An answer naming an unknown or already covered finding, or one you cannot read unambiguously, gets one question back before any write.
 
 Read [ticket](../../references/ticket.md) and follow its TEMPLATE, NUMBERING and FIELDS, with these values:
 
@@ -151,7 +153,7 @@ Read [ticket](../../references/ticket.md) and follow its TEMPLATE, NUMBERING and
 - `**What to build:**` the corrected behavior, naming the findings by location.
 - `**Branch:**` the current branch; drop the line on the base branch or a detached HEAD.
 - `**Status:**` `ready-for-agent`, with an answered choice written into `**What to build:**`; or, for the split-off ticket of an open choice, `needs-info` with that choice as a `[NEEDS CLARIFICATION: ...]` marker in the ticket body.
-- The first criterion, verbatim: `- [ ] The finding reproduces in the current code; otherwise set **Status** to wontfix with the evidence under ## Comments.` Then one criterion per finding from its Fix and its observable result, plus a regression test when the project has a test suite.
+- The first criterion, verbatim: `- [ ] Each finding reproduced before the change, with evidence under ## Comments; a finding that did not reproduce is named there and its criteria removed; if none reproduced, set **Status** to wontfix and stop.` Then one criterion per finding from its Fix and its observable result, plus a regression test when the project has a test suite.
 
 After writing, set each finding's `ticket:` in the report to the created path, or `none` when not selected. Change nothing else in the report.
 
@@ -161,4 +163,4 @@ A finding beyond the reviewed scope goes to Follow-ups and gets no proposed tick
 
 ## NEXT
 
-After the answer, give the created ticket paths and suggest `/plan <ticket-path>` for each `ready-for-agent` one; a `needs-info` ticket names its question instead. Commit, push and MR/PR creation require the user's explicit request.
+After the answer, give the created ticket paths and suggest `/plan <ticket-path>` for each `ready-for-agent` one; a `needs-info` ticket names its question instead. When every finding was already covered, suggest `/plan <ticket-path>` for each covering `ready-for-agent` ticket. Commit, push and MR/PR creation require the user's explicit request.
