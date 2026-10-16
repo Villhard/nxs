@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.38.1] - 2026-10-16
+
+### Fixed
+
+- Client scenarios for `review` restore the fixture's `.scratch/` before each ticket answer and ignore `.scratch/` entirely.
+- Client scenarios ask for a fresh sweep on repeated `review` runs, and "Checked requirements" stages a diff on a feature branch.
+- Client scenarios expect the feature's `spec.md` with the resolved ticket in `review` Requirements.
+
 ## [0.38.0] - 2026-10-16
 
 ### Changed
