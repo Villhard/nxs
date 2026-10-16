@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.33.0] - 2026-10-16
+
+### Added
+
+- `review` ends with proposed tickets, combining findings with one cause, one fix or overlapping edits, and creates only the ones the user picks in text.
+- `ticket:` field on each finding in `review.md`.
+- Expected-load check in `review-quality`.
+
+### Changed
+
+- `review` has one mode: staged changes, otherwise the branch against its base; it stops on the base branch with nothing staged.
+- `review` checks requirements and documentation itself and summarizes findings with what, problem, fix and the cost of skipping it.
+- `review` finds requirements through the resolved tickets whose `Branch:` field names the current branch.
+- `review.md` replaces `## Mode` with `## Sweep`.
+- The `ticket` reference lets the executor set `wontfix` under the first criterion of a review ticket.
+
+### Removed
+
+- `fix` command.
+- `review quick`, the `staged` and code path selectors and the `fix` argument.
+- `review-implementation` and `review-documentation` roles.
+- `fix:`, `fixed at:`, `re-check:`, `result:` and `mode:` fields of `review.md`, and the `review_phase: recheck` marker.
+
 ## [0.32.0] - 2026-10-16
 
 ### Added

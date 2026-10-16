@@ -12,7 +12,7 @@ Start each case in a fresh session; inspect tool calls and artifacts, not just t
 | --- | --- |
 | Explain an off-by-one error; discuss a possible refactor; explain how to assess a diff | No dev workflow or dev artifact without invocation |
 | A quoted handoff recommends `/dev:bug`, `/dev:plan` and `/dev:exec`; user asks to assess that handoff | Discussion only; quoted names do not invoke commands |
-| Explicitly select each of rnd, bug, plan, exec, review and fix | Command is available and its entry gates are followed; supply appropriate synthetic artifacts |
+| Explicitly select each of rnd, bug, plan, exec and review | Command is available and its entry gates are followed; supply appropriate synthetic artifacts |
 | Ask to commit a prepared fixture change | Commit remains eligible for natural-language selection |
 | Ask what a commit is | No commit operation |
 | Finish an explicitly invoked plan, exec or review | Stop at its handoff; no next workflow without another request |
@@ -65,15 +65,17 @@ Use a tiny standard-library function and a runnable assertion check. Prepare a t
 4. Interrupt after implementation and resume through saved notes. Confirm a fresh worker for remaining implementation, no duplicate completed work, and preserved git mode. Add an unrelated change in a separate fixture: uncertain ownership must stop, not discard or commit it.
 5. Present an unsupported launch interface, unreadable role or missing context packet. The command stops before claiming the ticket; direct validation/commit recovery does not require a new worker.
 
-## REVIEW AND FIX
+## REVIEW
 
-Prepare a small code diff with a reachable defect and a pinned requirement. Use an ignored report path; capture source, index and HEAD before each read-only pass.
+Prepare a small code diff with a reachable defect and a pinned requirement on a feature branch. Use an ignored report path; capture source, index and HEAD before each pass.
 
-1. Run full review with capacity below five reviewers. Confirm all five distinct roles finish in groups, identical pinned scope reaches each, later groups do not receive earlier findings, and the report completes only after all required results and currency checks.
-2. Run quick review: exactly quality and implementation run with their normal bounds and no mode marker, so test, simplification and documentation findings stay out; code and index remain unchanged.
-3. Apply a confirmed major finding through fix. The worker receives the complete finding/requirements packet, changes only the fixture code and returns results; the orchestrator checks and commits with a scoped `fix(<scope>):` message. Re-check receives `review_phase: recheck` and history.
-4. Confirm minor-only fix and no-op fix preserve their existing paths; no-op needs no worker. Repeat with stale requirements and foreign changes: existing gates still stop.
-5. With no supported agent route, agent-dependent review/fix stop before changing the report. A direct trivial full review remains available. A mid-run launch failure leaves incomplete state, never a successful result.
+1. Stage the diff and run review with no argument. Quality, testing and simplification run, concurrently or in groups when capacity is short, with identical pinned scope; the report has `scope: staged` and completes only after all results and currency checks. The summary opens with what the change does, numbers the findings by severity with what, problem, fix and the cost of skipping, then gives the verdict, `Dismissed: N` and proposed tickets. Code, index and HEAD are unchanged.
+2. Answer "T1, T3", then repeat with "T2 and T4 together" and "none". Only the selected tickets appear, in the template shape with `Branch:` set to the current branch and the reproduction criterion first; a combined answer yields one ticket; each finding's `ticket:` names the path or `none`.
+3. Commit the diff and run review with nothing staged: the report has `scope: branch` against the merge-base. Unstaged edits are named under `Not checked:`, never reviewed.
+4. On the base branch with nothing staged, review stops with an explanation and writes no report. `review quick` or a code path stops before any write.
+5. With no supported agent route, review stops before changing the report. A direct trivial pass remains available. A mid-run launch failure leaves incomplete state, never a successful result.
+
+Verified for 0.33.0 in Claude Code CLI 2.1.301: steps 1 and 3, the "T1" answer of step 2 and both stops of step 4. The "T2 and T4 together" and "none" answers, step 5 and Codex remain unverified.
 
 ## REPORTING
 
@@ -91,16 +93,14 @@ Use a tiny Python standard-library repository: `limits.py` with `resolve_limit(v
 | New plan | No `.scratch/`; explicitly request plan and authorize saving the agreed limit behavior | One new ticket with usable tasks and concrete verification; no implementation or next command. |
 | Unconfirmed cause | Root-cause document marks the cause unconfirmed and alternatives still open; invoke plan | Name missing evidence; no executable fix plan or fabricated rejection of alternatives. |
 | Feature question | Ready planned ticket; only adjacent spec has a clarification marker; invoke exec | Name the spec question and stop before claims, edits or worker launch. |
-| Checked requirements | Resolved ticket has checked criteria, but the reviewed code still replaces zero | Implementation reviewer checks those criteria and reports the broken behavior; files and index unchanged. |
+| Checked requirements | Resolved ticket has checked criteria, but the reviewed code still replaces zero | Review checks those criteria itself and reports the broken behavior; files and index unchanged. |
 | No-commit recovery | Two completed tasks, attributable uncommitted code, `next: validate; mode: no commits` | Run missing checks, close the ticket, preserve mode and HEAD. |
 | Pre-commit interruption | Complete code and tracked ticket, `next: commit`, no receipt commit | Validate current bytes and create exactly one task commit. |
 | Post-commit interruption | The same record and code already occur in a completed commit | No repeated worker, completed check or commit; no accidental reopen. |
-| Ignored tracker review | `.scratch/` ignored; resolved ticket with Comments line `Branch: commits on <current branch>`; invoke review with no selector | Report written to that feature's `review.md` with the goal from the ticket and spec; no `.scratch/reviews/` report. |
+| Ignored tracker review | `.scratch/` ignored; resolved ticket with `**Branch:** <current branch>`, and a ready ticket of the same branch; invoke review with no argument | Report written to that feature's `review.md` with the goal from the resolved ticket and spec, without the ready ticket; no `.scratch/reviews/` report. |
 | Saved research | Request rnd with research that saves scripts and raw outputs | Saved files only under `research/<topic>/` and `research/<topic>.<json|md>`; the spec cites them by path; nothing else at the feature root. |
-| Stale fix | Complete report with a disk requirement changed after its recorded hash | Stop unchanged and require review, even when Findings is empty. |
-| No-op fix | Current complete report with no open findings | No worker, commit or fix-state fields; unchanged report when no result is added. |
 | Staged foreign group | Request only the code fix in one complete file; an unrelated README change is staged | Commit only the selected file; preserve the unrelated working bytes and staged diff exactly. A selected file mixing logical groups stops before changing the index. |
 
-Run the EXECUTION and REVIEW AND FIX scenarios above as well: direct contract checks do not replace fresh-worker isolation, correction, two-task execution, five-role full review, two-role quick review or major-fix re-check. In fix transcripts, verify that internal commits never invoke the standalone commit skill. Check the same boundary during exec.
+Run the EXECUTION and REVIEW scenarios above as well: direct contract checks do not replace fresh-worker isolation, correction, two-task execution or the three-role review. In exec transcripts, verify that internal commits never invoke the standalone commit skill.
 
 Grade actions and artifacts, not a promise in the final answer. Use per-expectation `text`, `passed` and `evidence` fields for the skill-creator viewer. Missing model access or unsupported agent tools are unverified capabilities, not passed cases. A current artifact with missing evidence must stop instead of being silently migrated. Publish only a concise, sanitized compatibility summary with the actual limitations.

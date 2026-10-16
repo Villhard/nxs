@@ -113,4 +113,4 @@ A ticket that already holds an `## Implementation` section is never overwritten 
 
 ## NEXT
 
-Return the ticket path, whether it is ready or blocked, and a one-line self-check result. Name any check that could not be completed; do not call that plan ready. For a plan written without an approval turn, list its task titles and the decisions it made beyond the feature document. Name any spec revision written or declined. For a ready plan, suggest `/dev:exec`, followed later by review and fix. Do not invoke another command.
+Return the ticket path, whether it is ready or blocked, and a one-line self-check result. Name any check that could not be completed; do not call that plan ready. For a plan written without an approval turn, list its task titles and the decisions it made beyond the feature document. Name any spec revision written or declined. For a ready plan, suggest `/dev:exec`, followed later by review. Do not invoke another command.

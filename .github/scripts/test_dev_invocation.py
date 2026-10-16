@@ -13,7 +13,7 @@ import zlib
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EXPLICIT = ('rnd', 'bug', 'plan', 'exec', 'review', 'fix')
+EXPLICIT = ('rnd', 'bug', 'plan', 'exec', 'review')
 
 
 def main():

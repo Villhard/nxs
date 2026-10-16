@@ -1,6 +1,6 @@
 # TICKET
 
-Read this reference before writing a ticket. `rnd`, `bug` and `plan` create tickets by these rules; each command keeps its own gates for when a ticket may be written.
+Read this reference before writing a ticket. `rnd`, `bug`, `plan` and `review` create tickets by these rules; each command keeps its own gates for when a ticket may be written.
 
 ## TEMPLATE
 
@@ -16,6 +16,6 @@ A ticket is `.scratch/<feature-slug>/issues/NN-<slug>.md`. `NN` is `01` when `is
 
 - `**Blocked by:**` names numbers first - `01`, or `01, 03` - with a title optional after each number. Write `None (can start immediately)` only when no dependency remains; an unknown dependency never becomes `None`.
 - `**Branch:**` proposes `<type>/<feature-slug>` by the project's branch rule when one exists, with `<type>` from the work (`feat`, `fix`, `refactor`, `chore`, `docs`). Every ticket of one feature names the same branch. The user may change or drop the line; a ticket without it runs on the current branch.
-- `**Status:**` is `ready-for-agent`, or `needs-info` when an open `[NEEDS CLARIFICATION: ...]` marker sits in this ticket's own body. A marker still open in the feature's `spec.md` gates the whole feature: write no tickets until it is answered. `ready-for-human` and `resolved` are written by the executor - `## Done when` under plan mode, or `/dev:exec` - never at creation.
+- `**Status:**` is `ready-for-agent`, or `needs-info` when an open `[NEEDS CLARIFICATION: ...]` marker sits in this ticket's own body. A marker still open in the feature's `spec.md` gates the whole feature: write no tickets until it is answered. `ready-for-human` and `resolved` are written by the executor - `## Done when` under plan mode, or `/dev:exec` - never at creation. `wontfix` is set by the user, or by the executor only under the first criterion of a ticket from `review` when the finding no longer reproduces.
 - The checkboxes are acceptance criteria, flipped once when the ticket closes. Never write a `### Task` heading or an implementation checkbox in a new ticket; `/dev:plan` appends those under `## Implementation`.
 - No `## Parent` section and no back-link: the shared feature directory is the whole link to the spec or root cause.
