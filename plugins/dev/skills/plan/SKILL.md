@@ -113,6 +113,8 @@ The plan is not a file of its own. It is two sections inside one ticket, and one
 
 `<feature-slug>` is two to four lowercase english words from the request, hyphenated; a tracker key names the directory instead - `.scratch/<KEY>-<slug>/` - so the feature stays navigable by the key. `NN` is the ticket number, from `01`, in dependency order. Never write into a `.scratch/<x>/` that holds a `map.md`: that directory holds decision work. Pick another slug and say why in one line.
 
+Local checks outside the project's own test suite - check scripts, samples, before/after snapshots - live in `.scratch/<feature-slug>/checks/<NN>-<slug>/`, named exactly as the ticket file without `.md`. Tasks list them under **Files:** with that path; a later ticket reuses an earlier ticket's check by its path.
+
 A ticket that already holds an `## Implementation` section is never overwritten silently - say what is there and ask whether to replace it. A ticket at `**Status:** claimed` or `**Status:** resolved` is never re-planned without asking either: its task checkboxes are execution history.
 
 ## NEXT

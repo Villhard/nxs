@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.30.0] - 2026-10-16
+
+### Added
+
+- `rnd` saves research results and their raw data under the feature's `research/` directory.
+- `bug` saves investigation probes under the feature's `research/` directory.
+- `plan` places a ticket's local checks in the feature's `checks/<NN>-<slug>/` directory.
+
+### Changed
+
+- `exec` records a `Branch:` line in the ticket for every new start with commits.
+- `review` finds resolved tickets of an ignored `.scratch/` by their `Branch:` line.
+
 ## [0.29.3] - 2026-10-14
 
 ### Changed

@@ -89,9 +89,11 @@ Working files live under `.scratch/<feature-slug>/`, or `.scratch/<KEY>-<slug>/`
 - `spec.md`: feature definition.
 - `root-cause.md`: bug investigation.
 - `issues/NN-<slug>.md`: ticket, plan and execution progress.
+- `research/<topic>.json` or `.md`, `research/<topic>/`: saved research results and the scripts and raw data behind them.
+- `checks/NN-<slug>/`: local checks of one ticket outside the project test suite.
 - `review.md`: findings and fix outcomes.
 
-Reviews without a matching feature use `.scratch/reviews/<branch-slug>/review.md`. Ignore `.scratch/` in Git to keep these records local.
+Reviews without a matching feature use `.scratch/reviews/<branch-slug>/review.md`. With `.scratch/` ignored, review matches a feature through the `Branch:` line exec records in the ticket. Ignore `.scratch/` in Git to keep these records local.
 
 After a pause, invoke `exec` with the same ticket. It reads saved progress and retains `no commits` when selected. A `resolved` ticket means implementation is verified; review is still a separate step.
 
