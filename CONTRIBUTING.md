@@ -68,7 +68,7 @@ The checker supports three read-only comparisons:
 
 The first two require HEAD. See the [checker](.github/scripts/check-marketplace.py) and [CI](.github/workflows/ci.yml) for validation and snapshot selection. Metadata checks use a limited YAML subset; native validation is still required. Link checks do not cover anchors or every Markdown form: inspect links, headings and the final diff yourself. Pass untracked Markdown paths explicitly to the style script.
 
-The optional [Claude Code hook](.claude/hooks/check-version-bump.sh) checks the index. Stage first and use a plain `git commit -m "..."`; combined commands, pathspecs and options such as `--only` or `--amend` are rejected. Run the checker directly in Codex.
+The [pre-commit hook](.githooks/pre-commit) runs the staged check in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
 If a plugin has a Codex manifest, also run the installed `plugin-creator` validator and `skill-creator` quick validator. Report unavailable checks. For behavior changes, use disposable projects and the plugin's scenarios; documentation-only edits need source, command and link checks, not repeated workflows.
 

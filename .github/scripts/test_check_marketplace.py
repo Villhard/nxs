@@ -11,7 +11,7 @@ import tempfile
 
 CLI = Path(__file__).with_name('check-marketplace.sh').resolve()
 ROOT = CLI.parents[2]
-HOOK = ROOT / '.claude/hooks/check-version-bump.sh'
+PRE_COMMIT = ROOT / '.githooks/pre-commit'
 
 
 def git(repo, *args):
@@ -112,20 +112,14 @@ def fresh(root, name):
     return repo
 
 
-def hook(repo, command=None, diagnostic='', payload=None):
-    if payload is None:
-        payload = json.dumps({'tool_input': {'command': command}})
-    before = state(repo)
-    result = subprocess.run(['bash', str(HOOK)], input=payload, cwd=repo,
+def hooked_commit(repo, expected=True, diagnostic=''):
+    head = git(repo, 'rev-parse', 'HEAD')
+    result = subprocess.run(['git', '-C', str(repo), 'commit', '-qm', 'hooked'],
                             capture_output=True, text=True)
-    assert state(repo) == before, 'hook modified repository state'
-    assert result.returncode == 0, result.stderr
-    if diagnostic:
-        output = json.loads(result.stdout)['hookSpecificOutput']
-        assert output['permissionDecision'] == 'deny', output
-        assert diagnostic in output['permissionDecisionReason'], output
-    else:
-        assert not result.stdout, result.stdout
+    output = result.stdout + result.stderr
+    assert (result.returncode == 0) == expected, output
+    assert diagnostic in output, output
+    assert (git(repo, 'rev-parse', 'HEAD') != head) == expected, 'unexpected commit state'
 
 
 def ci_check(repo, event, head, before='', target='', default='main', expected=True):
@@ -148,34 +142,18 @@ def integration(root):
     for name in ('check-marketplace.sh', 'check-marketplace.py'):
         write(repo, '.github/scripts/' + name, CLI.with_name(name).read_text())
     base = commit(repo)
-    hook(repo, 'git status')
-    hook(repo, 'git log --grep commit')
-    hook(repo, 'git show HEAD:README.md | rg commit')
-    hook(repo, 'git -C /tmp log --grep commit')
-    hook(repo, 'echo "git commit"')
-    hook(repo, "rg 'git commit' CONTRIBUTING.md")
-    hook(repo, payload='{broken', diagnostic='Invalid Bash hook payload')
+    # The pre-commit hook validates the index being committed, not the disk.
+    installed = repo / '.git/fixture-hooks/pre-commit'
+    shutil.copy(PRE_COMMIT, installed)
     write_skill(repo, 'plugins/sample/skills/one/SKILL.md', '[asset](asset.md)\n')
     git(repo, 'add', '.')
-    hook(repo, 'git commit -m update', diagnostic='version must increase')
+    hooked_commit(repo, False, diagnostic='version must increase')
     release(repo)
     write(repo, 'plugins/sample/skills/one/asset.md', 'Asset\n')
     git(repo, 'add', '.')
     (repo / 'plugins/sample/skills/one/asset.md').unlink()
-    hook(repo, 'git commit -m "valid staged release"')
-    hook(repo, "git commit -m 'refactor(dev): extract artifact templates'")
-    hook(repo, "git commit -m 'fix(dev): literal $ and & and ;'")
-    hook(repo, 'git commit -m "refactor(dev): extract templates"')
-    for command in ('git commit -a', 'git commit -am update', 'git commit --all',
-                    'git commit --only README.md', 'git commit --include README.md',
-                    'git commit README.md', 'git commit --amend',
-                    'git commit -m update && git status', 'cd /tmp && git commit',
-                    'git status\ngit commit',
-                    'git -C /tmp commit', 'git commit -m "$MESSAGE"',
-                    'git commit -m "$(echo substituted)"',
-                    'env GIT_INDEX_FILE=other git commit', 'bash -c "git commit"'):
-        hook(repo, command, diagnostic='Stage the intended files first')
-    git(repo, 'commit', '-qm', 'valid index')
+    hooked_commit(repo)
+    installed.unlink()
     head = git(repo, 'rev-parse', 'HEAD')
     ci_check(repo, 'push', head, before=base)
     ci_check(repo, 'pull_request', head, target=base)
