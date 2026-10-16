@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.32.0] - 2026-10-16
+
+### Added
+
+- `ticket` reference owning the ticket template, numbering, fields and statuses for `rnd`, `bug` and `plan`.
+- Optional `Branch:` field and a verbatim `Done when` section in the ticket template, so harness plan mode can execute a ticket with `/plan <ticket-path>`.
+
+### Changed
+
+- `bug` writes one fix ticket for a confirmed cause and none for an unconfirmed one.
+- `rnd` and `bug` suggest `/plan <ticket-path>` at the handoff.
+- `rnd` proposes a `Branch:` line for each ticket; `bug` sets `fix/<feature-slug>`.
+- `plan` drafts new tickets by the `ticket` reference.
+- `exec` does not apply a ticket's `Done when` section.
+
 ## [0.31.0] - 2026-10-16
 
 ### Changed

@@ -39,7 +39,8 @@ Keep process rules with their owning command or role; a rule two commands apply 
 | --- | --- |
 | Feature and investigation outputs | [rnd](skills/rnd/SKILL.md), [bug](skills/bug/SKILL.md) |
 | Feature location, storage, tracker input, external specs, domain documents | [feature directory](references/feature-directory.md), read by rnd, plan and bug |
-| Ticket and implementation plan | [plan](skills/plan/SKILL.md), [templates](skills/plan/assets/implementation.md) |
+| Ticket template, numbering, fields, `Branch` and `Done when` | [ticket](references/ticket.md), read by rnd, bug and plan; [template](skills/rnd/assets/ticket.md) |
+| Implementation plan | [plan](skills/plan/SKILL.md), [templates](skills/plan/assets/implementation.md) |
 | Task execution and recovery | [exec](skills/exec/SKILL.md), [worker](agents/worker.md) |
 | Review sweep and fix outcomes | [review](skills/review/SKILL.md), [fix](skills/fix/SKILL.md) |
 | Review report format, validation and currency | [review report](references/review-report.md), read by review and fix |

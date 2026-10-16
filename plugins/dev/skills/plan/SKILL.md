@@ -51,7 +51,7 @@ An external spec follows EXTERNAL SPEC from feature directory: its preservation 
 
 Remote input follows TRACKER INPUT from feature directory. Carry the source and applicable constraints into existing spec sections or the new ticket's Conventions/Comments, and preserve a mapped blocker's local number in `Blocked by`. Unknown or unmapped blockers stop an executable handoff; any authorized draft stays `needs-info` and records the missing evidence.
 
-For a new ticket, draft `issues/<NN>-<slug>.md`, where `NN` is one past the highest existing number, or `01` when none exist. Use five fields in order: `# <NN>: <title>`, `**What to build:**`, `**Blocked by:**` with verified local blockers or `None (can start immediately)` only when no dependency remains, `**Status:** ready-for-agent`, then acceptance criteria as `- [ ]` lines. Unknown dependencies never become `None`. Add the plan only after the evidence, questions and approval gates pass. Work requiring several tickets goes to `/dev:rnd` instead.
+For a new ticket, read [ticket](../../references/ticket.md) and draft `issues/<NN>-<slug>.md` by its template, numbering and field rules, with verified local blockers only. Add the plan only after the evidence, questions and approval gates pass. Work requiring several tickets goes to `/dev:rnd` instead.
 
 Example: an explicit request in a repository without `.scratch/` can create `issues/01-<slug>.md`; invoking plan with no request and no feature stops for input.
 
