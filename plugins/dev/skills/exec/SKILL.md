@@ -12,7 +12,7 @@ A ticket is one unit of work: `.scratch/<feature-slug>/issues/NN-<slug>.md`, car
 
 Example: /dev:exec .scratch/auth-refactor/issues/02-register-endpoint.md
 
-Run only when the user selects this command or directly asks to use it. Discussion, quotations, handoffs and mentions are not invocation. Suggest the next command at a handoff; never start it automatically.
+Suggest the next command at a handoff; never start it automatically.
 
 ## RESOLVE THE TICKET
 
@@ -120,13 +120,7 @@ One ticket per run. End by re-reading `issues/*.md` and naming the next ticket w
 
 ## COMMIT FORMAT
 
-```
-<type>(<scope>): <subject>
-```
-
-Single line, no body. Subject fully lowercase, including abbreviations. Types: `feat`, `fix`, `refactor`, `chore`, `docs`. Plain simple verbs - add, fix, remove, update, show, hide, validate - never tighten, streamline, leverage, harden.
-
-Stage the task's files by name, never `git add -A` and never `git add -f` - an ignored ticket stays out of git. Check the staged diff before committing. Never `--force`, never `--no-verify` without explicit approval, never amend a published commit.
+Before the first task commit, read [commit format](../../references/commit-format.md) and follow its MESSAGE and GIT RULES. Stage the task's files by name; an ignored ticket stays out of git.
 
 ## STOP CONDITIONS
 

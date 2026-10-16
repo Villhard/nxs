@@ -60,13 +60,9 @@ Clear request -> plan [ticket + tasks] -> exec <ticket-path>
 Approved spec -> rnd <spec-path> [reuse + slice] -> plan <ticket-path>
 ```
 
-For one implementation unit, `/dev:plan docs/approved-spec.md` can create the ticket and plan directly. For several units, `/dev:rnd docs/approved-spec.md` reuses settled decisions and creates the breakdown. An external spec is preserved in the authorized local feature so later sessions retain its context; existing spec and ticket history are protected. See [rnd input and slicing rules](skills/rnd/SKILL.md) and [plan entry rules](skills/plan/SKILL.md).
+For one implementation unit, `/dev:plan docs/approved-spec.md` creates the ticket and plan directly; for several, `/dev:rnd docs/approved-spec.md` reuses settled decisions and slices them. A compatible local ticket from another shaping workflow, such as `grill-me -> to-spec -> to-tickets`, can go straight to `plan`. Do not run an external slicer over tickets that already have plans or execution history: NXS preserves that work when re-slicing, an external tool may not.
 
-If you explicitly choose a detailed workflow such as `grill-me -> to-spec -> to-tickets`, pass its compatible local `.scratch/<feature>/issues/01-<slug>.md` to `plan`. Compatibility depends on the spec/ticket content, decisions, Comments and blockers, not a package name or ready label. This is not a guarantee for every external workflow revision. Decision maps and typed decision tickets supply context for a separate implementation deliverable.
-
-Once tickets have plans or execution history, do not run an external slicer over them without a concrete preservation/revision decision. NXS preserves existing work when re-slicing; it cannot enforce that behavior in an independently selected external tool. Every implementation ticket must leave passing checks, including refactor batches. A sequence that becomes green only at final integration needs a different breakdown.
-
-NXS always saves Markdown under `.scratch/`, without tracker configuration, backend selection or separate storage approval. Existing tracker preferences do not redirect the workflow; content approval and readiness checks still apply. Remote issues can supply requirements through an available read interface or pasted content, with source/parent constraints and blocker evidence retained. NXS does not publish or synchronize tracker issues. See [local storage and remote-input rules](skills/plan/SKILL.md).
+NXS saves everything under `.scratch/`, reads tracker issues without writing to them, and needs no tracker setup. The rules live in [feature directory](references/feature-directory.md), [rnd](skills/rnd/SKILL.md) and [plan](skills/plan/SKILL.md).
 
 ## Options
 
