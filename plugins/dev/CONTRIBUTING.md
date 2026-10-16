@@ -4,8 +4,8 @@ Follow the [shared rules](../../CONTRIBUTING.md). This guide covers authoring; t
 
 ## STRUCTURE
 
-- `skills/<command>/SKILL.md`: six commands, with local `assets/`, `references/` or `scripts/` when needed.
-- `agents/`: one worker and three review roles, each with complete instructions.
+- `skills/<command>/SKILL.md`: four commands, with local `assets/`, `references/` or `scripts/` when needed.
+- `agents/`: three review roles, each with complete instructions.
 - `references/`: rules shared by several commands, read at the point of use. See CONTRACT OWNERS.
 
 Keep process rules with their owning command or role; a rule two commands apply goes to one reference instead of two copies. Keep personal preferences in client/project instructions. Do not add background skills, cross-skill injection or plugin hooks. Add a command only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing command.
@@ -14,17 +14,17 @@ Keep process rules with their owning command or role; a rule two commands apply 
 
 | Distinction | Meaning |
 | --- | --- |
-| command / skill / agent | User-facing `/dev:<name>` / its `SKILL.md` implementation / a spawned worker or reviewer. |
-| feature / ticket / task | One `.scratch/<feature-slug>/` directory / one deliverable in `issues/NN-<slug>.md` / one implementation step inside that ticket. |
-| acceptance criterion / task checkbox | Required outcome / work needed to implement it. Completed criteria remain requirements. |
+| command / skill / agent | User-facing `/dev:<name>` / its `SKILL.md` implementation / a spawned reviewer. |
+| feature / ticket | One `.scratch/<feature-slug>/` directory / one deliverable in `issues/NN-<slug>.md`. |
+| acceptance criterion | Required outcome of a ticket, a `- [ ]` line. Completed criteria remain requirements. |
 
 ## AUTHORING
 
 **Skills**
 
 - The directory names the command; the manifest supplies `dev`. Omit frontmatter `name` to retain Claude Code's namespace. Use `description` for trigger, result and command boundaries; `argument-hint` is optional.
-- Keep `rnd`, `bug`, `plan`, `exec` and `review` explicit-only: `disable-model-invocation: true` for Claude Code and `policy.allow_implicit_invocation: false` in `agents/openai.yaml` for Codex. Discussion, quotations and handoffs never invoke them.
-- `commit` alone also accepts natural-language commit requests. Internal exec commits follow its contract.
+- Keep `rnd`, `bug` and `review` explicit-only: `disable-model-invocation: true` for Claude Code and `policy.allow_implicit_invocation: false` in `agents/openai.yaml` for Codex. Discussion, quotations and handoffs never invoke them.
+- `commit` alone also accepts natural-language commit requests.
 - Include an `Example:` invocation after the intro. Resolve supporting files relative to the installed skill and require them at the point of use. Follow the shared [instruction contracts](../../CONTRIBUTING.md#instruction-contracts).
 
 **Agents**
@@ -38,22 +38,20 @@ Keep process rules with their owning command or role; a rule two commands apply 
 | Contract | Owners |
 | --- | --- |
 | Feature and investigation outputs | [rnd](skills/rnd/SKILL.md), [bug](skills/bug/SKILL.md) |
-| Feature location, storage, tracker input, external specs, domain documents | [feature directory](references/feature-directory.md), read by rnd, plan and bug |
-| Ticket template, numbering, fields, `Branch` and `Done when` | [ticket](references/ticket.md), read by rnd, bug, plan and review; [template](skills/rnd/assets/ticket.md) |
-| Implementation plan | [plan](skills/plan/SKILL.md), [templates](skills/plan/assets/implementation.md) |
-| Task execution and recovery | [exec](skills/exec/SKILL.md), [worker](agents/worker.md) |
+| Feature location, storage, tracker input, external specs, domain documents | [feature directory](references/feature-directory.md), read by rnd and bug |
+| Ticket template, numbering, fields, `Branch` and `Done when` | [ticket](references/ticket.md), read by rnd, bug and review; [template](skills/rnd/assets/ticket.md) |
 | Review sweep, summary and proposed tickets | [review](skills/review/SKILL.md) |
 | Review report format, validation and currency | [review report](references/review-report.md), read by review |
 | Severity and finding verification | [findings](references/findings.md), read by review |
 | Standalone commits | [commit](skills/commit/SKILL.md) |
-| Commit message and Git rules | [commit format](references/commit-format.md), read by commit and exec |
-| Agent launch and context packets | [agent launch](references/agent-launch.md), read by exec and review |
+| Commit message and Git rules | [commit format](references/commit-format.md), read by commit |
+| Agent launch and context packets | [agent launch](references/agent-launch.md), read by review |
 
 Preserve artifact headings, status values, paths, writer ownership and prompt markers. Only the user sets `wontfix`, except the executor under the first criterion of a ticket from review. Keep scope, Git checks, tracker selection and stop rules with their owners; do not copy their schemas or procedures here.
 
 ## VERSIONED SURFACE
 
-Versioned interfaces include command names, arguments and invocation policy; role names, launch routes and context packets; artifact paths, formats and handoffs; execution recovery and write/Git boundaries. Editorial changes preserve those interfaces. Apply the shared [version rules](../../CONTRIBUTING.md#versions).
+Versioned interfaces include command names, arguments and invocation policy; role names, launch routes and context packets; artifact paths, formats and handoffs; write/Git boundaries. Editorial changes preserve those interfaces. Apply the shared [version rules](../../CONTRIBUTING.md#versions).
 
 ## CLIENT CHECKS
 

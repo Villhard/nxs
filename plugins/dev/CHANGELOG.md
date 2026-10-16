@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.34.0] - 2026-10-16
+
+### Changed
+
+- `rnd` sends an already clear task to the client's `/plan` instead of `/dev:plan`.
+- `commit` and the `commit format` reference serve standalone commits only.
+- `agent launch` covers only the three review roles.
+- The `ticket` reference no longer mentions `## Implementation`; the executor under `Done when` alone sets `ready-for-human` and `resolved`.
+
+### Removed
+
+- `plan` and `exec` commands, with the implementation template and the `exec no commits` option.
+- `worker` role.
+- `checks/` directory of the feature.
+
 ## [0.33.0] - 2026-10-16
 
 ### Added

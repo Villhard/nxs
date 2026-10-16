@@ -1,5 +1,5 @@
 ---
-description: Shape a feature or open question when explicitly asked to use /dev:rnd. Save an agreed spec and one or more tickets, without implementation tasks or code. Use /dev:bug for a reported failure and /dev:plan for an already clear single ticket.
+description: Shape a feature or open question when explicitly asked to use /dev:rnd. Save an agreed spec and one or more tickets, without implementation tasks or code. Use /dev:bug for a reported failure and the client's /plan for an already clear task.
 argument-hint: "[request | spec path | tracker key | question]"
 disable-model-invocation: true
 ---
@@ -18,9 +18,9 @@ Suggest the next command at a handoff; never start it automatically.
 
 ## STANCE
 
-- Produce the spec and the tickets and stop. The plan, the code, and any behavior change belong to the commands that own them.
+- Produce the spec and the tickets and stop. The plan, the code, and any behavior change belong to the client's plan mode.
 - Four steps in order: clarify, explore, stress-test, slice. A clear request may need zero questions, one obvious approach and no stress pass. After agreement, slice always runs, even when it yields one ticket.
-- Full collapse makes the spec ceremony. Say so out loud and offer to route straight to `/dev:plan` instead.
+- Full collapse makes the spec ceremony. Say so out loud and offer to describe the task straight to `/plan` in Claude Code or Codex instead.
 - For a bug rather than a request, route to `/dev:bug`.
 
 ## EXISTING INPUT
@@ -75,7 +75,7 @@ One feature is one local directory, holding the spec, one file per ticket and an
 .scratch/<feature-slug>/research/<topic>/
 ```
 
-Everything research saves goes under `research/`, including files written by agents or workflows this command launches: one topic's result as `research/<topic>.json` or `.md`, and the scripts, probes, downloads and raw outputs behind it in `research/<topic>/`. `<topic>` is one to three lowercase english words, hyphenated, shared by the result and its folder. Give each launched agent or workflow its `research/<topic>/` path as its output location. `## Implementation Decisions` cites results by their path inside the feature. The feature root holds only `spec.md`, `root-cause.md`, `review.md` and the `issues/`, `research/` and `checks/` directories.
+Everything research saves goes under `research/`, including files written by agents or workflows this command launches: one topic's result as `research/<topic>.json` or `.md`, and the scripts, probes, downloads and raw outputs behind it in `research/<topic>/`. `<topic>` is one to three lowercase english words, hyphenated, shared by the result and its folder. Give each launched agent or workflow its `research/<topic>/` path as its output location. `## Implementation Decisions` cites results by their path inside the feature. The feature root holds only `spec.md`, `root-cause.md`, `review.md` and the `issues/` and `research/` directories.
 
 The directory follows LOCATION and LOCAL STORAGE from feature directory. Leave a `root-cause.md` already sitting there untouched, and never replace an existing `spec.md` without approval of that concrete revision. Decision documents, including tickets carrying a bare or Markdown-bold `Type:` field, supply context for a distinct implementation deliverable; never convert them in place.
 
@@ -83,11 +83,11 @@ Before writing the spec, read [assets/spec.md](assets/spec.md), resolved relativ
 
 `## Solution` holds the chosen approach with the answers integrated. `## Implementation Decisions` holds the findings that influenced the approach, with their code references, and the decisions every ticket inherits, each with a brief reason, including applicable recorded project decisions with their paths; keep assumptions distinguishable from confirmed facts. `## Testing Decisions` holds the relevant test findings and chosen checks. `## Out of Scope` names what is explicitly not being done. `## Further Notes` takes the options with their rejection reasons, the stress verdict when the stress step ran, and a `- Q: <question> -> A: <answer>` log when at least one question was asked. Sections scale with the request, an empty one is dropped, headings keep their names.
 
-Before the first durable write, show the proposed spec and ticket breakdown. Obtain approval unless the user has already approved that content or explicitly authorized writing it from the agreed decisions. Reuse that authorization. Material unanswered decisions still block ready tickets; permission to save a draft does not answer them or invoke plan.
+Before the first durable write, show the proposed spec and ticket breakdown. Obtain approval unless the user has already approved that content or explicitly authorized writing it from the agreed decisions. Reuse that authorization. Material unanswered decisions still block ready tickets; permission to save a draft does not answer them or start `/plan`.
 
 ## SLICE
 
-Inspect every existing `issues/*.md` before proposing a breakdown. Match existing scope and dependencies; preserve file names, ticket IDs, blockers, statuses, checked criteria, plans and Comments/execution notes byte-for-byte on a repeat. Existing tickets that cover the spec are the output, not files to regenerate. General permission to save tickets does not authorize replacing their history. If changed scope or dependencies cannot preserve the existing graph, show the affected files and decisions and stop for a concrete revision decision; reuse only authorization that covers that revision. Never renumber, reset or silently replace existing work, including ready tickets without plans.
+Inspect every existing `issues/*.md` before proposing a breakdown. Match existing scope and dependencies; preserve file names, ticket IDs, blockers, statuses, checked criteria, plans and Comments/execution notes byte-for-byte on a repeat. Existing tickets that cover the spec are the output, not files to regenerate. General permission to save tickets does not authorize replacing their history. If changed scope or dependencies cannot preserve the existing graph, show the affected files and decisions and stop for a concrete revision decision; reuse only authorization that covers that revision. Never renumber, reset or silently replace existing work, including ready tickets.
 
 Cut genuinely new authorized work into tickets under `issues/`. Each ticket is one vertical slice: end-to-end behavior a user or an API can exercise, demoable on its own, sized to fit one fresh context window. Never a layer - not the schema, then the service, then the route. A wide refactor is the exception: expand, migrate in batches, contract, one ticket per batch, with passing checks after each ticket. If only final integration can pass, ask for a compatible breakdown instead of promising execution with failing intermediate tickets. One ticket is the normal outcome for small work and gets no ceremony - same file, same shape.
 
@@ -95,4 +95,4 @@ Before writing tickets, read [ticket](../../references/ticket.md): it owns the t
 
 ## NEXT
 
-Return the spec path, created or preserved ticket paths and any unresolved clarification. Suggest `/plan <ticket-path>` in Claude Code or Codex for the first unplanned ready implementation ticket that has no bare or Markdown-bold `Type:` field and whose local blockers are resolved with no unfinished execution close. An incomplete spec or unknown/unmapped remote blocker has no ready handoff; existing plans or execution history do not become new work on a repeat. Do not invoke another command.
+Return the spec path, created or preserved ticket paths and any unresolved clarification. Suggest `/plan <ticket-path>` in Claude Code or Codex for the first `ready-for-agent` implementation ticket that has no bare or Markdown-bold `Type:` field and whose local blockers are `resolved`. An incomplete spec or unknown/unmapped remote blocker has no ready handoff; existing tickets do not become new work on a repeat. Do not invoke another command.

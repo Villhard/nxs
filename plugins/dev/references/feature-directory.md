@@ -1,6 +1,6 @@
 # FEATURE DIRECTORY
 
-Read this reference before reading feature input or writing a feature artifact. `rnd`, `plan` and `bug` apply the sections that fit their input; each command keeps its own gates and outputs.
+Read this reference before reading feature input or writing a feature artifact. `rnd` and `bug` apply the sections that fit their input; each command keeps its own gates and outputs.
 
 ## LOCATION
 
