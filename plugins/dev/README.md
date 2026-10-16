@@ -2,10 +2,20 @@
 
 Choose where to start:
 
-- An idea that needs shaping: `rnd`, then `plan`.
-- A bug to investigate: `bug`, then `plan` once the cause is confirmed.
+- An idea that needs shaping: `rnd`, which writes a spec and tickets.
+- A bug to investigate: `bug`, which writes a fix ticket once the cause is confirmed.
 - A clear task: `plan`, which can create a ticket directly.
 - An approved spec: `plan` for one implementation unit, or `rnd` to reuse it and split several tickets.
+
+A ticket from `rnd` or `bug` runs in the client's own plan mode:
+
+```text
+/plan <ticket-path> -> git add -> review
+```
+
+`/plan` is the built-in command of Claude Code and Codex, not part of `dev`. The ticket's `Done when` section tells the executor when to stop, to run the full test suite and linter, to check the criteria and set `resolved`, and not to commit. A `Branch:` line names the branch the work goes on; edit or remove it before running. Commit with `commit` or by hand after review.
+
+The previous route still works for any ticket:
 
 ```text
 plan -> exec -> review -> fix (if there are findings)
@@ -55,14 +65,17 @@ In Codex, select the corresponding `dev` skill with `/skills` or the `$` picker 
 NXS provides the complete local route without another shaping package or tracker setup. Each arrow below is a user-selected handoff:
 
 ```text
-Idea -> rnd [spec + tickets] -> plan <ticket-path> -> exec <ticket-path>
+Idea -> rnd [spec + tickets] -> /plan <ticket-path>
+Bug -> bug [root cause + fix ticket] -> /plan <ticket-path>
 Clear request -> plan [ticket + tasks] -> exec <ticket-path>
-Approved spec -> rnd <spec-path> [reuse + slice] -> plan <ticket-path>
+Approved spec -> rnd <spec-path> [reuse + slice] -> /plan <ticket-path>
 ```
+
+Any ticket can also go through `plan <ticket-path>` and `exec <ticket-path>` instead of `/plan`.
 
 For one implementation unit, `/dev:plan docs/approved-spec.md` creates the ticket and plan directly; for several, `/dev:rnd docs/approved-spec.md` reuses settled decisions and slices them. A compatible local ticket from another shaping workflow, such as `grill-me -> to-spec -> to-tickets`, can go straight to `plan`. Do not run an external slicer over tickets that already have plans or execution history: NXS preserves that work when re-slicing, an external tool may not.
 
-NXS saves everything under `.scratch/`, reads tracker issues without writing to them, and needs no tracker setup. The rules live in [feature directory](references/feature-directory.md), [rnd](skills/rnd/SKILL.md) and [plan](skills/plan/SKILL.md).
+NXS saves everything under `.scratch/`, reads tracker issues without writing to them, and needs no tracker setup. The rules live in [feature directory](references/feature-directory.md), [ticket](references/ticket.md), [rnd](skills/rnd/SKILL.md) and [plan](skills/plan/SKILL.md).
 
 ## Options
 
@@ -84,7 +97,7 @@ Working files live under `.scratch/<feature-slug>/`, or `.scratch/<KEY>-<slug>/`
 
 - `spec.md`: feature definition.
 - `root-cause.md`: bug investigation.
-- `issues/NN-<slug>.md`: ticket, plan and execution progress.
+- `issues/NN-<slug>.md`: ticket with its `Done when` rules, plus plan and execution progress under `exec`.
 - `research/<topic>.json` or `.md`, `research/<topic>/`: saved research results and the scripts and raw data behind them.
 - `checks/NN-<slug>/`: local checks of one ticket outside the project test suite.
 - `review.md`: findings and fix outcomes.

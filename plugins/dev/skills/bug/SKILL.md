@@ -1,12 +1,12 @@
 ---
-description: Investigate a reported failure when explicitly asked to use /dev:bug. Save reproducible evidence and a confirmed root cause, or the evidence still missing. Do not implement a fix; a confirmed cause can go to /dev:plan.
+description: Investigate a reported failure when explicitly asked to use /dev:bug. Save reproducible evidence and a confirmed root cause with one fix ticket for /plan, or the evidence still missing and no ticket. Do not implement a fix.
 argument-hint: "[tracker key | bug description | path]"
 disable-model-invocation: true
 ---
 
 # /dev:bug
 
-Investigate the reported symptom and save the conclusion, then stop. A confirmed cause and an incomplete investigation are different outcomes.
+Investigate the reported symptom and save the conclusion, plus a fix ticket when the cause is confirmed, then stop. A confirmed cause and an incomplete investigation are different outcomes.
 
 Accepted input: a tracker key / URL, pasted bug text, observed behavior, a stack trace or log, or a path.
 
@@ -18,8 +18,8 @@ Suggest the next command at a handoff; never start it automatically.
 
 ## STANCE
 
-- Confirm the cause with reproducible evidence and leave the fix to `/dev:plan` and `/dev:exec`. No patch, no product-code change here.
-- The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The root cause is the only file that stays.
+- Confirm the cause with reproducible evidence and leave the fix to the ticket this command writes. No patch, no product-code change here.
+- The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The root cause and, once confirmed, the fix ticket are the only files that stay.
 - Stay skeptical of the first plausible explanation. Clarify a fuzzy term in the report before running the 5-Why.
 - Apply DOMAIN DOCUMENTS from feature directory to the report's terms and the suspect behavior. Behavior a recorded decision establishes is evidence with its path, not a defect by itself: say so and let the user decide whether the decision is the problem.
 
@@ -63,7 +63,7 @@ Example: a request with `limit=0` returns ten records. The minimized test reprod
 | Reproduction fails or required evidence is unavailable | State that the cause is unconfirmed. Record attempted checks, hypotheses and the specific missing evidence. |
 | Several causes still fit | Keep them open and rank them with reasons. State the next probe that distinguishes them; reject a cause only when evidence disproves it. |
 
-For an unconfirmed result, `## Fix direction` and `## Regression test` say that they are pending confirmation. Conditional ideas may be recorded as hypotheses, never as an approved implementation direction. Save the incomplete investigation and stop for the missing evidence; do not hand it to plan as ready.
+For an unconfirmed result, `## Fix direction` and `## Regression test` say that they are pending confirmation. Conditional ideas may be recorded as hypotheses, never as an approved implementation direction. Save the incomplete investigation and stop for the missing evidence; write no ticket and do not hand it off as ready.
 
 ## ARTIFACT
 
@@ -78,8 +78,6 @@ The directory follows LOCATION from feature directory. The file name is fixed.
 Reproduction scripts, probes and raw outputs the investigation saves go under `.scratch/<feature-slug>/research/<topic>/`, `<topic>` being one to three lowercase english words, hyphenated; `root-cause.md` cites them by that path. Nothing else goes at the feature root.
 
 Create the feature directory when the report has none yet; write into the one the input names when it does. A `spec.md` already sitting there is left untouched - a bug that grew into a feature carries both documents side by side.
-
-Write no ticket here. Once the cause is confirmed, `/dev:plan` selects or creates the fix ticket using its numbering rules.
 
 Keep the headings stable - `/dev:plan` reads the root cause by them:
 
@@ -117,6 +115,19 @@ Keep the headings stable - `/dev:plan` reads the root cause by them:
 
 Every other heading stays even when the investigation fell short: an unconfirmed cause is stated as unconfirmed under `## Root cause`, not left out.
 
+## FIX TICKET
+
+Write one fix ticket only for a confirmed cause, after `root-cause.md` is saved. An unconfirmed cause, or several causes still open, gets no ticket.
+
+Before writing, read [ticket](../../references/ticket.md): it owns the template, numbering, fields and statuses. Write the ticket into `issues/` of the same feature directory as `.scratch/<feature-slug>/issues/NN-<slug>.md`.
+
+- `**What to build:**` the corrected behavior from the user's side, naming `root-cause.md` as its source.
+- Acceptance criteria: the reported symptom no longer reproduces through the minimized repro, and the check from `## Regression test` exists and passes. Add a criterion only for a further requirement `## Fix direction` states.
+- `**Blocked by:**` `None (can start immediately)` unless an existing ticket of this feature must land first; then its number.
+- `**Branch:**` `fix/<feature-slug>` by the rule in the reference.
+
+On a repeat, an existing ticket in `issues/` that already names this `root-cause.md` is the fix ticket: leave it unchanged and write no second one.
+
 ## NEXT
 
-Return the root-cause path and state whether the cause is confirmed or unconfirmed. A confirmed result names the evidence and suggests `/dev:plan`; an unconfirmed result names the missing evidence or next discriminating probe. Do not invoke another command.
+Return the root-cause path and state whether the cause is confirmed or unconfirmed. A confirmed result names the evidence, returns the fix ticket path and its `**Branch:**`, and suggests `/plan <ticket-path>` in Claude Code or Codex; an unconfirmed result names the missing evidence or next discriminating probe. Do not invoke another command.

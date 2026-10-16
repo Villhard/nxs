@@ -10,6 +10,8 @@ Execute one planned ticket to the end, one task per cycle. This is the command t
 
 A ticket is one unit of work: `.scratch/<feature-slug>/issues/NN-<slug>.md`, carrying its acceptance criteria above `## Implementation` and its tasks inside it.
 
+A ticket's `## Done when` section addresses direct execution through harness plan mode. This command does not apply it: it closes and commits the ticket by its own contract below.
+
 Example: /dev:exec .scratch/auth-refactor/issues/02-register-endpoint.md
 
 Suggest the next command at a handoff; never start it automatically.
