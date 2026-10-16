@@ -45,7 +45,7 @@ def plugin(repo, name='sample', value='0.23.9', codex=True):
     if codex:
         write(repo, f'plugins/{name}/.codex-plugin/plugin.json', manifest)
     write(repo, f'plugins/{name}/CHANGELOG.md', f'# Changelog\n\n## [{value}] - 2026-09-10\n\n- Initial.\n')
-    skills = ('rnd', 'bug', 'plan', 'exec', 'review', 'fix', 'commit') if name == 'dev' else ('one',)
+    skills = ('rnd', 'bug', 'plan', 'exec', 'review', 'commit') if name == 'dev' else ('one',)
     for skill in skills:
         path = f'plugins/{name}/skills/{skill}/SKILL.md'
         write_skill(repo, path, '# SKILL\n\nA skill.\n')
@@ -53,8 +53,7 @@ def plugin(repo, name='sample', value='0.23.9', codex=True):
             write(repo, f'plugins/dev/skills/{skill}/agents/openai.yaml',
                   'policy:\n  allow_implicit_invocation: false\n')
     if name == 'dev':
-        for role in ('worker', 'review-quality', 'review-implementation', 'review-testing',
-                     'review-simplification', 'review-documentation'):
+        for role in ('worker', 'review-quality', 'review-testing', 'review-simplification'):
             tools = 'Read, Grep, Glob, Bash' + (', Write, Edit' if role == 'worker' else '')
             write(repo, f'plugins/dev/agents/{role}.md',
                   f'---\nname: {role}\ndescription: Fixture role.\ntools: {tools}\n---\n# ROLE\n')
@@ -399,7 +398,7 @@ def main():
         role.write_text(good_role.replace('tools: Read', 'tools: Write, Read'))
         check(repo, False, diagnostic='unexpected dev role tools')
         role.unlink()
-        check(repo, False, diagnostic='seven command skills and six agent roles')
+        check(repo, False, diagnostic='six command skills and four agent roles')
 
         repo = fresh(root, 'snapshots')
         base = git(repo, 'rev-parse', 'HEAD')

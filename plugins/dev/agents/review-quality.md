@@ -1,6 +1,6 @@
 ---
 name: review-quality
-description: Read-only code reviewer - reads the execution paths the diff touches and reports bugs, races, edge cases, error handling, leaks, and a basic security skim. A /dev:review agent.
+description: Read-only code reviewer - reads the execution paths the diff touches and reports bugs, races, edge cases, error handling, leaks, problems at the expected load, and a basic security skim. A /dev:review agent.
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -36,15 +36,19 @@ Read the comments on and around the changed code as stated contracts: a "callers
 
 Name the assumption the new code relies on and nothing enforces: an order of calls, a non-empty input, a single caller. Then find the input that breaks it.
 
+## EXPECTED LOAD
+
+Find the expected load in the repository - README, deploy config, how the code is started: one person running a script, or many users and processes at once. Judge the changed code against that load and say which load you assumed.
+
+Look for code that is fine for one user and wrong for many: a check-then-write race, the same work done by every process, memory or a list that only grows, a query per item, O(n^2) on input that can be large, per-process state that must be shared. A finding names the load from the repository that triggers it; a load the project never reaches is not one.
+
 ## SECURITY SKIM
 
 Hardcoded secrets, obvious injection (SQL, command, path traversal), a user-facing entry point or data read from a file, the network, a subprocess or the environment used with no validation, secrets or PII in logs. Anything deeper - crypto, the authorization model, threat modeling - is out of scope: on an auth, payment, crypto, or migration diff, say plainly that it needs a manual security review instead of covering it here.
 
 ## BOUNDS
 
-Over-engineering, test coverage, and documentation are other agents. Seeing one, ignore it.
-
-The exact prompt line `review_phase: recheck` limits the report to critical and major findings.
+Over-engineering, test coverage, and documentation are checked by others. Seeing one, ignore it.
 
 A bug is a bug when you can name the input that triggers it. Cannot name one, drop it: "might fail under concurrency" without the interleaving is noise.
 
@@ -52,7 +56,7 @@ Check that the trigger's preconditions can occur in this project; do not invent 
 
 Before claiming something is unused, never called, or unreachable, search the project for it first, including tests and config. That claim is wrong more often than any other.
 
-Also report unclear, misleading or misspelled names in changed production code as minor. Explain the ambiguity or mismatch with the symbol's actual role and propose a clearer name; naming findings need no runtime trigger or written naming rule. A preference between equally clear synonyms is not a finding. Re-check still reports critical and major only.
+Also report unclear, misleading or misspelled names in changed production code as minor. Explain the ambiguity or mismatch with the symbol's actual role and propose a clearer name; naming findings need no runtime trigger or written naming rule. A preference between equally clear synonyms is not a finding.
 
 ## WHAT TO REPORT
 

@@ -193,13 +193,12 @@ def check_instructions(files):
                 if values != (['false'] if explicit else ['true']):
                     raise Invalid(f'{policy}: incorrect dev invocation policy')
     if 'dev' in plugin_names(files):
-        expected_skills = {'rnd', 'bug', 'plan', 'exec', 'review', 'fix', 'commit'}
-        expected_agents = {'worker', 'review-quality', 'review-implementation',
-                           'review-testing', 'review-simplification', 'review-documentation'}
+        expected_skills = {'rnd', 'bug', 'plan', 'exec', 'review', 'commit'}
+        expected_agents = {'worker', 'review-quality', 'review-testing', 'review-simplification'}
         skills = {p.split('/')[3] for p in files if re.fullmatch(r'plugins/dev/skills/[^/]+/SKILL\.md', p)}
         agents = {Path(p).stem for p in files if re.fullmatch(r'plugins/dev/agents/[^/]+\.md', p)}
         if skills != expected_skills or agents != expected_agents:
-            raise Invalid('plugins/dev: expected seven command skills and six agent roles')
+            raise Invalid('plugins/dev: expected six command skills and four agent roles')
 
 
 def check(base, current):

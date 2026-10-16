@@ -1,6 +1,6 @@
 # FINDINGS
 
-Read this reference before a review sweep, a fix verification or a re-check. `review` and `fix` rate and verify findings with it and pass its SEVERITY BAR to every reviewer verbatim.
+Read this reference before a review sweep. `review` rates and verifies findings with it and pass its SEVERITY BAR to every reviewer verbatim.
 
 ## SEVERITY BAR
 
@@ -18,4 +18,4 @@ Severity measures the defect, not the cost of fixing it. Keep a confirmed in-sco
 
 Read the finding's location with 20-30 lines of context in the version being checked. Trace a reachable input or state through callers and guards to the claimed consequence; cite the locations that establish or disprove it. For naming claims, compare the name with its actual role and uses; cite the ambiguity or mismatch instead of requiring a runtime failure. For coverage or documentation claims, inspect the relevant tests or contract too. A passing test alone does not disprove a runtime defect. Separate what the code proves from inferred consequences.
 
-Same place and same problem is one finding, whichever agent raised it; retain each dismissal reason. Apply SEVERITY BAR; change a proposed severity only when the evidence warrants it, recording the old and new levels and why. Never lower severity to avoid a re-check.
+Same place and same problem is one finding, whichever agent raised it; retain each dismissal reason. Apply SEVERITY BAR; change a proposed severity only when the evidence warrants it, recording the old and new levels and why.

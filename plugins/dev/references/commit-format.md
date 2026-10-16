@@ -1,6 +1,6 @@
 # COMMIT FORMAT
 
-Read this reference before writing a commit. `commit`, `exec` and `fix` follow it; the calling command owns what goes into each commit.
+Read this reference before writing a commit. `commit` and `exec` follow it; the calling command owns what goes into each commit.
 
 ## MESSAGE
 
