@@ -22,7 +22,7 @@ Use read-only inspection, with `GIT_OPTIONAL_LOCKS=0` for git. Checks may create
 
 Review has one mode. The only argument is a ticket or feature path under `.scratch/`, which identifies requirements, never the code. Any other argument, such as `quick`, `staged`, `fix` or a code path, stops before any write: say that review takes no mode or selector, staged changes come first and the branch otherwise.
 
-Record repository root from `git rev-parse --show-toplevel`, optional origin URL with credentials removed, current branch (`HEAD` when detached), and HEAD as an immutable tip OID. Detect the base: `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Then pick the scope:
+Record repository root from `git rev-parse --show-toplevel`, optional origin URL with credentials removed, current branch (`HEAD` when detached), and HEAD as an immutable tip OID. Then pick the scope, checking the index first. Detect the base only when the index is empty: `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Staged scope needs no base.
 
 | State | Scope |
 | --- | --- |
@@ -36,9 +36,9 @@ Someone else's branch is reviewed by checking it out first with nothing staged. 
 
 ## REQUIREMENTS
 
-The goal is the feature. An explicit ticket is the requirement as given; an explicit feature contributes only tickets at `**Status:** resolved`. Without an argument, read `.scratch/*/issues/*.md` and `.scratch/reviews/*/issues/*.md` on disk, skipping directories that hold `map.md`, and keep the tickets at `**Status:** resolved` whose `**Branch:**` value equals the current branch exactly; a detached HEAD matches none. Include each ticket plus `## Problem Statement` and `## Solution` from its adjacent spec, pinning every file used. A ticket under `.scratch/reviews/` has no spec and resolves no feature.
+The goal is the feature. An explicit ticket is the requirement as given; an explicit feature contributes only tickets at `**Status:** resolved`. Without an argument, list `.scratch/*/issues/*.md` and `.scratch/reviews/*/issues/*.md` on disk, skipping directories that hold `map.md`, and keep the tickets at `**Status:** resolved` whose `**Branch:**` value equals the current branch exactly; a detached HEAD matches none. Include each ticket plus `## Problem Statement` and `## Solution` from its adjacent spec, pinning every file used. A ticket under `.scratch/reviews/` has no spec and resolves no feature.
 
-For branch scope, read requirements from disk and hash their exact bytes with SHA256. For staged scope, a requirement with an index entry is read from the index: resolve the blob with `git rev-parse :<path>`, read `git show <blob>` and record its blob OID; other requirements use disk sources and hashes. Never silently substitute a disk version for a missing indexed source. Name every source and pin in prompts.
+For branch scope, read requirements from disk and hash their exact bytes with SHA256. For staged scope, a requirement with an index entry is read from the index: resolve the blob with `git rev-parse :<path>`, read `git show <blob>` and record its blob OID; other requirements use disk sources and hashes. Read a ticket's `**Status:**` and `**Branch:**` from the same version as its text. Never silently substitute a disk version for a missing indexed source. Name every source and pin in prompts.
 
 Preserve an explicit user goal. Without one, state the goal from the resolved ticket's What to build and spec; with neither, use `no stated goal`. Never infer intent from commit subjects, branch names or the diff; a `**Branch:**` field binds a ticket, the branch name alone never does. Preserve the actual goal sentence in the report.
 
@@ -112,7 +112,7 @@ With no findings: `What this change does:`, then `Looks good. Ship.` (or the sec
 
 ## PROPOSE TICKETS
 
-Before grouping, read the open tickets, any status but `resolved` and `wontfix`, in the target `issues/` from CREATE TICKETS. A finding whose fix an open ticket's What to build or criteria already require is covered: set its `ticket:` to that ticket's path and leave the ticket unchanged. List covered findings in the summary under `Already ticketed:`, one `- <number>: <ticket path>` line each; they join no group. When every finding is covered, skip `Recommended tickets:` and the question.
+Before grouping, read the open tickets, any status but `resolved` and `wontfix`, in `.scratch/reviews/<branch-slug>/issues/` and, when the report resolved to a feature, in that feature's `issues/`. A finding whose fix an open ticket's What to build or criteria already require is covered: set its `ticket:` to that ticket's path and leave the ticket unchanged. List covered findings in the summary under `Already ticketed:`, one `- <number>: <ticket path>` line each; they join no group. When every finding is covered, skip `Recommended tickets:` and the question.
 
 The user picks findings by their numbers; tickets have no labels of their own. End the summary with `Recommended tickets:`, one group per line, led by its finding numbers:
 
@@ -150,12 +150,12 @@ An answer naming an unknown or already covered finding, or one you cannot read u
 Read [ticket](../../references/ticket.md) and follow its TEMPLATE, NUMBERING and FIELDS, with these values:
 
 - Location: `issues/` of the feature the report resolved to, else `.scratch/reviews/<branch-slug>/issues/`; never a directory holding `map.md`.
-- `**What to build:**` the corrected behavior, naming the findings by location.
-- `**Branch:**` the current branch; drop the line on the base branch or a detached HEAD.
+- `**What to build:**` the corrected behavior, then one numbered line per finding with its location and its Problem: the input or situation and the wrong result.
+- `**Branch:**` the current branch, the base branch included; drop the line only on a detached HEAD.
 - `**Status:**` `ready-for-agent`, with an answered choice written into `**What to build:**`; or, for the split-off ticket of an open choice, `needs-info` with that choice as a `[NEEDS CLARIFICATION: ...]` marker in the ticket body.
 - The first criterion, verbatim: `- [ ] Each finding reproduced before the change, with evidence under ## Comments; a finding that did not reproduce is named there and its criteria removed; if none reproduced, set **Status** to wontfix and stop.` Then one criterion per finding from its Fix and its observable result, plus a regression test when the project has a test suite.
 
-After writing, set each finding's `ticket:` in the report to the created path, or `none` when not selected. Change nothing else in the report.
+After writing, change only `ticket: proposed` entries in the report: the created path for a selected finding, `none` for the rest. A covered finding keeps its ticket path. Change nothing else in the report.
 
 ## STOP CONDITIONS
 

@@ -77,7 +77,7 @@ The directory follows LOCATION from feature directory. The file name is fixed.
 
 Reproduction scripts, probes and raw outputs the investigation saves go under `.scratch/<feature-slug>/research/<topic>/`, `<topic>` being one to three lowercase english words, hyphenated; `root-cause.md` cites them by that path. Nothing else goes at the feature root.
 
-Create the feature directory when the report has none yet; write into the one the input names when it does. A `spec.md` already sitting there is left untouched - a bug that grew into a feature carries both documents side by side.
+Create the feature directory when the report has none yet; write into the one the input names when it does. Before overwriting an existing `root-cause.md`, apply the repeat rule under FIX TICKET. A `spec.md` already sitting there is left untouched - a bug that grew into a feature carries both documents side by side.
 
 Keep the headings stable - the fix ticket's executor reads the root cause by them:
 
@@ -124,9 +124,15 @@ Before writing, read [ticket](../../references/ticket.md): it owns the template,
 - `**What to build:**` the corrected behavior from the user's side, naming `root-cause.md` as its source.
 - Acceptance criteria: the reported symptom no longer reproduces through the minimized repro, and the check from `## Regression test` exists and passes. Add a criterion only for a further requirement `## Fix direction` states.
 - `**Blocked by:**` `None (can start immediately)` unless an existing ticket of this feature must land first; then its number.
-- `**Branch:**` `fix/<feature-slug>` by the rule in the reference.
+- `**Branch:**` by the rule in the reference, with `<type>` `fix`.
 
-On a repeat, an open ticket in `issues/` - any status but `resolved` and `wontfix` - that already names this `root-cause.md` is the fix ticket: leave it unchanged and write no second one. A `resolved` or `wontfix` ticket is not: write the next number by NUMBERING.
+On a repeat, check the tickets in `issues/` that already name this `root-cause.md`. An open one - any status but `resolved` and `wontfix` - is the fix ticket:
+
+| Existing ticket | Action |
+| --- | --- |
+| Open, same confirmed cause | Leave it unchanged and write no second one. |
+| Open, new confirmed cause | Stop before rewriting `root-cause.md` or the ticket. Ask whether to update the ticket's What to build and criteria for the new cause, or to close it. After the answer, save `root-cause.md`. Update keeps the ticket's number, `**Status:**` and `**Branch:**`; close sets its `**Status:**` to `wontfix` as the user's decision and writes the next number by NUMBERING. |
+| Only `resolved` or `wontfix` | Write the next number by NUMBERING. |
 
 ## NEXT
 
