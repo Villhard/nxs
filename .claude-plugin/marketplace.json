@@ -9,7 +9,7 @@
       "name": "dev",
       "source": "./plugins/dev",
       "category": "development",
-      "description": "Shape, plan, implement and review development work with seven commands, explicit handoffs, one worker role and five review roles"
+      "description": "Four development commands for Claude Code and Codex: shape features and bugs into tickets for harness plan mode, review with three roles, and commit"
     }
   ]
 }

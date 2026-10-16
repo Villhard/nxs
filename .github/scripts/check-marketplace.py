@@ -172,10 +172,7 @@ def check_instructions(files):
             if len(declared) != len(set(declared)) or not all(declared):
                 raise Invalid(f'{path}: duplicate or empty agent tools')
             if agent[1] == 'dev':
-                expected = {'Read', 'Grep', 'Glob', 'Bash'}
-                if agent[2] == 'worker':
-                    expected |= {'Write', 'Edit'}
-                if set(declared) != expected:
+                if set(declared) != {'Read', 'Grep', 'Glob', 'Bash'}:
                     raise Invalid(f'{path}: unexpected dev role tools')
         if skill and skill[1] == 'dev':
             if 'name' in fields:
@@ -193,12 +190,12 @@ def check_instructions(files):
                 if values != (['false'] if explicit else ['true']):
                     raise Invalid(f'{policy}: incorrect dev invocation policy')
     if 'dev' in plugin_names(files):
-        expected_skills = {'rnd', 'bug', 'plan', 'exec', 'review', 'commit'}
-        expected_agents = {'worker', 'review-quality', 'review-testing', 'review-simplification'}
+        expected_skills = {'rnd', 'bug', 'review', 'commit'}
+        expected_agents = {'review-quality', 'review-testing', 'review-simplification'}
         skills = {p.split('/')[3] for p in files if re.fullmatch(r'plugins/dev/skills/[^/]+/SKILL\.md', p)}
         agents = {Path(p).stem for p in files if re.fullmatch(r'plugins/dev/agents/[^/]+\.md', p)}
         if skills != expected_skills or agents != expected_agents:
-            raise Invalid('plugins/dev: expected six command skills and four agent roles')
+            raise Invalid('plugins/dev: expected four command skills and three agent roles')
 
 
 def check(base, current):

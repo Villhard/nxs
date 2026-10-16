@@ -4,7 +4,7 @@ A plugin marketplace for Claude Code and Codex.
 
 | Plugin | Use it to |
 | --- | --- |
-| [dev](plugins/dev/README.md) | Shape, plan, implement, review, and commit development work. |
+| [dev](plugins/dev/README.md) | Shape features and bugs into tickets, review and commit development work. |
 
 ## Install
 

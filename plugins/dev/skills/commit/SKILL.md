@@ -1,11 +1,11 @@
 ---
-description: Commit existing changes in atomic groups when the user invokes /dev:commit or asks to commit work outside /dev:exec. Do not activate for commit discussions or for staging and commits owned by that workflow.
+description: Commit existing changes in atomic groups when the user invokes /dev:commit or asks to commit work. Do not activate for commit discussions.
 argument-hint: "[optional scope hint]"
 ---
 
 # /dev:commit
 
-Commit existing changes in atomic groups, outside `/dev:exec`. Its internal staging and commits follow its own rules and never invoke this command.
+Commit existing changes in atomic groups.
 
 Accepted input: an optional scope hint. Without one, consider all existing changes for grouping. Stop on foreign or unclear ownership; "all changes" does not override the exclusions below.
 

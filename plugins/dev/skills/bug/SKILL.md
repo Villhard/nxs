@@ -79,7 +79,7 @@ Reproduction scripts, probes and raw outputs the investigation saves go under `.
 
 Create the feature directory when the report has none yet; write into the one the input names when it does. A `spec.md` already sitting there is left untouched - a bug that grew into a feature carries both documents side by side.
 
-Keep the headings stable - `/dev:plan` reads the root cause by them:
+Keep the headings stable - the fix ticket's executor reads the root cause by them:
 
 ```markdown
 # Root cause: <title>

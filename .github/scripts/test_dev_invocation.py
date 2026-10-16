@@ -13,7 +13,7 @@ import zlib
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EXPLICIT = ('rnd', 'bug', 'plan', 'exec', 'review')
+EXPLICIT = ('rnd', 'bug', 'review')
 
 
 def main():
@@ -66,7 +66,7 @@ def main():
         ]
         cases = [
             ('ordinary', None, 'Explain an off-by-one error.'),
-            ('quoted-handoff', None, 'Assess this quoted handoff: "Next use /dev:bug, /dev:plan and /dev:exec."'),
+            ('quoted-handoff', None, 'Assess this quoted handoff: "Next use /dev:bug, /dev:rnd and /dev:review."'),
             ('commit-request', None, 'Commit the prepared change.'),
             ('commit-discussion', None, 'Explain what a commit is.'),
         ] + [(name, name, f'$dev:{name} Use this command on a synthetic example.')

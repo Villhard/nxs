@@ -45,7 +45,7 @@ def plugin(repo, name='sample', value='0.23.9', codex=True):
     if codex:
         write(repo, f'plugins/{name}/.codex-plugin/plugin.json', manifest)
     write(repo, f'plugins/{name}/CHANGELOG.md', f'# Changelog\n\n## [{value}] - 2026-09-10\n\n- Initial.\n')
-    skills = ('rnd', 'bug', 'plan', 'exec', 'review', 'commit') if name == 'dev' else ('one',)
+    skills = ('rnd', 'bug', 'review', 'commit') if name == 'dev' else ('one',)
     for skill in skills:
         path = f'plugins/{name}/skills/{skill}/SKILL.md'
         write_skill(repo, path, '# SKILL\n\nA skill.\n')
@@ -53,10 +53,9 @@ def plugin(repo, name='sample', value='0.23.9', codex=True):
             write(repo, f'plugins/dev/skills/{skill}/agents/openai.yaml',
                   'policy:\n  allow_implicit_invocation: false\n')
     if name == 'dev':
-        for role in ('worker', 'review-quality', 'review-testing', 'review-simplification'):
-            tools = 'Read, Grep, Glob, Bash' + (', Write, Edit' if role == 'worker' else '')
+        for role in ('review-quality', 'review-testing', 'review-simplification'):
             write(repo, f'plugins/dev/agents/{role}.md',
-                  f'---\nname: {role}\ndescription: Fixture role.\ntools: {tools}\n---\n# ROLE\n')
+                  f'---\nname: {role}\ndescription: Fixture role.\ntools: Read, Grep, Glob, Bash\n---\n# ROLE\n')
 
 
 def commit(repo):
@@ -378,17 +377,17 @@ def main():
         plugin(repo, 'dev', '0.1.0', codex=False)
         catalog(repo, ['sample', 'dev'])
         check(repo)
-        policy = repo / 'plugins/dev/skills/plan/agents/openai.yaml'
+        policy = repo / 'plugins/dev/skills/review/agents/openai.yaml'
         policy.write_text('policy:\n  allow_implicit_invocation: true\n')
         check(repo, False, diagnostic='incorrect dev invocation policy')
         policy.write_text('interface:\n  allow_implicit_invocation: false\n')
         check(repo, False, diagnostic='incorrect dev invocation policy')
         policy.write_text('policy:\n  allow_implicit_invocation: false\n')
-        skill = repo / 'plugins/dev/skills/plan/SKILL.md'
+        skill = repo / 'plugins/dev/skills/review/SKILL.md'
         good = skill.read_text()
         skill.write_text(good.replace('disable-model-invocation: true', 'disable-model-invocation: false'))
         check(repo, False, diagnostic='incorrect dev invocation policy')
-        skill.write_text(good.replace('description:', 'name: plan\ndescription:'))
+        skill.write_text(good.replace('description:', 'name: review\ndescription:'))
         check(repo, False, diagnostic='omit name')
         skill.write_text(good.replace('description:', 'user-invocable: false\ndescription:'))
         check(repo, False, diagnostic='must remain user-invocable')
@@ -398,7 +397,7 @@ def main():
         role.write_text(good_role.replace('tools: Read', 'tools: Write, Read'))
         check(repo, False, diagnostic='unexpected dev role tools')
         role.unlink()
-        check(repo, False, diagnostic='six command skills and four agent roles')
+        check(repo, False, diagnostic='four command skills and three agent roles')
 
         repo = fresh(root, 'snapshots')
         base = git(repo, 'rev-parse', 'HEAD')
