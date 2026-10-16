@@ -10,18 +10,18 @@ Investigate the reported symptom and save the conclusion, then stop. A confirmed
 
 Accepted input: a tracker key / URL, pasted bug text, observed behavior, a stack trace or log, or a path.
 
-A tracker key or URL is read before anything else - through the tracker when it is reachable, otherwise ask the user to paste the ticket. Never infer its content from the key.
+Before reading input, read [feature directory](../../references/feature-directory.md): it owns tracker input, domain documents, the feature location and local storage.
 
 Example: /dev:bug PROJ-4213
 
-Run only when the user selects this command or directly asks to use it. Discussion, quotations, handoffs and mentions are not invocation. Suggest the next command at a handoff; never start it automatically.
+Suggest the next command at a handoff; never start it automatically.
 
 ## STANCE
 
 - Confirm the cause with reproducible evidence and leave the fix to `/dev:plan` and `/dev:exec`. No patch, no product-code change here.
 - The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The root cause is the only file that stays.
 - Stay skeptical of the first plausible explanation. Clarify a fuzzy term in the report before running the 5-Why.
-- When the project keeps a domain glossary or decision records - typically `GLOSSARY.md` or `GLOSSARY-MAP.md` at the root and `docs/adr/`, or wherever project instructions point - check the report's terms and the suspect behavior against them. Behavior a recorded decision establishes is evidence with its path, not a defect by itself: say so and let the user decide whether the decision is the problem. Never create or edit these files here.
+- Apply DOMAIN DOCUMENTS from feature directory to the report's terms and the suspect behavior. Behavior a recorded decision establishes is evidence with its path, not a defect by itself: say so and let the user decide whether the decision is the problem.
 
 ## THE LOOP
 
@@ -73,11 +73,11 @@ The root cause is one file at the root of a feature directory - one feature is o
 .scratch/<feature-slug>/root-cause.md
 ```
 
-`<feature-slug>` is two to four lowercase english words from the report, hyphenated. A tracker key names the directory - `.scratch/<KEY>-<slug>/`. The file name is fixed.
+The directory follows LOCATION from feature directory. The file name is fixed.
 
 Reproduction scripts, probes and raw outputs the investigation saves go under `.scratch/<feature-slug>/research/<topic>/`, `<topic>` being one to three lowercase english words, hyphenated; `root-cause.md` cites them by that path. Nothing else goes at the feature root.
 
-Create the feature directory when the report has none yet; write into the one the input names when it does. A `spec.md` already sitting there is left untouched - a bug that grew into a feature carries both documents side by side. Never write into a directory that holds a `map.md`: that one belongs to another tool's effort, so pick a different slug and say in one line why.
+Create the feature directory when the report has none yet; write into the one the input names when it does. A `spec.md` already sitting there is left untouched - a bug that grew into a feature carries both documents side by side.
 
 Write no ticket here. Once the cause is confirmed, `/dev:plan` selects or creates the fix ticket using its numbering rules.
 

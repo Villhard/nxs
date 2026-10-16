@@ -48,10 +48,7 @@ def plugin(repo, name='sample', value='0.23.9', codex=True):
     skills = ('rnd', 'bug', 'plan', 'exec', 'review', 'fix', 'commit') if name == 'dev' else ('one',)
     for skill in skills:
         path = f'plugins/{name}/skills/{skill}/SKILL.md'
-        body = '# SKILL\n\nA skill.\n'
-        if name == 'dev' and skill in ('review', 'fix'):
-            body += '\n## SEVERITY BAR\n\nExact text.\n'
-        write_skill(repo, path, body)
+        write_skill(repo, path, '# SKILL\n\nA skill.\n')
         if name == 'dev' and skill != 'commit':
             write(repo, f'plugins/dev/skills/{skill}/agents/openai.yaml',
                   'policy:\n  allow_implicit_invocation: false\n')
@@ -377,17 +374,6 @@ def main():
         write(repo, 'README.md', 'Not bundled\n')
         write(repo, role, role_text + '[outside](../../../README.md)\n')
         check(repo, False, diagnostic='escapes plugin')
-
-        repo = fresh(root, 'severity')
-        plugin(repo, 'dev', '0.1.0', codex=False)
-        catalog(repo, ['sample', 'dev'])
-        for skill in ('review', 'fix'):
-            write_skill(repo, f'plugins/dev/skills/{skill}/SKILL.md', '# SKILL\n\n## SEVERITY BAR\n\nExact text.\n\n## END\n')
-        check(repo)
-        write_skill(repo, 'plugins/dev/skills/fix/SKILL.md', '# FIX\n')
-        check(repo, False, diagnostic='missing SEVERITY BAR')
-        write_skill(repo, 'plugins/dev/skills/fix/SKILL.md', '## SEVERITY BAR\n\nDifferent.\n\n## END\n')
-        check(repo, False, diagnostic='must match exactly')
 
         repo = fresh(root, 'dev-contract')
         plugin(repo, 'dev', '0.1.0', codex=False)

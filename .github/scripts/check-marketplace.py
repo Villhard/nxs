@@ -267,16 +267,6 @@ def check(base, current):
                 raise Invalid(f'{path}: bundled Markdown resource escapes plugin: {destination}')
             if target not in current and not any(p.startswith(target.rstrip('/') + '/') for p in current):
                 raise Invalid(f'{path}: missing local Markdown resource {destination} ({target})')
-    if 'dev' in names:
-        bars = []
-        for skill in ('review', 'fix'):
-            path = f'plugins/dev/skills/{skill}/SKILL.md'
-            found = re.search(r'^## SEVERITY BAR\n(.*?)(?=^## |\Z)', read(current, path), re.M | re.S)
-            if not found or not found[1].strip():
-                raise Invalid(f'{path}: missing SEVERITY BAR section')
-            bars.append(found[1])
-        if bars[0] != bars[1]:
-            raise Invalid('plugins/dev/skills/{review,fix}/SKILL.md: SEVERITY BAR sections must match exactly')
 
 
 def main():

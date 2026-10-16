@@ -23,7 +23,7 @@ Commit what is there. Keep working-file bytes unchanged throughout the command, 
 4. For the remaining cases, group by logical change - one group per `feat` / `fix` / `refactor` / `chore` / `docs` unit. Separate a refactor from a feat or a fix even inside one file. For each group, in dependency order:
    - read both diffs for every selected path: a path may contain intended staged content and unrelated unstaged edits;
    - choose the index case below before staging. Never silently unstage, overwrite or include another group's content;
-   - inspect the exact proposed commit diff, then commit with the specified command. Never use `git add -A` or `git add .`.
+   - inspect the exact proposed commit diff, then commit with the specified command.
 5. Verify that out-of-scope working and staged content was preserved. Report commits made and anything left uncommitted, with reasons.
 
 | Index and selected paths | Action |
@@ -34,25 +34,12 @@ Commit what is there. Keep working-file bytes unchanged throughout the command, 
 
 Example: a requested fix entirely in `limits.py` can use `--only` while an unrelated `README.md` remains staged. An intended fix sharing `limits.py` with unrelated unstaged edits cannot use a whole-file `git add` or `commit --only`.
 
-## MESSAGE FORMAT
-
-```
-<type>(<scope>): <subject>
-```
-
-Single line, no body unless explicitly requested. Subject as short as possible and fully lowercase, abbreviations included ("seo", not "SEO"). Types: `feat` (new functionality), `fix` (bug fix), `refactor` (no behavior change), `chore` (deps, configs), `docs` (documentation).
-
-Scope names the area the group changes: a module, a plugin, or in a notes repository the topic or skill name. Prefer a scope already used in `git log --oneline -20`.
-
-Plain simple verbs: add, fix, remove, update, show, hide, validate. Never tighten, strengthen, refine, streamline, leverage, harden.
-
 ## RULES
 
+Before the first commit, read [commit format](../../references/commit-format.md); every message and staging step follows its MESSAGE and GIT RULES.
+
 - one commit is one logical change;
-- do not commit unrelated files, large generated artifacts, foreign-branch files, or merge artifacts;
-- do not amend a published commit;
-- `--no-verify` only with explicit approval;
-- after a failed hook, inspect the resulting state. No commit is assumed to exist. If fixing code is needed, stop and report it; once corrected, retry with a normal commit, never amend a prior commit.
+- do not commit unrelated files, large generated artifacts, foreign-branch files, or merge artifacts.
 
 ## STOP CONDITIONS
 

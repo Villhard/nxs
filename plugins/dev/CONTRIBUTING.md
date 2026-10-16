@@ -6,9 +6,9 @@ Follow the [shared rules](../../CONTRIBUTING.md). This guide covers authoring; t
 
 - `skills/<command>/SKILL.md`: seven commands, with local `assets/`, `references/` or `scripts/` when needed.
 - `agents/`: one worker and five review roles, each with complete instructions.
-- [Agent launch](references/agent-launch.md): shared launch and context delivery, read by exec, review and fix when needed.
+- `references/`: rules shared by several commands, read at the point of use. See CONTRACT OWNERS.
 
-Keep process rules with their owning command or role, and personal preferences in client/project instructions. Do not add background skills, cross-skill injection or plugin hooks. Add a command only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing command.
+Keep process rules with their owning command or role; a rule two commands apply goes to one reference instead of two copies. Keep personal preferences in client/project instructions. Do not add background skills, cross-skill injection or plugin hooks. Add a command only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing command.
 
 ## TERMINOLOGY
 
@@ -38,11 +38,15 @@ Keep process rules with their owning command or role, and personal preferences i
 | Contract | Owners |
 | --- | --- |
 | Feature and investigation outputs | [rnd](skills/rnd/SKILL.md), [bug](skills/bug/SKILL.md) |
+| Feature location, storage, tracker input, external specs, domain documents | [feature directory](references/feature-directory.md), read by rnd, plan and bug |
 | Ticket and implementation plan | [plan](skills/plan/SKILL.md), [templates](skills/plan/assets/implementation.md) |
 | Task execution and recovery | [exec](skills/exec/SKILL.md), [worker](agents/worker.md) |
-| Review report and fix outcomes | [review](skills/review/SKILL.md), [fix](skills/fix/SKILL.md) |
+| Review sweep and fix outcomes | [review](skills/review/SKILL.md), [fix](skills/fix/SKILL.md) |
+| Review report format, validation and currency | [review report](references/review-report.md), read by review and fix |
+| Severity and finding verification | [findings](references/findings.md), read by review and fix |
 | Standalone commits | [commit](skills/commit/SKILL.md) |
-| Agent launch and context | [Launch reference](references/agent-launch.md) |
+| Commit message and Git rules | [commit format](references/commit-format.md), read by commit, exec and fix |
+| Agent launch and context packets | [agent launch](references/agent-launch.md), read by exec, review and fix |
 
 Preserve artifact headings, status values, paths, writer ownership and prompt markers, including `review_mode: quick` and `review_phase: recheck`. Only the user sets `wontfix`. Keep scope, Git checks, tracker selection and stop rules with their owners; do not copy their schemas or procedures here.
 

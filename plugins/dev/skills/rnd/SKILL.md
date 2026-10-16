@@ -10,11 +10,11 @@ Think a request through to a spec and its tickets, then stop. The entry point fo
 
 Accepted input: a request in words, a feature idea, a spec path, a tracker key / URL / pasted ticket, or an open question. With nothing given, work from the current session context.
 
-A tracker key or URL is read before anything else through an available read interface; otherwise ask the user to paste the ticket. Never infer its content from the key.
+Before reading input, read [feature directory](../../references/feature-directory.md): it owns tracker input, external specs, domain documents, the feature location and local storage.
 
 Example: /dev:rnd add rate limiting to the public API
 
-Run only when the user selects this command or directly asks to use it. Discussion, quotations, handoffs and mentions are not invocation. Suggest the next command at a handoff; never start it automatically.
+Suggest the next command at a handoff; never start it automatically.
 
 ## STANCE
 
@@ -27,15 +27,15 @@ Run only when the user selects this command or directly asks to use it. Discussi
 
 Read an explicit spec path before shaping; a missing or unreadable file stops, never becomes a new request. Inspect its decisions, exclusions, testing requirements, answers and open questions regardless of its producer or ready label. Check them against relevant code. An approved spec with no unresolved decision enters ARTIFACT and SLICE directly: do not repeat settled clarification, explore or stress steps. New contradictory evidence reopens only the affected decision; show the evidence and ask before changing it. An unresolved spec follows CLARIFY and cannot produce tickets while a material question remains open.
 
-Keep the source unchanged. Reuse an existing local feature's `spec.md` in place. For a source outside the target feature, include preserving its applicable content in the proposed local `spec.md` before approval to write; copy a compatible spec unchanged. Use the existing spec headings if a different layout needs adaptation, without dropping decisions, exclusions or answers. Inspect the target first: reuse an identical existing spec, but a different existing spec requires a concrete revision decision, never an overwrite. ARTIFACT's directory and map guards apply before any copy.
+A source spec follows EXTERNAL SPEC from feature directory.
 
-For remote input, establish the source identity, applicable parent decisions/comments (or that no parent applies) and blocker state through an available read interface or supplied content. Ask for missing context; a key, a ready label or an omitted blocker field is not evidence of no blockers. Preserve this evidence in the spec's existing sections. A known open remote blocker needs a verified mapping to a local ticket in the target feature; retain that local dependency and check its state. Never interpret remote issue numbers as local ticket numbers. Unknown or unmapped blockers prevent a ready handoff; an authorized draft records the missing evidence as a clarification and produces no tickets. This command does not publish or synchronize remote issues.
+Remote input follows TRACKER INPUT from feature directory. Preserve its evidence in the spec's existing sections. With unknown or unmapped blockers, an authorized draft records the missing evidence as a clarification and produces no tickets.
 
 ## CLARIFY
 
 Read the relevant code, patterns, and integration points first - directly or through the built-in Explore agent. Scale the reading to the request: trace the current behavior and likely change points, look for reusable code, and check affected consumers and tests for a migration. Before discussing approaches, show a short account of those findings with repository-relative paths and symbol names where applicable. If no suitable implementation was found, say where you looked; do not invent an analogue. Ask only about what the code does not answer. Do not over-read. Clarify a fuzzy domain term before anything else.
 
-When the project keeps a domain glossary or decision records - typically `GLOSSARY.md` or `GLOSSARY-MAP.md` at the root and `docs/adr/`, or wherever project instructions point - read the entries for the affected area before asking. Use the glossary's terms in the spec and tickets, not a synonym it avoids, and ask only about a term it leaves undefined or the request contradicts. Their absence is normal: do not ask about it. Never create or edit these files here; name a missing term or a decision worth recording in the reply.
+Apply DOMAIN DOCUMENTS from feature directory before asking: use the glossary's terms in the spec and tickets, and ask only about a term it leaves undefined or the request contradicts. Name a missing term or a decision worth recording in the reply.
 
 Ask one question at a time, 2-4 concrete options with a recommendation, open-ended only where a choice is unnatural. After each answer, revise the understanding and derive the next question from the updated picture.
 
@@ -77,11 +77,7 @@ One feature is one local directory, holding the spec, one file per ticket and an
 
 Everything research saves goes under `research/`, including files written by agents or workflows this command launches: one topic's result as `research/<topic>.json` or `.md`, and the scripts, probes, downloads and raw outputs behind it in `research/<topic>/`. `<topic>` is one to three lowercase english words, hyphenated, shared by the result and its folder. Give each launched agent or workflow its `research/<topic>/` path as its output location. `## Implementation Decisions` cites results by their path inside the feature. The feature root holds only `spec.md`, `root-cause.md`, `review.md` and the `issues/`, `research/` and `checks/` directories.
 
-`<feature-slug>` is two to four lowercase english words from the request, hyphenated; a tracker key names the directory instead - `.scratch/<KEY>-<slug>/`. Write into the directory the input names when it has one, leave a `root-cause.md` already sitting there untouched, and never replace an existing `spec.md` without approval of that concrete revision.
-
-Never write into a `.scratch/<x>/` that holds a `map.md` - that directory holds decision work. Pick another slug and say why in one line. Decision documents, including tickets carrying a bare or Markdown-bold `Type:` field, supply context for a distinct implementation deliverable; never convert them in place.
-
-Always save Markdown under `.scratch/`. Do not look up repository/global tracker preferences or ask for a storage backend or separate local-storage consent. An unrelated tracker preference does not redirect this workflow. Content approval and the input, clarification and preservation gates still apply. Do not change settings, run setup or publish/synchronize remote issues.
+The directory follows LOCATION and LOCAL STORAGE from feature directory. Leave a `root-cause.md` already sitting there untouched, and never replace an existing `spec.md` without approval of that concrete revision. Decision documents, including tickets carrying a bare or Markdown-bold `Type:` field, supply context for a distinct implementation deliverable; never convert them in place.
 
 Before writing the spec, read [assets/spec.md](assets/spec.md), resolved relative to this installed skill directory. It lists the seven permitted `##` headings in order. Keep Problem Statement and Solution; omit any other section only when it has no content. Do not invent other `##` headings.
 

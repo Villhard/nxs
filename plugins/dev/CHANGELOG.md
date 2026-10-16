@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.30.1] - 2026-10-16
+
+### Changed
+
+- `review` and `fix` read the severity bar and finding verification from the `findings` reference.
+- `review` and `fix` read the report format, validation and currency rules from the `review-report` reference.
+- `commit` and `exec` read the message format and Git rules from the `commit-format` reference.
+- `rnd`, `plan` and `bug` read feature location, local storage, tracker input, external specs and domain documents from the `feature-directory` reference.
+- The `agent-launch` reviewer packet is the single packet definition for `review` and `fix` and carries the read-only check rule.
+
 ## [0.30.0] - 2026-10-16
 
 ### Added
