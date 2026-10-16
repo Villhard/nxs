@@ -48,7 +48,7 @@ Keep process rules with their owning command or role; a rule two commands apply 
 | Commit message and Git rules | [commit format](references/commit-format.md), read by commit, exec and fix |
 | Agent launch and context packets | [agent launch](references/agent-launch.md), read by exec, review and fix |
 
-Preserve artifact headings, status values, paths, writer ownership and prompt markers, including `review_mode: quick` and `review_phase: recheck`. Only the user sets `wontfix`. Keep scope, Git checks, tracker selection and stop rules with their owners; do not copy their schemas or procedures here.
+Preserve artifact headings, status values, paths, writer ownership and prompt markers, including `review_phase: recheck`. Only the user sets `wontfix`. Keep scope, Git checks, tracker selection and stop rules with their owners; do not copy their schemas or procedures here.
 
 ## VERSIONED SURFACE
 

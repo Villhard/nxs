@@ -66,7 +66,7 @@ Before any agent launch or direct pass, write Scope, Requirements and Mode with 
 - `dev:review-simplification`: introduced over-engineering;
 - `dev:review-documentation`: stale or missing docs and ticket checkboxes.
 
-**Quick** always launches exactly `dev:review-quality` and `dev:review-implementation`, concurrently when capacity permits, including on a trivial diff. Each prompt contains the exact line `review_mode: quick`; quality then covers tests too, implementation documentation and simplification too. Full prompts carry no quick marker.
+**Quick** always launches exactly `dev:review-quality` and `dev:review-implementation` with their normal bounds, concurrently when capacity permits, including on a trivial diff. It does not cover tests, simplification or documentation; the report says so.
 
 Only without `quick`, a trivial diff (dotfiles, docs only, pure formatting) may receive a direct pass against the same bar, recorded as `mode: full`. There is one sweep and no re-check in this command.
 

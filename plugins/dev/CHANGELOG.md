@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.31.0] - 2026-10-16
+
+### Changed
+
+- `review quick` runs `review-quality` and `review-implementation` with their normal bounds and no longer covers tests, simplification or documentation.
+- `fix` commits with a scoped `fix(<scope>): address review findings` message.
+
+### Removed
+
+- The `review_mode: quick` prompt marker and the quick-mode sections of `review-quality` and `review-implementation`.
+
 ## [0.30.1] - 2026-10-16
 
 ### Changed
