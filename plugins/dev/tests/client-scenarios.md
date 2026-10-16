@@ -54,8 +54,9 @@ Prepare a small code diff with a reachable defect and a pinned requirement on a 
 3. Commit the diff and run review with nothing staged: the report has `scope: branch` against the merge-base. Unstaged edits are named under `Not checked:`, never reviewed.
 4. On the base branch with nothing staged, review stops with an explanation and writes no report. `review quick` or a code path stops before any write.
 5. With no supported agent route, review stops before changing the report. A direct trivial pass remains available. A mid-run launch failure leaves incomplete state, never a successful result.
+6. Ticket cycle without a feature, on a branch with no `.scratch/<feature-slug>/`: run review and answer with one finding number; the ticket appears under `.scratch/reviews/<branch-slug>/issues/` with `Branch:` set to the current branch and the reproduction criterion first. Run review again before executing it: that finding's `ticket:` names the existing path, it is listed under `Already ticketed:`, and no second ticket is written. Run `/plan <ticket-path>`, then `git add` the change: the ticket is `resolved` with reproduction evidence in Comments. Run review with no argument: Requirements list the ticket as a `disk:` source, the goal comes from its What to build rather than `no stated goal`, and the report stays at `.scratch/reviews/<branch-slug>/review.md`. Variant: a combined ticket of two findings, one fixed by hand before `/plan`, ends `resolved`, not `wontfix`, with the dead finding named in Comments and its criteria removed.
 
-Verified for 0.33.0 in Claude Code CLI 2.1.301: steps 1 and 3, a one-ticket answer under the earlier ticket labels and both stops of step 4. Step 2 with finding numbers and recommended groups (0.35.0), step 5 and Codex remain unverified.
+Verified for 0.33.0 in Claude Code CLI 2.1.301: steps 1 and 3, a one-ticket answer under the earlier ticket labels and both stops of step 4. Step 2 with finding numbers and recommended groups (0.35.0), step 5, step 6 (0.36.0) and Codex remain unverified.
 
 ## REPORTING
 

@@ -86,7 +86,7 @@ Working files live under `.scratch/<feature-slug>/`, or `.scratch/<KEY>-<slug>/`
 - `research/<topic>.json` or `.md`, `research/<topic>/`: saved research results and the scripts and raw data behind them.
 - `review.md`: findings and the tickets proposed for them.
 
-Reviews without a matching feature use `.scratch/reviews/<branch-slug>/review.md`, and their tickets go to `issues/` beside it. Without a path argument, review matches the resolved tickets whose `Branch:` line names the current branch. Ignore `.scratch/` in Git to keep these records local.
+Reviews without a matching feature use `.scratch/reviews/<branch-slug>/review.md`, and their tickets go to `issues/` beside it. Without a path argument, review matches the resolved tickets whose `Branch:` line names the current branch, in feature directories and under `.scratch/reviews/`. A finding that an open ticket already covers links to that ticket instead of being proposed again. Ignore `.scratch/` in Git to keep these records local.
 
 A `resolved` ticket means implementation is verified; review is still a separate step.
 

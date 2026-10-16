@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.36.0] - 2026-10-16
+
+### Changed
+
+- `review` tickets start with a criterion checkable at close: each finding reproduced before the change, a finding that did not is named and its criteria removed, `wontfix` only when none reproduced.
+- The `ticket` reference lets the executor remove the criteria of a review finding that did not reproduce and set `wontfix` only when none did.
+- `review` without an argument also reads resolved tickets of the current branch under `.scratch/reviews/<branch-slug>/issues/`.
+- `review` links a finding an open ticket already covers to that ticket under `Already ticketed:` instead of proposing it again; `review.md` records that path in `ticket:`.
+- `agent launch` no longer mentions saved notes in the reviewer packet.
+
 ## [0.35.0] - 2026-10-16
 
 ### Changed
