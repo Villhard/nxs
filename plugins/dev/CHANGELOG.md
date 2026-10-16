@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.37.0] - 2026-10-16
+
+### Changed
+
+- `bug` writes the next fix ticket on a repeat when the existing one is `resolved` or `wontfix`.
+- Client scenarios cover the `bug` repeat after a resolved ticket, `ready-for-human` and clarification markers in plan mode, the clear-request handoff to `/plan`, `review` of a feature or ticket path, the lead documentation check and tickets on the base branch.
+
 ## [0.36.0] - 2026-10-16
 
 ### Changed
