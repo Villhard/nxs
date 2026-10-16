@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.35.0] - 2026-10-16
+
+### Changed
+
+- `review` ends with recommended tickets as groups of finding numbers: one per critical or major finding unless a named reason joins them, a minor finding with the major one that touches the same place, and the remaining minor findings together.
+- `review` takes the answer as finding numbers ("1, 3", "all", "7 separately", "1 and 3 together", "none"); selected findings follow their recommended groups.
+- `review` names an open user choice with a recommendation and splits the finding into its own `needs-info` ticket only when the answer leaves the choice open.
+- `review.md` records `ticket: proposed <finding numbers>` until the answer.
+
+### Removed
+
+- `T<n>` labels of proposed tickets in `review`.
+
 ## [0.34.0] - 2026-10-16
 
 ### Changed
