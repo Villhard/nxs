@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.37.1] - 2026-10-16
+
+### Fixed
+
+- Ticket reference no longer requires one branch for every ticket of a feature, matching the `Branch:` values `bug` and `review` write.
+
 ## [0.37.0] - 2026-10-16
 
 ### Changed
