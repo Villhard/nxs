@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.38.0] - 2026-10-16
+
+### Changed
+
+- `review` tickets list each finding's location and Problem under What to build.
+- `review` writes `Branch:` on the base branch too; only a detached HEAD drops it.
+- `review` checks findings against open tickets under `.scratch/reviews/<branch-slug>/issues/` and in the resolved feature's `issues/`.
+- `bug` stops and asks on a repeat with a new confirmed cause while the fix ticket is open: update its criteria or close it.
+- The `ticket` reference no longer lists command branch values; `bug` takes the project's branch rule with `<type>` `fix`.
+
+### Fixed
+
+- Staged `review` and its report currency no longer depend on `origin/HEAD`, `main` or `master`.
+- Staged `review` reads a ticket's status and `Branch:` from the same version as its text.
+- `review` keeps the ticket path of a covered finding after the answer instead of setting `none`.
+
 ## [0.37.1] - 2026-10-16
 
 ### Fixed
