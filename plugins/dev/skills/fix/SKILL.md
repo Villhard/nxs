@@ -57,12 +57,12 @@ After the no-op check and before any report or code edit for surviving findings,
 1. Write `fix: in-progress` before launching a worker or changing code. Re-check preflight if checkout changes occurred during verification.
 2. Launch one `dev:worker` with the surviving findings verbatim, each location, severity, issue, impact and fix, plus the branch's conventions, applicable project rules, current user directives, goal, pinned requirements and relevant correction history. Findings are its entire unit of work. It neither commits nor edits the report or ticket status.
 3. Wait for the worker. Collect its `Decisions` and `Deviations`, including from blocked or partial results, with finding and reason. Inspect the actual diff and run project tests and linter yourself after its last edit. Record actual corrections and verification results; all green before committing. A blocked or partial worker stops the run.
-4. Check the staged and working diff against the intended changes before committing. Stage explicit intended code paths only. For staged scope, include the original reviewed staged set and its fixes; no foreign work or report. Commit `fix: address review findings`. Record the actual commit OID. Do not create an empty commit if the worker made no correction; record dropped findings or stop if it did not resolve them.
+4. Check the staged and working diff against the intended changes before committing. Stage explicit intended code paths only. For staged scope, include the original reviewed staged set and its fixes; no foreign work or report. Read [commit format](../../references/commit-format.md) and commit `fix(<scope>): address review findings`, with the scope its MESSAGE rules give. Record the actual commit OID. Do not create an empty commit if the worker made no correction; record dropped findings or stop if it did not resolve them.
 5. Continue to RE-CHECK only if a finding actually fixed in this pass was critical or major. Minors-only fixes finish with `re-check: none`.
 
 ## RE-CHECK
 
-After each applicable commit, launch fresh `dev:review-quality` and `dev:review-implementation` agents, concurrently when capacity permits. Use the reviewer packet from agent launch with `review_phase: recheck`, critical and major only, and never `review_mode: quick`. Wait for both before proceeding.
+After each applicable commit, launch fresh `dev:review-quality` and `dev:review-implementation` agents, concurrently when capacity permits. Use the reviewer packet from agent launch with `review_phase: recheck`, critical and major only. Wait for both before proceeding.
 
 Rebuild both commands from the validated, immutable Scope base and the latest fix commit: `git log <base>..<tip> --oneline` and `git diff --no-ext-diff --no-textconv <base>..<tip>`. Append `-- <path>` to both for a path selector. Staged also uses this range, never the now-empty index. Add the accumulated finding history to the packet.
 

@@ -66,8 +66,8 @@ Use a tiny standard-library function and a runnable assertion check. Prepare a t
 Prepare a small code diff with a reachable defect and a pinned requirement. Use an ignored report path; capture source, index and HEAD before each read-only pass.
 
 1. Run full review with capacity below five reviewers. Confirm all five distinct roles finish in groups, identical pinned scope reaches each, later groups do not receive earlier findings, and the report completes only after all required results and currency checks.
-2. Run quick review: exactly quality and implementation receive `review_mode: quick`; code and index remain unchanged.
-3. Apply a confirmed major finding through fix. The worker receives the complete finding/requirements packet, changes only the fixture code and returns results; the orchestrator checks and commits. Re-check receives `review_phase: recheck` and history, without the quick marker.
+2. Run quick review: exactly quality and implementation run with their normal bounds and no mode marker, so test, simplification and documentation findings stay out; code and index remain unchanged.
+3. Apply a confirmed major finding through fix. The worker receives the complete finding/requirements packet, changes only the fixture code and returns results; the orchestrator checks and commits with a scoped `fix(<scope>):` message. Re-check receives `review_phase: recheck` and history.
 4. Confirm minor-only fix and no-op fix preserve their existing paths; no-op needs no worker. Repeat with stale requirements and foreign changes: existing gates still stop.
 5. With no supported agent route, agent-dependent review/fix stop before changing the report. A direct trivial full review remains available. A mid-run launch failure leaves incomplete state, never a successful result.
 
