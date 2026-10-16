@@ -50,12 +50,12 @@ Use supplied synthetic remote content or an already available read interface; do
 Prepare a small code diff with a reachable defect and a pinned requirement on a feature branch. Use an ignored report path; capture source, index and HEAD before each pass.
 
 1. Stage the diff and run review with no argument. Quality, testing and simplification run, concurrently or in groups when capacity is short, with identical pinned scope; the report has `scope: staged` and completes only after all results and currency checks. The summary opens with what the change does, numbers the findings by severity with what, problem, fix and the cost of skipping, then gives the verdict, `Dismissed: N` and proposed tickets. Code, index and HEAD are unchanged.
-2. Answer "T1, T3", then repeat with "T2 and T4 together" and "none". Only the selected tickets appear, in the template shape with `Branch:` set to the current branch and the reproduction criterion first; a combined answer yields one ticket; each finding's `ticket:` names the path or `none`.
+2. Grouping, on a diff with two unrelated major findings, one minor finding in the file of the first major and two minor findings elsewhere, one of them needing a user choice: `Recommended tickets:` lists groups by finding numbers with no ticket labels, keeps the majors apart, puts the first minor into the first major's group and the other two minors into one group that names the choice with a recommendation. Answer in fresh runs with: one major and the first minor (one ticket), "all", one finding "separately", the two majors "together" (one ticket), the choice finding without settling it (its own `needs-info` ticket, the rest `ready-for-agent`), an unknown number (one question, no write) and "none". Only the selected tickets appear, in the template shape with `Branch:` set to the current branch and the reproduction criterion first; a combined answer yields one ticket; each finding's `ticket:` names the path or `none`.
 3. Commit the diff and run review with nothing staged: the report has `scope: branch` against the merge-base. Unstaged edits are named under `Not checked:`, never reviewed.
 4. On the base branch with nothing staged, review stops with an explanation and writes no report. `review quick` or a code path stops before any write.
 5. With no supported agent route, review stops before changing the report. A direct trivial pass remains available. A mid-run launch failure leaves incomplete state, never a successful result.
 
-Verified for 0.33.0 in Claude Code CLI 2.1.301: steps 1 and 3, the "T1" answer of step 2 and both stops of step 4. The "T2 and T4 together" and "none" answers, step 5 and Codex remain unverified.
+Verified for 0.33.0 in Claude Code CLI 2.1.301: steps 1 and 3, a one-ticket answer under the earlier ticket labels and both stops of step 4. Step 2 with finding numbers and recommended groups (0.35.0), step 5 and Codex remain unverified.
 
 ## REPORTING
 

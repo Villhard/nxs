@@ -15,7 +15,7 @@ A ticket runs in the client's own plan mode:
 
 `/plan` is the built-in command of Claude Code and Codex, not part of `dev`. The ticket's `Done when` section tells the executor when to stop, to run the full test suite and linter, to check the criteria and set `resolved`, and not to commit. A `Branch:` line names the branch the work goes on; edit or remove it before running.
 
-`review` explains its findings and ends with proposed tickets, similar findings already combined. Answer in text, such as "T1, T3", "T2 and T4 together" or "none"; it creates only those tickets, each ready for `/plan`. Commit with `commit` or by hand after review. Run review after each ticket on the staged changes, or once at the end of the feature on the branch.
+`review` explains its findings and ends with recommended tickets as groups of finding numbers: each critical or major finding on its own unless a named reason joins them, minor findings together or with the major one that touches the same place. Answer with finding numbers, such as "1, 3", "all", "7 separately", "1 and 3 together" or "none"; selected findings follow their recommended groups unless the answer says otherwise, and review creates only those tickets for `/plan`. Commit with `commit` or by hand after review. Run review after each ticket on the staged changes, or once at the end of the feature on the branch.
 
 Start each step explicitly; commands do not start the next step for you. Mentioning or quoting a command does not invoke it.
 

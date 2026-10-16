@@ -89,7 +89,7 @@ Persist each finding's location, problem, verification result and evidence, incl
 
 Write `.scratch/<feature-slug>/review.md` when one feature resolves from the argument or the matched tickets. Never create a feature directory for a report. Several candidate features require a choice before writing. With none, use `.scratch/reviews/<branch-slug>/review.md`; derive a filesystem-safe slug from the branch (`detached-<tip>` when detached). Never write into a directory holding `map.md`; validate that the destination stays inside the repository, including symlinks.
 
-Overwrite one report with the latest run; retain open follow-ups with the run that raised them and `not re-verified`. Do not silently drop them on a scope change. Write the review report FORMAT with each finding's `ticket:` set to its proposed ticket from PROPOSE TICKETS.
+Overwrite one report with the latest run; retain open follow-ups with the run that raised them and `not re-verified`. Do not silently drop them on a scope change. Write the review report FORMAT with each finding's `ticket:` set to `proposed` and the finding numbers of its group from PROPOSE TICKETS.
 
 After VERIFY, re-resolve repository identity, branch, scope, merge-base, HEAD, staged digest when applicable, goal and all requirement sources and pins. Compare with the facts captured before the sweep. Write findings either way, but mark `sweep: complete` only when every fact still matches and all reviewers finished. If anything moved or the run was interrupted, retain `sweep: incomplete` and name what changed or remains unfinished. A hard kill leaves the incomplete report already on disk.
 
@@ -112,20 +112,45 @@ With no findings: `What this change does:`, then `Looks good. Ship.` (or the sec
 
 ## PROPOSE TICKETS
 
-End the summary with the proposed tickets, one line each: `T1 (major): <title> - findings 1, 3`. Every finding belongs to exactly one proposed ticket. Combine findings only when they share one cause or one fix, or their edits overlap in one place; never combine a critical or major finding with a minor one. Mark `needs-info` on a ticket whose fix needs a choice the user has to make, and name that choice.
+The user picks findings by their numbers; tickets have no labels of their own. End the summary with `Recommended tickets:`, one group per line, led by its finding numbers:
 
-Then ask the user to answer in text, for example "T1, T3", "T2 and T4 together" or "none", and stop until the answer arrives.
+```text
+- 1, 2, 5 (major): <title> - <reason for grouping>
+- 3, 4 (minor): <title> - choice for 4: <question>; recommended: <option>
+```
+
+A ticket is one change the user runs in one `/plan` session and commits whole. Every finding belongs to exactly one group; a group takes the severity of its worst finding. Group in this order:
+
+1. Each critical or major finding opens its own group. Join two of them only for a reason named in the line: one cause, one fix, edits in one place, or one end-to-end path that a single check proves.
+2. A minor finding joins the critical or major group whose fix touches the same command, module or file.
+3. The remaining minor findings form one group. Split it by area (command, module, test surface) only when it would not fit one session; never a group per minor finding.
+4. A finding whose fix needs the user's choice names that choice and your recommendation in its group's line.
+
+Expect about one group per critical or major finding plus one or two for the minor findings; this is a guide, not a cap.
+
+Then ask the user to answer with finding numbers, for example "1, 3", "1-6", "all", "7 separately", "1 and 3 together", "4: <option>" or "none", and stop until the answer arrives.
 
 ## CREATE TICKETS
 
-Create only what the answer selects. "T2 and T4 together" is one ticket; the user's explicit combination overrides the combining rules above. "None" creates nothing. An answer naming an unknown ticket, or one you cannot read unambiguously, gets one question back before any write.
+Create tickets only for the findings the answer selects:
+
+| Answer | Tickets |
+| --- | --- |
+| Numbers or ranges: "1, 3", "1-6" | The selected findings, split by their recommended groups; an unselected finding stays out of its group's ticket. |
+| "all" | Every recommended group. |
+| "7 separately" | Finding 7 gets its own ticket; the other selected findings keep their groups. |
+| "1 and 3 together" | One ticket for those findings, whatever their groups. |
+| "4: <option>", "with the recommendation" | The choice is settled. A selected finding whose choice the answer leaves open gets its own `needs-info` ticket; its group stays `ready-for-agent`. |
+| "none" | Nothing. |
+
+An answer naming an unknown finding, or one you cannot read unambiguously, gets one question back before any write.
 
 Read [ticket](../../references/ticket.md) and follow its TEMPLATE, NUMBERING and FIELDS, with these values:
 
 - Location: `issues/` of the feature the report resolved to, else `.scratch/reviews/<branch-slug>/issues/`; never a directory holding `map.md`.
 - `**What to build:**` the corrected behavior, naming the findings by location.
 - `**Branch:**` the current branch; drop the line on the base branch or a detached HEAD.
-- `**Status:**` `ready-for-agent`, or `needs-info` with the open choice as a `[NEEDS CLARIFICATION: ...]` marker in the ticket body.
+- `**Status:**` `ready-for-agent`, with an answered choice written into `**What to build:**`; or, for the split-off ticket of an open choice, `needs-info` with that choice as a `[NEEDS CLARIFICATION: ...]` marker in the ticket body.
 - The first criterion, verbatim: `- [ ] The finding reproduces in the current code; otherwise set **Status** to wontfix with the evidence under ## Comments.` Then one criterion per finding from its Fix and its observable result, plus a regression test when the project has a test suite.
 
 After writing, set each finding's `ticket:` in the report to the created path, or `none` when not selected. Change nothing else in the report.
