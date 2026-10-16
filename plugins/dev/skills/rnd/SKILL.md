@@ -66,12 +66,16 @@ Every concern needs concrete evidence or an explicitly named assumption. A fatal
 
 ## ARTIFACT
 
-One feature is one local directory, holding the spec and one file per ticket:
+One feature is one local directory, holding the spec, one file per ticket and any saved research:
 
 ```
 .scratch/<feature-slug>/spec.md
 .scratch/<feature-slug>/issues/NN-<slug>.md
+.scratch/<feature-slug>/research/<topic>.<json|md>
+.scratch/<feature-slug>/research/<topic>/
 ```
+
+Everything research saves goes under `research/`, including files written by agents or workflows this command launches: one topic's result as `research/<topic>.json` or `.md`, and the scripts, probes, downloads and raw outputs behind it in `research/<topic>/`. `<topic>` is one to three lowercase english words, hyphenated, shared by the result and its folder. Give each launched agent or workflow its `research/<topic>/` path as its output location. `## Implementation Decisions` cites results by their path inside the feature. The feature root holds only `spec.md`, `root-cause.md`, `review.md` and the `issues/`, `research/` and `checks/` directories.
 
 `<feature-slug>` is two to four lowercase english words from the request, hyphenated; a tracker key names the directory instead - `.scratch/<KEY>-<slug>/`. Write into the directory the input names when it has one, leave a `root-cause.md` already sitting there untouched, and never replace an existing `spec.md` without approval of that concrete revision.
 

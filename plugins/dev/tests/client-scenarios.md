@@ -91,6 +91,8 @@ Use a tiny Python standard-library repository: `limits.py` with `resolve_limit(v
 | No-commit recovery | Two completed tasks, attributable uncommitted code, `next: validate; mode: no commits` | Run missing checks, close the ticket, preserve mode and HEAD. |
 | Pre-commit interruption | Complete code and tracked ticket, `next: commit`, no receipt commit | Validate current bytes and create exactly one task commit. |
 | Post-commit interruption | The same record and code already occur in a completed commit | No repeated worker, completed check or commit; no accidental reopen. |
+| Ignored tracker review | `.scratch/` ignored; resolved ticket with Comments line `Branch: commits on <current branch>`; invoke review with no selector | Report written to that feature's `review.md` with the goal from the ticket and spec; no `.scratch/reviews/` report. |
+| Saved research | Request rnd with research that saves scripts and raw outputs | Saved files only under `research/<topic>/` and `research/<topic>.<json|md>`; the spec cites them by path; nothing else at the feature root. |
 | Stale fix | Complete report with a disk requirement changed after its recorded hash | Stop unchanged and require review, even when Findings is empty. |
 | No-op fix | Current complete report with no open findings | No worker, commit or fix-state fields; unchanged report when no result is added. |
 | Staged foreign group | Request only the code fix in one complete file; an unrelated README change is staged | Commit only the selected file; preserve the unrelated working bytes and staged diff exactly. A selected file mixing logical groups stops before changing the index. |

@@ -75,6 +75,8 @@ The root cause is one file at the root of a feature directory - one feature is o
 
 `<feature-slug>` is two to four lowercase english words from the report, hyphenated. A tracker key names the directory - `.scratch/<KEY>-<slug>/`. The file name is fixed.
 
+Reproduction scripts, probes and raw outputs the investigation saves go under `.scratch/<feature-slug>/research/<topic>/`, `<topic>` being one to three lowercase english words, hyphenated; `root-cause.md` cites them by that path. Nothing else goes at the feature root.
+
 Create the feature directory when the report has none yet; write into the one the input names when it does. A `spec.md` already sitting there is left untouched - a bug that grew into a feature carries both documents side by side. Never write into a directory that holds a `map.md`: that one belongs to another tool's effort, so pick a different slug and say in one line why.
 
 Write no ticket here. Once the cause is confirmed, `/dev:plan` selects or creates the fix ticket using its numbering rules.
