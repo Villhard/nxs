@@ -70,7 +70,7 @@ The first two require HEAD. See the [checker](.github/scripts/check-marketplace.
 
 The [pre-commit hook](.githooks/pre-commit) runs the staged check in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
-If a plugin has a Codex manifest, also run the installed `plugin-creator` validator and `skill-creator` quick validator. Report unavailable checks. For behavior changes, use disposable projects and the plugin's scenarios; documentation-only edits need source, command and link checks, not repeated workflows.
+If a plugin has a Codex manifest, also run its Codex check; for dev, `python3 .github/scripts/test_dev_invocation.py`, which CI also runs. The Codex `skill-creator` quick validator rejects the Claude Code frontmatter keys (`argument-hint`, `disable-model-invocation`) and the omitted `name` by design; those errors are expected. Report unavailable checks. For behavior changes, use disposable projects and the plugin's scenarios; documentation-only edits need source, command and link checks, not repeated workflows.
 
 ## LOCAL DEVELOPMENT AND RELEASE
 
