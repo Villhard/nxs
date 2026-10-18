@@ -18,7 +18,7 @@ jobs:
           node-version: '20'
 
       - name: Install Claude Code CLI
-        run: npm install -g @anthropic-ai/claude-code
+        run: npm install -g @anthropic-ai/claude-code@2.1.302
 
       - name: Validate marketplace manifest
         run: claude plugin validate --strict .
@@ -36,6 +36,24 @@ jobs:
             claude plugin validate --strict "${p%/}" || status=1
           done
           exit $status
+
+  codex:
+    name: Codex invocation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex@0.163.0
+
+      - name: Check Codex request assembly against a loopback stub
+        run: python3 .github/scripts/test_dev_invocation.py
 
   # Keep the check name required by main branch protection.
   marketplace:
