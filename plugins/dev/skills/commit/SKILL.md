@@ -1,5 +1,5 @@
 ---
-description: Commit existing changes in atomic groups when the user invokes /dev:commit or asks to commit work. Do not activate for commit discussions.
+description: Commit existing changes in atomic groups when the user invokes /dev:commit or $dev:commit, or asks to commit work. Do not activate for commit discussions.
 argument-hint: "[optional scope hint]"
 ---
 

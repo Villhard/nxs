@@ -21,7 +21,11 @@ Optional companion: in Claude Code, the [revdiff-planning](https://github.com/um
 
 Start each step explicitly; commands do not start the next step for you. Mentioning or quoting a command does not invoke it.
 
-[Install dev@nxs](../../README.md#install).
+[Install dev@nxs](../../README.md#install). In Claude Code 2.1.275 or later, one command also works:
+
+```text
+/plugin install dev --marketplace Villhard/nxs
+```
 
 ## Commands
 
@@ -52,7 +56,7 @@ Approve the plan and let it run. Stage the changes with `git add`, then run:
 
 If review finds issues, pick the proposed tickets to create and run `/plan <ticket-path>` on each. Commit with `/dev:commit`.
 
-In Codex, use `/plan` the same way. Select the `dev` skill with `/skills` or the `$` picker in CLI/IDE, or request it directly: "Use the review skill from dev on the staged changes."
+In Codex, use `/plan` the same way. Select the `dev` skill with `/skills` or the `$` picker in CLI/IDE, or request it directly: "Use the review skill from dev on the staged changes." Verified in Codex: installation and skill selection. The ticket handoff to `/plan` and the reviewer launch in `review` are not verified in Codex yet.
 
 ## Shaping routes
 
