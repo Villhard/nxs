@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.38.3] - 2026-10-18
+
+### Changed
+
+- README names the steps verified in Codex and adds the one-command Claude Code install.
+- `rnd`, `bug`, `review` and `commit` descriptions name the Codex `$dev:<name>` invocation.
+
+### Removed
+
+- Author email from the Claude Code manifest.
+
 ## [0.38.2] - 2026-10-17
 
 ### Added

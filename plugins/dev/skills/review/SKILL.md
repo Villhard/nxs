@@ -1,5 +1,5 @@
 ---
-description: Review the staged changes, or the branch against its base when nothing is staged, when explicitly asked to use /dev:review. Save verified findings, then propose tickets and create only the ones the user picks. Never changes code or Git state.
+description: Review the staged changes, or the branch against its base when nothing is staged, when explicitly asked to use it (/dev:review in Claude Code, $dev:review in Codex). Save verified findings, then propose tickets and create only the ones the user picks. Never changes code or Git state.
 argument-hint: "[ticket path | feature dir]"
 disable-model-invocation: true
 ---
