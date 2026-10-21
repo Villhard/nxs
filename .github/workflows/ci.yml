@@ -55,6 +55,16 @@ jobs:
       - name: Check Codex request assembly against a loopback stub
         run: python3 .github/scripts/test_dev_invocation.py
 
+  opencode:
+    name: OpenCode installer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Check generated files and config edits with a stub opencode
+        run: python3 .github/scripts/test_dev_opencode.py
+
   # Keep the check name required by main branch protection.
   marketplace:
     name: House style + frontmatter
