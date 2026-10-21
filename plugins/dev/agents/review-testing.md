@@ -53,6 +53,7 @@ For each finding:
 - Severity: critical | major | minor
 - Issue: <what is wrong>
 - Impact: <what bug could ship unnoticed>
+- Scenario: <the change to production code that keeps the suite green, or how the test passes whatever the code does>
 - Fix: <what to test, and where>
 ```
 

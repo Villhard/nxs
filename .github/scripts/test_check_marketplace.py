@@ -53,7 +53,7 @@ def plugin(repo, name='sample', value='0.23.9', codex=True):
             write(repo, f'plugins/dev/skills/{skill}/agents/openai.yaml',
                   'policy:\n  allow_implicit_invocation: false\n')
     if name == 'dev':
-        for role in ('review-quality', 'review-testing', 'review-simplification'):
+        for role in ('review-quality', 'review-testing', 'review-simplification', 'review-verify'):
             write(repo, f'plugins/dev/agents/{role}.md',
                   f'---\nname: {role}\ndescription: Fixture role.\ntools: Read, Grep, Glob, Bash\n---\n# ROLE\n')
 
@@ -397,12 +397,12 @@ def main():
         role.write_text(good_role.replace('tools: Read', 'tools: Write, Read'))
         check(repo, False, diagnostic='unexpected dev role tools')
         role.unlink()
-        check(repo, False, diagnostic='four command skills and three agent roles')
+        check(repo, False, diagnostic='four command skills and four agent roles')
         role.write_text(good_role)
         write_skill(repo, 'plugins/dev/skills/plan/SKILL.md', '# SKILL\n\nA skill.\n')
         write(repo, 'plugins/dev/skills/plan/agents/openai.yaml',
               'policy:\n  allow_implicit_invocation: false\n')
-        check(repo, False, diagnostic='four command skills and three agent roles')
+        check(repo, False, diagnostic='four command skills and four agent roles')
 
         repo = fresh(root, 'snapshots')
         base = git(repo, 'rev-parse', 'HEAD')
