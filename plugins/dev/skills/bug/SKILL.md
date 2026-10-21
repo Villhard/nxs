@@ -1,5 +1,5 @@
 ---
-description: Investigate a reported failure when explicitly asked to use it (/dev:bug in Claude Code, $dev:bug in Codex). Save reproducible evidence and a confirmed root cause with one fix ticket for /plan, or the evidence still missing and no ticket. Do not implement a fix.
+description: Investigate a reported failure when explicitly asked to use it (/dev:bug in Claude Code, $dev:bug in Codex, /dev/bug in OpenCode). Save reproducible evidence and a confirmed root cause with one fix ticket for /plan, or the evidence still missing and no ticket. Do not implement a fix.
 argument-hint: "[tracker key | bug description | path]"
 disable-model-invocation: true
 ---
@@ -136,4 +136,4 @@ On a repeat, check the tickets in `issues/` that already name this `root-cause.m
 
 ## NEXT
 
-Return the root-cause path and state whether the cause is confirmed or unconfirmed. A confirmed result names the evidence, returns the fix ticket path and its `**Branch:**`, and suggests `/plan <ticket-path>` in Claude Code or Codex; an unconfirmed result names the missing evidence or next discriminating probe. Do not invoke another command.
+Return the root-cause path and state whether the cause is confirmed or unconfirmed. A confirmed result names the evidence, returns the fix ticket path and its `**Branch:**`, and suggests `/plan <ticket-path>` in Claude Code, Codex or OpenCode; an unconfirmed result names the missing evidence or next discriminating probe. Do not invoke another command.

@@ -13,9 +13,9 @@ A ticket runs in the client's own plan mode:
 /plan <ticket-path> -> git add -> review -> commit
 ```
 
-`/plan` is the built-in command of Claude Code and Codex, not part of `dev`. The ticket's `Done when` section tells the executor when to stop, to run the full test suite and linter, to check the criteria and set `resolved`, and not to commit. A `Branch:` line names the branch the work goes on; edit or remove it before running.
+`/plan` is the built-in command of Claude Code and Codex, not part of `dev`. OpenCode has no built-in `/plan`: the dev installer adds one that switches to the Plan agent, which only plans; switch to Build (Shift+Tab) to execute. The ticket's `Done when` section tells the executor when to stop, to run the full test suite and linter, to check the criteria and set `resolved`, and not to commit. A `Branch:` line names the branch the work goes on; edit or remove it before running.
 
-Optional companion: in Claude Code, the [revdiff-planning](https://github.com/umputun/revdiff) plugin opens each `/plan` plan in revdiff. An annotation sends the plan back for revision, the next round shows the change against the previous plan, and a clean review keeps the normal plan approval. Verified with revdiff-planning 0.3.10 in agterm. In Codex it does not detect Plan mode yet: plans run unreviewed, with the normal approval.
+Optional companion: in Claude Code, the [revdiff-planning](https://github.com/umputun/revdiff) plugin opens each `/plan` plan in revdiff. An annotation sends the plan back for revision, the next round shows the change against the previous plan, and a clean review keeps the normal plan approval. Verified with revdiff-planning 0.3.10 in agterm. In Codex it does not detect Plan mode yet: plans run unreviewed, with the normal approval. In OpenCode, revdiff's own OpenCode integration opens each Plan agent response in revdiff; verified that it opens in agterm.
 
 `review` runs three finder roles, then a separate verifier that marks each candidate confirmed, plausible or refuted; a plausible finding is kept, marked `(plausible)` with what would confirm it, and its ticket reproduces it first. It explains its findings and ends with recommended tickets as groups of finding numbers: each critical or major finding on its own unless a named reason joins them, minor findings together or with the major one that touches the same place. Answer with finding numbers, such as "1, 3", "all", "7 separately", "1 and 3 together" or "none"; selected findings follow their recommended groups unless the answer says otherwise, and review creates only those tickets for `/plan`. Commit with `commit` or by hand after review. Run review after each ticket on the staged changes, or once at the end of the feature on the branch.
 
@@ -58,6 +58,8 @@ If review finds issues, pick the proposed tickets to create and run `/plan <tick
 
 In Codex, use `/plan` the same way. Select the `dev` skill with `/skills` or the `$` picker in CLI/IDE, or request it directly: "Use the review skill from dev on the staged changes." Verified in Codex: installation and skill selection. The ticket handoff to `/plan` and the reviewer launch in `review` are not verified in Codex yet.
 
+In OpenCode, [install dev](../../README.md#install) with its installer and use the `/dev/<name>` commands, such as `/dev/review`. Reviewers run as `dev/review-*` subagents limited to read, grep, glob and shell, which can still write, as Bash can for the native roles. Verified in OpenCode 2.1.2: installation, `/dev/<name>` invocation, the reviewer launch in `review`, and the ticket handoff to `/plan` and Build.
+
 ## Shaping routes
 
 NXS provides the complete local route without another shaping package or tracker setup. Each arrow below is a user-selected handoff:
@@ -80,7 +82,7 @@ NXS saves everything under `.scratch/`, reads tracker issues without writing to 
 | `review` | Review the staged changes; with nothing staged, the committed branch changes against the default branch. On the default branch with nothing staged, it stops. |
 | `review <ticket-path>` | The same review, with that ticket or feature as the requirements. |
 
-Use these arguments with `/dev:` in Claude Code or with the selected Codex skill. A ticket or feature path supplies review requirements, not a code filter. Unstaged edits are never reviewed.
+Use these arguments with `/dev:` in Claude Code, with the selected Codex skill or with `/dev/` in OpenCode. A ticket or feature path supplies review requirements, not a code filter. Unstaged edits are never reviewed.
 
 ## Working files
 

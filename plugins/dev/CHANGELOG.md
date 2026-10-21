@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.40.0] - 2026-10-21
+
+### Added
+
+- OpenCode 2 installer `opencode/install.py`: copies this version into the OpenCode config directory, registers its skills and writes the `dev/review-*` subagents, the `/dev/<name>` commands and a `/plan` command when none exists.
+- `agent launch` OpenCode route: the `subagent` tool with the installed `dev/<role>` agents and their host-enforced permissions.
+- Client scenarios for OpenCode installation, invocation, the `/plan` handoff and the review launch.
+
+### Changed
+
+- `rnd`, `bug`, `review` and `commit` descriptions name the OpenCode `/dev/<name>` invocation.
+- `rnd` and `bug` suggest `/plan <ticket-path>` in OpenCode too.
+- README covers OpenCode installation and the steps verified in OpenCode.
+
 ## [0.39.0] - 2026-10-21
 
 ### Added
