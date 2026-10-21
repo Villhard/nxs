@@ -56,34 +56,46 @@ Preserve open follow-ups with origin before overwriting. A request to use review
 
 ## LAUNCH THE AGENTS
 
-Before mutating the report for an agent-based sweep, read [agent launch](../../references/agent-launch.md) and complete its capability check for every required role. Use the selected adapter and its complete reviewer packet for every launch. Before any launch or direct pass, read [findings](../../references/findings.md): its SEVERITY BAR is the bar for every reviewer, for LEAD CHECKS and for VERIFY.
+Before mutating the report for an agent-based sweep, read [agent launch](../../references/agent-launch.md) and complete its capability check for every required role. Use the selected adapter and its complete reviewer packet for every launch. Before any launch or direct pass, read [findings](../../references/findings.md): its SEVERITY BAR is the bar for every reviewer, for LEAD CHECKS and for VERIFY, and its VERIFY A FINDING decides every verdict.
 
 Before any agent launch or direct pass, write Scope, Requirements and `sweep: incomplete` to the report, retaining carried follow-ups. Use the review report FORMAT. Never leave the old complete report in place while a new sweep runs.
 
-Launch these three roles, concurrently when capacity permits:
+Launch these three finder roles, concurrently when capacity permits:
 
 - `dev:review-quality`: bugs, edges, errors, races, expected load and security skim;
 - `dev:review-testing`: coverage and test quality;
-- `dev:review-simplification`: introduced over-engineering.
+- `dev:review-simplification`: introduced over-engineering, reuse and fixes at the wrong depth.
 
-A trivial diff (dotfiles, docs only, pure formatting) may receive a direct pass against the same bar instead. There is one sweep and no re-check.
+The fourth role, `dev:review-verify`, runs under VERIFY after every finder has returned. A trivial diff (dotfiles, docs only, pure formatting) may receive a direct pass against the same bar instead, with no agent: you find the candidates and give them the verdicts of VERIFY A FINDING yourself. There is one sweep and no re-check.
 
 Wait for every launched agent before verification or further writes.
 
 ## LEAD CHECKS
 
-Check requirements and documentation yourself, against the same bar; the tickets and the diff are already in your context. Search before calling anything missing or unwired: a registration may live in a file the diff never opened, and a caller may be a route table or a string.
+Check requirements, documentation and conventions yourself, against the same bar; the tickets and the diff are already in your context. Search before calling anything missing or unwired: a registration may live in a file the diff never opened, and a caller may be a route table or a string.
 
 - Requirements: walk each ticket's What to build and every acceptance criterion, both `- [ ]` and `- [x]`, against the diff. Check wiring (registered, routed, configured), a stub or TODO at a load-bearing spot, and work no requirement asked for: unrelated changes, a new dependency, a changed public contract, a migration. On staged scope, a requirement the diff does not touch is not a finding by itself: earlier commits may hold it. Under `no stated goal`, check only wiring and completeness, and say so.
 - Documentation: README, a `docs/` site, CHANGELOG, `--help` text, `CLAUDE.md` or `AGENTS.md`, a domain glossary and decision records. Report what the diff made wrong and what it should have added: a new flag, endpoint, option, dependency, user-visible behavior or project convention left undocumented, a renamed or redefined glossary term, a contradicted accepted decision. A concept the glossary never covered is not a finding. Report a ticket item the diff contradicts.
+- Conventions: read the `CLAUDE.md`, `CLAUDE.local.md`, `AGENTS.md` and `AGENTS.override.md` files that govern the changed files: the repository root's and those in a directory that is an ancestor of a changed file, which apply only at or below it. Report a changed line that clearly breaks a rule they state. Quote the rule with its file path and the line that breaks it; no style preference and no "spirit of the document" inference. A rule the diff makes wrong is a documentation finding instead.
 
 Your proposals go through VERIFY like the agents'.
 
 ## VERIFY
 
-The agents and LEAD CHECKS propose; you decide what is real. Merge duplicates and check each proposal in the reviewed version under VERIFY A FINDING from findings. Confirmed - keep it with the severity its evidence supports. Anything else - discard with evidence, do not downgrade. Rank what survived by severity, worst first, and number it from 1 in that order.
+The finders and LEAD CHECKS propose; the verifier decides what is real. Merge duplicates under VERIFY A FINDING and move a candidate beyond the reviewed scope to Follow-ups. Give every remaining candidate an id and send all of them, your LEAD CHECKS included, to one `dev:review-verify` launch with the packet from agent launch; never tell it which role raised a candidate. Wait for its result.
 
-Persist each finding's location, problem, verification result and evidence, including dismissal reasons, in the report. Discarding most candidates is normal. A pre-existing broken test or lint failure is reported like anything else, never waived because it predates the branch.
+Apply every verdict as given; never refute, confirm or drop a candidate yourself.
+
+| Verdict | Action |
+| --- | --- |
+| `confirmed` | Keep it with the severity its evidence supports under SEVERITY BAR. |
+| `plausible` | Keep it, at most major, with what would confirm it. |
+| `refuted` | Move it to Dismissed with the verifier's evidence. |
+| Missing for a candidate, or the verifier did not finish | Keep the sweep incomplete; never treat the candidate as refuted. |
+
+A `Noticed:` line goes to Follow-ups as `not verified`. Rank the kept findings by severity, worst first, confirmed before plausible at the same severity, and number them from 1 in that order. A direct pass applies the same table to the verdicts you gave.
+
+Persist each finding's location, problem, verdict and evidence, including dismissal reasons, in the report. Dismissing most candidates is normal. A pre-existing broken test or lint failure is reported like anything else, never waived because it predates the branch.
 
 ## ARTIFACT
 
@@ -91,7 +103,7 @@ Write `.scratch/<feature-slug>/review.md` when one feature resolves from the arg
 
 Overwrite one report with the latest run; retain open follow-ups with the run that raised them and `not re-verified`. Do not silently drop them on a scope change. Write the review report FORMAT with each finding's `ticket:` set to `proposed` and the finding numbers of its group from PROPOSE TICKETS, or to the path of the open ticket that already covers it.
 
-After VERIFY, re-resolve repository identity, branch, scope, merge-base, HEAD, staged digest when applicable, goal and all requirement sources and pins. Compare with the facts captured before the sweep. Write findings either way, but mark `sweep: complete` only when every fact still matches and all reviewers finished. If anything moved or the run was interrupted, retain `sweep: incomplete` and name what changed or remains unfinished. A hard kill leaves the incomplete report already on disk.
+After VERIFY, re-resolve repository identity, branch, scope, merge-base, HEAD, staged digest when applicable, goal and all requirement sources and pins. Compare with the facts captured before the sweep. Write findings either way, but mark `sweep: complete` only when every fact still matches and all reviewers, the verifier included, finished. If anything moved or the run was interrupted, retain `sweep: incomplete` and name what changed or remains unfinished. A hard kill leaves the incomplete report already on disk.
 
 ## SUMMARY
 
@@ -103,8 +115,10 @@ Write for a reader who has never seen this code: short sentences, everyday words
    - **Problem:** the concrete input or situation and the wrong result.
    - **Fix:** the smallest change that works.
    - **If we skip it:** what happens to users or data.
-3. `Verdict: ship.` or `Verdict: fix 1 and 3 first.` An auth, payment, crypto or migration diff never gets `ship`: say it needs manual security review beyond this pass.
-4. `Dismissed: N`, with the count of discarded candidates.
+
+   A plausible finding has `(plausible)` after its title and a fifth part, **What would confirm it:**.
+3. `Verdict: ship.` or `Verdict: fix 1 and 3 first.` A plausible finding counts toward the verdict like a confirmed one. An auth, payment, crypto or migration diff never gets `ship`: say it needs manual security review beyond this pass.
+4. `Dismissed: N`, with the count of refuted candidates.
 5. `Not checked:` in one line, when something mattered and could not be checked, including unstaged changes.
 6. The report path.
 
@@ -150,7 +164,7 @@ An answer naming an unknown or already covered finding, or one you cannot read u
 Read [ticket](../../references/ticket.md) and follow its TEMPLATE, NUMBERING and FIELDS, with these values:
 
 - Location: `issues/` of the feature the report resolved to, else `.scratch/reviews/<branch-slug>/issues/`; never a directory holding `map.md`.
-- `**What to build:**` the corrected behavior, then one numbered line per finding with its location and its Problem: the input or situation and the wrong result.
+- `**What to build:**` the corrected behavior, then one numbered line per finding with its location and its Problem: the input or situation and the wrong result. A plausible finding's line ends with `plausible; confirm: <what would confirm it>`.
 - `**Branch:**` the current branch, the base branch included; drop the line only on a detached HEAD.
 - `**Status:**` `ready-for-agent`, with an answered choice written into `**What to build:**`; or, for the split-off ticket of an open choice, `needs-info` with that choice as a `[NEEDS CLARIFICATION: ...]` marker in the ticket body.
 - The first criterion, verbatim: `- [ ] Each finding reproduced before the change, with evidence under ## Comments; a finding that did not reproduce is named there and its criteria removed; if none reproduced, set **Status** to wontfix and stop.` Then one criterion per finding from its Fix and its observable result, plus a regression test when the project has a test suite.

@@ -191,11 +191,11 @@ def check_instructions(files):
                     raise Invalid(f'{policy}: incorrect dev invocation policy')
     if 'dev' in plugin_names(files):
         expected_skills = {'rnd', 'bug', 'review', 'commit'}
-        expected_agents = {'review-quality', 'review-testing', 'review-simplification'}
+        expected_agents = {'review-quality', 'review-testing', 'review-simplification', 'review-verify'}
         skills = {p.split('/')[3] for p in files if re.fullmatch(r'plugins/dev/skills/[^/]+/SKILL\.md', p)}
         agents = {Path(p).stem for p in files if re.fullmatch(r'plugins/dev/agents/[^/]+\.md', p)}
         if skills != expected_skills or agents != expected_agents:
-            raise Invalid('plugins/dev: expected four command skills and three agent roles')
+            raise Invalid('plugins/dev: expected four command skills and four agent roles')
 
 
 def check(base, current):

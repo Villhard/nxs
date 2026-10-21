@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.39.0] - 2026-10-21
+
+### Added
+
+- `review-verify` role: one verifier checks every merged `review` candidate and returns confirmed, plausible or refuted with quoted evidence.
+- `review` keeps plausible findings, at most major, with what would confirm them; the summary and tickets mark them.
+- `review` lead conventions check: a changed line that breaks a quoted rule of a governing `CLAUDE.md` or `AGENTS.md`.
+- `review-simplification` checks reuse of existing helpers and fixes at the wrong depth.
+- `review-quality` checks moved code that lost a guard and wrappers that bypass the wrapped instance.
+
+### Changed
+
+- `review` VERIFY applies the verifier's verdicts instead of the orchestrator's own checks.
+- Finder roles report a `Scenario:` line; `review-quality` passes an uncertain trigger to verification instead of dropping it.
+- Review report requires `verdict:` on findings and dismissals; reports without it are invalid and start a new sweep.
+
 ## [0.38.3] - 2026-10-18
 
 ### Changed

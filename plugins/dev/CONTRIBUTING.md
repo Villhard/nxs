@@ -5,7 +5,7 @@ Follow the [shared rules](../../CONTRIBUTING.md). This guide covers authoring; t
 ## STRUCTURE
 
 - `skills/<command>/SKILL.md`: four commands, with local `assets/`, `references/` or `scripts/` when needed.
-- `agents/`: three review roles, each with complete instructions.
+- `agents/`: three review finder roles and one verifier, each with complete instructions.
 - `references/`: rules shared by several commands, read at the point of use. See CONTRACT OWNERS.
 
 Keep process rules with their owning command or role; a rule two commands apply goes to one reference instead of two copies. Keep personal preferences in client/project instructions. Do not add background skills, cross-skill injection or plugin hooks. Add a command only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing command.
@@ -42,7 +42,7 @@ Keep process rules with their owning command or role; a rule two commands apply 
 | Ticket template, numbering, fields, `Branch` and `Done when` | [ticket](references/ticket.md), read by rnd, bug and review; [template](skills/rnd/assets/ticket.md) |
 | Review sweep, summary and proposed tickets | [review](skills/review/SKILL.md) |
 | Review report format, validation and currency | [review report](references/review-report.md), read by review |
-| Severity and finding verification | [findings](references/findings.md), read by review |
+| Severity and finding verification | [findings](references/findings.md), read by review and passed to the [verifier](agents/review-verify.md) |
 | Standalone commits | [commit](skills/commit/SKILL.md) |
 | Commit message and Git rules | [commit format](references/commit-format.md), read by commit |
 | Agent launch and context packets | [agent launch](references/agent-launch.md), read by review |
