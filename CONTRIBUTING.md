@@ -11,6 +11,7 @@ Root files describe the marketplace. Installed plugin content lives under `plugi
 plugins/<name>/
   .claude-plugin/plugin.json
   .codex-plugin/plugin.json    # optional
+  opencode/install.py          # optional OpenCode installer
   skills/<skill>/SKILL.md
   skills/<skill>/references/   # optional
   skills/<skill>/assets/       # optional
@@ -70,7 +71,7 @@ The first two require HEAD. See the [checker](.github/scripts/check-marketplace.
 
 The [pre-commit hook](.githooks/pre-commit) runs the staged check in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
-If a plugin has a Codex manifest, also run its Codex check; for dev, `python3 .github/scripts/test_dev_invocation.py`, which CI also runs. The Codex `skill-creator` quick validator rejects the Claude Code frontmatter keys (`argument-hint`, `disable-model-invocation`) and the omitted `name` by design; those errors are expected. Report unavailable checks. For behavior changes, use disposable projects and the plugin's scenarios; documentation-only edits need source, command and link checks, not repeated workflows.
+If a plugin has a Codex manifest, also run its Codex check; for dev, `python3 .github/scripts/test_dev_invocation.py`, which CI also runs. For dev's OpenCode installer, run `python3 .github/scripts/test_dev_opencode.py`, which CI also runs. The Codex `skill-creator` quick validator rejects the Claude Code frontmatter keys (`argument-hint`, `disable-model-invocation`) and the omitted `name` by design; those errors are expected. Report unavailable checks. For behavior changes, use disposable projects and the plugin's scenarios; documentation-only edits need source, command and link checks, not repeated workflows.
 
 ## LOCAL DEVELOPMENT AND RELEASE
 
@@ -91,6 +92,14 @@ CODEX_HOME="$nxs_preview_home" codex plugin add dev@nxs
 CODEX_HOME="$nxs_preview_home" codex
 ```
 
-The temporary Codex home has no usual authentication or global settings; sign in if needed. Project instructions still apply. Repeat `plugin add` after versioned edits. Restart either client after changes and remove the temporary home when finished, keeping credentials out of Git.
+**OpenCode**
+
+```bash
+nxs_preview_config=$(mktemp -d)
+python3 plugins/dev/opencode/install.py --config-dir "$nxs_preview_config"
+OPENCODE_CONFIG_DIR="$nxs_preview_config" opencode --standalone
+```
+
+The temporary Codex home has no usual authentication or global settings; sign in if needed. The temporary OpenCode config has no global settings or instructions; sign-ins in the OpenCode data directory still apply. Project instructions still apply. Repeat `plugin add` or the installer after versioned edits. Restart the client after changes and remove the temporary home or config when finished, keeping credentials out of Git.
 
 Publish the version before [updating installations](README.md#update). Do not update installed plugins or replace configured marketplaces during source edits unless requested.
