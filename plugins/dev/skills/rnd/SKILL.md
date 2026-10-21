@@ -1,5 +1,5 @@
 ---
-description: Shape a feature or open question when explicitly asked to use it (/dev:rnd in Claude Code, $dev:rnd in Codex). Save an agreed spec and one or more tickets, without implementation tasks or code. Use /dev:bug for a reported failure and the client's /plan for an already clear task.
+description: Shape a feature or open question when explicitly asked to use it (/dev:rnd in Claude Code, $dev:rnd in Codex, /dev/rnd in OpenCode). Save an agreed spec and one or more tickets, without implementation tasks or code. Use /dev:bug for a reported failure and the client's /plan for an already clear task.
 argument-hint: "[request | spec path | tracker key | question]"
 disable-model-invocation: true
 ---
@@ -20,7 +20,7 @@ Suggest the next command at a handoff; never start it automatically.
 
 - Produce the spec and the tickets and stop. The plan, the code, and any behavior change belong to the client's plan mode.
 - Four steps in order: clarify, explore, stress-test, slice. A clear request may need zero questions, one obvious approach and no stress pass. After agreement, slice always runs, even when it yields one ticket.
-- Full collapse makes the spec ceremony. Say so out loud and offer to describe the task straight to `/plan` in Claude Code or Codex instead.
+- Full collapse makes the spec ceremony. Say so out loud and offer to describe the task straight to `/plan` in Claude Code, Codex or OpenCode instead.
 - For a bug rather than a request, route to `/dev:bug`.
 
 ## EXISTING INPUT
@@ -95,4 +95,4 @@ Before writing tickets, read [ticket](../../references/ticket.md): it owns the t
 
 ## NEXT
 
-Return the spec path, created or preserved ticket paths and any unresolved clarification. Suggest `/plan <ticket-path>` in Claude Code or Codex for the first `ready-for-agent` implementation ticket that has no bare or Markdown-bold `Type:` field and whose local blockers are `resolved`. An incomplete spec or unknown/unmapped remote blocker has no ready handoff; existing tickets do not become new work on a repeat. Do not invoke another command.
+Return the spec path, created or preserved ticket paths and any unresolved clarification. Suggest `/plan <ticket-path>` in Claude Code, Codex or OpenCode for the first `ready-for-agent` implementation ticket that has no bare or Markdown-bold `Type:` field and whose local blockers are `resolved`. An incomplete spec or unknown/unmapped remote blocker has no ready handoff; existing tickets do not become new work on a repeat. Do not invoke another command.

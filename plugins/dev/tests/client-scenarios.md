@@ -1,6 +1,6 @@
 # CLIENT SCENARIOS
 
-Run these in disposable repositories with the candidate plugin loaded through a temporary installation. Use the same fixtures in Claude Code CLI, Codex CLI and a collaboration-enabled session. Keep the user's installed plugin and live repositories untouched. Record client version, candidate version, exposed tools, commands, actual outputs and final file/git state outside the public repository; never save credentials or raw private conversations here.
+Run these in disposable repositories with the candidate plugin loaded through a temporary installation. Use the same fixtures in Claude Code CLI, Codex CLI, OpenCode 2 (a temporary `OPENCODE_CONFIG_DIR` and `--standalone`) and a collaboration-enabled session. Keep the user's installed plugin and live repositories untouched. Record client version, candidate version, exposed tools, commands, actual outputs and final file/git state outside the public repository; never save credentials or raw private conversations here.
 
 Record tool permission denials and retries too. A denied helper call followed by an equivalent successful read is different from a blocked workflow or an attempted forbidden write.
 
@@ -60,6 +60,21 @@ Prepare a small code diff with a reachable defect that also makes a sentence of 
 8. Verdicts, with a staged diff that breaks a rule stated in the fixture's `AGENTS.md`, adds a check-then-write on a shared file whose concurrent use the README allows but no test shows, and changes a line a finder is likely to misread as unguarded while a guard two lines above handles it: the lead's conventions finding quotes the `AGENTS.md` rule with its path and the breaking line; the guarded candidate is in Dismissed with `verdict: refuted` and the quoted guard; the race is kept as `verdict: plausible`, at most major, with `confirm:`, marked `(plausible)` with **What would confirm it:** in the summary, and its ticket line ends with `plausible; confirm:`. An existing report from 0.38.3, which has no `verdict` fields, is invalid and starts a new sweep.
 
 Verified for 0.33.0 in Claude Code CLI 2.1.301: steps 1 and 3, a one-ticket answer under the earlier ticket labels and both stops of step 4. The lead documentation finding of step 1 (0.37.0), the staged variants of step 4 (0.38.0), step 2 with finding numbers and recommended groups (0.35.0), step 5, step 6 (0.36.0), step 7 (0.37.0), step 8 (0.39.0) and Codex remain unverified.
+
+## OPENCODE
+
+Install the candidate with `python3 plugins/dev/opencode/install.py --config-dir <temporary directory>` and start `OPENCODE_CONFIG_DIR=<temporary directory> opencode --standalone` in the fixture. Invoke commands as `/dev/<name>`. Read tool calls from `opencode session export <id>`, including the child sessions that `subagent` calls name.
+
+| Case | Setup and invocation | Required observation |
+| --- | --- | --- |
+| Discovery | A long-running server on the temporary config; list agents, skills and commands twice, since the first request for a directory can answer before plugins load | `dev/review-*` agents in `subagent` mode with deny-first permissions; skills `rnd`, `bug`, `review` with automatic invocation off, and `commit`; commands `dev/rnd`, `dev/bug`, `dev/review`, `dev/commit` and `plan`. |
+| Invocation | The INVOCATION prompts, with `/dev/<name>` for explicit selection | As in INVOCATION; the `/dev/<name>` command loads the skill from the installed copy. |
+| Review launch | REVIEW step 1 | One response with three `subagent` calls for the finder roles, without `background`, `sessionID` or `model`; child sessions overlap in time; one `dev/review-verify` call after all finder results; children use only the role tools. |
+| Missing roles | Move the generated `agents/dev` aside, then REVIEW step 5 | Review stops before any `subagent` call and leaves the report bytes unchanged. |
+| Role tools | Ask the main agent to launch `dev/review-quality` to list its tools and create a file | The child lists only read, grep, glob and shell. Shell can still write, as Bash can for the native role. |
+| Plan handoff | `/plan <ticket-path>`, then switch to Build (Shift+Tab) and ask to execute the plan | `/plan` switches to the Plan agent with no edits or branch change; Build ends with the ticket `resolved`, the suite passing, HEAD unchanged and nothing committed. |
+
+Verified for 0.40.0 in OpenCode 2.1.2: discovery; the four INVOCATION prompts; bug fix ticket, first run; clear request (rnd asked first, then handed off to `/plan` without writing); REVIEW step 1 with a one-ticket answer, review launch and missing roles; role tools; plan handoff. In two runs the model resolved a `../../references/` link from the skill directory instead of its parent and recovered by searching. Other INVOCATION and REVIEW variants remain unverified in OpenCode.
 
 ## REPORTING
 
