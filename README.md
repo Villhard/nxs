@@ -24,6 +24,17 @@ codex plugin marketplace add Villhard/nxs
 codex plugin add dev@nxs
 ```
 
+**OpenCode**
+
+OpenCode 2 does not install Claude Code plugins; the dev installer copies the plugin into the OpenCode config directory. It needs Python 3:
+
+```bash
+git clone https://github.com/Villhard/nxs.git
+python3 nxs/plugins/dev/opencode/install.py
+```
+
+Remove it with `python3 nxs/plugins/dev/opencode/install.py --uninstall`.
+
 Skip registration if `nxs` is already configured. Start a new session, then follow the [dev workflow](plugins/dev/README.md).
 
 ## Update
@@ -44,10 +55,17 @@ codex plugin marketplace upgrade nxs
 codex plugin add dev@nxs
 ```
 
-Start a new session after updating. Local checkout edits do not update an installed plugin.
+**OpenCode**
+
+```bash
+git -C nxs pull
+python3 nxs/plugins/dev/opencode/install.py
+```
+
+Start a new session after updating; restart OpenCode. Local checkout edits do not update an installed plugin.
 
 ## Client setup
 
-Configure the client using its official guide: [Claude Code settings](https://code.claude.com/docs/en/settings) or [Codex configuration](https://learn.chatgpt.com/docs/config-file/config-basic).
+Configure the client using its official guide: [Claude Code settings](https://code.claude.com/docs/en/settings), [Codex configuration](https://learn.chatgpt.com/docs/config-file/config-basic) or [OpenCode config](https://opencode.ai/v2/docs/config/).
 
 For local previews and contributions, see [CONTRIBUTING.md](CONTRIBUTING.md).
