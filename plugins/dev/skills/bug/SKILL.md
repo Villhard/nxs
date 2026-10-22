@@ -130,7 +130,7 @@ On a repeat, check the tickets in `issues/` that already name this `root-cause.m
 
 | Existing ticket | Action |
 | --- | --- |
-| Open, same confirmed cause | Leave it unchanged and write no second one. |
+| Open, same confirmed cause | Leave `root-cause.md` and the ticket unchanged, and write no second ticket. Report a wrong line reference or another correction in the answer. |
 | Open, new confirmed cause | Stop before rewriting `root-cause.md` or the ticket. Ask whether to update the ticket's What to build and criteria for the new cause, or to close it. After the answer, save `root-cause.md`. Update keeps the ticket's number, `**Status:**` and `**Branch:**`; close sets its `**Status:**` to `wontfix` as the user's decision and writes the next number by NUMBERING. |
 | Only `resolved` or `wontfix` | Write the next number by NUMBERING. |
 
