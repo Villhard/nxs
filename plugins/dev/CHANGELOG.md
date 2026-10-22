@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.40.1] - 2026-10-22
+
+### Changed
+
+- README no longer describes the optional `revdiff-planning` companion.
+
 ## [0.40.0] - 2026-10-21
 
 ### Added
