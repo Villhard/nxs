@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.41.0] - 2026-10-23
+
+### Changed
+
+- `commit` description covers requests with limits such as "commit only X" and routes every commit through the skill.
+
+### Fixed
+
+- `bug` repeat rule leaves `root-cause.md` and the open ticket unchanged on the same confirmed cause.
+- `commit` message format forbids body and trailer lines unless requested.
+
 ## [0.40.1] - 2026-10-22
 
 ### Changed

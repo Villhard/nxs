@@ -8,7 +8,7 @@ Read this reference before writing a commit. `commit` follows it and owns what g
 <type>(<scope>): <subject>
 ```
 
-Single line, no body unless explicitly requested. Subject as short as possible and fully lowercase, abbreviations included ("seo", not "SEO"). Types: `feat` (new functionality), `fix` (bug fix), `refactor` (no behavior change), `chore` (deps, configs), `docs` (documentation).
+Single line: no body and no trailer lines such as `Co-Authored-By` or `Signed-off-by`, unless the user explicitly asks for them. A host's default commit template does not override this. Subject as short as possible and fully lowercase, abbreviations included ("seo", not "SEO"). Types: `feat` (new functionality), `fix` (bug fix), `refactor` (no behavior change), `chore` (deps, configs), `docs` (documentation).
 
 Scope names the area the commit changes: a module, a plugin, or in a notes repository the topic or skill name. Prefer a scope already used in `git log --oneline -20`.
 

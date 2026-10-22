@@ -1,5 +1,5 @@
 ---
-description: Commit existing changes in atomic groups when the user invokes /dev:commit, $dev:commit or /dev/commit, or asks to commit work. Do not activate for commit discussions.
+description: Commit existing changes in atomic groups when the user invokes /dev:commit, $dev:commit or /dev/commit, or asks to commit work, including requests with limits such as "commit only X" or "leave Y staged". Use this skill for every commit instead of a direct git commit. Do not activate for commit discussions.
 argument-hint: "[optional scope hint]"
 ---
 
