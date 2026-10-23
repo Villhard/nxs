@@ -1,7 +1,7 @@
 {
   "name": "dev",
   "description": "Four development commands for Claude Code, Codex and OpenCode: shape features and bugs into tickets for harness plan mode, review with three roles and a verifier, and commit",
-  "version": "0.41.1",
+  "version": "0.42.0",
   "author": {
     "name": "Victor Ryabov"
   },

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check the dev OpenCode installer against temporary config directories; no model is called."""
 
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -13,7 +14,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[2]
 INSTALLER = ROOT / 'plugins/dev/opencode/install.py'
 ROLES = ('review-quality', 'review-testing', 'review-simplification', 'review-verify')
-COMMANDS = ('rnd', 'bug', 'review', 'commit')
+SKILLS = ('rnd', 'bug', 'review', 'commit')
 
 
 def run(config, *args, version='2.1.2'):
@@ -52,13 +53,10 @@ def fresh_install(config):
     result = run(config)
     assert result.returncode == 0, result.stderr
     files = tree(config)
-    for name in COMMANDS:
+    for name in SKILLS:
         source = ROOT / f'plugins/dev/skills/{name}/SKILL.md'
         assert files[f'nxs/dev/skills/{name}/SKILL.md'] == source.read_bytes()
-        command = files[f'commands/dev/{name}.md'].decode()
-        assert 'subagent: false' in command and '$ARGUMENTS' in command
-        assert not re.search(r'\$\d|!`', command), command
-        assert str(config / 'nxs/dev/skills' / name) in command
+    assert not [rel for rel in files if rel.startswith('commands/dev/')], 'skills need no proxy commands'
     for role in ROLES:
         agent = files[f'agents/dev/{role}.md'].decode()
         keys, body = fields(agent)
@@ -132,6 +130,23 @@ def user_files(config):
     assert not (config / 'nxs').exists()
 
 
+def upgrade_removes_proxy_commands(config):
+    assert run(config).returncode == 0
+    path = config / 'nxs/dev-install.json'
+    manifest = json.loads(path.read_text())
+    for name in SKILLS:
+        command = config / f'commands/dev/{name}.md'
+        command.parent.mkdir(exist_ok=True)
+        command.write_text(f'The user explicitly invoked /dev/{name}.\n')
+        manifest['files'][f'commands/dev/{name}.md'] = hashlib.sha256(command.read_bytes()).hexdigest()
+    path.write_text(json.dumps(manifest, indent=2) + '\n')
+    result = run(config)
+    assert result.returncode == 0, result.stderr
+    assert not (config / 'commands/dev').exists(), tree(config)
+    assert 'commands/plan.md' in tree(config)
+    assert not [rel for rel in json.loads(path.read_text())['files'] if rel.startswith('commands/dev/')]
+
+
 def versions(config):
     refused = run(config, version='1.19.3')
     assert refused.returncode == 1 and 'OpenCode 2 only' in refused.stderr, refused
@@ -146,6 +161,7 @@ def main():
     case('existing JSON without skills', existing_json_without_skills)
     case('malformed config stops', malformed_config)
     case('user-owned files', user_files)
+    case('upgrade removes proxy commands', upgrade_removes_proxy_commands)
     case('OpenCode version check', versions)
     print('OpenCode installer: PASS (generated files and config edits, not model behavior)')
 

@@ -1,5 +1,5 @@
 ---
-description: Investigate a reported failure when explicitly asked to use it (/dev:bug in Claude Code, $dev:bug in Codex, /dev/bug in OpenCode). Save reproducible evidence and a confirmed root cause with one fix ticket for /plan, or the evidence still missing and no ticket. Do not implement a fix.
+description: Investigate a reported failure when explicitly asked to use it (/dev:bug in Claude Code, $dev:bug in Codex, @bug in OpenCode). Save reproducible evidence and a confirmed root cause with one fix ticket for /plan, or the evidence still missing and no ticket. Do not implement a fix.
 argument-hint: "[tracker key | bug description | path]"
 disable-model-invocation: true
 ---

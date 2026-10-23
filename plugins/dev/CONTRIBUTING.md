@@ -7,7 +7,7 @@ Follow the [shared rules](../../CONTRIBUTING.md). This guide covers authoring; t
 - `skills/<command>/SKILL.md`: four commands, with local `assets/`, `references/` or `scripts/` when needed.
 - `agents/`: three review finder roles and one verifier, each with complete instructions.
 - `references/`: rules shared by several commands, read at the point of use. See CONTRACT OWNERS.
-- `opencode/install.py`: the OpenCode 2 installer. It copies this version and generates the subagents and commands at install time; nothing generated is committed.
+- `opencode/install.py`: the OpenCode 2 installer. It copies this version and generates the subagents and `/plan` at install time; nothing generated is committed.
 
 Keep process rules with their owning command or role; a rule two commands apply goes to one reference instead of two copies. Keep personal preferences in client/project instructions. Do not add background skills, cross-skill injection or plugin hooks. Add a command only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing command.
 
@@ -15,7 +15,7 @@ Keep process rules with their owning command or role; a rule two commands apply 
 
 | Distinction | Meaning |
 | --- | --- |
-| command / skill / agent | User-facing `/dev:<name>` (`/dev/<name>` in OpenCode) / its `SKILL.md` implementation / a spawned reviewer. |
+| command / skill / agent | User-facing `/dev:<name>` (`@<name>` in OpenCode) / its `SKILL.md` implementation / a spawned reviewer. |
 | feature / ticket | One `.scratch/<feature-slug>/` directory / one deliverable in `issues/NN-<slug>.md`. |
 | acceptance criterion | Required outcome of a ticket, a `- [ ]` line. Completed criteria remain requirements. |
 
@@ -47,7 +47,7 @@ Keep process rules with their owning command or role; a rule two commands apply 
 | Standalone commits | [commit](skills/commit/SKILL.md) |
 | Commit message and Git rules | [commit format](references/commit-format.md), read by commit |
 | Agent launch and context packets | [agent launch](references/agent-launch.md), read by review |
-| OpenCode install layout, generated subagents and commands | [installer](opencode/install.py) |
+| OpenCode install layout, generated subagents and `/plan` | [installer](opencode/install.py) |
 
 Preserve artifact headings, status values, paths, writer ownership and prompt markers. Only the user sets `wontfix`, except the executor under the first criterion of a ticket from review. Keep scope, Git checks, tracker selection and stop rules with their owners; do not copy their schemas or procedures here.
 
