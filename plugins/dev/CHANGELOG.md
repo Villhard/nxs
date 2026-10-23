@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.41.1] - 2026-10-23
+
+### Changed
+
+- `commit` states each rule once and ends with the step 5 report.
+- `commit` message format lists plain verbs without a banned-verb list.
+- `rnd` and `bug` keep the handoff rule only in the introduction; `rnd` clarifies code first, then a fuzzy domain term.
+- `review-quality` and `review-testing` defer naming findings to the severity bar; `review-simplification` reports large in-scope fixes in reviewer terms.
+- Agent launch reference drops client-testing guidance, now in the dev contributing guide.
+- `review` heading uses the lowercase command name.
+
 ## [0.41.0] - 2026-10-23
 
 ### Changed

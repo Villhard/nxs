@@ -56,7 +56,7 @@ Check that the trigger's preconditions can occur in this project; do not invent 
 
 Before claiming something is unused, never called, or unreachable, search the project for it first, including tests and config. That claim is wrong more often than any other.
 
-Also report unclear, misleading or misspelled names in changed production code as minor. Explain the ambiguity or mismatch with the symbol's actual role and propose a clearer name; naming findings need no runtime trigger or written naming rule. A preference between equally clear synonyms is not a finding.
+Also report unclear, misleading or misspelled names in changed production code under the naming rule of the SEVERITY BAR.
 
 ## WHAT TO REPORT
 

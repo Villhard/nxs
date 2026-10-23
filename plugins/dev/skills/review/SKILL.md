@@ -4,7 +4,7 @@ argument-hint: "[ticket path | feature dir]"
 disable-model-invocation: true
 ---
 
-# /DEV:REVIEW
+# /dev:review
 
 Review the staged changes or a branch's diff, which may span several tickets or none, explain the findings and turn the ones the user picks into tickets.
 

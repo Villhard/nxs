@@ -19,7 +19,7 @@ Commit what is there. Keep working-file bytes unchanged throughout the command, 
 
 1. Read `git status`, unstaged and staged diffs, and untracked files. Establish the requested scope and record the original staged content before changing the index.
 2. Classify the current state using the table below and name the selected case with its paths before any write. A selected path is **mixed** when its working-tree diff against HEAD contains another logical change. It stays mixed even if a patch could stage only the requested hunk: `commit --only` takes working-tree bytes, not that partial staged version.
-3. If another group is staged and any selected path is mixed, stop now. Report both the staged foreign paths and the mixed path; ask the user to separate the changes. Do not create a patch, stage a hunk, alter files or commit. This case has no automatic isolation procedure.
+3. If another group is staged and any selected path is mixed, stop now under the third row of the table below: report both the staged foreign paths and the mixed path and ask the user to separate the changes. This case has no automatic isolation procedure.
 4. For the remaining cases, group by logical change - one group per `feat` / `fix` / `refactor` / `chore` / `docs` unit. Separate a refactor from a feat or a fix even inside one file. For each group, in dependency order:
    - read both diffs for every selected path: a path may contain intended staged content and unrelated unstaged edits;
    - choose the index case below before staging. Never silently unstage, overwrite or include another group's content;
@@ -39,7 +39,7 @@ Example: a requested fix entirely in `limits.py` can use `--only` while an unrel
 Before the first commit, read [commit format](../../references/commit-format.md); every message and staging step follows its MESSAGE and GIT RULES.
 
 - one commit is one logical change;
-- do not commit unrelated files, large generated artifacts, foreign-branch files, or merge artifacts.
+- unrelated files stay out of every commit; large generated, foreign-branch and merge artifacts stop the command under STOP CONDITIONS.
 
 ## STOP CONDITIONS
 
@@ -52,4 +52,4 @@ With nothing to commit, report a successful no-op without a question. For other 
 
 ## NEXT
 
-Changes committed. `git push` only when you explicitly ask for it.
+Stop after the report from step 5. `git push` waits for a later explicit request.

@@ -136,4 +136,4 @@ On a repeat, check the tickets in `issues/` that already name this `root-cause.m
 
 ## NEXT
 
-Return the root-cause path and state whether the cause is confirmed or unconfirmed. A confirmed result names the evidence, returns the fix ticket path and its `**Branch:**`, and suggests `/plan <ticket-path>` in Claude Code, Codex or OpenCode; an unconfirmed result names the missing evidence or next discriminating probe. Do not invoke another command.
+Return the root-cause path and state whether the cause is confirmed or unconfirmed. A confirmed result names the evidence, returns the fix ticket path and its `**Branch:**`, and suggests `/plan <ticket-path>` in Claude Code, Codex or OpenCode; an unconfirmed result names the missing evidence or next discriminating probe.

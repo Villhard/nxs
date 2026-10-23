@@ -33,7 +33,7 @@ Remote input follows TRACKER INPUT from feature directory. Preserve its evidence
 
 ## CLARIFY
 
-Read the relevant code, patterns, and integration points first - directly or through the built-in Explore agent. Scale the reading to the request: trace the current behavior and likely change points, look for reusable code, and check affected consumers and tests for a migration. Before discussing approaches, show a short account of those findings with repository-relative paths and symbol names where applicable. If no suitable implementation was found, say where you looked; do not invent an analogue. Ask only about what the code does not answer. Do not over-read. Clarify a fuzzy domain term before anything else.
+Read the relevant code, patterns, and integration points first - directly or through the built-in Explore agent. Scale the reading to the request: trace the current behavior and likely change points, look for reusable code, and check affected consumers and tests for a migration. Before discussing approaches, show a short account of those findings with repository-relative paths and symbol names where applicable. If no suitable implementation was found, say where you looked; do not invent an analogue. Ask only about what the code does not answer, a fuzzy domain term before any other question.
 
 Apply DOMAIN DOCUMENTS from feature directory before asking: use the glossary's terms in the spec and tickets, and ask only about a term it leaves undefined or the request contradicts. Name a missing term or a decision worth recording in the reply.
 
@@ -95,4 +95,4 @@ Before writing tickets, read [ticket](../../references/ticket.md): it owns the t
 
 ## NEXT
 
-Return the spec path, created or preserved ticket paths and any unresolved clarification. Suggest `/plan <ticket-path>` in Claude Code, Codex or OpenCode for the first `ready-for-agent` implementation ticket that has no bare or Markdown-bold `Type:` field and whose local blockers are `resolved`. An incomplete spec or unknown/unmapped remote blocker has no ready handoff; existing tickets do not become new work on a repeat. Do not invoke another command.
+Return the spec path, created or preserved ticket paths and any unresolved clarification. Suggest `/plan <ticket-path>` in Claude Code, Codex or OpenCode for the first `ready-for-agent` implementation ticket that has no bare or Markdown-bold `Type:` field and whose local blockers are `resolved`. An incomplete spec or unknown/unmapped remote blocker has no ready handoff; existing tickets do not become new work on a repeat.
