@@ -63,12 +63,12 @@ Verified for 0.33.0 in Claude Code CLI 2.1.301: steps 1 and 3, a one-ticket answ
 
 ## OPENCODE
 
-Install the candidate with `python3 plugins/dev/opencode/install.py --config-dir <temporary directory>` and start `OPENCODE_CONFIG_DIR=<temporary directory> opencode --standalone` in the fixture. Invoke commands as `/dev/<name>`. Read tool calls from `opencode session export <id>`, including the child sessions that `subagent` calls name.
+Install the candidate with `python3 plugins/dev/opencode/install.py --config-dir <temporary directory>` and start `OPENCODE_CONFIG_DIR=<temporary directory> opencode --standalone` in the fixture. Invoke skills as `@<name>`. Read tool calls from `opencode session export <id>`, including the child sessions that `subagent` calls name.
 
 | Case | Setup and invocation | Required observation |
 | --- | --- | --- |
-| Discovery | A long-running server on the temporary config; list agents, skills and commands twice, since the first request for a directory can answer before plugins load | `dev/review-*` agents in `subagent` mode with deny-first permissions; skills `rnd`, `bug`, `review` with automatic invocation off, and `commit`; commands `dev/rnd`, `dev/bug`, `dev/review`, `dev/commit` and `plan`. |
-| Invocation | The INVOCATION prompts, with `/dev/<name>` for explicit selection | As in INVOCATION; the `/dev/<name>` command loads the skill from the installed copy. |
+| Discovery | A long-running server on the temporary config; list agents, skills and commands twice, since the first request for a directory can answer before plugins load | `dev/review-*` agents in `subagent` mode with deny-first permissions; skills `rnd`, `bug`, `review` with automatic invocation off, and `commit`; command `plan` and no `dev/*` commands. |
+| Invocation | The INVOCATION prompts, with `@<name>` for explicit selection | As in INVOCATION; the `@<name>` mention loads the skill from the installed copy. |
 | Review launch | REVIEW step 1 | One response with three `subagent` calls for the finder roles, without `background`, `sessionID` or `model`; child sessions overlap in time; one `dev/review-verify` call after all finder results; children use only the role tools. |
 | Missing roles | Move the generated `agents/dev` aside, then REVIEW step 5 | Review stops before any `subagent` call and leaves the report bytes unchanged. |
 | Role tools | Ask the main agent to launch `dev/review-quality` to list its tools and create a file | The child lists only read, grep, glob and shell. Shell can still write, as Bash can for the native role. |

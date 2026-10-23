@@ -1,5 +1,5 @@
 ---
-description: Shape a feature or open question when explicitly asked to use it (/dev:rnd in Claude Code, $dev:rnd in Codex, /dev/rnd in OpenCode). Save an agreed spec and one or more tickets, without implementation tasks or code. Use /dev:bug for a reported failure and the client's /plan for an already clear task.
+description: Shape a feature or open question when explicitly asked to use it (/dev:rnd in Claude Code, $dev:rnd in Codex, @rnd in OpenCode). Save an agreed spec and one or more tickets, without implementation tasks or code. Use /dev:bug for a reported failure and the client's /plan for an already clear task.
 argument-hint: "[request | spec path | tracker key | question]"
 disable-model-invocation: true
 ---

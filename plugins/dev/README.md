@@ -56,7 +56,7 @@ If review finds issues, pick the proposed tickets to create and run `/plan <tick
 
 In Codex, use `/plan` the same way. Select the `dev` skill with `/skills` or the `$` picker in CLI/IDE, or request it directly: "Use the review skill from dev on the staged changes." Verified in Codex: installation and skill selection. The ticket handoff to `/plan` and the reviewer launch in `review` are not verified in Codex yet.
 
-In OpenCode, [install dev](../../README.md#install) with its installer and use the `/dev/<name>` commands, such as `/dev/review`. Reviewers run as `dev/review-*` subagents limited to read, grep, glob and shell, which can still write, as Bash can for the native roles. Verified in OpenCode 2.1.2: installation, `/dev/<name>` invocation, the reviewer launch in `review`, and the ticket handoff to `/plan` and Build.
+In OpenCode, [install dev](../../README.md#install) with its installer and invoke a skill as `@<name>`, such as `@review`, or pick it in `/skills`. Reviewers run as `dev/review-*` subagents limited to read, grep, glob and shell, which can still write, as Bash can for the native roles. Verified in OpenCode 2.1.2: installation, invocation through the earlier `/dev/<name>` commands, the reviewer launch in `review`, and the ticket handoff to `/plan` and Build. Invocation as `@<name>` is not verified yet.
 
 ## Shaping routes
 
@@ -80,7 +80,7 @@ NXS saves everything under `.scratch/`, reads tracker issues without writing to 
 | `review` | Review the staged changes; with nothing staged, the committed branch changes against the default branch. On the default branch with nothing staged, it stops. |
 | `review <ticket-path>` | The same review, with that ticket or feature as the requirements. |
 
-Use these arguments with `/dev:` in Claude Code, with the selected Codex skill or with `/dev/` in OpenCode. A ticket or feature path supplies review requirements, not a code filter. Unstaged edits are never reviewed.
+Use these arguments with `/dev:` in Claude Code, with the selected Codex skill or with `@<name>` in OpenCode. A ticket or feature path supplies review requirements, not a code filter. Unstaged edits are never reviewed.
 
 ## Working files
 

@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.42.0] - 2026-10-23
+
+### Changed
+
+- OpenCode invokes `rnd`, `bug`, `review` and `commit` as `@<name>` skill mentions.
+
+### Removed
+
+- OpenCode installer no longer generates the `/dev/rnd`, `/dev/bug`, `/dev/review` and `/dev/commit` commands; updating removes them.
+
 ## [0.41.1] - 2026-10-23
 
 ### Changed

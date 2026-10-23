@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install dev into OpenCode 2: a versioned copy, its skills entry, review subagents and commands."""
+"""Install dev into OpenCode 2: a versioned copy, its skills entry, review subagents and the /plan command."""
 
 import argparse
 import hashlib
@@ -17,7 +17,7 @@ HOME = Path.home()
 SCHEMA = 'https://opencode.ai/config.json'
 MANIFEST = 'nxs/dev-install.json'
 SNAPSHOT = 'nxs/dev'
-COMMANDS = ('rnd', 'bug', 'review', 'commit')
+SKILLS = ('rnd', 'bug', 'review', 'commit')
 # Claude Code role tools -> OpenCode permission actions.
 TOOLS = {
     'Read': 'read', 'Grep': 'grep', 'Glob': 'glob', 'Bash': 'shell',
@@ -114,22 +114,6 @@ def agent_file(path):
         lines += [f'  - action: {json.dumps(action)}', f'    resource: {json.dumps(resource)}',
                   f'    effect: {effect}']
     return ('\n'.join(lines) + '\n---\n' + body).encode()
-
-
-def command_file(name, skills):
-    fields, _ = frontmatter(PLUGIN / 'skills' / name / 'SKILL.md')
-    return '\n'.join([
-        '---',
-        'description: ' + json.dumps(unquote(fields['description']), ensure_ascii=False),
-        'subagent: false',
-        '---',
-        f'The user explicitly invoked /dev/{name}. Load the skill with ID `{name}` through the skill tool '
-        f'and follow it for this request. Its base directory must be `{skills / name}`; if the skill tool '
-        'reports another directory, stop and name both.',
-        '',
-        'Arguments, possibly empty: $ARGUMENTS',
-        '',
-    ]).encode()
 
 
 PLAN_FILE = '\n'.join([
@@ -341,8 +325,6 @@ def install(config, dry_run):
     files = snapshot_files()
     for path in sorted((PLUGIN / 'agents').glob('*.md')):
         files[f'agents/dev/{path.name}'] = agent_file(path)
-    for name in COMMANDS:
-        files[f'commands/dev/{name}.md'] = command_file(name, skills)
     plan = 'installed' if 'commands/plan.md' in owned else None
     if plan is None:
         other = plan_defined(config)
@@ -360,7 +342,7 @@ def install(config, dry_run):
                 conflicts.append(str(candidate))
     if conflicts:
         raise Stop('files not owned by this installer: ' + ', '.join(sorted(set(conflicts))))
-    for name in COMMANDS:
+    for name in SKILLS:
         for root in (HOME / '.claude/skills', HOME / '.agents/skills', config / 'skills'):
             if (root / name / 'SKILL.md').exists():
                 print(f'warning: {root / name} has the same skill ID; the dev skills entry takes precedence')
