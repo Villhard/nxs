@@ -80,6 +80,6 @@ For each finding:
 - Fix: <what the simpler code looks like>
 ```
 
-Keep confirmed in-scope defects in Findings even when the correction is large. Describe its reach and risk under Fix. Only an out-of-scope issue belongs in Follow-ups; cost alone does not change scope or severity.
+Report an in-scope finding even when the simpler code needs a large change; describe its reach and risk under Fix. Cost alone does not change scope or severity.
 
 Nothing found - say so and stop. Reporting nothing is a good review.

@@ -12,7 +12,7 @@ Single line: no body and no trailer lines such as `Co-Authored-By` or `Signed-of
 
 Scope names the area the commit changes: a module, a plugin, or in a notes repository the topic or skill name. Prefer a scope already used in `git log --oneline -20`.
 
-Plain simple verbs: add, fix, remove, update, show, hide, validate. Never tighten, strengthen, refine, streamline, leverage, harden.
+Use plain verbs that name the change: add, fix, remove, update, show, hide, validate.
 
 ## GIT RULES
 
