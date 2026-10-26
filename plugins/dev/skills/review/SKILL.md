@@ -165,6 +165,7 @@ Read [ticket](../../references/ticket.md) and follow its TEMPLATE, NUMBERING and
 
 - Location: `issues/` of the feature the report resolved to, else `.scratch/reviews/<branch-slug>/issues/`; never a directory holding `map.md`.
 - `**What to build:**` the corrected behavior, then one numbered line per finding with its location and its Problem: the input or situation and the wrong result. A plausible finding's line ends with `plausible; confirm: <what would confirm it>`.
+- `**Blocked by:**` `None (can start immediately)` unless another open ticket in the same `issues/` must land first; then its number.
 - `**Branch:**` the current branch, the base branch included; drop the line only on a detached HEAD.
 - `**Status:**` `ready-for-agent`, with an answered choice written into `**What to build:**`; or, for the split-off ticket of an open choice, `needs-info` with that choice as a `[NEEDS CLARIFICATION: ...]` marker in the ticket body.
 - The first criterion, verbatim: `- [ ] Each finding reproduced before the change, with evidence under ## Comments; a finding that did not reproduce is named there and its criteria removed; if none reproduced, set **Status** to wontfix and stop.` Then one criterion per finding from its Fix and its observable result, plus a regression test when the project has a test suite.

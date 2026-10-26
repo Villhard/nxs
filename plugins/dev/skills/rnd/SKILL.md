@@ -20,7 +20,7 @@ Suggest the next command at a handoff; never start it automatically.
 
 - Produce the spec and the tickets and stop. The plan, the code, and any behavior change belong to the client's plan mode.
 - Four steps in order: clarify, explore, stress-test, slice. A clear request may need zero questions, one obvious approach and no stress pass. After agreement, slice always runs, even when it yields one ticket.
-- Full collapse makes the spec ceremony. Say so out loud and offer to describe the task straight to `/plan` in Claude Code, Codex or OpenCode instead.
+- Full collapse makes the spec ceremony. Say so out loud, offer to describe the task straight to `/plan` in Claude Code, Codex or OpenCode instead, and stop for the user's choice: no draft spec or ticket breakdown until they ask for one.
 - For a bug rather than a request, route to `/dev:bug`.
 
 ## EXISTING INPUT
@@ -47,7 +47,7 @@ An axis deliberately left open goes into the spec as `[NEEDS CLARIFICATION: <spe
 
 ## EXPLORE
 
-Lay out 2-4 real approaches with pros and cons, and show the trade-offs. Give a recommendation with a rationale and leave the choice to the user.
+Lay out 2-4 real approaches with pros and cons, and show the trade-offs. Give a recommendation with a rationale and leave the choice to the user: stop for it, and run stress and show the proposed spec only after the user chooses. A clarify question still open waits for its answer first, so a reply asks one thing.
 
 The recommended approach is the minimal viable one, built on how the project already solves this. If there is genuinely one reasonable approach, say so - a stretched alternative is worse than none.
 
@@ -55,7 +55,7 @@ Mark an approach that contradicts a recorded project decision as such, with the 
 
 ## STRESS
 
-Pressure-test the recommended approach before writing it down:
+Pressure-test the recommended approach before writing it down. Show all four parts in the reply, one or two lines each, before the proposed spec:
 
 1. **Assumptions** - what must hold for it to survive, stated explicitly.
 2. **Premortem** - assume it already failed, then trace the path: which assumption broke, which edge case hit, which cost was underestimated.
