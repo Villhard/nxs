@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.43.0] - 2026-10-26
+
+### Changed
+
+- `rnd` stops after laying out approaches and runs stress and shows the proposed spec only after the user chooses; a reply asks one thing.
+- `rnd` shows all four stress parts in the reply before the proposed spec.
+
+### Fixed
+
+- `rnd` stops after offering `/plan` for a request that makes the spec ceremony, without drafting a spec or tickets.
+- Ticket `**Branch:**` is proposed even when the project has no branch rule.
+- `review` tickets always carry `**Blocked by:**`.
+
 ## [0.42.0] - 2026-10-23
 
 ### Changed
