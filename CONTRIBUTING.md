@@ -1,25 +1,34 @@
 # CONTRIBUTING
 
-Read these shared rules and the [dev rules](plugins/dev/CONTRIBUTING.md). `CLAUDE.md` and `AGENTS.md` are equivalent entry points.
+Read these shared rules before editing. `CLAUDE.md` and `AGENTS.md` are equivalent entry points.
 
 ## STRUCTURE
 
-Root files describe the marketplace. Installed plugin content lives under `plugins/<name>/`:
+Each skill is one self-contained directory under `skills/`, installable on its own:
 
 ```text
-.claude-plugin/marketplace.json
-plugins/<name>/
-  .claude-plugin/plugin.json
-  .codex-plugin/plugin.json    # optional
-  opencode/install.py          # optional OpenCode installer
-  skills/<skill>/SKILL.md
-  skills/<skill>/references/   # optional
-  skills/<skill>/assets/       # optional
-  skills/<skill>/scripts/      # optional
-  README.md CONTRIBUTING.md CHANGELOG.md
+skills/<name>/
+  SKILL.md                     # frontmatter: name, description; optional argument-hint, disable-model-invocation
+  agents/openai.yaml           # optional Codex invocation policy
+  references/                  # rule files read at the point of use
+  assets/                      # artifact templates
+  roles/                       # agent role files (dev-review)
+tests/client-scenarios.md
+README.md CONTRIBUTING.md CHANGELOG.md
 ```
 
-Create a plugin only for a distinct subject. Its Claude Code manifest needs `name`, `description`, `version`, `author`, `license`, `repository` and a plugin-directory `homepage`. Optional Codex metadata uses the same name/version and `skills: "./skills/"`. Add a catalog entry with `name`, `source`, `category` and `description`, and link the plugin from the root README.
+A skill may link only to files inside its own directory. Files shared by several skills are copied into every consuming skill and must stay byte-identical; the check enforces this. Edit the `dev-rnd` copy, then propagate:
+
+```bash
+cp skills/dev-rnd/references/ticket.md skills/dev-bug/references/ticket.md
+cp skills/dev-rnd/references/ticket.md skills/dev-review/references/ticket.md
+cp skills/dev-rnd/references/feature-directory.md skills/dev-bug/references/feature-directory.md
+cp skills/dev-rnd/assets/spec.md skills/dev-bug/assets/spec.md
+cp skills/dev-rnd/assets/ticket.md skills/dev-bug/assets/ticket.md
+cp skills/dev-rnd/assets/ticket.md skills/dev-review/assets/ticket.md
+```
+
+Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
 ## STYLE AND SAFETY
 
@@ -29,7 +38,7 @@ Keep private paths/remotes, tracker identifiers, secrets, environment values, pe
 
 ## INSTRUCTION CONTRACTS
 
-README explains how to use the plugin; CONTRIBUTING explains how to change it. Skills, roles and references own the full execution contract. Link to those rules instead of retelling them in guides. Keep model names and evaluation results out of guides.
+README explains how to use the skills; CONTRIBUTING explains how to change them. Skills, roles and references own the full execution contract. Link to those rules instead of retelling them in guides. Keep model names and evaluation results out of guides.
 
 - State inputs, entry checks, ordered actions, outputs, stops and handoffs. Put exceptions beside the affected step; use tables for competing states.
 - Give descriptions a concrete trigger, result and distinction from neighboring commands. Separate invocation from discussion and internal operations.
@@ -40,22 +49,18 @@ README explains how to use the plugin; CONTRIBUTING explains how to change it. S
 
 ## VERSIONS
 
-Plugins version independently; root files have no version. Every bundled edit, including documentation, metadata and file modes, needs a release bump, matching manifest versions and a dated CHANGELOG entry. Start new plugins at `0.1.0`. Keep every past version heading and date, newest first; past entries may be condensed but never dropped.
+The root CHANGELOG is the only version record; skills carry no manifests. Every bundled edit, including documentation and file modes, needs a dated CHANGELOG entry under Keep a Changelog headings (`Added`, `Changed`, `Fixed`, `Removed`, `Deprecated`), one line per bullet naming the skill, role or artifact that changed. Keep every past version heading and date, newest first; past entries may be condensed but never dropped.
 
-A CHANGELOG entry lists what changed under Keep a Changelog headings (`Added`, `Changed`, `Fixed`, `Removed`, `Deprecated`). One line per bullet, naming the command, role or artifact that changed. No introductory paragraphs, rationale, before/after comparisons or file listings: the commit and the owning instruction carry those.
-
-An unchanged contract is a patch. During `0.x`, contract changes require a minor release; after `1.0.0`, breaking changes require a major release. Each plugin defines its versioned contract.
+An unchanged contract is a patch. During `0.x`, contract changes require a minor release; after `1.0.0`, breaking changes require a major release. The versioned contract: skill names, arguments and invocation policy; role names, launch routes and context packets; artifact paths, formats and handoffs; write/Git boundaries.
 
 ## CHECKS
 
-Run from the repository root with Git, Bash, Python 3 and Claude Code available:
+Run from the repository root with Git, Bash and Python 3 available:
 
 ```bash
-bash .github/scripts/check-marketplace.sh
-python3 .github/scripts/test_check_marketplace.py
+bash .github/scripts/check-skills.sh
+python3 .github/scripts/test_check_skills.py
 bash .github/scripts/lint-house-style.sh
-claude plugin validate --strict .
-claude plugin validate --strict plugins/dev
 git diff --check
 ```
 
@@ -67,39 +72,21 @@ The checker supports three read-only comparisons:
 | `--staged` | Index against HEAD |
 | `--base REF --head REF` | Two Git snapshots |
 
-The first two require HEAD. See the [checker](.github/scripts/check-marketplace.py) and [CI](.github/workflows/ci.yml) for validation and snapshot selection. Metadata checks use a limited YAML subset; native validation is still required. Link checks do not cover anchors or every Markdown form: inspect links, headings and the final diff yourself. Pass untracked Markdown paths explicitly to the style script.
+The first two require HEAD. It validates the skill set, frontmatter contracts, invocation policy, role files, identical shared copies, links that stay inside their skill and resolve, and the CHANGELOG entry shape. Link checks do not cover anchors or every Markdown form: inspect links, headings and the final diff yourself. Pass untracked Markdown paths explicitly to the style script.
 
 The [pre-commit hook](.githooks/pre-commit) runs the staged check in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
-If a plugin has a Codex manifest, also run its Codex check; for dev, `python3 .github/scripts/test_dev_invocation.py`, which CI also runs. For dev's OpenCode installer, run `python3 .github/scripts/test_dev_opencode.py`, which CI also runs. The Codex `skill-creator` quick validator rejects the Claude Code frontmatter keys (`argument-hint`, `disable-model-invocation`) and the omitted `name` by design; those errors are expected. Report unavailable checks. For behavior changes, use disposable projects and the plugin's scenarios; documentation-only edits need source, command and link checks, not repeated workflows.
+For behavior changes, use disposable projects and the [client scenarios](tests/client-scenarios.md); documentation-only edits need source, command and link checks, not repeated workflows.
 
 ## LOCAL DEVELOPMENT AND RELEASE
 
-From the checkout root:
-
-**Claude Code**
+Preview a candidate in a disposable agents directory:
 
 ```bash
-claude --plugin-dir ./plugins/dev
+home=$(mktemp -d)
+HOME="$home" npx skills@latest add "$PWD" -g -y -s '*' -a claude-code
 ```
 
-**Codex**
+Run the client against that `HOME`, then remove the temporary directory, keeping credentials out of Git. Repeat the add after edits to refresh the copies. The temporary home has no usual authentication or global settings; sign in if needed.
 
-```bash
-nxs_preview_home=$(mktemp -d)
-CODEX_HOME="$nxs_preview_home" codex plugin marketplace add "$PWD"
-CODEX_HOME="$nxs_preview_home" codex plugin add dev@nxs
-CODEX_HOME="$nxs_preview_home" codex
-```
-
-**OpenCode**
-
-```bash
-nxs_preview_config=$(mktemp -d)
-python3 plugins/dev/opencode/install.py --config-dir "$nxs_preview_config"
-OPENCODE_CONFIG_DIR="$nxs_preview_config" opencode --standalone
-```
-
-The temporary Codex home has no usual authentication or global settings; sign in if needed. The temporary OpenCode config has no global settings or instructions; sign-ins in the OpenCode data directory still apply. Project instructions still apply. Repeat `plugin add` or the installer after versioned edits. Restart the client after changes and remove the temporary home or config when finished, keeping credentials out of Git.
-
-Publish the version before [updating installations](README.md#update). Do not update installed plugins or replace configured marketplaces during source edits unless requested.
+Publish by pushing to `main` before updating installations; users update with `npx skills update`. Do not modify the user's installed skills during source edits unless requested.

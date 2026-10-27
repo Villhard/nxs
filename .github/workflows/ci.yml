@@ -2,109 +2,42 @@ name: CI
 
 on:
   push:
-  pull_request:
+    pull_request:
 
 jobs:
-  validate:
-    name: Plugin validate
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Set up Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: '20'
-
-      - name: Install Claude Code CLI
-        run: npm install -g @anthropic-ai/claude-code@2.1.302
-
-      - name: Validate marketplace manifest
-        run: claude plugin validate --strict .
-
-      - name: Validate every plugin
-        run: |
-          status=0
-          shopt -s nullglob
-          plugins=(plugins/*/)
-          if [ "${#plugins[@]}" -eq 0 ]; then
-            echo "no plugins/*/ directories found"
-            exit 1
-          fi
-          for p in "${plugins[@]}"; do
-            claude plugin validate --strict "${p%/}" || status=1
-          done
-          exit $status
-
-  codex:
-    name: Codex invocation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Set up Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: '20'
-
-      - name: Install Codex CLI
-        run: npm install -g @openai/codex@0.163.0
-
-      - name: Check Codex request assembly against a loopback stub
-        run: python3 .github/scripts/test_dev_invocation.py
-
-  opencode:
-    name: OpenCode installer
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Check generated files and config edits with a stub opencode
-        run: python3 .github/scripts/test_dev_opencode.py
-
   # Keep the check name required by main branch protection.
   marketplace:
     name: House style + frontmatter
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout full history
+      - name: Checkout
         uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
 
       - name: House-style lint
         run: bash .github/scripts/lint-house-style.sh
 
-      - name: Check release snapshots
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-          TARGET_SHA: ${{ github.event.pull_request.base.sha }}
-          BEFORE_SHA: ${{ github.event.before }}
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-        run: |
-          set -euo pipefail
-          if [ "$EVENT_NAME" = pull_request ]; then
-            base=$(git merge-base "$TARGET_SHA" "$HEAD_SHA")
-          elif [ -n "$BEFORE_SHA" ] &&
-               git rev-parse --verify --end-of-options "$BEFORE_SHA^{commit}" >/dev/null 2>&1 &&
-               git merge-base --is-ancestor "$BEFORE_SHA" "$HEAD_SHA"; then
-            base=$BEFORE_SHA
-          else
-            base=$(git merge-base "refs/remotes/origin/$DEFAULT_BRANCH" "$HEAD_SHA" 2>/dev/null || true)
-            if [ -z "$base" ] || [ "$base" = "$HEAD_SHA" ]; then
-              if git rev-parse --verify "$HEAD_SHA^" >/dev/null 2>&1; then
-                base=$(git rev-parse "$HEAD_SHA^")
-              else
-                # No parent: the actual initial commit. Hash without writing an object.
-                base=$(git hash-object -t tree --stdin </dev/null)
-              fi
-            fi
-          fi
-          bash .github/scripts/check-marketplace.sh --base "$base" --head "$HEAD_SHA"
+      - name: Check the skills tree
+        run: bash .github/scripts/check-skills.sh
 
-      - name: Run regression fixtures (Python 3 standard library)
-        run: python3 .github/scripts/test_check_marketplace.py
+      - name: Run checker regressions (Python 3 standard library)
+        run: python3 .github/scripts/test_check_skills.py
+
+  discovery:
+    name: Skills CLI discovery
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+
+      - name: The skills CLI lists all four skills
+        run: |
+          listed=$(npx -y skills@latest add . -l)
+          echo "$listed"
+          for skill in dev-rnd dev-bug dev-review dev-commit; do
+            echo "$listed" | grep -q "$skill" || { echo "missing skill: $skill"; exit 1; }
+          done

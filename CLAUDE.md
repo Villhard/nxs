@@ -1,5 +1,5 @@
 # CLAUDE
 
-Before editing, read the [shared rules](CONTRIBUTING.md) and the plugin's instructions: [dev](plugins/dev/CONTRIBUTING.md).
+Before editing, read the [shared rules](CONTRIBUTING.md).
 
-Document shared operations for Claude Code, Codex and OpenCode. State compatibility only at the level verified.
+Document shared operations across coding agents. State compatibility only at the level verified.
