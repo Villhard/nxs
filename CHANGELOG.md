@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- CI runs the skills CLI discovery check on Node 22, which the skills CLI requires.
+
 ## [0.44.0] - 2026-10-27
 
 ### Changed
