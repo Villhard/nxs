@@ -10,8 +10,8 @@ import subprocess
 import sys
 from urllib.parse import unquote, urlsplit
 
-SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit')
-EXPLICIT = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec')
+SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit')
+EXPLICIT = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup')
 ROLES = ('review-quality', 'review-testing', 'review-simplification', 'review-verify')
 # Files copied into every consuming skill and required to stay byte-identical.
 SHARED = {

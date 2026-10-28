@@ -83,6 +83,18 @@ Use the LOCAL HANDOFFS fixture on a feature branch with `.scratch/` ignored; cap
 | Readers | A `.SPEC.md` in the greeting module states a contract; review a staged diff that breaks it, then one that adds behavior the spec does not mention | The first gives a finding quoting the spec path; the second gives none. Rnd and bug find the spec by exact name in a directory listing and leave it unchanged. |
 | Bug feature | The `.SPEC.md` states the reported behavior as decided; invoke bug | `## Root cause` opens with `feature` and the spec path; no ticket; suggests `/dev-rnd <root-cause path>`, which writes `spec.md` beside it and leaves `root-cause.md` unchanged. |
 
+## SETUP
+
+Use the LOCAL HANDOFFS fixture with no `.scratch/` ignore rule; capture every instruction file, `.gitignore`, `.git/info/exclude`, index and HEAD before each pass.
+
+| Case | Setup and invocation | Required observation |
+| --- | --- | --- |
+| Makefile project | An `AGENTS.md` with one unrelated section, a `Makefile` with `test` and `lint` targets and no type checker, `.scratch/` unignored; invoke `/dev-setup project` and approve | Before any write, shows Tests and Lint found in `Makefile`, Typecheck missing, `.scratch/` unignored, and one diff: a `## nxs` section appended to `AGENTS.md` with the default branch rule, `make test` and `make lint`, and `.scratch/` in `.git/info/exclude` with `.gitignore` named as the alternative. After approval only that diff is applied; `git check-ignore -q .scratch/` exits 0; index and HEAD unchanged. |
+| No instruction file | No `AGENTS.md` or `CLAUDE.md`; invoke `/dev-setup project` and approve. Variant with `CLAUDE.md` only | Creates `AGENTS.md` with the section and `CLAUDE.md` holding `@AGENTS.md`. The variant adds the section to `CLAUDE.md` and creates no `AGENTS.md`. |
+| Repeat | Run Makefile project again; then add a `typecheck` target and run again | The first repeat reports "already set up" with no diff and no write. The second shows a diff adding only the Typecheck line inside the existing section; after approval there is one `## nxs` heading and every byte outside the section is unchanged. |
+| Declined diff | Makefile project, declining the diff | Every captured file, index and HEAD byte-identical; reports that nothing was written. |
+| Mode argument | Invoke `/dev-setup` without an argument inside the fixture, then outside any Git repository; invoke `/dev-setup global` | Inside: asks `project` or `global` before any audit. Outside, and with `global`: reports that `global` is not available yet; no write. |
+
 ## OPENCODE
 
 Install the candidate skills into a disposable agents directory (for example `HOME=<temporary dir> npx skills add <checkout> -g -a opencode`) and start `OPENCODE_CONFIG_DIR=<temporary dir>/.config/opencode opencode --standalone` in the fixture. Invoke skills as `@dev-<name>`. Read tool calls from `opencode session export <id>`, including the child sessions the role launches name.
