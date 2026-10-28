@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `dev-setup` states the approval, owned-section, repeat, "already set up" and check rules once in a CONTRACT section that both modes follow; `global` rule groups reuse the `## nxs` coverage table, and the `project` section template points to AUDIT step 3 for the branch rule.
 - `dev-setup global` counts a mattpocock skill as installed only from a lock entry with source `mattpocock/skills`; a same-name skill directory without it is reported as unverified, kept out of the install command and never overwritten, and the skills that need it are reported as blocked.
 - `dev-setup` `issue-tracker` template numbers wayfinder child tickets after the existing tickets in `issues/`.
+- README names Claude Code, Codex and OpenCode as target clients and links `tests/client-scenarios.md` for verified flows instead of claiming identical behavior.
 
 ### Fixed
 

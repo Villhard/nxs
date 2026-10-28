@@ -1,6 +1,6 @@
 # nxs
 
-Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes, record project specs and commit in atomic groups. The skills work the same in Claude Code, Codex and OpenCode; each step is a command you start yourself, and no command starts the next one for you.
+Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes, record project specs and commit in atomic groups. The skills target Claude Code, Codex and OpenCode; [tests/client-scenarios.md](tests/client-scenarios.md) records the flows verified in each client. Each step is a command you start yourself, and no command starts the next one for you.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
