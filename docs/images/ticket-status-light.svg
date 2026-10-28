@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-ticket-status-light-title nxs-ticket-status-light-desc" id="nxs-ticket-status-light-root">
   <title id="nxs-ticket-status-light-title">Ticket statuses and who sets them</title>
-  <desc id="nxs-ticket-status-light-desc">rnd, bug and review write a ticket as ready-for-agent or needs-info; an answer turns needs-info into ready-for-agent; the /plan executor sets resolved or ready-for-human, and you set wontfix.</desc>
+  <desc id="nxs-ticket-status-light-desc">rnd, bug and review write a ticket as ready-for-agent or needs-info; an answer turns needs-info into ready-for-agent; the /plan executor sets resolved or ready-for-human; after your step you set ready-for-human back to ready-for-agent and rerun /plan; you set wontfix.</desc>
   <defs>
     <marker id="nxs-ticket-status-light-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#626262"/></marker>
     <marker id="nxs-ticket-status-light-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b73800"/></marker>
@@ -12,11 +12,13 @@
   <path d="M 228 220 L 256 220 Q 264 220 264 212 L 264 156 Q 264 148 272 148 L 300 148" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-ticket-status-light-arrow)"/>
   <path d="M 228 236 L 256 236 Q 264 236 264 244 L 264 300 Q 264 308 272 308 L 300 308" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-ticket-status-light-arrow)"/>
   <path d="M 390 280 L 390 176" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-ticket-status-light-arrow)"/>
-  <path d="M 480 134 L 532 134 Q 540 134 540 126 L 540 76 Q 540 68 548 68 L 600 68" fill="none" stroke="#b73800" stroke-width="1.2" marker-end="url(#nxs-ticket-status-light-arrow-accent)"/>
-  <path d="M 480 148 L 552 148 Q 560 148 560 156 L 560 180 Q 560 188 568 188 L 600 188" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-ticket-status-light-arrow)"/>
-  <path d="M 480 162 L 520 162 Q 528 162 528 170 L 528 300 Q 528 308 536 308 L 600 308" fill="none" stroke="#626262" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-ticket-status-light-arrow)"/>
+  <path d="M 480 130 L 532 130 Q 540 130 540 122 L 540 76 Q 540 68 548 68 L 600 68" fill="none" stroke="#b73800" stroke-width="1.2" marker-end="url(#nxs-ticket-status-light-arrow-accent)"/>
+  <path d="M 480 142 L 564 142 Q 572 142 572 150 L 572 180 Q 572 188 580 188 L 600 188" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-ticket-status-light-arrow)"/>
+  <path d="M 480 166 L 520 166 Q 528 166 528 174 L 528 300 Q 528 308 536 308 L 600 308" fill="none" stroke="#626262" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-ticket-status-light-arrow)"/>
+  <path d="M 640 216 L 640 228 Q 640 236 632 236 L 552 236 Q 544 236 544 228 L 544 162 Q 544 154 536 154 L 480 154" fill="none" stroke="#7e7e7e" stroke-width="1.2" marker-end="url(#nxs-ticket-status-light-arrow-soft)"/>
   <rect x="200" y="176" width="52" height="12" rx="2" fill="#eeeeee"/><text x="226" y="185" fill="#7e7e7e" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">COMPLETE</text>
   <rect x="182.5" y="274" width="79" height="12" rx="2" fill="#eeeeee"/><text x="222" y="283" fill="#7e7e7e" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">OPEN QUESTION</text>
+  <rect x="562" y="230" width="60" height="12" rx="2" fill="#eeeeee"/><text x="592" y="239" fill="#7e7e7e" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">HUMAN STEP</text>
   <rect x="399" y="222" width="42" height="12" rx="2" fill="#eeeeee"/><text x="420" y="231" fill="#7e7e7e" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">ANSWER</text>
   <rect x="48" y="200" width="180" height="56" rx="6" fill="#eeeeee"/>
   <rect x="48" y="200" width="180" height="56" rx="6" fill="#ffffff" stroke="#262626" stroke-width="1"/>
