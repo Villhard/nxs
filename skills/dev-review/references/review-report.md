@@ -11,7 +11,7 @@ Use exactly these six headings with this field format:
 - `## Requirements`: `goal: <goal sentence, or no stated goal>`, then source lines `- index: <path> @ <blob OID>`, or `- disk: <path> sha256 <SHA256 hex>`.
 - `## Findings`: kept entries numbered from 1, worst first, as in the summary, each with location, severity, issue, impact and fix, `verdict: confirmed | plausible` with verification evidence, `confirm: <what would confirm it>` for plausible only, and `ticket: proposed <finding numbers> | <ticket path> | none`. `proposed` lists the finding numbers of its recommended group until the user answers; then the created ticket's path, or `none` when not selected. A finding an open ticket already covers holds that ticket's path from the start and keeps it.
 - `## Dismissed`: each rejected candidate with `verdict: refuted`, its evidence and reason.
-- `## Follow-ups`: open items with origin and any `not re-verified` label. Keep verification history beside its entry, without extra required headings.
+- `## Follow-ups`: open items with origin and any `not re-verified` label. A `pending dev-spec` item names its origin ticket path and quotes the replaced statement with its spec path. Keep verification history beside its entry, without extra required headings.
 
 ## VALIDATION
 

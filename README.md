@@ -115,7 +115,7 @@ Run `dev-review` on finished work. It reviews the staged changes, or the branch 
 /dev-review
 ```
 
-Three finder roles run concurrently when the client allows, then a verifier marks each candidate finding confirmed, plausible or refuted; a trivial diff may get a direct pass. The report is saved under `.scratch/`, and the findings are explained with proposed tickets as groups of finding numbers. Answer with numbers such as "1, 3", "all" or "none"; only those tickets are created. Review never changes code or Git state. Next: `/plan` for each new ticket. Details: [dev-review](skills/dev-review/SKILL.md).
+Three finder roles run concurrently when the client allows, then a verifier marks each candidate finding confirmed, plausible or refuted; a trivial diff may get a direct pass. The report is saved under `.scratch/`, and the findings are explained with proposed tickets as groups of finding numbers. Answer with numbers such as "1, 3", "all" or "none"; only those tickets are created. A change that contradicts a project spec statement a ticket explicitly replaces is not a finding: the report lists it as a `pending dev-spec` follow-up. Review never changes code or Git state. Next: `/plan` for each new ticket. Details: [dev-review](skills/dev-review/SKILL.md).
 
 ### Record project specs
 
