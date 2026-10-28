@@ -100,6 +100,8 @@ A ticket runs in the client's own plan mode:
 
 The ticket's `## Done when` block is the whole execution contract: work on the ticket's branch, confirm each blocker's result in the working tree, verify every criterion, run the full test suite and linter, record decisions under `## Comments`, set the status, and never commit.
 
+If a blocker's result is missing from the working tree, the executor names it under `## Comments` and stops; bring that result onto the ticket's branch and rerun `/plan`.
+
 When the ticket needs a migration, a dependency install or an external check, the executor sets `ready-for-human`, names the step and the evidence it expects under `## Comments` and stops. Do the step, set the status back to `ready-for-agent` and rerun `/plan`: the executor checks the result in the current environment and continues, or sets `ready-for-human` again.
 
 <picture>
