@@ -15,6 +15,7 @@
 ## Known limitations
 
 - Hidden `.SPEC.md` files exist only in the working tree where they were written: a linked worktree, a fresh clone or `git clean -x` does not have them. Accepted because the user works in one checkout in projects that forbid committed specs.
+- A missing blocker result found in Claude Code plan mode stops the executor during planning, before plan mode allows a write: it asks and names the prerequisite, but `## Comments` gets no line. Verification is recorded in `tests/client-scenarios.md`; Codex `/plan` is unverified.
 - `dev-spec` does not see work already committed on the base branch.
 - `dev-spec` excludes every `SPEC.md` from built work, so a change to a foreign `SPEC.md` is not seen as work either.
 - A line the user edits inside a `dev-setup` owned section is proposed back to the template wording on the next run; custom rules belong outside the section.
