@@ -1,13 +1,13 @@
 ---
 name: dev-setup
-description: Set up a repository for the dev skills when the user explicitly invokes /dev-setup. `project` audits the repository, shows one diff and, only after approval, writes a `## nxs` instruction section with the branch rule and check commands and keeps `.scratch/` out of Git; `global` is not available yet. Not for discussing instructions; dev-spec records project specs and dev-rnd shapes work.
+description: Set up agent instructions for the dev skills when the user explicitly invokes /dev-setup. `global` wires Claude Code, Codex and OpenCode to `~/.agents/AGENTS.md` and adds the `## nxs` section and accepted working rules; `project` writes a repository `## nxs` section with the branch rule and check commands and keeps `.scratch/` out of Git. Each mode audits, shows one diff and writes only after approval. Not for discussing instructions; dev-spec records project specs and dev-rnd shapes work.
 argument-hint: "[global|project]"
 disable-model-invocation: true
 ---
 
 # /dev-setup
 
-Give a repository the settings the other dev skills rely on: tickets name a `**Branch:**` from the project's branch rule, a ticket's `Done when` runs "the full test suite and linter", and feature records under `.scratch/` stay out of Git. Audit, show one diff, write only what the user approves, then stop.
+Give the user's agents and a repository the settings the other dev skills rely on: an executor reads project specs on its path, tickets name a `**Branch:**` from the project's branch rule, a ticket's `Done when` runs "the full test suite and linter", and feature records under `.scratch/` stay out of Git. Audit, show one diff, write only what the user approves, then stop.
 
 Accepted input: `project` or `global`.
 
@@ -15,22 +15,24 @@ Example: /dev-setup project
 
 Suggest the next command at a handoff; never start it automatically.
 
-## STANCE
-
-- Write only the target instruction file, a new `CLAUDE.md` holding `@AGENTS.md`, and one `.scratch/` ignore line. Never code, other instruction files, the index or commits.
-- Write nothing before the user approves the shown diff, and write exactly that diff. A declined diff leaves every file unchanged.
-- Own one `## nxs` section in the target file. A repeat rewrites that section in place; every byte outside it stays as it was.
-- Questions: the mode, only when no argument was given, and the approval of the diff. Report a missing item; never invent a command or rule to fill it.
-
 ## MODE
 
 | Input | Action |
 | --- | --- |
 | `project` | Run the steps below |
-| `global` | Report that `global` mode is not available yet and stop; write nothing |
+| `global` | Read [global mode](references/global.md) and follow it instead of the sections below |
 | No argument, inside a Git repository (`git rev-parse --show-toplevel` succeeds) | Ask once: `project` for this repository or `global` for the user's agent instructions; then act on the answer as above |
 | No argument, outside a Git repository | `global` |
 | Anything else | Name the accepted values and stop |
+
+## STANCE
+
+This section through NEXT is the `project` mode.
+
+- Write only the target instruction file, a new `CLAUDE.md` holding `@AGENTS.md`, and one `.scratch/` ignore line. Never code, other instruction files, the index or commits.
+- Write nothing before the user approves the shown diff, and write exactly that diff. A declined diff leaves every file unchanged.
+- Own one `## nxs` section in the target file. A repeat rewrites that section in place; every byte outside it stays as it was.
+- Questions: the mode, only when no argument was given, and the approval of the diff. Report a missing item; never invent a command or rule to fill it.
 
 ## AUDIT
 
