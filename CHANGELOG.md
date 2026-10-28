@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.45.0] - 2026-10-28
+
 ### Added
 
 - `dev-spec` records durable project specs from landed work: committed `SPEC.md`, or private `.SPEC.md` kept out of Git through the clone's exclude file.
