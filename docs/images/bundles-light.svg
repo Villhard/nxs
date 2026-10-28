@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-bundles-light-title nxs-bundles-light-desc" id="nxs-bundles-light-root">
+  <title id="nxs-bundles-light-title">mattpocock bundles and their dependencies</title>
+  <desc id="nxs-bundles-light-desc">dev-setup global offers Core as the recommended bundle plus Wayfinding, Architecture and Sessions; an arrow points from a bundle to Core, which it needs, and each skill lists the skills it calls.</desc>
+  <defs>
+    <marker id="nxs-bundles-light-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#626262"/></marker>
+    <marker id="nxs-bundles-light-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b73800"/></marker>
+    <marker id="nxs-bundles-light-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0061d2"/></marker>
+    <marker id="nxs-bundles-light-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7e7e7e"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#eeeeee"/>
+  <rect x="24" y="40" width="432" height="252" rx="8" fill="none" stroke="rgba(38,38,38,0.18)" stroke-width="1" stroke-dasharray="2,3"/>
+  <text x="36" y="56" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">CORE · RECOMMENDED</text>
+  <rect x="504" y="40" width="432" height="180" rx="8" fill="none" stroke="rgba(38,38,38,0.18)" stroke-width="1" stroke-dasharray="2,3"/>
+  <text x="516" y="56" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">WAYFINDING · NEEDS CORE</text>
+  <rect x="504" y="244" width="432" height="180" rx="8" fill="none" stroke="rgba(38,38,38,0.18)" stroke-width="1" stroke-dasharray="2,3"/>
+  <text x="516" y="260" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">ARCHITECTURE · NEEDS CORE</text>
+  <rect x="24" y="316" width="432" height="180" rx="8" fill="none" stroke="rgba(38,38,38,0.18)" stroke-width="1" stroke-dasharray="2,3"/>
+  <text x="36" y="332" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">SESSIONS</text>
+  <path d="M 504 132 L 456 132" fill="none" stroke="#7e7e7e" stroke-width="1.2" marker-end="url(#nxs-bundles-light-arrow-soft)"/>
+  <path d="M 504 336 L 488 336 Q 480 336 480 328 L 480 260 Q 480 252 472 252 L 456 252" fill="none" stroke="#7e7e7e" stroke-width="1.2" marker-end="url(#nxs-bundles-light-arrow-soft)"/>
+  <rect x="48" y="72" width="180" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="48" y="72" width="180" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="56" y="78" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="65.5" y="87" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="138" y="102" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">grilling</text>
+  <text x="138" y="117" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">interview in rounds</text>
+  <rect x="244" y="72" width="188" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="244" y="72" width="188" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="252" y="78" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="261.5" y="87" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="338" y="102" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">grill-me</text>
+  <text x="338" y="117" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">-&gt; grilling</text>
+  <rect x="48" y="140" width="180" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="48" y="140" width="180" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="56" y="146" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="65.5" y="155" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="138" y="170" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">domain-modeling</text>
+  <text x="138" y="185" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">GLOSSARY.md + ADR</text>
+  <rect x="244" y="140" width="188" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="244" y="140" width="188" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="252" y="146" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="261.5" y="155" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="338" y="170" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">grill-with-docs</text>
+  <text x="338" y="185" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">-&gt; grilling, domain-modeling</text>
+  <rect x="48" y="208" width="180" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="48" y="208" width="180" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="56" y="214" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="65.5" y="223" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="138" y="238" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">to-spec</text>
+  <text x="138" y="253" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">spec from the session</text>
+  <rect x="244" y="208" width="188" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="244" y="208" width="188" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="252" y="214" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="261.5" y="223" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="338" y="238" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">to-tickets</text>
+  <text x="338" y="253" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">tickets, tracker format</text>
+  <rect x="528" y="72" width="384" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="528" y="72" width="384" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="536" y="78" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="545.5" y="87" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="720" y="102" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">wayfinder</text>
+  <text x="720" y="117" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">-&gt; grilling · domain-modeling · research · prototype</text>
+  <rect x="528" y="140" width="188" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="528" y="140" width="188" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="536" y="146" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="545.5" y="155" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="622" y="170" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">research</text>
+  <text x="622" y="185" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">facts from sources</text>
+  <rect x="724" y="140" width="188" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="724" y="140" width="188" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="732" y="146" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="741.5" y="155" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="818" y="170" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">prototype</text>
+  <text x="818" y="185" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">throwaway demo</text>
+  <rect x="528" y="276" width="384" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="528" y="276" width="384" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="536" y="282" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="545.5" y="291" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="720" y="306" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">improve-codebase-architecture</text>
+  <text x="720" y="321" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">-&gt; codebase-design · domain-modeling · grilling</text>
+  <rect x="528" y="344" width="188" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="528" y="344" width="188" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="536" y="350" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="545.5" y="359" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="622" y="374" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">codebase-design</text>
+  <text x="622" y="389" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">deep-module vocabulary</text>
+  <rect x="48" y="348" width="180" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="48" y="348" width="180" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="56" y="354" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="65.5" y="363" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="138" y="378" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">handoff</text>
+  <text x="138" y="393" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">context to next session</text>
+  <rect x="244" y="348" width="188" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="244" y="348" width="188" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="252" y="354" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="261.5" y="363" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="338" y="378" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">to-questionnaire</text>
+  <text x="338" y="393" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">questions for others</text>
+  <rect x="48" y="416" width="180" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="48" y="416" width="180" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="56" y="422" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="65.5" y="431" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="138" y="446" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">retro</text>
+  <text x="138" y="461" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">-&gt; writing-for-agents</text>
+  <rect x="244" y="416" width="188" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="244" y="416" width="188" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="252" y="422" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="261.5" y="431" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="338" y="446" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">writing-for-agents</text>
+  <text x="338" y="461" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">text for agents</text>
+  <rect x="724" y="448" width="188" height="56" rx="6" fill="#eeeeee"/>
+  <rect x="724" y="448" width="188" height="56" rx="6" fill="rgba(98,98,98,0.1)" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="732" y="454" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="741.5" y="463" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NO</text>
+  <text x="818" y="478" fill="#262626" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">setup-matt-pocock</text>
+  <text x="818" y="493" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">dev-setup writes it</text>
+  <text x="504" y="470" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">Never offered:</text>
+  <line x1="32" y1="526" x2="928" y2="526" stroke="rgba(38,38,38,0.1)" stroke-width="0.8"/>
+  <text x="32" y="546" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+  <rect x="100" y="536" width="24" height="14" rx="3" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="132" y="546" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">mattpocock, not part of nxs</text>
+  <rect x="301.8" y="536" width="24" height="14" rx="3" fill="rgba(98,98,98,0.1)" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="333.8" y="546" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">you / input</text>
+  <path d="M 417.2 543 L 441.2 543" fill="none" stroke="#7e7e7e" stroke-width="1.2" marker-end="url(#nxs-bundles-light-arrow-soft)"/>
+  <text x="449.2" y="546" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">bundle needs</text>
+</svg>
