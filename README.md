@@ -100,9 +100,11 @@ A ticket runs in the client's own plan mode:
 
 The ticket's `## Done when` block is the whole execution contract: work on the ticket's branch, confirm each blocker's result in the working tree, verify every criterion, run the full test suite and linter, record decisions under `## Comments`, set the status, and never commit.
 
+When the ticket needs a migration, a dependency install or an external check, the executor sets `ready-for-human`, names the step and the evidence it expects under `## Comments` and stops. Do the step, set the status back to `ready-for-agent` and rerun `/plan`: the executor checks the result in the current environment and continues, or sets `ready-for-human` again.
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/ticket-status-dark.svg">
-  <img alt="A written ticket starts as ready-for-agent, or needs-info while a clarification is open; once answered it becomes ready-for-agent. The executor sets resolved or ready-for-human; wontfix is set by you, or by a review ticket's executor when no finding reproduced." src="docs/images/ticket-status-light.svg">
+  <img alt="A written ticket starts as ready-for-agent, or needs-info while a clarification is open; once answered it becomes ready-for-agent. The executor sets resolved or ready-for-human; after your step you set ready-for-human back to ready-for-agent and rerun /plan; wontfix is set by you, or by a review ticket's executor when no finding reproduced." src="docs/images/ticket-status-light.svg">
 </picture>
 
 ### Review a branch
