@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `dev-setup global` wires Claude Code, Codex and OpenCode to `~/.agents/AGENTS.md`, merging existing client files into it instead of replacing them, and through one approved diff adds a `## nxs` section (read project specs on the path, branch rule) and the rule groups the user accepts from a bundled template.
 - `dev-setup global` offers mattpocock/skills as a recommended Core bundle (grilling, domain modeling, `to-spec` and `to-tickets`) plus Wayfinding, Architecture and Sessions bundles, adds the skills a chosen skill depends on and names each as required by it, checks the names against the upstream listing, installs the chosen ones after approval, and writes an `## Engineering skill defaults` section and `~/.agents/docs/{issue-tracker,triage-labels,domain}.md` for local `.scratch/` tickets numbered after the existing ones.
 - `dev-setup global` skips a `## nxs` line whose rule the source already states elsewhere and reports it as covered; a section left empty is not created.
+- `dev-setup global` counts a client path that resolves to the source as wired and never links over it, links a copy identical to the source without merging it, strips `## nxs` and `## Engineering skill defaults` from merged content, and merges a file reached through several client paths once.
 - Shared `project-specs` reference: how `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` find and read project specs.
 
 ### Changed

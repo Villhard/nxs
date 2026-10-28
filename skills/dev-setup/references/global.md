@@ -18,7 +18,7 @@ Read before proposing anything; record each item as found, with its path, or mis
 
 1. Source `~/.agents/AGENTS.md`: missing, a regular file, or a symlink. Resolve a symlink with `realpath` and edit its target, never the link. Missing means the diff creates it.
 
-2. Clients: inspect each path with `ls -la` and resolve symlinks with `realpath`. A path is wired when it matches the Wired column. Choose the proposal with the first matching row:
+2. Clients: inspect each path with `ls -la` and resolve symlinks with `realpath`. A path is wired when its `realpath` equals the source's `realpath`, checked before anything else, or when it matches the Wired column. Choose the proposal with the first matching row:
 
    | Client | Path | Wired |
    | --- | --- | --- |
@@ -28,14 +28,14 @@ Read before proposing anything; record each item as found, with its path, or mis
 
    | Found | Proposal |
    | --- | --- |
-   | Wired | Nothing |
+   | Wired | Nothing. A source that is a symlink to a client file makes that file the source's real file: it is written as the source and never merged or linked |
    | Missing | Claude Code: create the file holding `@~/.agents/AGENTS.md`. Codex, OpenCode: the symlink to the source's absolute path |
-   | Claude Code file without the import | Insert `@~/.agents/AGENTS.md` as its first line, followed by one blank line; keep the rest. The file is the user's Claude-only layer |
-   | Codex or OpenCode regular file, or symlink to another file | Merge its content into the source (step 4), then replace the path with the symlink. A link's former target stays untouched |
    | Codex or OpenCode broken symlink | Replace it with the symlink; nothing to merge |
-   | Content identical to the source | Replace it with the symlink; nothing to merge |
+   | Codex or OpenCode file, or symlink to another file, with content byte-identical to the source | Replace it with the symlink; nothing to merge. A link's former target stays untouched |
+   | Claude Code file without the import | Insert `@~/.agents/AGENTS.md` as its first line, followed by one blank line; keep the rest. The file is the user's Claude-only layer |
+   | Codex or OpenCode regular file, or symlink to another file | Merge its content into the source (step 4), then replace the path with the symlink. A link's former target stays untouched unless it is a client path: a Codex or OpenCode file takes its own row; `~/.claude/CLAUDE.md` has its content, without the import line, merged and is rewritten to hold only `@~/.agents/AGENTS.md`, so Claude Code does not load the text twice |
 
-3. The `## nxs` section in the source: it runs from the `## nxs` line to the line before the next `#` or `##` heading, or to the end of the file. More than one `## nxs` heading across the source and the content to merge stops the run: name the files and line numbers; the user merges them by hand. Build the expected section from [global section](../assets/global-section.md), one decision per bullet, from the source and the content to merge outside `## nxs`:
+3. The `## nxs` section in the source: it runs from the `## nxs` line to the line before the next `#` or `##` heading, or to the end of the file. More than one `## nxs` heading across the source and the content to merge stops the run (content linked without a merge is not counted): name the files and line numbers; the user merges them by hand. Build the expected section from [global section](../assets/global-section.md), one decision per bullet, from the source and the content to merge outside `## nxs`:
 
    | That text | The bullet |
    | --- | --- |
@@ -45,7 +45,7 @@ Read before proposing anything; record each item as found, with its path, or mis
 
    Expected section with no bullet left and no section found: no `## nxs` section is created. A found section is compared with the expected one; a repeat proposes only the lines that change, and a bullet already in the found section that became covered stays and is reported as covered.
 
-4. Merge: for each client file to merge, take its content without its own `## nxs` section, which the source's section replaces. Append it to the end of the source after one blank line, verbatim, under a comment line `<!-- merged from <path> -->`. Lines the source already holds stay in the merged text: the user removes duplicates in the diff.
+4. Merge: group the client files to merge by `realpath` and merge each real file once. Take its content without its owned sections, `## nxs` and `## Engineering skill defaults`, which the source's sections replace (steps 3 and 7). Append it to the end of the source after one blank line, verbatim, under a comment line `<!-- merged from <real path> -->`. Lines the source already holds stay in the merged text: the user removes duplicates in the diff.
 
 5. Rule groups: read [rule groups](../assets/rules.md). For each rule, decide from the source and the content to merge whether it is already stated, in any wording, or contradicted. A stated rule is not offered; a contradicted rule is not offered and is reported with the conflicting line. A group with no rule left is reported as covered and not offered.
 
@@ -55,7 +55,7 @@ Read before proposing anything; record each item as found, with its path, or mis
    - A bundle whose remaining skills are all installed is reported as installed and not offered. Every other bundle is offered with its purpose line, its `Needs:` line, its skills, and each installed one marked; a bundle with `Recommended.` is marked as recommended.
    - Each skill under "Never offered" that is installed is reported as installed; nothing is installed or removed.
 
-7. Engineering config: needed when a bundle skill is installed or one is chosen in BUNDLES. Compare:
+7. Engineering config: needed when a bundle skill is installed, one is chosen in BUNDLES, or the content to merge holds a `## Engineering skill defaults` section. Compare:
    - the `## Engineering skill defaults` section in the source (bounded like `## nxs`) with [engineering section](../assets/engineering-section.md); more than one such heading stops the run like `## nxs`;
    - each of `~/.agents/docs/issue-tracker.md`, `triage-labels.md` and `domain.md` with its template: [issue tracker](../assets/issue-tracker.md), [triage labels](../assets/triage-labels.md), [domain](../assets/domain.md). Resolve a symlink with `realpath` and edit its target.
 
@@ -91,7 +91,7 @@ On approval of the diff, or of a diff changed as the user asked and shown again:
 2. Write the source, creating `~/.agents/` when missing. Keep every byte outside the touched sections, including the file's final newline state.
 3. Check that the source holds every merged line from step 4 of AUDIT. Stop on a mismatch, before any link: the client files are still in place.
 4. Write each approved docs file, creating `~/.agents/docs/` when missing.
-5. Write the Claude Code file, and create each symlink with `mkdir -p <parent>` and `ln -sfn "$HOME/.agents/AGENTS.md" <path>`.
+5. Write the Claude Code file, and create each symlink with `mkdir -p <parent>` and `ln -sfn "$HOME/.agents/AGENTS.md" <path>`, replacing symlinks before regular files. Right before each `ln -sfn`, compare `realpath <path>` with `realpath "$HOME/.agents/AGENTS.md"`: when they are equal, skip the path; it is already wired.
 
 On decline, write nothing, install nothing and report that every file is unchanged.
 
@@ -108,7 +108,7 @@ Then check that `~/.agents/.skill-lock.json` lists each name. When `npx` is unav
 ## CHECK
 
 - The source has at most one `## nxs` heading, none only when every bullet was covered, and at most one `## Engineering skill defaults` heading; a diff against its pre-write content touches only the merged content, the accepted group sections and those two sections.
-- Every client path matches its Wired column.
+- Every client path is wired as AUDIT step 2 defines it.
 - No accepted rule appears twice in the source.
 - Each written docs file matches the approved diff.
 
