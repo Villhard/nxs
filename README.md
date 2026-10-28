@@ -98,7 +98,7 @@ A ticket runs in the client's own plan mode:
 /plan .scratch/rate-limiting/issues/01-limit-per-key.md
 ```
 
-The ticket's `## Done when` block is the whole execution contract: work on the ticket's branch, verify every criterion, run the full test suite and linter, record decisions under `## Comments`, set the status, and never commit.
+The ticket's `## Done when` block is the whole execution contract: work on the ticket's branch, confirm each blocker's result in the working tree, verify every criterion, run the full test suite and linter, record decisions under `## Comments`, set the status, and never commit.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/ticket-status-dark.svg">

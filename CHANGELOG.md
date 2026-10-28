@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Ticket template and `dev-setup` tracker template `## Done when` have the executor confirm each direct blocker's result in the working tree before the first implementation edit; `resolved` alone no longer suffices, and the `ticket` reference says so.
 - CONTRIBUTING allows a setup skill to write rules and config into client instructions only through an approved diff.
 - `dev-spec` creates no module spec in a directory that holds a foreign `SPEC.md` and reports the module as skipped.
 - `dev-bug` classifies a confirmed cause as `right`, `silent`, `wrong` or `feature` against domain documents and specs; `feature` writes no fix ticket and hands off to `dev-rnd`.

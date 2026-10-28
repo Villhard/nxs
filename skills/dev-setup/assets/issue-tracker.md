@@ -27,6 +27,7 @@ Execute this ticket directly, for example with `/plan <this file>`.
 
 - Stop and ask if **Status** is not `ready-for-agent`, a ticket in **Blocked by** is not `resolved`, or this ticket or its feature's `spec.md` / `root-cause.md` has an open `[NEEDS CLARIFICATION: ...]`.
 - If **Branch** is set, work on that branch: switch to it, or create it from the current HEAD when missing. Stop and ask if the switch fails.
+- Before the first implementation edit, read each ticket in **Blocked by** and verify, by code inspection and a focused check, that the results this ticket needs exist in the current working tree; **Status**, branch names and Git history alone do not suffice. Record the evidence or the missing prerequisite in one line under `## Comments`. If a result is absent or unverifiable, stop and ask; never merge, cherry-pick or implement the blocker.
 - If the work needs a migration, a dependency install or an external check, set **Status** to `ready-for-human`, name what is needed under `## Comments` and stop.
 - Close when the project's full test suite and linter pass and every criterion above is verified against the running code: check each one and set **Status** to `resolved`.
 - Add one line under `## Comments` per decision or deviation.
