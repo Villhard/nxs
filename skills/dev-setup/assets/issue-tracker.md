@@ -6,7 +6,7 @@ Issues and specs (a spec is also called a PRD) live as Markdown files under `.sc
 
 - One feature per directory: `.scratch/<feature-slug>/`.
 - The spec is `.scratch/<feature-slug>/spec.md`.
-- Implementation issues are one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`; never one combined tickets file.
+- Implementation issues are one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`; never one combined tickets file. A new ticket takes `NN` one past the highest existing number in `issues/`, whichever skill wrote those tickets; it is `01` only when `issues/` is empty or missing. Never renumber existing tickets.
 - Triage state is the `**Status:**` line near the top of each issue file; `~/.agents/docs/triage-labels.md` maps the role names to its values.
 - Comments and conversation history append to the bottom of the file under a `## Comments` heading.
 
