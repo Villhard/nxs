@@ -1,7 +1,7 @@
 ---
 name: dev-rnd
 description: Shape a feature or open question when the user explicitly invokes /dev-rnd. Save an agreed spec and one or more tickets, without implementation tasks or code. Use dev-bug for a reported failure and the client's /plan for an already clear task.
-argument-hint: "[request | spec path | tracker key | question]"
+argument-hint: "[request | spec path | root-cause path | tracker key | question]"
 disable-model-invocation: true
 ---
 
@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Think a request through to a spec and its tickets, then stop. The entry point for new work.
 
-Accepted input: a request in words, a feature idea, a spec path, a tracker key / URL / pasted ticket, or an open question. With nothing given, work from the current session context.
+Accepted input: a request in words, a feature idea, a spec path, a `root-cause.md` path, a tracker key / URL / pasted ticket, or an open question. With nothing given, work from the current session context.
 
 Before reading input, read [feature directory](references/feature-directory.md): it owns tracker input, external specs, domain documents, the feature location and local storage.
 
@@ -29,6 +29,8 @@ Suggest the next command at a handoff; never start it automatically.
 Read an explicit spec path before shaping; a missing or unreadable file stops, never becomes a new request. Inspect its decisions, exclusions, testing requirements, answers and open questions regardless of its producer or ready label. Check them against relevant code. An approved spec with no unresolved decision enters ARTIFACT and SLICE directly: do not repeat settled clarification, explore or stress steps. New contradictory evidence reopens only the affected decision; show the evidence and ask before changing it. An unresolved spec follows CLARIFY and cannot produce tickets while a material question remains open.
 
 A source spec follows EXTERNAL SPEC from feature directory.
+
+A `root-cause.md` path is a request source, not a spec. It comes from `/dev-bug` when the reported behavior is what a record decided (`feature`). The feature directory is the file's directory; the request is its `## Symptom`, `## Root cause` with the record it names, and `## Fix direction`. Leave the file untouched, run CLARIFY and EXPLORE as for any request, and write `spec.md` beside it.
 
 Remote input follows TRACKER INPUT from feature directory. Preserve its evidence in the spec's existing sections. With unknown or unmapped blockers, an authorized draft records the missing evidence as a clarification and produces no tickets.
 

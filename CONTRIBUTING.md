@@ -23,6 +23,9 @@ A skill may link only to files inside its own directory. Files shared by several
 cp skills/dev-rnd/references/ticket.md skills/dev-bug/references/ticket.md
 cp skills/dev-rnd/references/ticket.md skills/dev-review/references/ticket.md
 cp skills/dev-rnd/references/feature-directory.md skills/dev-bug/references/feature-directory.md
+cp skills/dev-rnd/references/project-specs.md skills/dev-bug/references/project-specs.md
+cp skills/dev-rnd/references/project-specs.md skills/dev-review/references/project-specs.md
+cp skills/dev-rnd/references/project-specs.md skills/dev-spec/references/project-specs.md
 cp skills/dev-rnd/assets/spec.md skills/dev-bug/assets/spec.md
 cp skills/dev-rnd/assets/ticket.md skills/dev-bug/assets/ticket.md
 cp skills/dev-rnd/assets/ticket.md skills/dev-review/assets/ticket.md

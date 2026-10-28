@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `dev-spec` records durable project specs from landed work: committed `SPEC.md`, or private `.SPEC.md` kept out of Git through the clone's exclude file.
+- Shared `project-specs` reference: how `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` find and read project specs.
+
+### Changed
+
+- `dev-spec` creates no module spec in a directory that holds a foreign `SPEC.md` and reports the module as skipped.
+- `dev-bug` classifies a confirmed cause as `right`, `silent`, `wrong` or `feature` against domain documents and specs; `feature` writes no fix ticket and hands off to `dev-rnd`.
+- `dev-bug` fix ticket for a `wrong` cause names a spec record only as context; `dev-spec` corrects the spec after the fix lands.
+- `dev-rnd` accepts a `root-cause.md` path as a request source.
+- `dev-review` reports a diff that contradicts a project spec.
+- `feature-directory` reference counts project specs as domain documents.
+- Checker test covers every shared copy.
+
 ### Fixed
 
 - CI runs the skills CLI discovery check on Node 22, which the skills CLI requires.
