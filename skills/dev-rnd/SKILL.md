@@ -40,7 +40,7 @@ Read the relevant code, patterns, and integration points first - directly or thr
 
 Apply DOMAIN DOCUMENTS from feature directory before asking: use the glossary's terms in the spec and tickets, and ask only about a term it leaves undefined or the request contradicts. Name a missing term or a decision worth recording in the reply.
 
-Ask one question at a time, 2-4 concrete options with a recommendation, open-ended only where a choice is unnatural. After each answer, revise the understanding and derive the next question from the updated picture.
+Ask in rounds. A round holds every open question whose prerequisites are already settled, within what the client's question tool takes in one call; a question that depends on an answer still open waits for a later round. Give each question 2-4 concrete options framed as behavior the user will see, with a recommendation, open-ended only where a choice is unnatural. When the options differ only internally, with the same observable behavior, it is not the user's decision: choose yourself and record the reason under `## Implementation Decisions`. After each round, revise the understanding and derive the next round from the updated picture.
 
 Stop as soon as the next question would not change a decision. Zero questions is a normal and frequent outcome.
 
@@ -50,7 +50,7 @@ An axis deliberately left open goes into the spec as `[NEEDS CLARIFICATION: <spe
 
 ## EXPLORE
 
-Lay out 2-4 real approaches with pros and cons, and show the trade-offs. Give a recommendation with a rationale and leave the choice to the user: stop for it, and run stress and show the proposed spec only after the user chooses. A clarify question still open waits for its answer first, so a reply asks one thing.
+Lay out 2-4 real approaches with pros and cons, and show the trade-offs. Give a recommendation with a rationale and leave the choice to the user: stop for it, and run stress and show the proposed spec only after the user chooses. An open clarify round waits for its answers first, so a reply holds either a clarify round or the choice of approach, never both.
 
 The recommended approach is the minimal viable one, built on how the project already solves this. If there is genuinely one reasonable approach, say so - a stretched alternative is worse than none.
 
