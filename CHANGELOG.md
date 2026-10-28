@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `dev-bug` fix ticket for a `wrong` cause names a spec record only as context; `dev-spec` corrects the spec after the fix lands.
 - `dev-rnd` accepts a `root-cause.md` path as a request source.
 - `dev-review` reports a diff that contradicts a project spec.
+- `dev-review` lists a spec contradiction that a requirement replaces, with a matching diff, as a `pending dev-spec` follow-up instead of a finding; the verifier packet carries the same rule.
 - `feature-directory` reference counts project specs as domain documents.
 - `dev-rnd` clarifies in rounds of independent questions instead of one question at a time, frames options as observable behavior and decides internal-only choices itself, recording the reason in the spec.
 - Checker test covers every shared copy.
