@@ -10,6 +10,7 @@ Read this when `/dev-setup` runs `global`. It wires Claude Code, Codex and OpenC
 - Write nothing before the user approves the shown diff, and write exactly that diff. A declined diff leaves every file unchanged and installs nothing.
 - Never replace a client file that holds content: merge its content into the source through the diff first, and link it only after that write is checked.
 - In the source, own the `## nxs` section, the `## Engineering skill defaults` section and the rule group sections the user accepted. A repeat rewrites those sections in place; every byte outside the touched sections stays as it was.
+- `## nxs` and `## Engineering skill defaults` belong to the skill: the next run replaces an edit inside them with the template. Custom rules belong outside them, where the audit reports a rule that states a `## nxs` bullet as covered (AUDIT step 3).
 - Questions: the mode, only when SKILL.md MODE asked it, the rule groups and bundles, in one round, and the approval of the diff. Report a missing item; never invent a rule or a skill name to fill it.
 
 ## AUDIT
@@ -43,9 +44,9 @@ Read before proposing anything; record each item as found, with its path, or mis
    | Contradicts it | Not written; report it with the conflicting line |
    | Neither | Written |
 
-   Expected section with no bullet left and no section found: no `## nxs` section is created. A found section is compared with the expected one; a repeat proposes only the lines that change, and a bullet already in the found section that became covered stays and is reported as covered.
+   Expected section with no bullet left and no section found: no `## nxs` section is created. A found section is compared with the expected one; a repeat proposes only the lines that change: a line edited inside the found section goes back to the expected one, and a bullet already in the found section that became covered stays and is reported as covered with the line that states it.
 
-4. Merge: group the client files to merge by `realpath` and merge each real file once. Take its content without its owned sections, `## nxs` and `## Engineering skill defaults`, which the source's sections replace (steps 3 and 7). Append it to the end of the source after one blank line, verbatim, under a comment line `<!-- merged from <real path> -->`. Lines the source already holds stay in the merged text: the user removes duplicates in the diff.
+4. Merge: group the client files to merge by `realpath` and merge each real file once. Take its content without its owned sections, `## nxs` and `## Engineering skill defaults`, which the source's sections replace (steps 3 and 7). Append it to the end of the source after one blank line, verbatim, under its own heading `## Merged from <real path>`, so an owned section that ends the source never runs over it. Lines the source already holds stay in the merged text: the user removes duplicates in the diff.
 
 5. Rule groups: read [rule groups](../assets/rules.md). For each rule, decide from the source and the content to merge whether it is already stated, in any wording, or contradicted. A stated rule is not offered; a contradicted rule is not offered and is reported with the conflicting line. A group with no rule left is reported as covered and not offered.
 
@@ -79,7 +80,7 @@ Show, in one message:
 1. The audit: the source, each client with its state and proposal, the `## nxs` section as current, missing or changed with its covered and conflicting bullets, the rule groups as accepted, declined or covered, with any conflict, the bundles as chosen, declined or installed, with names missing upstream, each added dependency as `<name>: required by <skill>` and installed "Never offered" skills, and the engineering config items as current, missing or changed.
 2. One unified diff of every proposed write: the source changes (merged content, rule groups, the `## Engineering skill defaults` section and the `## nxs` section, each appended at the end of the source after one blank line in that order or replacing an existing section's lines in place), each docs file created or edited, each created or edited Claude Code file, and each symlink as `<path> -> <source absolute path>`, marking a replaced file and its merged source lines. An existing docs file is shown as its own diff against the template, never as a replacement.
 3. The install command of INSTALL, when the install list is not empty, followed by each added dependency as `<name>: required by <skill>`.
-4. One question: approve the diff and the install, change specific lines, or decline.
+4. One question: approve the diff and the install, change specific lines, or decline. A line changed inside `## nxs` or `## Engineering skill defaults` holds only until the next run, which restores the template: when the user changes one, say so and offer to put the custom rule outside the section instead.
 
 An audit with every client wired, the `## nxs` section current or fully covered, no accepted rule, no chosen bundle and the engineering config current or not needed proposes no diff: report "already set up" and stop.
 

@@ -32,6 +32,7 @@ This section through NEXT is the `project` mode.
 - Write only the target instruction file, a new `CLAUDE.md` holding `@AGENTS.md`, and one `.scratch/` ignore line. Never code, other instruction files, the index or commits.
 - Write nothing before the user approves the shown diff, and write exactly that diff. A declined diff leaves every file unchanged.
 - Own one `## nxs` section in the target file. A repeat rewrites that section in place; every byte outside it stays as it was.
+- The section belongs to the skill: the next run replaces an edit inside it with the audited line. Custom rules belong outside it, where the audit reports a branch rule as covered (AUDIT step 3).
 - Questions: the mode, only when no argument was given, and the approval of the diff. Report a missing item; never invent a command or rule to fill it.
 
 ## AUDIT
@@ -57,7 +58,7 @@ Work from the repository root. Read before proposing anything; record each item 
 
 3. Branch rule: read the instruction files and `CONTRIBUTING.md` for a stated branch naming rule, and list existing branches (`git for-each-ref --format='%(refname:short)' refs/heads refs/remotes`).
 
-   - A rule stated outside the `## nxs` section: the `Branches:` line names that file instead of restating the rule.
+   - A rule stated outside the `## nxs` section: report it as covered with the line that states it; the `Branches:` line names that file instead of restating the rule.
    - No stated rule, and most existing branches follow one other pattern: propose that pattern and say it was inferred from branch names.
    - Otherwise: propose `<type>/<short-description>` with `<type>` one of `feat`, `fix`, `refactor`, `chore`, `docs`.
 
@@ -83,7 +84,7 @@ Show, in one message:
    - the `## nxs` section in the shape of [project section](assets/project-section.md), appended at the end of the target file after one blank line, or replacing the existing section's lines in place;
    - for no instruction file, the new `AGENTS.md` holding the section and the new `CLAUDE.md` holding `@AGENTS.md`;
    - for an unignored `.scratch/`, the line `.scratch/` in `.git/info/exclude`: private to this clone, recommended. Name `.gitignore` as the alternative: shared with everyone who clones the repository.
-3. One question: approve the diff, approve it with `.gitignore` or the other target file, change specific lines, or decline.
+3. One question: approve the diff, approve it with `.gitignore` or the other target file, change specific lines, or decline. A line changed inside `## nxs` holds only until the next run, which proposes the audited line again: when the user changes one, say so and offer to put the custom rule outside the section instead.
 
 An audit that finds the section current and `.scratch/` ignored proposes no diff: report "already set up" and stop.
 
