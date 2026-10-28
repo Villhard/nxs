@@ -1,6 +1,6 @@
 ---
 name: dev-setup
-description: Set up agent instructions for the dev skills when the user explicitly invokes /dev-setup. `global` wires Claude Code, Codex and OpenCode to `~/.agents/AGENTS.md` and adds the `## nxs` section and accepted working rules; `project` writes a repository `## nxs` section with the branch rule and check commands and keeps `.scratch/` out of Git. Each mode audits, shows one diff and writes only after approval. Not for discussing instructions; dev-spec records project specs and dev-rnd shapes work.
+description: Set up agent instructions for the dev skills when the user explicitly invokes /dev-setup. `global` wires Claude Code, Codex and OpenCode to `~/.agents/AGENTS.md` and adds the `## nxs` section and accepted working rules, and installs the chosen mattpocock/skills bundles with their tracker config; `project` writes a repository `## nxs` section with the branch rule and check commands and keeps `.scratch/` out of Git. Each mode audits, shows one diff and writes only after approval. Not for discussing instructions; dev-spec records project specs and dev-rnd shapes work.
 argument-hint: "[global|project]"
 disable-model-invocation: true
 ---
