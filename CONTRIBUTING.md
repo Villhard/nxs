@@ -31,6 +31,8 @@ cp skills/dev-rnd/assets/ticket.md skills/dev-bug/assets/ticket.md
 cp skills/dev-rnd/assets/ticket.md skills/dev-review/assets/ticket.md
 ```
 
+The `## Done when` block of `skills/dev-rnd/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
+
 Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions; the exception is a setup skill, which may write rules and config into client instructions only through a diff the user approved. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
 ## STYLE AND SAFETY
@@ -75,7 +77,7 @@ The checker supports three read-only comparisons:
 | `--staged` | Index against HEAD |
 | `--base REF --head REF` | Two Git snapshots |
 
-The first two require HEAD. It validates the skill set, frontmatter contracts, invocation policy, role files, identical shared copies, links that stay inside their skill and resolve, and the CHANGELOG entry shape. Link checks do not cover anchors or every Markdown form: inspect links, headings and the final diff yourself. Pass untracked Markdown paths explicitly to the style script.
+The first two require HEAD. It validates the skill set, frontmatter contracts, invocation policy, role files, identical shared copies, the tracker's Done when copy, links that stay inside their skill and resolve, and the CHANGELOG entry shape. Link checks do not cover anchors or every Markdown form: inspect links, headings and the final diff yourself. Pass untracked Markdown paths explicitly to the style script.
 
 The [pre-commit hook](.githooks/pre-commit) runs the staged check in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 

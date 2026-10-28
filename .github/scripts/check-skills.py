@@ -21,6 +21,8 @@ SHARED = {
     'assets/spec.md': ('dev-rnd', 'dev-bug'),
     'assets/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
 }
+# The tracker template carries dev-rnd's Done when block inside a Markdown fence.
+DONE_WHEN = ('skills/dev-rnd/assets/ticket.md', 'skills/dev-setup/assets/issue-tracker.md')
 
 
 class Invalid(ValueError):
@@ -192,6 +194,15 @@ def check_skills(files):
                 raise Invalid(f'{other}: shared file differs from {canonical}; propagate the copy')
 
 
+def check_done_when(files):
+    source, copy = DONE_WHEN
+    expected = re.search(r'^## Done when\n.*?(?=^#{1,2} |\Z)', read(files, source), re.M | re.S)
+    fences = re.findall(r'^(`{3,}|~{3,})[^\n]*\n(.*?)^\1[ \t]*$', read(files, copy), re.M | re.S)
+    copied = [body for _, body in fences if body.startswith('## Done when\n')]
+    if not expected or len(copied) != 1 or copied[0].rstrip('\n') != expected[0].rstrip('\n'):
+        raise Invalid(f'{copy}: fenced Done when block differs from {source}; copy it verbatim')
+
+
 def check_links(files):
     for path in sorted(files):
         if not re.match(r'^skills/[^/]+/.+\.md$', path, re.I):
@@ -216,6 +227,7 @@ def check_links(files):
 
 def check(current):
     check_skills(current)
+    check_done_when(current)
     check_links(current)
     releases(read(current, 'CHANGELOG.md'), 'CHANGELOG.md')
 

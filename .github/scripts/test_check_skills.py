@@ -20,6 +20,8 @@ SHARED = {
     'assets/spec.md': ('dev-rnd', 'dev-bug'),
     'assets/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
 }
+DONE_WHEN = '## Done when\n\n- Verify every criterion.\n- Do not commit.\n'
+TRACKER = 'skills/dev-setup/assets/issue-tracker.md'
 
 
 def git(repo, *args):
@@ -47,7 +49,11 @@ def build_tree(repo):
               f'---\nname: {role}\ndescription: Fixture role.\ntools: Read, Grep, Glob, Bash\n---\n\n# ROLE\n')
     for relative, consumers in SHARED.items():
         for consumer in consumers:
-            write(repo, f'skills/{consumer}/{relative}', f'# {relative}\n\nShared fixture content.\n')
+            text = f'# {relative}\n\nShared fixture content.\n'
+            if relative == 'assets/ticket.md':
+                text += '\n' + DONE_WHEN
+            write(repo, f'skills/{consumer}/{relative}', text)
+    write(repo, TRACKER, '# Tracker\n\n````markdown\n' + DONE_WHEN + '````\n\n## Scope\n')
     write(repo, 'CHANGELOG.md', '# Changelog\n\n## [Unreleased]\n\n## [0.1.0] - 2026-09-10\n\n- Initial.\n')
 
 
@@ -140,6 +146,12 @@ def main():
             write(repo, copy, '# SHARED\n\nDivergent copy.\n')
             check(repo, False, diagnostic=f'{copy}: shared file differs')
             git(repo, 'checkout', '--', copy)
+
+        # A tracker Done when copy that drifts from dev-rnd's ticket fails.
+        tracker = (repo / TRACKER).read_text()
+        write(repo, TRACKER, tracker.replace('- Do not commit.', '- Do not push.'))
+        check(repo, False, diagnostic=f'{TRACKER}: fenced Done when block differs from skills/dev-rnd/assets/ticket.md')
+        git(repo, 'checkout', '--', TRACKER)
 
         # Wrong invocation policy fails.
         write(repo, 'skills/dev-bug/SKILL.md',
