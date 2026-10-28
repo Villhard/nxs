@@ -39,13 +39,13 @@ This section through NEXT is the `project` mode.
 
 Work from the repository root. Read before proposing anything; record each item as found, with its source path, or missing.
 
-1. Instruction files: list the root (`ls -a`) for `AGENTS.md` and `CLAUDE.md` by exact name, and note a symlink and its target. Choose the target with the first matching row:
+1. Instruction files: list the root (`ls -a`) for `AGENTS.md` and `CLAUDE.md` by exact name and resolve each with `realpath`. Names with the same `realpath` are one real file: read it and count its `## nxs` headings once. Choose the target with the first matching row:
 
    | Found | Target |
    | --- | --- |
-   | Exactly one `## nxs` heading in either file | That file |
-   | More than one `## nxs` heading across both files | Stop: name the files and line numbers; the user merges them by hand |
-   | One file is a symlink to the other | The symlink's target |
+   | Exactly one `## nxs` heading across the real files | The real file that holds it |
+   | More than one `## nxs` heading across the real files | Stop: name the real files and line numbers; the user merges them by hand |
+   | Both names resolve to one real file | That real file, the symlink's target |
    | `CLAUDE.md` contains the line `@AGENTS.md` | `AGENTS.md` |
    | `AGENTS.md` only | `AGENTS.md` |
    | `CLAUDE.md` only | `CLAUDE.md` |
