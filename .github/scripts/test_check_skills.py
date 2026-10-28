@@ -12,10 +12,11 @@ CLI = Path(__file__).with_name('check-skills.sh').resolve()
 ROOT = CLI.parents[2]
 PRE_COMMIT = ROOT / '.githooks/pre-commit'
 
-SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-commit')
+SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit')
 SHARED = {
     'references/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
+    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec'),
     'assets/spec.md': ('dev-rnd', 'dev-bug'),
     'assets/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
 }
@@ -119,7 +120,7 @@ def main():
 
         # Missing skill fails.
         shutil.rmtree(repo / 'skills/dev-commit')
-        check(repo, False, diagnostic="expected ['dev-bug', 'dev-commit', 'dev-review', 'dev-rnd']")
+        check(repo, False, diagnostic="expected ['dev-bug', 'dev-commit', 'dev-review', 'dev-rnd', 'dev-spec']")
         git(repo, 'checkout', '--', 'skills/dev-commit')
 
         # A link escaping its skill fails, and so does a missing destination.
@@ -133,10 +134,12 @@ def main():
         check(repo, False, diagnostic='missing local Markdown resource')
         git(repo, 'checkout', '--', 'skills/dev-rnd/SKILL.md')
 
-        # Divergent shared copies fail.
-        write(repo, 'skills/dev-review/references/ticket.md', '# TICKET\n\nDivergent copy.\n')
-        check(repo, False, diagnostic='shared file differs')
-        git(repo, 'checkout', '--', 'skills/dev-review/references/ticket.md')
+        # A divergent copy of any shared file fails.
+        for relative, consumers in SHARED.items():
+            copy = f'skills/{consumers[-1]}/{relative}'
+            write(repo, copy, '# SHARED\n\nDivergent copy.\n')
+            check(repo, False, diagnostic=f'{copy}: shared file differs')
+            git(repo, 'checkout', '--', copy)
 
         # Wrong invocation policy fails.
         write(repo, 'skills/dev-bug/SKILL.md',

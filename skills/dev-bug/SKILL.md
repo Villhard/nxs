@@ -22,7 +22,17 @@ Suggest the next command at a handoff; never start it automatically.
 - Confirm the cause with reproducible evidence and leave the fix to the ticket this command writes. No patch, no product-code change here.
 - The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The root cause and, once confirmed, the fix ticket are the only files that stay.
 - Stay skeptical of the first plausible explanation. Clarify a fuzzy term in the report before running the 5-Why.
-- Apply DOMAIN DOCUMENTS from feature directory to the report's terms and the suspect behavior. Behavior a recorded decision establishes is evidence with its path, not a defect by itself: say so and let the user decide whether the decision is the problem.
+- Apply DOMAIN DOCUMENTS from feature directory, project specs included, to the report's terms and the suspect behavior. Behavior a recorded decision establishes is evidence with its path, not a defect by itself.
+- Classify the confirmed behavior against those records; the first line of `## Root cause` states the class, and the record path for `wrong` and `feature`:
+
+| Class | The records say | Outcome |
+| --- | --- | --- |
+| `right` | The expected behavior; only the code is wrong | Fix ticket |
+| `silent` | Nothing about the intended behavior | Fix ticket; the intended behavior is the user's decision, confirm it before the ticket |
+| `wrong` | The buggy or an outdated behavior | Fix ticket; confirm the correction with the user. What to build names a glossary or decision record to correct, or a spec only as context for `/dev-spec` after the fix |
+| `feature` | The current behavior, as decided; the report asks for a different decision | No fix ticket; `/dev-rnd` with this `root-cause.md` |
+
+Ask about the class only when the evidence supports two of them.
 
 ## THE LOOP
 
@@ -114,15 +124,15 @@ Keep the headings stable - the fix ticket's executor reads the root cause by the
 ## Regression test
 ```
 
-Every other heading stays even when the investigation fell short: an unconfirmed cause is stated as unconfirmed under `## Root cause`, not left out.
+Every other heading stays even when the investigation fell short: an unconfirmed cause is stated as unconfirmed under `## Root cause`, not left out. For a `feature` class, `## Fix direction` reads "change of decision, see /dev-rnd" and `## Regression test` reads "none until the decision changes".
 
 ## FIX TICKET
 
-Write one fix ticket only for a confirmed cause, after `root-cause.md` is saved. An unconfirmed cause, or several causes still open, gets no ticket.
+Write one fix ticket only for a confirmed cause of class `right`, `silent` or `wrong`, after `root-cause.md` is saved. An unconfirmed cause, several causes still open, or a `feature` class gets no ticket.
 
 Before writing, read [ticket](references/ticket.md): it owns the template, numbering, fields and statuses. Write the ticket into `issues/` of the same feature directory as `.scratch/<feature-slug>/issues/NN-<slug>.md`.
 
-- `**What to build:**` the corrected behavior from the user's side, naming `root-cause.md` as its source.
+- `**What to build:**` the corrected behavior from the user's side, naming `root-cause.md` as its source; for `wrong`, also the record path: a glossary or decision record to correct, or a spec as context only, stated as "dev-spec corrects it after the fix". The ticket never asks to edit a spec.
 - Acceptance criteria: the reported symptom no longer reproduces through the minimized repro, and the check from `## Regression test` exists and passes. Add a criterion only for a further requirement `## Fix direction` states.
 - `**Blocked by:**` `None (can start immediately)` unless an existing ticket of this feature must land first; then its number.
 - `**Branch:**` by the rule in the reference, with `<type>` `fix`.
@@ -137,4 +147,4 @@ On a repeat, check the tickets in `issues/` that already name this `root-cause.m
 
 ## NEXT
 
-Return the root-cause path and state whether the cause is confirmed or unconfirmed. A confirmed result names the evidence, returns the fix ticket path and its `**Branch:**`, and suggests `/plan <ticket-path>`; an unconfirmed result names the missing evidence or next discriminating probe.
+Return the root-cause path and state whether the cause is confirmed or unconfirmed. A confirmed result names the evidence and its class. With a fix ticket it returns the ticket path and its `**Branch:**` and suggests `/plan <ticket-path>`; add that `/dev-spec` records the intended behavior after the fix lands: for `silent` when the repository keeps project specs, for `wrong` when the named record is a spec, which the fix ticket leaves to `/dev-spec`. A `feature` class suggests `/dev-rnd <root-cause path>`. An unconfirmed result names the missing evidence or next discriminating probe.

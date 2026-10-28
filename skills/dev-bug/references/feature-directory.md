@@ -27,3 +27,5 @@ Check unresolved questions in the source as well as local documents. Approval of
 ## DOMAIN DOCUMENTS
 
 A project may keep a domain glossary and decision records - typically `GLOSSARY.md` or `GLOSSARY-MAP.md` at the root and `docs/adr/`, or wherever project instructions point. When they exist, read the entries for the affected area and use the glossary's terms, not a synonym it avoids. Their absence is normal: do not ask about it. Never create or edit these files.
+
+Project specs are domain documents too: read them per [project specs](project-specs.md).
