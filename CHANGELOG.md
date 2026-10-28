@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `dev-rnd` accepts a `root-cause.md` path as a request source.
 - `dev-review` reports a diff that contradicts a project spec.
 - `feature-directory` reference counts project specs as domain documents.
+- `dev-rnd` clarifies in rounds of independent questions instead of one question at a time, frames options as observable behavior and decides internal-only choices itself, recording the reason in the spec.
 - Checker test covers every shared copy.
 
 ### Fixed
