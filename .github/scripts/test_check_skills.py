@@ -12,7 +12,7 @@ CLI = Path(__file__).with_name('check-skills.sh').resolve()
 ROOT = CLI.parents[2]
 PRE_COMMIT = ROOT / '.githooks/pre-commit'
 
-SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit')
+SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit')
 SHARED = {
     'references/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
@@ -120,7 +120,7 @@ def main():
 
         # Missing skill fails.
         shutil.rmtree(repo / 'skills/dev-commit')
-        check(repo, False, diagnostic="expected ['dev-bug', 'dev-commit', 'dev-review', 'dev-rnd', 'dev-spec']")
+        check(repo, False, diagnostic="expected ['dev-bug', 'dev-commit', 'dev-review', 'dev-rnd', 'dev-setup', 'dev-spec']")
         git(repo, 'checkout', '--', 'skills/dev-commit')
 
         # A link escaping its skill fails, and so does a missing destination.

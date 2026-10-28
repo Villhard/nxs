@@ -31,7 +31,7 @@ cp skills/dev-rnd/assets/ticket.md skills/dev-bug/assets/ticket.md
 cp skills/dev-rnd/assets/ticket.md skills/dev-review/assets/ticket.md
 ```
 
-Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
+Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions; the exception is a setup skill, which may write rules and config into client instructions only through a diff the user approved. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
 ## STYLE AND SAFETY
 

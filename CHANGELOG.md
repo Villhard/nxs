@@ -9,10 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - `dev-spec` records durable project specs from landed work: committed `SPEC.md`, or private `.SPEC.md` kept out of Git through the clone's exclude file.
+- `dev-setup project` audits a repository and, through one approved diff, writes a `## nxs` instruction section with the branch rule and the test, lint and typecheck commands, and ignores `.scratch/`.
+- `dev-setup` accepts `global` or `project`; without an argument it asks inside a Git repository and uses `global` outside one; `global` reports that it is not available yet.
 - Shared `project-specs` reference: how `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` find and read project specs.
 
 ### Changed
 
+- CONTRIBUTING allows a setup skill to write rules and config into client instructions only through an approved diff.
 - `dev-spec` creates no module spec in a directory that holds a foreign `SPEC.md` and reports the module as skipped.
 - `dev-bug` classifies a confirmed cause as `right`, `silent`, `wrong` or `feature` against domain documents and specs; `feature` writes no fix ticket and hands off to `dev-rnd`.
 - `dev-bug` fix ticket for a `wrong` cause names a spec record only as context; `dev-spec` corrects the spec after the fix lands.
