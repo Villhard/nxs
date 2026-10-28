@@ -181,17 +181,4 @@ For work bigger than one session, `wayfinder` keeps a map of decision tickets ac
 
 Tickets from either route run with `/plan <ticket-path>`. In a feature that already has tickets, new ones are numbered after the highest existing number.
 
-## Migration from the dev plugin
-
-Releases up to 0.43.0 shipped as the `dev` plugin for Claude Code, Codex and OpenCode. To migrate, uninstall the plugin and install the skills:
-
-```bash
-claude plugin uninstall dev@nxs && claude plugin marketplace remove nxs
-codex plugin remove dev@nxs && codex plugin marketplace remove nxs
-python3 nxs/plugins/dev/opencode/install.py --uninstall  # from a 0.43.0 checkout
-npx skills@latest add -g Villhard/nxs
-```
-
-Skill names change: `/dev:rnd` becomes `/dev-rnd`, and likewise for bug, review and commit. In OpenCode, select skills with `@dev-<name>`.
-
 For local previews and contributions, see [CONTRIBUTING.md](CONTRIBUTING.md).
