@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `dev-setup global` skips a `## nxs` line whose rule the source already states elsewhere and reports it as covered; a section left empty is not created.
 - `dev-setup global` counts a client path that resolves to the source as wired and never links over it, links a copy identical to the source without merging it, strips `## nxs` and `## Engineering skill defaults` from merged content, and merges a file reached through several client paths once.
 - `dev-setup` treats its owned sections as template-owned: `global` and `project` say that an edit inside `## nxs` is replaced on the next run and custom rules go outside it, where the audit reports them as covered with the stating line; `global` puts merged content under its own `## Merged from <path>` heading, so it never joins a `## nxs` section that ends the source.
+- `dev-setup project` resolves `AGENTS.md` and `CLAUDE.md` with `realpath` and counts `## nxs` headings per real file, so a repeat on `CLAUDE.md -> AGENTS.md` updates the one section instead of stopping on a duplicate heading.
 - Shared `project-specs` reference: how `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` find and read project specs.
 
 ### Changed
