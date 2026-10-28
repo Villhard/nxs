@@ -10,7 +10,7 @@ Development skills for coding agents: shape features and bugs into tickets for t
 | [dev-bug](skills/dev-bug/SKILL.md) | Investigate a reported failure; write a fix ticket once the cause is confirmed. |
 | [dev-review](skills/dev-review/SKILL.md) | Review staged changes, or the branch; create only the tickets you pick. |
 | [dev-spec](skills/dev-spec/SKILL.md) | Record durable project specs from landed work. |
-| [dev-setup](skills/dev-setup/SKILL.md) | Add the branch rule and check commands to a repository's agent instructions and keep `.scratch/` out of Git, through one approved diff. |
+| [dev-setup](skills/dev-setup/SKILL.md) | `global`: wire every client to one instruction file with the rules the skills rely on; `project`: add the branch rule and check commands to a repository and keep `.scratch/` out of Git. Each through one approved diff. |
 | [dev-commit](skills/dev-commit/SKILL.md) | Commit existing changes in atomic groups. |
 
 `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec` and `dev-setup` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". Start each step explicitly; commands do not start the next step for you.
