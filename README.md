@@ -1,6 +1,6 @@
 # nxs
 
-Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes with three finder roles and a verifier, and commit in atomic groups.
+Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes, and commit in atomic groups.
 
 ## Skills
 
@@ -46,9 +46,9 @@ Landed work -> dev-spec [project specs] -> dev-commit
 
 Run `dev-spec` after review and before commit. It writes `SPEC.md` files that the other commands read, or private `.SPEC.md` files kept out of Git where a project does not allow committed specs.
 
-`dev-review` runs the three finder roles concurrently, then a verifier that marks each candidate finding confirmed, plausible or refuted. It saves the report under `.scratch/`, explains the findings and proposes tickets as groups of finding numbers; answer with finding numbers, such as "1, 3", "all" or "none", and it creates only those tickets.
+`dev-review` runs three finder roles concurrently when capacity permits, then a verifier that marks each candidate finding confirmed, plausible or refuted. A trivial diff may receive a direct pass without agents. It saves the report under `.scratch/`, explains the findings and proposes tickets as groups of finding numbers; answer with finding numbers, such as "1, 3", "all" or "none", and it creates only those tickets.
 
-Everything is saved locally under `.scratch/<feature-slug>/` (spec, root cause, tickets, research, review reports); tracker issues are read, never written. Ignore `.scratch/` in Git to keep these records local.
+Feature records are saved locally under `.scratch/<feature-slug>/` (spec, root cause, tickets, research, review reports). When review resolves no feature, its report and tickets go under `.scratch/reviews/<branch-slug>/`. Tracker issues are read, never written. Ignore `.scratch/` in Git to keep these records local.
 
 ## Migration from the dev plugin
 
@@ -61,6 +61,6 @@ python3 nxs/plugins/dev/opencode/install.py --uninstall  # from a 0.43.0 checkou
 npx skills@latest add -g Villhard/nxs
 ```
 
-Command names change: `/dev:rnd` becomes `/dev-rnd`, and likewise for bug, review and commit.
+Skill names change: `/dev:rnd` becomes `/dev-rnd`, and likewise for bug, review and commit. In OpenCode, select skills with `@dev-<name>`.
 
 For local previews and contributions, see [CONTRIBUTING.md](CONTRIBUTING.md).
