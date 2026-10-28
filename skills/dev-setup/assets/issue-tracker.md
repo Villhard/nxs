@@ -48,7 +48,7 @@ Read the file at the referenced path. The user normally passes the path or the i
 Used by `/wayfinder`. The map is one file with one child file per ticket.
 
 - Map: `.scratch/<effort>/map.md`, holding the Notes, Decisions-so-far and Fog body.
-- Child ticket: `.scratch/<effort>/issues/NN-<slug>.md`, numbered from `01`, with the question in the body. A `Type:` line records the ticket type (`research`, `prototype`, `grilling` or `task`); a `Status:` line records `claimed` or `resolved`.
+- Child ticket: `.scratch/<effort>/issues/NN-<slug>.md`, numbered like any new ticket under Conventions, with the question in the body. A `Type:` line records the ticket type (`research`, `prototype`, `grilling` or `task`); a `Status:` line records `claimed` or `resolved`.
 - Blocking: a `Blocked by: NN, NN` line near the top. A ticket is unblocked when every file it lists is `resolved`.
 - Frontier: the open, unblocked and unclaimed files in `.scratch/<effort>/issues/`; the lowest number wins.
 - Claim: set `Status: claimed` and save before any work.

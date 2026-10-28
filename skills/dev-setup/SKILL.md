@@ -15,6 +15,18 @@ Example: /dev-setup project
 
 Suggest the next command at a handoff; never start it automatically.
 
+## CONTRACT
+
+Both modes follow these rules. Each mode's STANCE names the files it writes, its owned sections and its questions; its AUDIT names the files whose headings it counts and when it has nothing to propose.
+
+- Approval: write nothing before the user approves the shown diff, and write exactly that diff, or a diff changed as the user asked and shown again. On decline, write nothing and report that every file is unchanged.
+- Owned section: it runs from its heading line to the line before the next `#` or `##` heading, or to the end of the file. More than one heading of an owned section across the audited files stops the run: name the files and line numbers; the user merges them by hand.
+- Repeat: an owned section is rewritten in place, and the diff proposes only the lines that change; a line edited inside it goes back to the audited line. Every byte outside the sections the diff touches stays as it was, including the file's final newline state.
+- Custom rules belong outside the owned sections, where the audit reports a rule that states an owned line as covered, with the line that states it. When the user changes a line inside an owned section while approving, say that the next run proposes the audited line again and offer to put the custom rule outside the section instead.
+- An audit with nothing to propose shows no diff: report "already set up" and stop.
+- After writing, run the mode's CHECK and fix what fails before reporting.
+- Report a missing item; never invent a command, rule or skill name to fill it.
+
 ## MODE
 
 | Input | Action |
@@ -30,10 +42,8 @@ Suggest the next command at a handoff; never start it automatically.
 This section through NEXT is the `project` mode.
 
 - Write only the target instruction file, a new `CLAUDE.md` holding `@AGENTS.md`, and one `.scratch/` ignore line. Never code, other instruction files, the index or commits.
-- Write nothing before the user approves the shown diff, and write exactly that diff. A declined diff leaves every file unchanged.
-- Own one `## nxs` section in the target file. A repeat rewrites that section in place; every byte outside it stays as it was.
-- The section belongs to the skill: the next run replaces an edit inside it with the audited line. Custom rules belong outside it, where the audit reports a branch rule as covered (AUDIT step 3).
-- Questions: the mode, only when no argument was given, and the approval of the diff. Report a missing item; never invent a command or rule to fill it.
+- Owned section (CONTRACT): one `## nxs` section in the target file. A branch rule outside it is reported as covered in AUDIT step 3.
+- Questions: the mode, only when no argument was given, and the approval of the diff.
 
 ## AUDIT
 
@@ -44,7 +54,7 @@ Work from the repository root. Read before proposing anything; record each item 
    | Found | Target |
    | --- | --- |
    | Exactly one `## nxs` heading across the real files | The real file that holds it |
-   | More than one `## nxs` heading across the real files | Stop: name the real files and line numbers; the user merges them by hand |
+   | More than one `## nxs` heading across the real files | Stop as CONTRACT says, naming the real files |
    | Both names resolve to one real file | That real file, the symlink's target |
    | `CLAUDE.md` contains the line `@AGENTS.md` | `AGENTS.md` |
    | `AGENTS.md` only | `AGENTS.md` |
@@ -54,7 +64,7 @@ Work from the repository root. Read before proposing anything; record each item 
 
    Edit a symlink's target, never the link itself. Never create a second instruction file next to an existing one.
 
-2. The `## nxs` section: it runs from the `## nxs` line to the line before the next `#` or `##` heading, or to the end of the file. Read it; the repeat proposes only the lines that change.
+2. The `## nxs` section, bounded as CONTRACT says: read it.
 
 3. Branch rule: read the instruction files and `CONTRIBUTING.md` for a stated branch naming rule, and list existing branches (`git for-each-ref --format='%(refname:short)' refs/heads refs/remotes`).
 
@@ -84,26 +94,22 @@ Show, in one message:
    - the `## nxs` section in the shape of [project section](assets/project-section.md), appended at the end of the target file after one blank line, or replacing the existing section's lines in place;
    - for no instruction file, the new `AGENTS.md` holding the section and the new `CLAUDE.md` holding `@AGENTS.md`;
    - for an unignored `.scratch/`, the line `.scratch/` in `.git/info/exclude`: private to this clone, recommended. Name `.gitignore` as the alternative: shared with everyone who clones the repository.
-3. One question: approve the diff, approve it with `.gitignore` or the other target file, change specific lines, or decline. A line changed inside `## nxs` holds only until the next run, which proposes the audited line again: when the user changes one, say so and offer to put the custom rule outside the section instead.
+3. One question: approve the diff, approve it with `.gitignore` or the other target file, change specific lines, or decline.
 
-An audit that finds the section current and `.scratch/` ignored proposes no diff: report "already set up" and stop.
+The audit has nothing to propose when the section is current and `.scratch/` is ignored.
 
 ## WRITE
 
-On approval of the diff, or of a diff changed as the user asked and shown again:
+On approval (CONTRACT):
 
-1. Write the instruction file changes. Keep every byte outside the `## nxs` section, including the file's final newline state.
+1. Write the instruction file changes.
 2. Ignore line: for `.git/info/exclude` use `"$(git rev-parse --path-format=absolute --git-common-dir)/info/exclude"`, creating the directory when missing. Append `.scratch/` on its own line, adding a newline first when the file does not end with one. The same applies to `.gitignore`.
-
-On decline, write nothing and report that every file is unchanged.
 
 ## CHECK
 
 - The target file has exactly one `## nxs` heading, and a diff against its pre-write content touches only that section.
 - A created `CLAUDE.md` holds `@AGENTS.md`.
 - `git check-ignore -q .scratch/` exits 0 when an ignore line was approved.
-
-Fix what fails before reporting.
 
 ## NEXT
 

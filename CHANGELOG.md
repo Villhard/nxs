@@ -30,6 +30,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `feature-directory` reference counts project specs as domain documents.
 - `dev-rnd` clarifies in rounds of independent questions instead of one question at a time, frames options as observable behavior and decides internal-only choices itself, recording the reason in the spec.
 - Checker test covers every shared copy.
+- Checker fails when the fenced `## Done when` block in `dev-setup`'s `issue-tracker` template differs from `dev-rnd`'s ticket template; its test covers the drift.
+- `dev-setup` states the approval, owned-section, repeat, "already set up" and check rules once in a CONTRACT section that both modes follow; `global` rule groups reuse the `## nxs` coverage table, and the `project` section template points to AUDIT step 3 for the branch rule.
+- `dev-setup global` counts a mattpocock skill as installed only from a lock entry with source `mattpocock/skills`; a same-name skill directory without it is reported as unverified, kept out of the install command and never overwritten, and the skills that need it are reported as blocked.
+- `dev-setup` `issue-tracker` template numbers wayfinder child tickets after the existing tickets in `issues/`.
 
 ### Fixed
 
