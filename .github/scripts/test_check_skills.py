@@ -12,11 +12,16 @@ CLI = Path(__file__).with_name('check-skills.sh').resolve()
 ROOT = CLI.parents[2]
 PRE_COMMIT = ROOT / '.githooks/pre-commit'
 
-SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit')
+SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead')
 SHARED = {
     'references/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
-    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec'),
+    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead'),
+    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
+    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
+    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
+    **{f'scripts/{name}.py': ('dev-lead', 'dev-review') for name in ('inventory', 'mechanics', 'outcome', 'runner')},
+    'assets/outcome.schema.json': ('dev-lead', 'dev-review'),
     'assets/spec.md': ('dev-rnd', 'dev-bug'),
     'assets/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
 }
@@ -126,7 +131,7 @@ def main():
 
         # Missing skill fails.
         shutil.rmtree(repo / 'skills/dev-commit')
-        check(repo, False, diagnostic="expected ['dev-bug', 'dev-commit', 'dev-review', 'dev-rnd', 'dev-setup', 'dev-spec']")
+        check(repo, False, diagnostic="expected ['dev-bug', 'dev-commit', 'dev-lead', 'dev-review', 'dev-rnd', 'dev-setup', 'dev-spec']")
         git(repo, 'checkout', '--', 'skills/dev-commit')
 
         # A link escaping its skill fails, and so does a missing destination.
@@ -146,6 +151,14 @@ def main():
             write(repo, copy, '# SHARED\n\nDivergent copy.\n')
             check(repo, False, diagnostic=f'{copy}: shared file differs')
             git(repo, 'checkout', '--', copy)
+
+        # Plain runtime references are checked even outside Markdown links.
+        write(repo, 'skills/dev-lead/scripts/escape-probe.py', "RESOURCE = '../../dev-rnd/SKILL.md'\n")
+        check(repo, False, diagnostic='external runtime skill reference')
+        (repo / 'skills/dev-lead/scripts/escape-probe.py').unlink()
+        write(repo, 'skills/dev-lead/scripts/escape-probe.py', "RESOURCE = '../../shared/journal.py'\n")
+        check(repo, False, diagnostic='external runtime resource path')
+        (repo / 'skills/dev-lead/scripts/escape-probe.py').unlink()
 
         # A tracker Done when copy that drifts from dev-rnd's ticket fails.
         tracker = (repo / TRACKER).read_text()

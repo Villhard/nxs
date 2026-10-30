@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    pull_request:
+  pull_request:
 
 jobs:
   # Keep the check name required by main branch protection.
@@ -22,6 +22,9 @@ jobs:
       - name: Run checker regressions (Python 3 standard library)
         run: python3 .github/scripts/test_check_skills.py
 
+      - name: Run sequential lead regressions (Python 3 standard library)
+        run: python3 -m unittest discover -s tests -p 'test_dev_lead.py' -v
+
   discovery:
     name: Skills CLI discovery
     runs-on: ubuntu-latest
@@ -34,10 +37,10 @@ jobs:
         with:
           node-version: '22'
 
-      - name: The skills CLI lists all four skills
+      - name: The skills CLI lists all seven skills
         run: |
           listed=$(npx -y skills@latest add . -l)
           echo "$listed"
-          for skill in dev-rnd dev-bug dev-review dev-commit; do
+          for skill in dev-rnd dev-bug dev-review dev-spec dev-setup dev-commit dev-lead; do
             echo "$listed" | grep -q "$skill" || { echo "missing skill: $skill"; exit 1; }
           done

@@ -10,14 +10,19 @@ import subprocess
 import sys
 from urllib.parse import unquote, urlsplit
 
-SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit')
-EXPLICIT = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup')
+SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead')
+EXPLICIT = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-lead')
 ROLES = ('review-quality', 'review-testing', 'review-simplification', 'review-verify')
 # Files copied into every consuming skill and required to stay byte-identical.
 SHARED = {
     'references/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
-    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec'),
+    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead'),
+    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
+    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
+    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
+    **{f'scripts/{name}.py': ('dev-lead', 'dev-review') for name in ('inventory', 'mechanics', 'outcome', 'runner')},
+    'assets/outcome.schema.json': ('dev-lead', 'dev-review'),
     'assets/spec.md': ('dev-rnd', 'dev-bug'),
     'assets/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
 }
@@ -225,10 +230,29 @@ def check_links(files):
                 raise Invalid(f'{path}: missing local Markdown resource {destination} ({target})')
 
 
+def check_runtime_paths(files):
+    # Runtime resources must survive installation of one skill on its own.
+    for path in sorted(files):
+        if not re.match(r'^skills/[^/]+/.+\.(?:md|py|json|yaml)$', path):
+            continue
+        text = read(files, path)
+        if re.search(r'(?:\.\./)+(?:skills/)?dev-[a-z-]+/', text):
+            raise Invalid(f'{path}: external runtime skill reference')
+        if path.endswith('.py'):
+            skill_root = '/'.join(path.split('/')[:2]) + '/'
+            for relative in re.findall(r"['\"]((?:\.\./)+[^'\"\n]+)['\"]", text):
+                target = posixpath.normpath(posixpath.join(posixpath.dirname(path), relative))
+                if not target.startswith(skill_root):
+                    raise Invalid(f'{path}: external runtime resource path')
+        if re.search(r'/(?:Users|home)/[^/\s]+/(?:[^\s]*?/)?(?:skills|\.codex|\.agents)/', text):
+            raise Invalid(f'{path}: external installed runtime path')
+
+
 def check(current):
     check_skills(current)
     check_done_when(current)
     check_links(current)
+    check_runtime_paths(current)
     releases(read(current, 'CHANGELOG.md'), 'CHANGELOG.md')
 
 

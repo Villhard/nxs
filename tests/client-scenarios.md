@@ -161,3 +161,28 @@ Use a tiny Python standard-library repository: `limits.py` with `resolve_limit(v
 Run the REVIEW scenarios above as well: direct contract checks do not replace the three-role review.
 
 Grade actions and artifacts, not a promise in the final answer. Use per-expectation `text`, `passed` and `evidence` fields for the skill-creator viewer. Missing model access or unsupported agent tools are unverified capabilities, not passed cases. A current artifact with missing evidence must stop instead of being silently migrated. Publish only a concise, sanitized compatibility summary with the actual limitations.
+
+## Sequential lead candidate scenarios
+
+The lead adapter targets Codex only. Fixture answers and approvals below apply only in disposable repositories; they grant no permissions in a user's project. Record actual run evidence locally under `research/dev-lead/`; public records contain concise conclusions and limitations rather than raw sessions.
+
+| Scenario | Required observation |
+| --- | --- |
+| Candidate discovery | `skills/list` for the real cwd and paginated `model/list`; retain enabled state, exact paths and hashes; discovery failure never means missing |
+| Focused research | Explicit `dev-rnd --decision-only` writes conclusion, evidence and questions under research; no implementation tickets; normal `dev-rnd` still slices an approved spec |
+| Question and continuation | Worker exits with `needs_input`, a saved question and session ID; fixture answer resumes that exact ID and produces checked artifacts |
+| Feature and ticket approvals | User approval pins feature-plan content and scope; lead approval pins the ticket plan before implementation; no permission inferred from journal path |
+| Sequential delivery | One feature branch; blocker results verified in working tree; executor checks criteria and never commits |
+| Review | Explicit task-only staged scope; all three existing finders and verifier through bounded Codex read-only processes; only orchestrator writes report; a reproduced defect gets an in-scope correction |
+| Specs and commit | Only `dev-spec` changes project specs; `dev-commit` creates atomic commits without changing source bytes or pushing |
+| Recovery | Second controller rejected; live worker reconciled; event-before-state recovered; lost launch/commit response never retried blindly; stale evidence invalidates completion |
+| Standalone regressions | Normal R&D, decision-only R&D, ticket execution, review, spec and commit retain ordinary dialogue, invocation gates and statuses while journaling meaningful outcomes |
+| Setup template | Exercise journal rules against temporary instruction files; user installation remains unchanged |
+
+Verified on 2026-10-30 on macOS with Codex CLI 0.166.0 and agterm 0.36.0: the disposable candidate cycle completed actual inventory, a saved question and exact-session resume, fixture feature approval, lead ticket-plan approval, implementation, five unittest cases and py_compile, all three read-only finders and the verifier, a reproduced whitespace defect, an approved fix plan and same-session correction, visible dev-spec and an atomic commit. Commit evidence confirmed unchanged working-file bytes. No companion skill was invoked.
+
+Standalone checks exercised normal dev-rnd slicing, decision-only research without tickets, a separate direct ticket with a human-approved plan and no controlled packet, staged review and the spec/commit procedures. The direct ticket resolved its criteria without committing. Global/project setup journal templates were inspected in temporary instruction files; installation and global setup were not run.
+
+The standard-library regression suite uses actual disposable Git repositories, OS locks and process groups plus fake Codex/agterm protocol endpoints for deterministic interruptions and response loss. A real writing helper was also interrupted after its files were saved and the coordinator continued from checked files without replaying it. Raw prompts and sessions remain local under research/dev-lead rather than in public records.
+
+Read-only role processes cannot run suites that require writable temporary repositories; the controller ran those checks independently. An actual Codex tool escaping an observed process group was not demonstrated. Recovery remains uncertain when its absence cannot be established. The supported route keeps review orchestration and commit bookkeeping in the lead's persistent interpreter; a nested writing review coordinator is outside that route. No lead compatibility is claimed for other clients, parallel worktrees, merges or autonomous companions.
