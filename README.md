@@ -1,6 +1,6 @@
 # nxs
 
-Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes, record project specs and commit in atomic groups. The skills target Claude Code, Codex and OpenCode; [tests/client-scenarios.md](tests/client-scenarios.md) records the flows verified in each client. Each step is a command you start yourself, and no command starts the next one for you.
+Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes, record project specs and commit in atomic groups. The standalone skills target Claude Code, Codex and OpenCode; [tests/client-scenarios.md](tests/client-scenarios.md) records the flows verified in each client. Standalone stages are commands you start yourself. Explicit `dev-lead` delegates a sequential cycle in the selected client within a feature plan you approve.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
@@ -11,14 +11,15 @@ Development skills for coding agents: shape features and bugs into tickets for t
 
 | Skill | Use it to |
 | --- | --- |
+| [dev-lead](skills/dev-lead/SKILL.md) | Coordinate one task through an approved feature plan, sequential Claude Code, Codex or OpenCode workers in agterm, review, specs and atomic commits. |
 | [dev-setup](skills/dev-setup/SKILL.md) | `global`: wire every client to one instruction file with the rules the skills rely on, and install chosen mattpocock/skills bundles (Core, Wayfinding, Architecture, Sessions) configured for local `.scratch/` tickets; `project`: add the branch rule and check commands to a repository and keep `.scratch/` out of Git. Each through one approved diff. |
-| [dev-rnd](skills/dev-rnd/SKILL.md) | Shape a feature or open question into an agreed spec and tickets. |
+| [dev-rnd](skills/dev-rnd/SKILL.md) | Shape a feature or open question into an agreed spec and tickets; `--decision-only` saves a research conclusion without tickets. |
 | [dev-bug](skills/dev-bug/SKILL.md) | Investigate a reported failure; write a fix ticket once the cause is confirmed. |
 | [dev-review](skills/dev-review/SKILL.md) | Review staged changes, or the branch; create only the tickets you pick. |
 | [dev-spec](skills/dev-spec/SKILL.md) | Record durable project specs from landed work. |
 | [dev-commit](skills/dev-commit/SKILL.md) | Commit existing changes in atomic groups. |
 
-`dev-setup`, `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". In OpenCode, select a skill with `@dev-<name>` instead of `/dev-<name>`.
+`dev-lead`, `dev-setup`, `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". For OpenCode, select a skill with `@dev-<name>` instead of `/dev-<name>`.
 
 ## Install
 
@@ -54,6 +55,16 @@ Both modes audit first, show what they found and one diff, and write only what y
 
 ## Usage
 
+### Delegate a task
+
+```text
+/dev-lead <request or .scratch/feature path>
+```
+
+The lead resolves questions with you, shows a feature plan with scope, permissions, checks and actual model choices, and waits for your approval. It then approves technical ticket plans, runs one worker at a time in visible agterm sessions, checks results, organizes review and fixes, updates specs through `dev-spec` and commits through `dev-commit`. New scope, external-contract or agreed-decision changes return to you. It never pushes.
+
+The adapters require Python 3, Git, agterm and the selected Claude Code, Codex or OpenCode v2 CLI. Read-only Claude/OpenCode workers also require macOS sandbox-exec. One feature branch and nxs alone form the baseline. Parallel worktrees, merges and autonomous companion integrations remain outside its scope. Manual stages remain available. Details and recovery rules: [dev-lead](skills/dev-lead/SKILL.md). Verification claims are limited to [client scenarios](tests/client-scenarios.md).
+
 ### Shape a feature
 
 Use `dev-rnd` when a change needs decisions before code. Give it a request, a tracker key or URL, a spec path or an open question:
@@ -65,6 +76,8 @@ Use `dev-rnd` when a change needs decisions before code. Give it a request, a tr
 It reads the relevant code first and shows what it found, then asks only what the code does not answer, in rounds of independent questions with options and a recommendation. It lays out two to four approaches, waits for your choice, pressure-tests the chosen one and shows the proposed spec and ticket breakdown before writing anything. A request that needs no decisions gets an offer to go straight to `/plan` instead of a spec.
 
 Result: `.scratch/<feature-slug>/spec.md` and one ticket per vertical slice in `issues/NN-<slug>.md`. Next: `/plan <ticket-path>` for the first ready ticket. An approved spec, yours or external, goes in as `/dev-rnd <spec-path>` and is sliced without repeating settled questions. Details: [dev-rnd](skills/dev-rnd/SKILL.md).
+
+For a focused decision without implementation tickets, use `/dev-rnd --decision-only <question>`. It saves the conclusion, evidence and remaining questions in `research/<topic>.md` in the feature directory.
 
 ### Fix a bug
 
@@ -144,7 +157,7 @@ It commits what is already there in atomic groups, one logical change per commit
   <img alt="dev-rnd writes spec.md and issues, dev-bug writes root-cause.md and issues, dev-review writes review.md and issues, all under .scratch/feature-slug/; dev-spec writes SPEC.md or .SPEC.md in the repository; domain-modeling maintains GLOSSARY.md and docs/adr/." src="docs/images/artifacts-light.svg">
 </picture>
 
-Feature records stay local under `.scratch/<feature-slug>/`: spec, root cause, tickets, research and review reports. When review resolves no feature, its report and tickets go under `.scratch/reviews/<branch-slug>/`. Keep `.scratch/` ignored; `dev-setup project` does that for you. Tracker issues are read, never written.
+Feature records stay local under `.scratch/<feature-slug>/`: spec, root cause, tickets, research, review reports and append-only JSONL `decision.log`. Task skills journal standalone work too; controlled launch state and evidence live under `research/dev-lead/`. When review resolves no feature, its report and tickets go under `.scratch/reviews/<branch-slug>/`. Keep `.scratch/` ignored; `dev-setup project` does that for you. Tracker issues are read, never written.
 
 Durable knowledge lives in the repository: project specs (`SPEC.md` or `.SPEC.md`), and a glossary with decision records when the project keeps them. Feature records hold what was planned; specs hold what was built.
 

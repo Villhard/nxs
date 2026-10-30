@@ -1,7 +1,7 @@
 ---
 name: dev-rnd
-description: Shape a feature or open question when the user explicitly invokes /dev-rnd. Save an agreed spec and one or more tickets, without implementation tasks or code. Use dev-bug for a reported failure and the client's /plan for an already clear task.
-argument-hint: "[request | spec path | root-cause path | tracker key | question]"
+description: Shape a feature or open question when the user explicitly invokes /dev-rnd. Save an agreed spec and tickets, or a focused research conclusion with --decision-only, without implementation or code. Use dev-bug for a reported failure and the client's /plan for an already clear task.
+argument-hint: "[--decision-only] [request | spec path | root-cause path | tracker key | question]"
 disable-model-invocation: true
 ---
 
@@ -15,12 +15,20 @@ Before reading input, read [feature directory](references/feature-directory.md):
 
 Example: /dev-rnd add rate limiting to the public API
 
-Suggest the next command at a handoff; never start it automatically.
+In standalone use, suggest the next command at a handoff; never start it automatically. A controlled run returns its outcome to lead, who selects the next stage.
+
+## TASK CONTEXT
+
+Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and journal state to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
+
+## DECISION-ONLY
+
+An explicit `--decision-only` reuses CLARIFY, EXPLORE and STRESS, with the same human decision gates, but ends with an agreed conclusion, supporting evidence and remaining questions in `research/<topic>.md` of the resolved feature directory. Read [decision result](assets/decision.md) before saving. An existing input spec is read as evidence, never sliced or rewritten in this mode. Do not create implementation tickets or run ARTIFACT/SLICE. Record the outcome and questions in the task journal. Controlled research may finish `needs_input` before agreement; it never claims an open decision is settled. Normal invocation retains the full flow below.
 
 ## STANCE
 
 - Produce the spec and the tickets and stop. The plan, the code, and any behavior change belong to the client's plan mode.
-- Four steps in order: clarify, explore, stress-test, slice. A clear request may need zero questions, one obvious approach and no stress pass. After agreement, slice always runs, even when it yields one ticket.
+- In normal mode, four steps in order: clarify, explore, stress-test, slice. A clear request may need zero questions, one obvious approach and no stress pass. After agreement, slice always runs, even when it yields one ticket.
 - Full collapse makes the spec ceremony. Say so out loud, offer to describe the task straight to `/plan` instead, and stop for the user's choice: no draft spec or ticket breakdown until they ask for one.
 - For a bug rather than a request, route to `/dev-bug`.
 
@@ -78,7 +86,7 @@ One feature is one local directory, holding the spec, one file per ticket and an
 .scratch/<feature-slug>/research/<topic>/
 ```
 
-Everything research saves goes under `research/`, including files written by agents or workflows this command launches: one topic's result as `research/<topic>.json` or `.md`, and the scripts, probes, downloads and raw outputs behind it in `research/<topic>/`. `<topic>` is one to three lowercase english words, hyphenated, shared by the result and its folder. Give each launched agent or workflow its `research/<topic>/` path as its output location. `## Implementation Decisions` cites results by their path inside the feature. The feature root holds only `spec.md`, `root-cause.md`, `review.md` and the `issues/` and `research/` directories.
+Everything research saves goes under `research/`, including files written by agents or workflows this command launches: one topic's result as `research/<topic>.json` or `.md`, and the scripts, probes, downloads and raw outputs behind it in `research/<topic>/`. `<topic>` is one to three lowercase english words, hyphenated, shared by the result and its folder. Give each launched agent or workflow its `research/<topic>/` path as its output location. `## Implementation Decisions` cites results by their path inside the feature. The feature root holds only `spec.md`, `root-cause.md`, `review.md`, `decision.log` and the `issues/` and `research/` directories.
 
 The directory follows LOCATION and LOCAL STORAGE from feature directory. Leave a `root-cause.md` already sitting there untouched, and never replace an existing `spec.md` without approval of that concrete revision. Decision documents, including tickets carrying a bare or Markdown-bold `Type:` field, supply context for a distinct implementation deliverable; never convert them in place.
 

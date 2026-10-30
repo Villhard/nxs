@@ -12,9 +12,13 @@ Accepted input: an optional scope hint. Without one, consider all existing chang
 
 Example: /dev-commit
 
+## TASK CONTEXT
+
+Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and journal state to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
+
 ## STANCE
 
-Commit what is there. Keep working-file bytes unchanged throughout the command, not only at the end. Never temporarily remove unrelated edits, commit the file and restore them; never repair an overbroad commit by rewriting files and amending it. Writing code, running the build, and changing behavior belong elsewhere. `git push`, `--force`, and MR / PR creation stay out of this command - push only on a later explicit request.
+Commit what is there. Keep working-file bytes unchanged throughout the command, not only at the end, except the resolved task journal and its state records. The journal is local and stays out of commits. Never temporarily remove unrelated edits, commit the file and restore them; never repair an overbroad commit by rewriting files and amending it. Writing code, running the build, and changing behavior belong elsewhere. `git push`, `--force`, and MR / PR creation stay out of this command - push only on a later explicit request.
 
 ## PROCEDURE
 

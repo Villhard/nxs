@@ -15,12 +15,16 @@ Before reading input, read [feature directory](references/feature-directory.md):
 
 Example: /dev-bug PROJ-4213
 
-Suggest the next command at a handoff; never start it automatically.
+In standalone use, suggest the next command at a handoff; never start it automatically. A controlled run returns its outcome to lead, who selects the next stage.
+
+## TASK CONTEXT
+
+Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and journal state to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
 
 ## STANCE
 
 - Confirm the cause with reproducible evidence and leave the fix to the ticket this command writes. No patch, no product-code change here.
-- The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The root cause and, once confirmed, the fix ticket are the only files that stay.
+- The investigation runs in the main context: read code and logs, run the repro and the existing tests, build minimal probes. Probes, debug logs, and a throwaway harness are temporary and come out at the end. The root cause, task journal and, once confirmed, the fix ticket are the durable results; saved evidence stays under research/.
 - Stay skeptical of the first plausible explanation. Clarify a fuzzy term in the report before running the 5-Why.
 - Apply DOMAIN DOCUMENTS from feature directory, project specs included, to the report's terms and the suspect behavior. Behavior a recorded decision establishes is evidence with its path, not a defect by itself.
 - Classify the confirmed behavior against those records; the first line of `## Root cause` states the class, and the record path for `wrong` and `feature`:

@@ -161,3 +161,48 @@ Use a tiny Python standard-library repository: `limits.py` with `resolve_limit(v
 Run the REVIEW scenarios above as well: direct contract checks do not replace the three-role review.
 
 Grade actions and artifacts, not a promise in the final answer. Use per-expectation `text`, `passed` and `evidence` fields for the skill-creator viewer. Missing model access or unsupported agent tools are unverified capabilities, not passed cases. A current artifact with missing evidence must stop instead of being silently migrated. Publish only a concise, sanitized compatibility summary with the actual limitations.
+
+## Sequential lead candidate scenarios
+
+The lead adapter targets Codex only. Fixture answers and approvals below apply only in disposable repositories; they grant no permissions in a user's project. Record actual run evidence locally under `research/dev-lead/`; public records contain concise conclusions and limitations rather than raw sessions.
+
+| Scenario | Required observation |
+| --- | --- |
+| Candidate discovery | `skills/list` for the real cwd and paginated `model/list`; retain enabled state, exact paths and hashes; discovery failure never means missing |
+| Focused research | Explicit `dev-rnd --decision-only` writes conclusion, evidence and questions under research; no implementation tickets; normal `dev-rnd` still slices an approved spec |
+| Question and continuation | Worker exits with `needs_input`, a saved question and session ID; fixture answer resumes that exact ID and produces checked artifacts |
+| Feature and ticket approvals | User approval pins feature-plan content and scope; lead approval pins the ticket plan before implementation; no permission inferred from journal path |
+| Sequential delivery | One feature branch; blocker results verified in working tree; executor checks criteria and never commits |
+| Review | Explicit task-only staged scope; all three existing finders and verifier through bounded Codex read-only processes; only orchestrator writes report; a reproduced defect gets an in-scope correction |
+| Specs and commit | Only `dev-spec` changes project specs; `dev-commit` creates atomic commits without changing source bytes or pushing |
+| Recovery | Second controller rejected; live worker reconciled; event-before-state recovered; lost launch/commit response never retried blindly; stale evidence invalidates completion |
+| Standalone regressions | Normal R&D, decision-only R&D, ticket execution, review, spec and commit retain ordinary dialogue, invocation gates and statuses while journaling meaningful outcomes |
+| Setup template | Exercise journal rules against temporary instruction files; user installation remains unchanged |
+
+Verified on 2026-10-30 on macOS with Codex CLI 0.166.0 and agterm 0.36.0: the disposable candidate cycle completed actual inventory, a saved question and exact-session resume, fixture feature approval, lead ticket-plan approval, implementation, five unittest cases and py_compile, all three read-only finders and the verifier, a reproduced whitespace defect, an approved fix plan and same-session correction, visible dev-spec and an atomic commit. Commit evidence confirmed unchanged working-file bytes. No companion skill was invoked.
+
+Standalone checks exercised normal dev-rnd slicing, decision-only research without tickets, a separate direct ticket with a human-approved plan and no controlled packet, staged review and the spec/commit procedures. The direct ticket resolved its criteria without committing. Global/project setup journal templates were inspected in temporary instruction files; installation and global setup were not run.
+
+The standard-library regression suite uses actual disposable Git repositories, OS locks and process groups plus fake Codex/agterm protocol endpoints for deterministic interruptions and response loss. A real writing helper was also interrupted after its files were saved and the coordinator continued from checked files without replaying it. Raw prompts and sessions remain local under research/dev-lead rather than in public records.
+
+Read-only role processes cannot run suites that require writable temporary repositories; the controller ran those checks independently. An actual Codex tool escaping an observed process group was not demonstrated. Recovery remains uncertain when its absence cannot be established. The supported route keeps review orchestration and commit bookkeeping in the lead's persistent interpreter; a nested writing review coordinator is outside that route. That full-cycle evidence applies to Codex. Parallel worktrees, merges and autonomous companions remain outside the supported route.
+
+
+## Native lead adapters
+
+Use a disposable repository with candidate skills in the selected client's native source directory. Fixture approvals apply only inside the test. Do not install a missing CLI or change user settings to pass a scenario.
+
+| Scenario | Required observation |
+| --- | --- |
+| Select active harness | Explicit codex, claude or opencode discovery and launch; an absent CLI is discovery_failed, never fallback |
+| Native model and skill inventory | Supported efforts/variants, exact candidate paths and hashes; native registration and explicit candidate context stay distinct; disabled, missing and failed discovery stay distinct |
+| Native question and answer | Save needs_input and native session ID; resume that exact session after recorded fixture approval |
+| Native result integrity | Failed turn, malformed JSON, tool-step text, changed derived result and cross-harness continuation are rejected |
+| OpenCode initial discovery | Wait for native skill plugins; read the full HTTP catalog without CLI pipe truncation; stop private server afterward |
+| Read-only source protection | Shell write to a reviewed source fails; source and index bytes remain unchanged |
+| Native permissions | Existing client rules stay in force; no bypass/auto approval; unavailable permission blocks bounded execution |
+| Coordinator handoff | Reconcile journal and stopped processes; use the saved harness for native resume or a new step after known prior effects |
+
+Verified on 2026-10-30 with OpenCode 2.2.3 and agterm 0.36.0: candidate inventory found all seven nxs skills at exact disposable paths; a live needs_input process stopped, resumed the same session after fixture approval, changed a Python function and passed an independent assertion. A separate read-only process read the candidate dev-lead contract and attempted a shell append to source; macOS denied the write. The controller checked the unchanged source. This is adapter evidence, not a repeated full development cycle or full review sweep in OpenCode.
+
+Claude Code CLI is absent on the test machine. SDK initialize discovery, unconfirmed native source paths versus explicit pinned candidate context, native command flags, structured success/error output, saved questions, exact UUID resume, result tampering and missing CLI behavior are covered by deterministic protocol fixtures. Live Claude invocation, installed-version compatibility and a complete Claude cycle remain unverified. No Claude installation was performed. Codex retains the full-cycle evidence above and its existing regression suite.

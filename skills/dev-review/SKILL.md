@@ -11,11 +11,15 @@ Review the staged changes or a branch's diff, which may span several tickets or 
 
 Example: /dev-review
 
-Suggest the next command at a handoff; never start it automatically.
+In standalone use, suggest the next command at a handoff; never start it automatically. A controlled run returns its outcome to lead, who selects the next stage.
+
+## TASK CONTEXT
+
+Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and journal state to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
 
 ## STANCE
 
-Write only the report and the tickets the user selects: no code, index, git objects or commits. Test-generated caches and build output are permitted under the check rule below. A review of someone else's PR is the normal case, and it must never touch their branch. Status and acceptance criteria of existing tickets belong to their executor; never change them here.
+Write only the report, task journal and the tickets selected under the active standalone or controlled context: no code, index, git objects or commits. Test-generated caches and build output are permitted under the check rule below. A review of someone else's PR is the normal case, and it must never touch their branch. Status and acceptance criteria of existing tickets belong to their executor; never change them here.
 
 Use read-only inspection, with `GIT_OPTIONAL_LOCKS=0` for git. Checks may create disposable caches or build output, but must not change tracked files, source files or the index; pass this constraint to every agent. Use checks without auto-fix or snapshot updates. Agents return findings to you and never edit the report or any other file.
 
@@ -146,7 +150,7 @@ A ticket is one change the user runs in one `/plan` session and commits whole. E
 
 Expect about one group per critical or major finding plus one or two for the minor findings; this is a guide, not a cap.
 
-Then ask the user to answer with finding numbers, for example "1, 3", "1-6", "all", "7 separately", "1 and 3 together", "4: <option>" or "none", and stop until the answer arrives.
+In a controlled run, return the proposed groups to lead for selection within the approved feature plan; a material choice still goes to the user. In standalone use, ask the user to answer with finding numbers, for example "1, 3", "1-6", "all", "7 separately", "1 and 3 together", "4: <option>" or "none", and stop until the answer arrives.
 
 ## CREATE TICKETS
 

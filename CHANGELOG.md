@@ -14,6 +14,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.47.0] - 2026-10-30
+
+### Changed
+
+- `dev-lead` supports native Claude Code, Codex and OpenCode v2 discovery, model effort validation, bounded outcomes and exact-session continuation without silent runtime substitution.
+- `dev-review` bundles the native CLI adapter for all finder and verifier roles, with enforced repository write denial on Claude Code and OpenCode read-only runs.
+- Lead packets, guides and client scenarios distinguish native registration from pinned candidate context, native permissions, protocol tests and live verification; shared helper and CI checks cover every adapter.
+
+## [0.46.0] - 2026-10-30
+
+### Added
+
+- `dev-lead` adds an explicit Codex-only sequential coordinator with feature and ticket plan approval, visible agterm workers, bounded outcomes and independent acceptance checks.
+- `dev-lead` helpers discover actual skills and models, persist launch and commit intent, validate outcomes and reconcile interrupted work without replaying unknown effects.
+- Task journal and controlled-run resources are bundled identically in `dev-lead`, `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec` and `dev-commit`.
+- Sequential lead regressions cover question continuation, invalid results, discovery failure, locking, interrupted runs, lost responses, duplicate prevention and stale evidence.
+
+### Changed
+
+- `dev-rnd --decision-only` saves a research conclusion, evidence and remaining questions without implementation tickets; normal invocation retains spec and ticket slicing.
+- Ticket executor and tracker templates record task outcomes and accept lead ticket-plan approval only in an explicit authorized controlled context.
+- `dev-review` bundles a Codex read-only finder and verifier launch route while retaining all existing roles and orchestrator report ownership.
+- `dev-spec` and `dev-commit` retain source and Git boundaries while recording task journal events; project-spec readers include `dev-lead`.
+- `SPEC.md` records the built controller, journal and independent acceptance boundaries.
+- `dev-setup` global and project templates propose journal rules without changing the user's installation during source development.
+- README, CONTRIBUTING and client scenarios document the lead, invocation boundaries, local artifacts and verification limits.
+- Skill-tree checks validate the seventh skill, shared journal and runner copies and runtime resource isolation; CI retains `House style + frontmatter` and runs lead regressions.
+
+### Fixed
+
+- CI declares `pull_request` beside `push`, so pull requests can trigger the required checks.
+
 ## [0.45.0] - 2026-10-28
 
 ### Added

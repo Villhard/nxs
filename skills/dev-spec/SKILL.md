@@ -15,11 +15,15 @@ Before reading specs, read [project specs](references/project-specs.md): it owns
 
 Example: /dev-spec .scratch/rate-limiting
 
-Suggest the next command at a handoff; never start it automatically.
+In standalone use, suggest the next command at a handoff; never start it automatically. A controlled run returns its outcome to lead, who selects the next stage.
+
+## TASK CONTEXT
+
+Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and journal state to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
 
 ## STANCE
 
-- Write only project spec files and, in hidden mode, one exclude line. Never code, a glossary, decision records, `.scratch/`, the index or commits.
+- Write only project spec files and, in hidden mode, one exclude line. Never code, a glossary, decision records, `.scratch/` artifacts other than the task journal and its state, the index or commits.
 - Write without an approval round; the user reviews the result in the diff.
 - The only question this command asks is the mode, once, before the first spec of a repository (MODE). Uncertain content is written as `(unconfirmed)` inline, never asked.
 - Record what was built, not what was planned: the diff decides, `spec.md` and `root-cause.md` are context.
