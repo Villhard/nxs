@@ -19,7 +19,7 @@ Before any task record, controller acquisition, discovery, branch operation or w
 
 ## AGREE THE FEATURE
 
-Use focused `dev-rnd --decision-only` for questions that need investigation. Give each worker a narrow question and the relevant evidence, then combine the conclusions. Ask the user all independent unresolved questions together. Answer from verified facts and agreed decisions yourself; return a choice of scope, external contract or recorded decision to the user.
+Use focused `dev-rnd --decision-only` for questions that need investigation. Give each worker a narrow question and the relevant evidence, then combine the conclusions. Ask the user all independent unresolved questions together through [visible status and questions](references/visibility.md). Answer from verified facts and agreed decisions yourself; return a choice of scope, external contract or recorded decision to the user.
 
 Show a feature plan using [the template](assets/feature-plan.md): behavior, exclusions, work breakdown and dependencies, acceptance checks, feature branch, allowed writes, environment actions with exact targets, and a table of purpose, harness, actual catalog model and supported effort (or native default when effort metadata is absent). Favor quality for decisions and final review; choose a faster suitable model only for a bounded clear task. Model names are runtime choices, never guide defaults.
 
@@ -28,6 +28,8 @@ Keep draft and approved feature plans at `research/dev-lead/feature-plan.md`. Sa
 After approval, use normal `dev-rnd` to slice the approved spec without reopening settled choices. All controlled tickets use the feature branch; prerequisites must exist in its working tree. Existing tickets on another branch require reconciliation before execution.
 
 ## EXECUTE SEQUENTIALLY
+
+Publish stage/action changes and keep status visible through the lead-only [presentation helpers](references/visibility.md). During worker/result or questionnaire waits, remain active with lifetime ownership and bounded polls at most 60 seconds apart. Preserve covering UI, report actual UI failures, consume answers without another user message and keep workflow choices in this lead.
 
 For each bounded step, prepare the [context packet](assets/context-packet.md) and its allowed outputs. Record intent before launch and keep run ID, launch parameters, agterm session ID and native session ID and harness. Run writing workers through `agtermctl session new --command ... --wait`, confirm the process in `tree`, and stream events both to disk and the terminal. Use the runner's bounded execution and exact session continuation.
 
@@ -48,4 +50,4 @@ Retire a worker terminal only through the runner's [owned cleanup](references/ru
 
 ## RECOVERY
 
-On interruption, read [runner](references/runner.md) before any retry. Compare intent/run records, processes, events, outcome files, artifact hashes, HEAD, index and working tree. Continue a reconciled unfinished step; skip only a completion whose evidence is still current. Unknown launch, migration or commit effects remain blocked until reconciled. Never retry an unknown side effect automatically.
+On interruption, read [runner](references/runner.md) and [question/presentation recovery](references/visibility.md#recovery) before any retry. Reconcile saved questions, page outcomes and recorded answer use before reopening UI. Compare intent/run records, processes, events, outcome files, artifact hashes, HEAD, index and working tree. Continue a reconciled unfinished step; skip only a completion whose evidence is still current. Unknown launch, migration or commit effects remain blocked until reconciled. Never retry an unknown side effect automatically.

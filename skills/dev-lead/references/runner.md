@@ -2,6 +2,8 @@
 
 The installed `scripts/` directory contains Python 3 standard-library mechanics. Use its absolute path from skill discovery, never a guessed installation path. Each CLI has `--help`; CLI calls protect individual operations. A coordinating lifetime additionally holds one `runner.controller(feature)` context in a persistent Python process across every step. A second owner fails through the operating system lock. Release that context only at handoff or completion.
 
+For lead HUD/status and active questionnaire waits, read [visible status and questions](visibility.md). Its lead-only helpers reuse this lifetime ownership and pinned identity; they do not add runtime dependencies or workflow decisions to the runner or review adapter.
+
 ## AGTERM ENTRY
 
 Call `identity = runner.preflight(agtermctl=absolute_cli)` before creating task records, acquiring the controller, discovering models or changing branches. CLI: `runner.py preflight --agtermctl <absolute-cli>`. It reads `AGTERM_ENABLED`, explicit socket and full window/workspace/session UUIDs, checks the open-window inventory and the lead's realized tree membership, and returns JSON without writing files. The tree has no required top-level window ID. Missing CLI, permission/connectivity errors, malformed replies and stale/mismatched IDs are distinct failures; retain their actual cause. Never resolve an entry through GUI `active` or another session.

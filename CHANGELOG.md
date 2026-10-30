@@ -14,6 +14,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.49.0] - 2026-10-31
+
+### Added
+
+- `dev-lead` adds lead-only timestamped status/HUD presentation and durable bounded questionnaire transport, with recoverable ownership of updated HUDs, genuine approval/form regressions and release-controlled pending fixtures; the lead retains approval and workflow decisions.
+
 ## [0.48.0] - 2026-10-30
 
 ### Fixed

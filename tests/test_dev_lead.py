@@ -1,5 +1,6 @@
 """Deterministic public-helper regressions. No live Codex, agterm or skill install."""
 import contextlib
+from html.parser import HTMLParser
 import importlib.util
 import io
 import json
@@ -20,6 +21,8 @@ import journal
 import mechanics
 import outcome
 import runner
+import approval
+import status as lead_status
 
 spec = importlib.util.spec_from_file_location('lead_commit', SCRIPTS / 'commit.py')
 commit = importlib.util.module_from_spec(spec)
@@ -113,7 +116,10 @@ args = sys.argv[1:]
 state_path = root / 'agterm.json'
 state = json.loads(state_path.read_text())
 def option(name): return args[args.index(name)+1]
-def save(): state_path.write_text(json.dumps(state))
+def save():
+    temporary = state_path.with_name('agterm.' + str(os.getpid()) + '.tmp')
+    temporary.write_text(json.dumps(state))
+    os.replace(temporary, state_path)
 def reply(value):
     print(json.dumps({'ok': True, 'result': value}), flush=True)
     sys.exit(0)
@@ -127,6 +133,47 @@ if args[:2] == ['window', 'list']: reply({'windows': state['windows']})
 window = option('--window')
 tree = state['trees'][window]
 if args[0] == 'tree': reply({'tree': tree})
+if args[:2] == ['session', 'hud'] or args[:2] == ['session', 'overlay']:
+    with (root / 'ui.jsonl').open('a') as f: f.write(json.dumps(args)+'\n')
+    if args[:3] == ['session', 'overlay', 'result']:
+        page = state.get('pages', {}).get(option('--page'))
+        if config.get('page_error') or page is None:
+            print(json.dumps({'ok': False, 'error': 'no such page'})); sys.exit(1)
+        print(json.dumps({'ok': True, 'result': {'pageOutcome': page}}))
+        sys.exit({'pending': 1, 'submitted': 0, 'dismissed': 2}[page['outcome']])
+    node = next(s for w in tree['workspaces'] for s in w['sessions'] if s['id'] == option('--target'))
+    if args[:2] == ['session', 'hud']:
+        assert not node.get('overlay') and not node.get('htmlOverlays')
+        if args[2] == 'update': assert node.get('hud')
+        node['hud'] = {'message': args[3], 'detail': option('--detail'),
+                       'position': option('--position'), 'spinner': option('--spinner-style'),
+                       'hideAfter': 0, 'markdown': False, 'sticky': False, 'frame': True}
+        save(); reply({'id': node['id']})
+    assert args[:3] == ['session', 'overlay', 'open']
+    assert '--js' in args and '--block' in args and '--follow' in args
+    if config.get('page_open_error'):
+        print(config['page_open_error'], file=sys.stderr); sys.exit(1)
+    assert not node.get('overlay') and not node.get('htmlOverlays')
+    page_id = str(uuid.uuid4())
+    page = {'pageID': page_id, 'outcome': 'pending'}
+    state.setdefault('pages', {})[page_id] = page
+    node.pop('hud', None)
+    node.update(overlay=True, htmlOverlays=[{'id': page_id, 'file': option('--html'), 'state': 'loaded'}])
+    save()
+    if config.get('page_release'):
+        while not pathlib.Path(config['page_release']).exists(): time.sleep(.02)
+    else:
+        time.sleep(config.get('page_delay', .2))
+    if config.get('page_pending'): time.sleep(10)
+    state = json.loads(state_path.read_text())
+    node = next(s for w in state['trees'][window]['workspaces'] for s in w['sessions'] if s['id'] == option('--target'))
+    page = {'pageID': page_id, 'outcome': 'dismissed' if config.get('page_dismiss') else 'submitted'}
+    if page['outcome'] == 'submitted': page['value'] = json.dumps(config.get('page_value', {'choice': 'revise'}))
+    state['pages'][page_id] = page
+    node.update(overlay=False, htmlOverlays=[])
+    save()
+    print(json.dumps({'ok': True, 'result': {'pageOutcome': page}}))
+    sys.exit(2 if page['outcome'] == 'dismissed' else 0)
 if args[:2] == ['session', 'close']:
     sid = option('--target')
     with (root / 'closes.jsonl').open('a') as f: f.write(json.dumps(args)+'\n')
@@ -1340,10 +1387,534 @@ class Helpers(unittest.TestCase):
         self.assertFalse((self.bin / 'closes.jsonl').exists())
 
     def test_public_cli_help(self):
-        for module in ('inventory', 'runner', 'outcome', 'journal', 'commit'):
+        for module in ('inventory', 'runner', 'outcome', 'journal', 'commit', 'approval'):
             result = subprocess.run([sys.executable, str(SCRIPTS / (module + '.py')), '--help'], capture_output=True, timeout=3)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertIn(b'usage:', result.stdout)
+
+
+class Visibility(unittest.TestCase):
+    """Real fixture CLI processes; no live terminal, native server or permission changes."""
+    configure = Helpers.configure
+    git = Helpers.git
+    prepare = Helpers.prepare
+    execute = Helpers.execute
+    wait_for = Helpers.wait_for
+    checks = Helpers.checks
+    verify = Helpers.verify
+
+    def setUp(self):
+        Helpers.setUp(self)
+        self.task.mkdir()
+        self.owner = runner.controller(self.task)
+        self.owner.__enter__()
+        self.identity = runner.preflight(str(self.agterm))
+        self.waiters = []
+        self.progress = {'stage': 'planning', 'step_id': 'ticket', 'action': 'Inspect evidence',
+                         'reason': '', 'current_run': None, 'accepted_tickets': [], 'last_commit': None}
+
+    def tearDown(self):
+        for process in self.waiters:
+            for path in self.task.glob('research/dev-lead/questions/*/wait/process.json'):
+                try:
+                    os.killpg(mechanics.load(path)['pid'], signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            if process.poll() is None:
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            process.wait(timeout=3)
+        self.owner.__exit__(None, None, None)
+        Helpers.tearDown(self)
+
+    def question(self, purpose='decision', artifact=None, worker_run=None):
+        return {'text': 'Choose <scope> & explain', 'step_id': 'ticket', 'purpose': purpose,
+                'scope': 'affected behavior', 'artifact': artifact, 'worker_run': worker_run,
+                'fields': [{'name': 'choice', 'label': 'Decision <required>',
+                            'options': ['revise', 'approve'], 'required': True}]}
+
+    def show(self):
+        return lead_status.publish(self.task, 'progress-first', self.progress, self.identity)
+
+    def start(self, question_id='question', wait_timeout=3, **kwargs):
+        approval.prepare(self.task, question_id, self.question(**kwargs), self.identity)
+        process = approval.open(self.task, question_id, wait_timeout)
+        self.waiters.append(process)
+        return process
+
+    def finish(self, process, question_id='question'):
+        process.wait(timeout=5)
+        result = approval.poll(self.task, question_id)
+        self.assertIn(result['status'], ('submitted', 'dismissed'), result)
+        return result
+
+    def ui(self, prefix):
+        path = self.bin / 'ui.jsonl'
+        return [a for a in (json.loads(s) for s in path.read_text().splitlines())
+                if a[:len(prefix)] == prefix] if path.exists() else []
+
+    def change_node(self, **changes):
+        state = mechanics.load(self.bin / 'agterm.json')
+        node = state['trees'][WINDOW]['workspaces'][0]['sessions'][0]
+        node.update(changes)
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        return node
+
+    def decision(self, question_id='question', identity='lead-decision', kind='decision', **data):
+        return journal.append_event(self.task / 'decision.log', identity, kind,
+                                    {'question_id': question_id, 'answer_event_id': question_id + ':answer', **data})
+
+    def test_visibility_status_transition_timestamps_evidence_and_git_preservation(self):
+        before = mechanics.git_snapshot(self.repo)
+        with patch.object(lead_status.time, 'time', return_value=100), patch.object(lead_status.time, 'monotonic', return_value=1):
+            self.assertEqual(self.show()['ui'], 'visible')
+        journal.append_event(self.task / 'decision.log', 'accepted', 'ticket.implementation.accepted',
+                             {'ticket': 'issues/01.md', 'evidence': ['checked-output']})
+        self.progress.update(stage='implementation', action='Run checks', reason='waiting for check output',
+                             accepted_tickets=[{'ticket': 'issues/01.md', 'event_id': 'accepted'}])
+        with patch.object(lead_status.time, 'time', return_value=120), patch.object(lead_status.time, 'monotonic', return_value=21):
+            changed = lead_status.publish(self.task, 'progress-second', self.progress, self.identity)
+        with patch.object(lead_status.time, 'time', return_value=140), patch.object(lead_status.time, 'monotonic', return_value=41):
+            refreshed = lead_status.refresh(self.task, self.identity)
+        self.assertEqual(changed['semantic_changed'], refreshed['semantic_changed'])
+        self.assertNotEqual(changed['updated'], refreshed['updated'])
+        text = (self.task / 'research/dev-lead/status.md').read_text()
+        for value in ('implementation', 'Run checks', 'waiting for check output', 'Accepted tickets: 1', 'Current run: none', 'Last verified commit: unknown'):
+            self.assertIn(value, text)
+        self.assertNotIn('%', text)
+        self.assertEqual(len([r for r in journal.read_events(self.task / 'decision.log') if r['kind'] == 'progress.changed']), 2)
+        self.assertEqual(before, mechanics.git_snapshot(self.repo))
+        self.progress['accepted_tickets'] *= 2
+        with self.assertRaisesRegex(ValueError, 'distinct tickets'):
+            lead_status.publish(self.task, 'bad-count', self.progress, self.identity)
+
+    def test_visibility_requires_lifetime_owner_and_explicit_acceptance(self):
+        self.owner.__exit__(None, None, None)
+        with self.assertRaisesRegex(ValueError, 'lifetime controller'):
+            self.show()
+        self.owner = runner.controller(self.task)
+        self.owner.__enter__()
+        journal.append_event(self.task / 'decision.log', 'checkbox', 'decision', {'ticket': 'issues/01.md', 'resolved': True})
+        self.progress['accepted_tickets'] = [{'ticket': 'issues/01.md', 'event_id': 'checkbox'}]
+        with self.assertRaisesRegex(ValueError, 'acceptance evidence'):
+            self.show()
+
+    def test_visibility_progress_crash_then_missing_hud_restores_from_journal(self):
+        with patch.object(lead_status, '_text', side_effect=OSError('render interrupted')):
+            with self.assertRaisesRegex(OSError, 'render interrupted'):
+                self.show()
+        (self.task / 'research/dev-lead/presentation.json').unlink()
+        self.change_node(hud=None)
+        result = lead_status.reconcile(self.task, self.identity)
+        self.assertEqual(result['ui'], 'visible')
+        self.assertIn('Inspect evidence', (self.task / 'research/dev-lead/status.md').read_text())
+        changed = {**self.progress, 'action': 'Different'}
+        with self.assertRaisesRegex(ValueError, 'different content'):
+            lead_status.publish(self.task, 'progress-first', changed, self.identity)
+
+    def test_visibility_updated_present_hud_recovers_without_presentation_cache(self):
+        cache = self.task / 'research/dev-lead/presentation.json'
+        with patch.object(lead_status.time, 'time', return_value=100):
+            first = self.show()
+        for stamp in (120, 140):
+            with patch.object(lead_status.time, 'time', return_value=stamp):
+                updated = lead_status.refresh(self.task, self.identity)
+                self.assertEqual(updated['ui'], 'visible')
+                self.assertNotEqual(updated['owned_hud'], first['owned_hud'])
+                cache.unlink()
+                recovered = lead_status.reconcile(self.task, self.identity)
+                self.assertEqual(recovered['ui'], 'visible', recovered['reason'])
+                self.assertEqual(recovered['semantic_changed'], first['semantic_changed'])
+                # The questionnaire must recognize the same HUD without its cache too.
+                cache.unlink()
+                approval._check_slot(self.task, {'identity': self.identity})
+        rows = journal.read_events(self.task / 'decision.log')
+        self.assertEqual(len([r for r in rows if r['kind'] == 'progress.changed']), 1)
+        # Same-spec reconcile must not create another ownership record.
+        self.assertEqual(len([r for r in rows if r['kind'] == 'hud.owned']), 3)
+        changed = {**updated['owned_hud'], 'frame': False}
+        self.change_node(hud=changed)
+        count = len(self.ui(['session', 'hud']))
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['reason'], 'HUD ownership changed or unknown')
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        with self.assertRaisesRegex(ValueError, 'unowned HUD'):
+            approval._check_slot(self.task, {'identity': self.identity})
+        self.change_node(hud=updated['owned_hud'], overlay=True)
+        cache.unlink()
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'suppressed')
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        self.change_node(overlay=False)
+        journal.append_event(self.task / 'decision.log', 'pending:open', 'question.open.intent',
+                             {'ui_question_id': 'pending'})
+        cache.unlink()
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['reason'], 'owned questionnaire pending reconciliation')
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+
+    def test_visibility_updated_ownership_survives_cache_write_failure(self):
+        with patch.object(lead_status.time, 'time', return_value=100):
+            self.show()
+        save = lead_status.atomic_json
+        def fail_confirmed_cache(path, value):
+            if value.get('ui') == 'visible':
+                raise OSError('confirmed ownership before cache failure')
+            return save(path, value)
+        with patch.object(lead_status.time, 'time', return_value=120):
+            with patch.object(lead_status, 'atomic_json', side_effect=fail_confirmed_cache):
+                with self.assertRaisesRegex(OSError, 'confirmed ownership'):
+                    lead_status.refresh(self.task, self.identity)
+            (self.task / 'research/dev-lead/presentation.json').unlink()
+            self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'visible')
+
+    def test_visibility_foreign_ui_and_changed_hud_preserved_and_manual_adoption_explicit(self):
+        foreign = {'message': 'User panel', 'spinner': 'none', 'position': 'center'}
+        self.change_node(hud=foreign)
+        self.assertEqual(self.show()['reason'], 'HUD ownership changed or unknown')
+        with self.assertRaisesRegex(ValueError, 'exact unobstructed'):
+            lead_status.adopt_hud(self.task, 'adopt-wrong', self.identity, {'message': 'User panel'})
+        lead_status.adopt_hud(self.task, 'lead-adopts-own-manual-hud', self.identity, foreign)
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        changed_hud = {**mechanics.load(self.task / 'research/dev-lead/presentation.json')['owned_hud'], 'frame': False}
+        self.change_node(hud=changed_hud)
+        count = len(self.ui(['session', 'hud']))
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['reason'], 'HUD ownership changed or unknown')
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        lead_status.adopt_hud(self.task, 'lead-explicitly-readopts-manual-spec', self.identity, changed_hud)
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        for changes in ({'overlay': True}, {'htmlOverlays': [{'id': 'user-page'}]},
+                        {'paneOverlays': ['right']}, {'ask': {'id': 'user-ask'}}):
+            before = len(self.ui(['session', 'hud']))
+            self.change_node(**changes)
+            self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'suppressed')
+            self.assertEqual(len(self.ui(['session', 'hud'])), before)
+            self.change_node(**{k: None for k in changes})
+
+    def test_visibility_hud_stays_pinned_and_ui_errors_are_readable(self):
+        self.show()
+        with patch.dict(os.environ, AGTERM_SESSION_ID='another-session'):
+            self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        for args in self.ui(['session', 'hud']):
+            self.assertEqual(args[args.index('--target') + 1], LEAD)
+            self.assertEqual(args[args.index('--window') + 1], WINDOW)
+        self.configure(ipc_error='Permission denied connecting to socket')
+        result = lead_status.refresh(self.task, self.identity)
+        self.assertEqual(result['ui'], 'error')
+        self.assertIn('Permission denied', result['reason'])
+        self.assertIn('Permission denied', (self.task / 'research/dev-lead/status.md').read_text())
+
+    def test_visibility_lost_hud_reply_is_observed_before_refresh(self):
+        self.show()
+        ipc = runner._ipc
+        def lost(command, timeout):
+            response = ipc(command, timeout)
+            if command[1:3] == ['session', 'hud']:
+                return {'command': command, 'error': 'lost response'}
+            return response
+        with patch.object(runner, '_ipc', side_effect=lost):
+            self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'error')
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'visible')
+
+    def test_visibility_pending_page_keeps_controller_and_suppresses_heartbeats(self):
+        self.show()
+        release = self.bin / 'page-release'
+        self.configure(page_release=str(release))
+        process = self.start(wait_timeout=15)
+        self.wait_for(lambda: bool(mechanics.load(self.bin / 'agterm.json').get('pages')))
+        first = approval.poll(self.task, 'question')
+        self.assertEqual(first['status'], 'pending', first)
+        count = len(self.ui(['session', 'hud']))
+        with patch.object(lead_status.time, 'monotonic', return_value=100):
+            lead_status.refresh(self.task, self.identity)
+        with patch.object(lead_status.time, 'monotonic', return_value=161):
+            gap = lead_status.refresh(self.task, self.identity)
+        self.assertIn('exceeded 60', '; '.join(gap['stale']))
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        response = subprocess.run([sys.executable, '-c', 'import sys;sys.path.insert(0,sys.argv[1]);import runner;'
+                                   'with_owner=runner.controller(sys.argv[2]);with_owner.__enter__()', str(SCRIPTS), str(self.task)],
+                                  capture_output=True, timeout=3)
+        self.assertNotEqual(response.returncode, 0)
+        self.assertIn(b'BlockingIOError', response.stderr)
+        self.assertEqual(approval.poll(self.task, 'question')['status'], 'pending')
+        self.assertIsNone(process.poll())
+        release.touch()
+        self.finish(process)
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
+
+    def test_visibility_submitted_revision_once_then_exact_native_continuation(self):
+        self.configure(worker='question')
+        prior = self.execute('worker-question')
+        self.show()
+        process = self.start(worker_run='worker-question')
+        result = self.finish(process)
+        self.assertEqual(result['answer']['value'], {'choice': 'revise'})
+        self.decision(continuation_run='worker-answer', affected_scope=['one-section'])
+        approval.consume(self.task, 'question', 'lead-decision')
+        self.assertEqual(approval.consume(self.task, 'question', 'lead-decision')['status'], 'consumed')
+        self.configure(worker='done')
+        resumed = self.execute('worker-answer', resume_from=prior)
+        self.assertEqual(mechanics.load(resumed / 'spec.json')['command'][-3:], ['resume', SESSION, '-'])
+        with self.assertRaisesRegex(ValueError, 'continuation intent'):
+            self.prepare('duplicate-answer', resume_from=prior)
+        self.decision(identity='other-decision')
+        with self.assertRaisesRegex(ValueError, 'different content'):
+            approval.consume(self.task, 'question', 'other-decision')
+        rows = journal.read_events(self.task / 'decision.log')
+        self.assertEqual(len([r for r in rows if r['event_id'] == 'question:answer']), 1)
+        self.assertEqual(len([r for r in rows if r['event_id'] == 'question:used']), 1)
+        self.assertFalse(any(r['kind'] == 'approval' for r in rows))
+        approval.prepare(self.task, 'revision-round', self.question(), self.identity)
+        self.assertEqual(approval.poll(self.task, 'revision-round')['status'], 'prepared')
+
+    def test_visibility_nested_protocol_direct_mode_and_invalid_answers(self):
+        outcome = {'pageID': LEAD, 'outcome': 'submitted', 'value': '{"choice":"revise"}'}
+        nested = {'exit_code': 0, 'stdout': json.dumps({'ok': True, 'result': {'pageOutcome': outcome}})}
+        self.assertEqual(approval.parse_outcome(nested, LEAD), outcome)
+        direct = {'exit_code': 0, 'stdout': json.dumps(outcome)}
+        with self.assertRaises(ValueError): approval.parse_outcome(direct, LEAD)
+        self.assertEqual(approval.parse_outcome(direct, LEAD, direct=True), outcome)
+        duplicate = {**nested, 'stdout': nested['stdout'].replace('revise', 'revise\\\",\\\"choice\\\":\\\"approve')}
+        with self.assertRaisesRegex(ValueError, 'duplicate JSON key'):
+            approval.parse_outcome(duplicate, LEAD)
+        for changed in ({'pageID': WINDOW}, {'outcome': 'unknown'}, {'value': {}}, {'value': '[]'}, {'value': 'bad'}):
+            raw = {**outcome, **changed}
+            with self.assertRaises(ValueError):
+                approval.parse_outcome({'exit_code': 0, 'stdout': json.dumps({'ok': True, 'result': {'pageOutcome': raw}})}, LEAD)
+        self.show()
+        self.configure(page_value={'choice': ''})
+        process = self.start()
+        process.wait(timeout=5)
+        self.assertEqual(approval.poll(self.task, 'question')['status'], 'uncertain')
+        self.assertNotIn('question:answer', approval._events(self.task))
+
+    def test_visibility_dismissal_and_timeout_never_approve_or_reopen(self):
+        self.show()
+        self.configure(page_dismiss=True)
+        process = self.start('dismissed')
+        self.assertEqual(self.finish(process, 'dismissed')['status'], 'dismissed')
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        self.configure(page_dismiss=False, page_pending=True, page_delay=.01)
+        approval.prepare(self.task, 'timeout', self.question(), self.identity)
+        process = approval.open(self.task, 'timeout', .3)
+        self.waiters.append(process)
+        self.wait_for(lambda: len(mechanics.load(self.bin / 'agterm.json').get('pages', {})) == 2)
+        first = approval.poll(self.task, 'timeout')
+        process.wait(timeout=5)
+        result = approval.reconcile(self.task, 'timeout')
+        self.assertEqual(first['status'], 'pending')
+        self.assertEqual(result['status'], 'pending', result)
+        self.assertTrue(result['wait_exit']['timed_out'])
+        with self.assertRaisesRegex(ValueError, 'open intent'):
+            approval.open(self.task, 'timeout', 3)
+        self.assertFalse(any(r['kind'] == 'approval' for r in journal.read_events(self.task / 'decision.log')))
+
+    def test_visibility_probe_cannot_consume_an_approval(self):
+        self.show()
+        process = self.start(purpose='probe')
+        self.finish(process)
+        form = (self.task / 'research/dev-lead/questions/question/form.html').read_text()
+        self.assertIn('&lt;scope&gt;', form)
+        self.assertIn('8000', form)
+        self.decision(kind='approval')
+        with self.assertRaisesRegex(ValueError, 'probe answers'):
+            approval.consume(self.task, 'question', 'lead-decision')
+        self.decision(identity='probe-result', kind='probe.observed')
+        self.assertEqual(approval.consume(self.task, 'question', 'probe-result')['status'], 'consumed')
+
+    def test_visibility_genuine_approval_consumed_once_with_current_artifact(self):
+        self.show()
+        plan = self.task / 'plan.md'
+        plan.write_text('Approved fixture scope\n')
+        artifact = {'path': 'plan.md', 'sha256': mechanics.sha256(plan)}
+        self.configure(page_value={'choice': 'approve'})
+        result = self.finish(self.start(artifact=artifact))
+        self.assertEqual(result['answer']['value'], {'choice': 'approve'})
+        self.assertEqual(result['answer']['purpose'], 'decision')
+        for field, wrong in [('artifact', 'another.md'), ('plan_sha256', '0' * 64), ('scope', 'different scope')]:
+            data = {'artifact': 'plan.md', 'plan_sha256': artifact['sha256'], 'scope': 'affected behavior'}
+            data[field] = wrong
+            event_id = 'wrong-' + field
+            self.decision(identity=event_id, kind='approval', **data)
+            with self.assertRaisesRegex(ValueError, 'exact current question artifact'):
+                approval.consume(self.task, 'question', event_id)
+        self.decision(kind='approval', artifact='plan.md', plan_sha256=artifact['sha256'], scope='affected behavior')
+        for _ in range(2):
+            self.assertEqual(approval.consume(self.task, 'question', 'lead-decision')['status'], 'consumed')
+        self.decision(identity='another-approval', kind='approval', artifact='plan.md',
+                      plan_sha256=artifact['sha256'], scope='affected behavior')
+        with self.assertRaisesRegex(ValueError, 'different content'):
+            approval.consume(self.task, 'question', 'another-approval')
+        rows = journal.read_events(self.task / 'decision.log')
+        self.assertEqual(len([r for r in rows if r['event_id'] == 'question:answer']), 1)
+        used = [r for r in rows if r['kind'] == 'answer.used']
+        self.assertEqual(len(used), 1)
+        self.assertEqual(used[0]['data']['decision_event_id'], 'lead-decision')
+
+    def test_visibility_decision_form_requires_user_submission_and_probe_is_separate(self):
+        class Form(HTMLParser):
+            def __init__(self, text):
+                super().__init__()
+                self.controls, self.script = [], ''
+                self.in_script = False
+                self.feed(text)
+
+            def handle_starttag(self, tag, attrs):
+                if tag in ('input', 'button'):
+                    self.controls.append((tag, dict(attrs)))
+                if tag == 'script': self.in_script = True
+
+            def handle_endtag(self, tag):
+                if tag == 'script': self.in_script = False
+
+            def handle_data(self, data):
+                if self.in_script: self.script += data
+
+        form_text = approval._form(self.question())
+        form = Form(form_text)
+        radios = [attrs for tag, attrs in form.controls if tag == 'input']
+        self.assertEqual([a['value'] for a in radios], ['revise', 'approve'])
+        self.assertTrue(all(a['type'] == 'radio' and a['name'] == 'choice' and 'required' in a for a in radios))
+        self.assertFalse(any('checked' in a for a in radios), 'decision starts with no selected answer')
+        self.assertIn(('button', {'type': 'submit'}), form.controls)
+        self.assertIn('form.addEventListener("submit",', form.script)
+        self.assertIn('event.preventDefault()', form.script)
+        self.assertIn('session.overlay.submit', form.script)
+        self.assertNotIn('setTimeout', form.script, 'decision has no automatic submission timer')
+        self.assertNotIn('requestSubmit', form.script, 'decision requires user submission')
+        self.assertIn('Choose &lt;scope&gt; &amp; explain', form_text)
+        probe = Form(approval._form(self.question(purpose='probe')))
+        probe_radios = [attrs for tag, attrs in probe.controls if tag == 'input']
+        self.assertEqual(['checked' in a for a in probe_radios], [True, False])
+        self.assertIn('setTimeout(() => form.requestSubmit(), 8000);', probe.script)
+
+    def test_visibility_question_claim_lost_open_and_pre_submission_recovery(self):
+        self.show()
+        release = self.bin / 'page-release'
+        self.configure(page_release=str(release))
+        process = self.start(wait_timeout=15)
+        self.wait_for(lambda: bool(mechanics.load(self.bin / 'agterm.json').get('pages')))
+        directory = self.task / 'research/dev-lead/questions/question'
+        # Lose the parent spawn response/cache while the bounded waiter and page survive.
+        (directory / 'wait/launch.json').unlink()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'pending')
+        with self.assertRaisesRegex(ValueError, 'open intent'):
+            approval.open(self.task, 'question', 3)
+        release.touch()
+        self.finish(process)
+        (directory / 'state.json').unlink()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'submitted')
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
+        with self.assertRaises(FileExistsError):
+            approval._wait(directory / 'question.json', 15)
+
+    def test_visibility_answer_file_then_event_then_use_crashes_recover_once(self):
+        self.show()
+        process = self.start()
+        process.wait(timeout=5)
+        append = approval.append_event
+        def fail_answer(path, event_id, kind, data):
+            if kind == 'answer': raise OSError('crash before answer append')
+            return append(path, event_id, kind, data)
+        with patch.object(approval, 'append_event', side_effect=fail_answer):
+            self.assertEqual(approval.poll(self.task, 'question')['status'], 'uncertain')
+        directory = self.task / 'research/dev-lead/questions/question'
+        self.assertTrue((directory / 'answer.json').exists())
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'submitted')
+        (directory / 'state.json').unlink()
+        self.decision()
+        # Consumption is durable before a caller decides to prepare its next effect.
+        approval.consume(self.task, 'question', 'lead-decision')
+        (directory / 'state.json').unlink()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'consumed')
+        self.assertEqual(len([r for r in journal.read_events(self.task / 'decision.log') if r['event_id'] == 'question:answer']), 1)
+
+    def test_visibility_missing_retained_outcome_and_foreign_overlay_preserved(self):
+        self.show()
+        self.configure(page_pending=True, page_delay=.01)
+        process = self.start()
+        self.wait_for(lambda: bool(mechanics.load(self.bin / 'agterm.json').get('pages')))
+        self.assertEqual(approval.poll(self.task, 'question')['status'], 'pending')
+        self.configure(page_error=True)
+        result = approval.reconcile(self.task, 'question')
+        self.assertEqual(result['status'], 'uncertain')
+        self.assertIn('no such page', result['reason'])
+        count = len(self.ui(['session', 'hud']))
+        lead_status.refresh(self.task, self.identity)
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        self.assertNotIn('question:answer', approval._events(self.task))
+
+    def test_visibility_question_immutable_and_foreign_hud_cannot_be_covered(self):
+        approval.prepare(self.task, 'question', self.question(), self.identity)
+        self.change_node(hud={'message': 'unowned'})
+        with self.assertRaisesRegex(ValueError, 'unowned HUD'):
+            approval.open(self.task, 'question', 3)
+        directory = self.task / 'research/dev-lead/questions/question'
+        (directory / 'form.html').write_text('changed')
+        with self.assertRaisesRegex(ValueError, 'durable evidence'):
+            approval.poll(self.task, 'question')
+        self.assertFalse(self.ui(['session', 'overlay', 'open']))
+
+    def test_visibility_replacement_controller_recovers_pending_question_without_open(self):
+        self.show()
+        release = self.bin / 'page-release'
+        self.configure(page_release=str(release))
+        process = self.start(wait_timeout=15)
+        self.wait_for(lambda: bool(mechanics.load(self.bin / 'agterm.json').get('pages')))
+        self.owner.__exit__(None, None, None)
+        self.owner = runner.controller(self.task)
+        self.owner.__enter__()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'pending')
+        release.touch()
+        self.finish(process)
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
+
+    def test_visibility_answer_event_before_cache_failure_recovers_and_approval_pins_hash(self):
+        self.show()
+        plan = self.task / 'plan.md'
+        plan.write_text('Approved fixture scope\n')
+        artifact = {'path': 'plan.md', 'sha256': mechanics.sha256(plan)}
+        process = self.start(artifact=artifact)
+        process.wait(timeout=5)
+        cache = journal._cache
+        def failed_cache(path, rows):
+            if rows[-1]['event_id'] == 'question:answer': raise OSError('answer event durable; cache failed')
+            return cache(path, rows)
+        with patch.object(journal, '_cache', side_effect=failed_cache):
+            self.assertEqual(approval.poll(self.task, 'question')['status'], 'uncertain')
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'submitted')
+        self.decision(kind='approval', artifact='plan.md', plan_sha256=artifact['sha256'], scope='affected behavior')
+        plan.write_text('Changed after the answer\n')
+        with self.assertRaisesRegex(ValueError, 'exact current question artifact'):
+            approval.consume(self.task, 'question', 'lead-decision')
+
+    def test_visibility_prepared_continuation_survives_lost_use_cache_without_another_run(self):
+        self.configure(worker='question')
+        prior = self.execute('question-origin')
+        self.show()
+        self.finish(self.start(worker_run='question-origin'))
+        self.decision(continuation_run='reserved-continuation')
+        approval.consume(self.task, 'question', 'lead-decision')
+        prepared = self.prepare('reserved-continuation', resume_from=prior)
+        (self.task / 'research/dev-lead/questions/question/state.json').unlink()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'consumed')
+        with self.assertRaisesRegex(ValueError, 'continuation intent'):
+            self.prepare('another-continuation', resume_from=prior)
+        self.assertEqual(mechanics.load(prepared / 'spec.json')['resume_session'], SESSION)
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
+
+    def test_visibility_failed_open_reports_actual_cli_cause_without_replay(self):
+        self.show()
+        self.configure(page_open_error='overlay already open: user owns the slot')
+        process = self.start()
+        process.wait(timeout=5)
+        result = approval.reconcile(self.task, 'question')
+        self.assertEqual(result['status'], 'uncertain')
+        self.assertIn('user owns the slot', result['reason'])
+        self.assertEqual(result['wait_error']['exit_code'], 1)
+        with self.assertRaisesRegex(ValueError, 'open intent'):
+            approval.open(self.task, 'question', 3)
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
 
 
 if __name__ == '__main__':

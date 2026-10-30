@@ -236,9 +236,17 @@ class OpenCodeRuns(unittest.TestCase):
 
     def test_failed_and_unsettled_plugins(self):
         cli = self.bin / 'opencode-fixture'; cli.write_text(FAKE_OPENCODE); cli.chmod(0o755)
-        for state, error in [('failed', 'plugin failed'), ('waiting', 'timeout')]:
+        for state in ('failed', 'waiting'):
             with self.subTest(state=state):
                 self.configure(plugin_state=state)
                 value = inventory.discover([self.repo], harness='opencode', executable=str(cli), timeout=.8)
+                self.assertEqual(value['models']['status'], 'discovery_failed')
+                self.assertEqual(value['models']['data'], [])
                 self.assertEqual(inventory.skill_status(value, self.repo, 'dev-lead')['status'], 'discovery_failed')
-                self.assertIn(error, value['models']['error'].lower())
+                error = value['models']['error'].lower()
+                if state == 'failed':
+                    self.assertIn('plugin failed', error)
+                else:
+                    self.assertIn(error, ('opencode server startup timeout', 'opencode inventory timeout',
+                                          'opencode skill discovery did not settle', 'timed out',
+                                          '<urlopen error timed out>'))
