@@ -14,6 +14,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.48.0] - 2026-10-30
+
+### Fixed
+
+- `dev-lead` and the bundled `dev-review` runner (2026-10-30) require stopped recorded processes and groups before continuation or another launch, including successful CLI exits; runtime regressions cover surviving children and worker destination rejection.
+
+### Changed
+
+- `dev-lead` requires verified agterm entry before coordination side effects and pins worker destinations and normalized unique labels in run records.
+- `dev-lead` and the bundled `dev-review` runner retain terminal and primary-pane ownership separately from native sessions and close verified stopped shell/command-wait terminals, including answered and resolved blocked turns tied explicitly to accepted exact continuations, through recorded, non-replayed cleanup.
+- Runtime tests and client scenarios cover agterm identity failures, focus changes, naming collisions, owned cleanup and lost close responses, distinguishing fixtures from live verification.
+
 ## [0.47.0] - 2026-10-30
 
 ### Changed
