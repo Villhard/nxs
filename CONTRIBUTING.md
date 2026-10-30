@@ -32,7 +32,7 @@ cp skills/dev-rnd/assets/ticket.md skills/dev-bug/assets/ticket.md
 cp skills/dev-rnd/assets/ticket.md skills/dev-review/assets/ticket.md
 ```
 
-Journal resources (`references/task-journal.md`, `references/controlled-run.md` and `scripts/journal.py`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec` and `dev-commit`. Propagate canonical edits byte-for-byte. Runtime helpers needed by the Codex review adapter are also bundled in `dev-review`; keep their copies identical to `dev-lead`. No installed skill may depend on a developer checkout or another skill's installation path.
+Journal resources (`references/task-journal.md`, `references/controlled-run.md` and `scripts/journal.py`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec` and `dev-commit`. Propagate canonical edits byte-for-byte. Runtime helpers needed by the native CLI review adapter are also bundled in `dev-review`; keep their copies identical to `dev-lead`. No installed skill may depend on a developer checkout or another skill's installation path.
 
 The `## Done when` block of `skills/dev-rnd/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
 
@@ -68,7 +68,7 @@ Run from the repository root with Git, Bash and Python 3 available:
 ```bash
 bash .github/scripts/check-skills.sh
 python3 .github/scripts/test_check_skills.py
-python3 -m unittest discover -s tests -p 'test_dev_lead.py' -v
+python3 -m unittest discover -s tests -p 'test_*.py' -v
 bash .github/scripts/lint-house-style.sh
 git diff --check
 ```
@@ -85,7 +85,7 @@ The first two require HEAD. It validates the skill set, frontmatter contracts, i
 
 The [pre-commit hook](.githooks/pre-commit) runs the staged check in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
-The sequential lead and controlled-run adapter are Codex-only. Use actual `skills/list` and paginated `model/list` inventory; model names do not belong in guides. Tests use disposable repositories and fixture-only approvals, never the user installation.
+The sequential lead and controlled-run adapters target Claude Code, Codex and OpenCode v2. Discover native skills/models rather than hardcoding names or effort support. Codex uses app-server; Claude uses Agent SDK control metadata; OpenCode uses its native HTTP catalog after plugin readiness. Preserve native permissions and enforce repository write denial for read-only workers. State live verification separately from protocol fixtures; missing CLI never implies a verified live route. Tests use disposable repositories and fixture-only approvals, never the user installation.
 
 For behavior changes, use disposable projects and the [client scenarios](tests/client-scenarios.md); documentation-only edits need source, command and link checks, not repeated workflows.
 

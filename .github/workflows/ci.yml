@@ -23,7 +23,7 @@ jobs:
         run: python3 .github/scripts/test_check_skills.py
 
       - name: Run sequential lead regressions (Python 3 standard library)
-        run: python3 -m unittest discover -s tests -p 'test_dev_lead.py' -v
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
 
   discovery:
     name: Skills CLI discovery

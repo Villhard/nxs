@@ -14,6 +14,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.47.0] - 2026-10-30
+
+### Changed
+
+- `dev-lead` supports native Claude Code, Codex and OpenCode v2 discovery, model effort validation, bounded outcomes and exact-session continuation without silent runtime substitution.
+- `dev-review` bundles the native CLI adapter for all finder and verifier roles, with enforced repository write denial on Claude Code and OpenCode read-only runs.
+- Lead packets, guides and client scenarios distinguish native registration from pinned candidate context, native permissions, protocol tests and live verification; shared helper and CI checks cover every adapter.
+
 ## [0.46.0] - 2026-10-30
 
 ### Added

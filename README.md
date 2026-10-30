@@ -1,6 +1,6 @@
 # nxs
 
-Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes, record project specs and commit in atomic groups. The standalone skills target Claude Code, Codex and OpenCode; [tests/client-scenarios.md](tests/client-scenarios.md) records the flows verified in each client. Standalone stages are commands you start yourself. Explicit `dev-lead` delegates a sequential Codex cycle within a feature plan you approve.
+Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes, record project specs and commit in atomic groups. The standalone skills target Claude Code, Codex and OpenCode; [tests/client-scenarios.md](tests/client-scenarios.md) records the flows verified in each client. Standalone stages are commands you start yourself. Explicit `dev-lead` delegates a sequential cycle in the selected client within a feature plan you approve.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
@@ -11,7 +11,7 @@ Development skills for coding agents: shape features and bugs into tickets for t
 
 | Skill | Use it to |
 | --- | --- |
-| [dev-lead](skills/dev-lead/SKILL.md) | Coordinate one task through an approved feature plan, sequential Codex workers in agterm, review, specs and atomic commits. |
+| [dev-lead](skills/dev-lead/SKILL.md) | Coordinate one task through an approved feature plan, sequential Claude Code, Codex or OpenCode workers in agterm, review, specs and atomic commits. |
 | [dev-setup](skills/dev-setup/SKILL.md) | `global`: wire every client to one instruction file with the rules the skills rely on, and install chosen mattpocock/skills bundles (Core, Wayfinding, Architecture, Sessions) configured for local `.scratch/` tickets; `project`: add the branch rule and check commands to a repository and keep `.scratch/` out of Git. Each through one approved diff. |
 | [dev-rnd](skills/dev-rnd/SKILL.md) | Shape a feature or open question into an agreed spec and tickets; `--decision-only` saves a research conclusion without tickets. |
 | [dev-bug](skills/dev-bug/SKILL.md) | Investigate a reported failure; write a fix ticket once the cause is confirmed. |
@@ -19,7 +19,7 @@ Development skills for coding agents: shape features and bugs into tickets for t
 | [dev-spec](skills/dev-spec/SKILL.md) | Record durable project specs from landed work. |
 | [dev-commit](skills/dev-commit/SKILL.md) | Commit existing changes in atomic groups. |
 
-`dev-lead`, `dev-setup`, `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". For standalone skills in OpenCode, select a skill with `@dev-<name>` instead of `/dev-<name>`.
+`dev-lead`, `dev-setup`, `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". For OpenCode, select a skill with `@dev-<name>` instead of `/dev-<name>`.
 
 ## Install
 
@@ -63,7 +63,7 @@ Both modes audit first, show what they found and one diff, and write only what y
 
 The lead resolves questions with you, shows a feature plan with scope, permissions, checks and actual model choices, and waits for your approval. It then approves technical ticket plans, runs one worker at a time in visible agterm sessions, checks results, organizes review and fixes, updates specs through `dev-spec` and commits through `dev-commit`. New scope, external-contract or agreed-decision changes return to you. It never pushes.
 
-The adapter requires Python 3, Git, Codex and agterm. This first version uses one feature branch and nxs alone. Parallel worktrees, merges, other lead runtimes and autonomous companion integrations are outside its scope. Manual stages remain available. Details and recovery rules: [dev-lead](skills/dev-lead/SKILL.md). Verification claims are limited to [client scenarios](tests/client-scenarios.md).
+The adapters require Python 3, Git, agterm and the selected Claude Code, Codex or OpenCode v2 CLI. Read-only Claude/OpenCode workers also require macOS sandbox-exec. One feature branch and nxs alone form the baseline. Parallel worktrees, merges and autonomous companion integrations remain outside its scope. Manual stages remain available. Details and recovery rules: [dev-lead](skills/dev-lead/SKILL.md). Verification claims are limited to [client scenarios](tests/client-scenarios.md).
 
 ### Shape a feature
 

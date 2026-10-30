@@ -2,7 +2,8 @@
 
 - Task: <required bounded goal>
 - Repository cwd and branch: <required absolute cwd and exact feature branch>
-- Skill: <required exact path and candidate hashes, or ticket executor>
+- Harness, executable, catalog model, effort and native permission mode: <required explicit values>
+- Skill: <required exact path, candidate hashes and native/context delivery, or ticket executor>
 - Applicable instructions and specs: <required contents or pinned readable sources>
 - Approved feature plan: <required path, hash and approval event>
 - Settled decisions and evidence: <required values, or none>

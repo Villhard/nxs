@@ -1,4 +1,4 @@
-"""Bounded visible Codex runs. Mechanics only: never choose or replay an action."""
+"""Bounded visible native CLI runs. Mechanics only: never choose or replay an action."""
 import argparse
 import contextlib
 import hashlib
@@ -8,12 +8,11 @@ import os
 from pathlib import Path
 import re
 import shlex
-import shutil
 import subprocess
 import sys
 import threading
-import uuid
 
+import harness as native
 from inventory import validate_model, skill_hashes
 from journal import append_event, atomic_json, fsync_directory, lock, read_events, recover_state
 from mechanics import capture, contained, git_snapshot, load, sha256
@@ -63,12 +62,14 @@ def _intent(run, kind):
 
 def prepare(task, run_id, step_id, cwd, inventory, model, effort, sandbox,
             prompt, artifact_root, timeout=600, schema=None, codex='codex',
-            skill_paths=(), resume_from=None):
+            skill_paths=(), resume_from=None, harness='codex', executable=None):
     """Reserve one ID and persist immutable launch inputs. Does not launch anything."""
     task, cwd = Path(task).resolve(), Path(cwd).resolve(strict=True)
     artifact_root = Path(artifact_root).resolve(strict=True)
     if not artifact_root.is_dir() or not step_id or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError('existing artifact root, step_id and positive timeout required')
+    if harness not in native.NAMES or inventory.get('harness', 'codex') != harness:
+        raise ValueError('inventory and selected harness must match')
     validate_model(inventory, model, effort)
     if sandbox not in ('read-only', 'workspace-write'):
         raise ValueError('supported sandbox: read-only or workspace-write')
@@ -81,7 +82,8 @@ def prepare(task, run_id, step_id, cwd, inventory, model, effort, sandbox,
         if (len(matches) != 1 or sha256(path) != matches[0]['sha256']
                 or skill_hashes(path) != matches[0]['files']):
             raise ValueError('selected exact skill path is missing, disabled or changed')
-        selected.append({'path': str(path), 'sha256': matches[0]['sha256'], 'files': skill_hashes(path)})
+        selected.append({'path': str(path), 'sha256': matches[0]['sha256'], 'files': skill_hashes(path),
+                         'delivery': 'context' if matches[0].get('visibility') == 'context' else 'native'})
     run_id = _identity(run_id)
     schema = Path(schema) if schema else Path(__file__).resolve().parent.parent / 'assets/outcome.schema.json'
     schema_value = load(schema)
@@ -90,6 +92,8 @@ def prepare(task, run_id, step_id, cwd, inventory, model, effort, sandbox,
         if resume_from is not None:
             previous = Path(resume_from).resolve(strict=True)
             prior = load(previous / 'spec.json')
+            if prior.get('harness', 'codex') != harness:
+                raise ValueError('a native session cannot resume in another harness')
             if (prior['task'] != str(task) or prior['cwd'] != str(cwd)
                     or prior['step_id'] != step_id or prior['artifact_root'] != str(artifact_root)):
                 raise ValueError('resume must preserve task, cwd, step and artifact root')
@@ -105,23 +109,27 @@ def prepare(task, run_id, step_id, cwd, inventory, model, effort, sandbox,
                 if len(resolutions) != 1 or not resolutions[0]['data'].get('evidence'):
                     raise ValueError('blocked continuation requires recorded resolution evidence')
             session = state['session_id']
-            uuid.UUID(session)
+            native.check_resume(harness, executable or (codex if harness == 'codex' else harness), session, cwd, timeout)
         run = task / 'research' / 'dev-lead' / 'runs' / run_id
         run.parent.mkdir(parents=True, exist_ok=True)
         run.mkdir()  # No reuse, even if a previous reservation crashed before journaling.
         fsync_directory(run.parent)
         atomic_json(run / 'schema.json', schema_value)
-        instructions = '\n'.join('Read exact skill: ' + s['path'] + ' (sha256 ' + s['sha256'] + ').'
-                                 for s in selected)
+        instructions = []
+        for skill in selected:
+            source = Path(skill['path'])
+            if skill['delivery'] == 'context':
+                instructions.append('Explicit candidate skill content from ' + str(source) +
+                                    ' (sha256 ' + skill['sha256'] + '). Base directory: ' + str(source.parent) +
+                                    '. Resolve bundled resources there; do not substitute a same-name installed skill.\n' + source.read_text())
+            else:
+                instructions.append('Read exact skill: ' + skill['path'] + ' (sha256 ' + skill['sha256'] + ').')
+        instructions = '\n'.join(instructions)
         atomic_json(run / 'input.json', {'prompt': instructions + '\n' + prompt})
-        codex = shutil.which(codex) or codex
-        command = [codex, 'exec', '--ignore-user-config', '-C', str(cwd), '-m', model,
-                   '-c', 'model_reasoning_effort=' + json.dumps(effort),
-                   '-c', 'approval_policy="never"', '-s', sandbox, '--json',
-                   '--output-schema', str(run / 'schema.json'), '-o', str(run / 'result.json')]
-        command += ['resume', session, '-'] if session else ['-']
+        command = native.command(harness, executable or (codex if harness == 'codex' else harness), cwd, model, effort, sandbox, run, session)
         spec = {'task': str(task), 'run_id': run_id, 'step_id': step_id, 'cwd': str(cwd),
-                'artifact_root': str(artifact_root), 'command': command, 'timeout': timeout,
+                'artifact_root': str(artifact_root), 'harness': harness, 'model': model, 'effort': effort,
+                'sandbox': sandbox, 'command': command, 'timeout': timeout,
                 'resume_session': session, 'resume_from': str(previous) if resume_from else None,
                 'skills': selected, 'schema_sha256': sha256(run / 'schema.json'),
                 'input_sha256': sha256(run / 'input.json'), 'before': git_snapshot(cwd)}
@@ -214,9 +222,8 @@ def worker(run, terminal=True):
                     row = json.loads(raw)
                 except ValueError:
                     continue  # Raw evidence is retained; reconciliation rejects invalid JSONL.
-                if row.get('type') == 'thread.started':
-                    session = row['thread_id']
-                    uuid.UUID(session)
+                session = native.observed_session(spec.get('harness', 'codex'), row)
+                if session:
                     if spec['resume_session'] and session != spec['resume_session']:
                         raise ValueError('resume returned a different session')
                     sessions.add(session)
@@ -227,11 +234,15 @@ def worker(run, terminal=True):
         prompt_path = run / 'prompt.txt'
         with prompt_path.open('w') as stream:
             stream.write(load(run / 'input.json')['prompt'])
+            if spec.get('harness', 'codex') == 'opencode':
+                stream.write('\nReturn only a JSON object matching this schema, without Markdown fences or commentary:\n' + (run / 'schema.json').read_text())
         with prompt_path.open('rb') as stream:
             result = capture(spec['command'], spec['cwd'], run / 'execution', spec['timeout'],
                              stdin=stream, terminal=terminal, on_stdout=on_stdout)
         if pending:
             raise ValueError('incomplete worker JSONL')
+        if result['exit_code'] == 0 and not result['timed_out']:
+            native.save_outcome(spec.get('harness', 'codex'), run)
         event(spec['task'], spec['run_id'] + ':exited', 'worker.exited', result)
         return result
 
@@ -373,7 +384,7 @@ def _reconcile(run):
                     and _processes_stopped(run)):
                 if (run / 'session.json').exists():
                     session = load(run / 'session.json')['session_id']
-                    uuid.UUID(session)
+                    native.session_id(spec.get('harness', 'codex'), session)
                     base['session_id'] = session
                 return {**base, 'status': 'interrupted', 'reason': report['reason']}
         return {**base, 'status': 'uncertain', 'reason': 'no durable exit; inspect process, files and events'}
@@ -383,21 +394,24 @@ def _reconcile(run):
     try:
         _intent(run, 'launch')
         session = load(run / 'session.json')['session_id']
-        uuid.UUID(session)
+        native.session_id(spec.get('harness', 'codex'), session)
         raw_events = (run / 'execution/stdout').read_bytes()
         if not raw_events.endswith(b'\n'):
             raise ValueError('incomplete worker event stream')
         events = [json.loads(line) for line in raw_events.splitlines()]
         if not all(isinstance(e, dict) for e in events):
             raise ValueError('malformed worker event')
-        if not any(e.get('type') == 'turn.completed' for e in events):
-            raise ValueError('missing turn.completed event')
+        if not native.completed(spec.get('harness', 'codex'), events):
+            raise ValueError('missing successful native completion event')
         if exit_record['command'] != spec['command'] or exit_record['cwd'] != spec['cwd']:
             raise ValueError('exit record launch mismatch')
-        ids = {e['thread_id'] for e in events if e.get('type') == 'thread.started'}
+        ids = {native_id for e in events if (native_id := native.observed_session(spec.get('harness', 'codex'), e))}
         if ids != {session} or (spec['resume_session'] and session != spec['resume_session']):
             raise ValueError('session evidence mismatch')
-        value = validate(load(run / 'result.json'), spec['step_id'], spec['artifact_root'])
+        result = load(run / 'result.json')
+        if spec.get('harness', 'codex') != 'codex' and native.extract_outcome(spec['harness'], events) != result:
+            raise ValueError('result differs from native final output')
+        value = validate(result, spec['step_id'], spec['artifact_root'])
         hashes = _source(run)
     except (ValueError, KeyError, TypeError, OSError) as error:
         return {**base, 'status': 'invalid', 'reason': str(error)}
@@ -481,7 +495,9 @@ def main():
     for name in ('run-id', 'step', 'model', 'effort', 'sandbox'):
         prep.add_argument('--' + name, required=True)
     prep.add_argument('--timeout', type=float, default=600)
-    prep.add_argument('--codex', default='codex')
+    prep.add_argument('--codex', default='codex', help='Legacy Codex executable override')
+    prep.add_argument('--harness', choices=native.NAMES, required=True)
+    prep.add_argument('--executable', help='Selected harness executable')
     prep.add_argument('--schema', type=Path)
     prep.add_argument('--skill-path', action='append', default=[])
     prep.add_argument('--resume-from', type=Path, help='Exited needs_input run; uses its exact saved UUID')
@@ -505,8 +521,8 @@ def main():
     args = parser.parse_args()
     if args.action == 'prepare':
         value = str(prepare(args.task, args.run_id, args.step, args.cwd, load(args.inventory), args.model,
-                            args.effort, args.sandbox, args.prompt.read_text(), args.artifact_root,
-                            args.timeout, args.schema, args.codex, args.skill_path, args.resume_from))
+                            None if args.effort == 'default' else args.effort, args.sandbox, args.prompt.read_text(), args.artifact_root,
+                            args.timeout, args.schema, args.codex, args.skill_path, args.resume_from, args.harness, args.executable))
     elif args.action == 'launch':
         value = launch(args.run, args.agtermctl, args.timeout)
     elif args.action == 'worker':
