@@ -12,7 +12,7 @@ The source catalog contains 19 target commands. Discussion, decisions, feature s
 
 Project specs record durable intent established by built work. `dev-spec` alone writes `SPEC.md` or private `.SPEC.md`; other skills read the applicable specs along the directory tree. Feature records and decision logs preserve task context and evidence separately. Domain terminology belongs in [GLOSSARY.md](GLOSSARY.md) and decisions in `docs/adr/`.
 
-The source retains `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup` as legacy routes alongside the target catalog. The transition is additive: legacy callers, `/plan` handoffs and installed copies are not switched by source presence. `dev-review` retains its existing ticket route as well as the separate `--to-tickets` selection route.
+The source retains `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup` as legacy routes alongside the target catalog. `to-tickets` suggests `dev-exec` for eligible ready work, while legacy callers and existing `/plan` tickets remain available. Source changes do not switch installed copies. `dev-review` retains its existing ticket route as well as the separate `--to-tickets` selection route.
 
 ## Boundaries
 

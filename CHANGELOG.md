@@ -26,6 +26,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - README distinguishes same-name nxs and companion skills before choosing a route.
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.74.0] - 2026-11-01
+
+### Changed
+
+- `to-tickets` hands eligible ready work to `dev-exec`; the shared ticket, setup tracker and triage label templates support both that executor and retained `/plan` routes, including the human-step return.
+- README, CONTRIBUTING and client scenarios describe the selected handoff and observed verification limits.
+
 ## [0.73.1] - 2026-11-01
 
 ### Changed

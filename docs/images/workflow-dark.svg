@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1360" height="930" viewBox="0 0 1360 930" role="img" aria-labelledby="title desc">
-<title id="title">nxs capability map</title><desc id="desc">Four starting points branch into investigation, review and execution. An approved feature spec, an eligible confirmed cause and selected review findings may converge at to-tickets. The ordinary review route can create selected tickets itself. Support commands apply across the map.</desc>
+<title id="title">nxs capability map</title><desc id="desc">Four starting points branch into investigation, review and execution. An approved feature spec, an eligible confirmed cause and selected review findings may converge at to-tickets. Ready to-tickets work can go to dev-exec; the ordinary review route can create selected tickets itself. Support commands apply across the map.</desc>
 <rect width="1360" height="930" fill="#1c1c1c"/>
 <style>text{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#dadada}.title{font-size:31px;font-weight:700;letter-spacing:-.5px}.subtitle{font-size:15px;fill:#909090}.label{font-size:12px;font-weight:700;letter-spacing:1px;fill:#909090}.heading{font-size:17px;font-weight:700}.small{font-size:13px;fill:#909090}.cmd{font-family:ui-monospace,'SFMono-Regular',Consolas,monospace;font-size:16px;font-weight:700;fill:#8dbbff}.record{font-size:16px;font-weight:700;fill:#ffa083}.arrow{fill:none;stroke:#909090;stroke-width:2;stroke-dasharray:5 5;marker-end:url(#arrow)}</style>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#909090" stroke-width="1.5"/></marker></defs>
@@ -39,9 +39,9 @@
 <path d="M515 419 V665" class="arrow"/>
 <path d="M998 502 H1010 V745 H515 V729" class="arrow"/>
 <path d="M765 540 V665" class="arrow"/>
-<rect x="692" y="665" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="708" y="692" class="record">Tickets</text><text x="708" y="712" class="small">Current handoff: /plan</text>
+<rect x="692" y="665" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="708" y="692" class="record">Tickets</text><text x="708" y="712" class="small">to-tickets and legacy routes</text>
 <path d="M668 697 H692" class="arrow"/>
-<text x="1022" y="681" class="small">/dev-exec is a separate candidate.</text><text x="1022" y="702" class="small">Unconfirmed causes stop the ticket handoff.</text>
+<path d="M998 697 H1022" class="arrow"/><text x="1038" y="686" class="cmd">/dev-exec</text><text x="1038" y="706" class="small">Ready to-tickets work</text><text x="1038" y="724" class="small">Legacy handoff: /plan</text>
 <line x1="32" y1="767" x2="1328" y2="767" stroke="#303030" stroke-width="2"/><text x="32" y="798" class="label">SUPPORT ACROSS THE MAP</text>
 <rect x="32" y="815" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="48" y="842" class="cmd">/nxs-lead</text><text x="48" y="862" class="small">Coordinate bounded work</text>
 <rect x="362" y="815" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="378" y="842" class="cmd">/nxs-setup</text><text x="378" y="862" class="small">Audit and configure setup</text>
