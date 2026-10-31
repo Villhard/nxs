@@ -4,7 +4,7 @@ Development skills for coding agents, from investigation and decisions through e
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
-  <img alt="An idea, failure, existing changes or clear request can enter different commands. An approved feature spec, eligible confirmed cause and selected review findings can feed to-tickets. Ready to-tickets work can be handed to dev-exec; legacy routes retain /plan." src="docs/images/workflow-light.svg">
+  <img alt="An idea, failure, existing changes or clear request can enter different commands. An approved feature spec, eligible confirmed cause and selected review findings can feed to-tickets. Ready to-tickets work can be handed to dev-exec." src="docs/images/workflow-light.svg">
 </picture>
 
 Blue names are commands; orange labels are records and grey labels are conditions or results. Dashed arrows show possible conditional handoffs, not automatic actions. The example is one route, not a required sequence: a clear request can also enter execution directly, and investigation can end with evidence or a decision. A saved artifact does not authorize the next operation by itself. An existing instruction or approval can authorize several operations within its scope; otherwise the applicable request or approval is needed.
@@ -60,15 +60,9 @@ These 19 commands are in the source tree. Presence and shell checks do not prove
 | [nxs-setup](skills/nxs-setup/SKILL.md) | Audit a setup goal and apply an approved package, or report readiness. |
 | [nxs-retro](skills/nxs-retro/SKILL.md) | Review one session and save evidence-based improvement proposals. |
 
-## Retained legacy routes and cutover
-
-Four additional source entries remain: [dev-rnd](skills/dev-rnd/SKILL.md) combines feature shaping and ticket creation; [dev-bug](skills/dev-bug/SKILL.md) diagnoses and can create a fix ticket; [dev-lead](skills/dev-lead/SKILL.md) coordinates the retained route; [dev-setup](skills/dev-setup/SKILL.md) retains its global/project setup and companion bundle offer. Ordinary `dev-review` also retains its ticket-creation route. These are not the 19-command target catalog.
-
-`to-tickets` suggests `dev-exec` for eligible ready tickets. Existing `/plan` tickets remain usable, and retained legacy producers continue to suggest `/plan`. Legacy routes and callers stay until their replacement gates pass. No source change updates installed copies. Before a future replacement, identify the installed path and provenance, preserve user changes, verify the replacement and registration, and obtain applicable authorization. The same names `to-spec`, `to-tickets` and `to-questionnaire` can identify other implementations; check the installed path rather than assuming provenance.
-
 ## Using the stages
 
-A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to-tickets` -> `dev-exec`; continue only within the authorization already given or after obtaining any missing request or approval. A clear request can go directly to `dev-exec`, which presents a plan before implementation. Review, recording built project intent and committing are separate steps. The retained legacy `/plan` handoff is described above.
+A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to-tickets` -> `dev-exec`; continue only within the authorization already given or after obtaining any missing request or approval. A clear request can go directly to `dev-exec`, which presents a plan before implementation. Review, recording built project intent and committing are separate steps.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/grill-dark.svg">

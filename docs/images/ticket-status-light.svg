@@ -31,5 +31,5 @@
 <path d="M32 350 H928" stroke="#626262" stroke-width="1"/>
 <text x="32" y="378" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">wontfix</text>
 <text x="120" y="378" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="400">User closes, or executor when no review-ticket findings reproduce.</text>
-<text x="32" y="408" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">After human return: rerun /plan and verify the recorded result; status or a comment is not proof.</text>
+<text x="32" y="408" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">After the human step: rerun the selected executor and verify the result; status or a comment is not proof.</text>
 </svg>
