@@ -1,30 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" role="img" aria-labelledby="nxs-setup-light-title nxs-setup-light-desc">
-<title id="nxs-setup-light-title">nxs-setup</title>
-<desc id="nxs-setup-light-desc">Audit and approve a bounded setup package. Readiness is report-only and does not apply changes. Live setup, upgrade and native registration remain unverified.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" role="img" aria-labelledby="nxs-setup-light-title nxs-setup-light-desc">
+<title id="nxs-setup-light-title">Setup</title>
+<desc id="nxs-setup-light-desc">nxs-setup audits a goal, project or global scope, applies an approved package, or produces a report-only readiness audit.</desc>
 <defs><marker id="nxs-setup-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
-<rect width="960" height="340" fill="#eeeeee"/>
-<text x="32" y="42" fill="#262626" font-family="system-ui, sans-serif" font-size="22" font-weight="600">nxs-setup</text>
-<text x="32" y="68" fill="#626262" font-family="system-ui, sans-serif" font-size="14">Audit and approve a bounded setup package</text>
-<path d="M 195.2 144 H 211.2" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-setup-light-arrow)"/>
-<path d="M 378.4 144 H 394.4" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-setup-light-arrow)"/>
-<path d="M 561.5999999999999 144 H 577.5999999999999" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-setup-light-arrow)"/>
-<path d="M 744.8 144 H 760.8" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-setup-light-arrow)"/>
-<rect x="32" y="104" width="163.2" height="80" rx="6" fill="#e4e4e4" stroke="#0061d2"/>
-<text x="44" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Select scope</text>
-<text x="44" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">goal / project / global</text>
-<rect x="215.2" y="104" width="163.2" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="227.2" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Audit</text>
-<text x="227.2" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">current state</text>
-<rect x="398.4" y="104" width="163.2" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="410.4" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Propose</text>
-<text x="410.4" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">one change package</text>
-<rect x="581.5999999999999" y="104" width="163.2" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="593.5999999999999" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Approve</text>
-<text x="593.5999999999999" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">user choice</text>
-<rect x="764.8" y="104" width="163.2" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="776.8" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Apply</text>
-<text x="776.8" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">approved changes</text>
-<path d="M32 220 H928" stroke="#626262" stroke-width="0.6"/>
-<text x="32" y="250" fill="#262626" font-family="system-ui, sans-serif" font-size="14">Readiness is report-only and does not apply changes.</text>
-<text x="32" y="276" fill="#262626" font-family="system-ui, sans-serif" font-size="14">Live setup, upgrade and native registration remain unverified.</text>
+<rect width="960" height="440" fill="#eeeeee"/>
+<text x="32" y="38" fill="#262626" font-family="system-ui, sans-serif" font-size="23" font-weight="600">Setup routes</text>
+<text x="32" y="62" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">Choose scope first; readiness is a separate report-only route.</text>
+<path d="M199 158 H240 V225 H280" fill="none" stroke="#626262" stroke-width="1.5" marker-end="url(#nxs-setup-light-arrow)"/>
+<path d="M199 242 H280" fill="none" stroke="#626262" stroke-width="1.5" marker-end="url(#nxs-setup-light-arrow)"/>
+<path d="M199 326 H256 V260 H280" fill="none" stroke="#626262" stroke-width="1.5" marker-end="url(#nxs-setup-light-arrow)"/>
+<path d="M464 242 H552" fill="none" stroke="#626262" stroke-width="1.5" marker-end="url(#nxs-setup-light-arrow)"/>
+<path d="M752 242 H824" fill="none" stroke="#626262" stroke-width="1.5" marker-end="url(#nxs-setup-light-arrow)"/>
+<rect x="32" y="128" width="167" height="60" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+<text x="46" y="154" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">goal</text>
+<text x="46" y="177" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">specific target</text>
+<rect x="32" y="212" width="167" height="60" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+<text x="46" y="238" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">project</text>
+<text x="46" y="261" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">repository</text>
+<rect x="32" y="296" width="167" height="60" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+<text x="46" y="322" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">global</text>
+<text x="46" y="345" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">shared config</text>
+<rect x="280" y="212" width="184" height="60" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+<text x="294" y="238" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">audit</text>
+<text x="294" y="261" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">scope and sources</text>
+<rect x="552" y="212" width="200" height="60" rx="6" fill="#e4e4e4" stroke="#0061d2" stroke-width="2"/>
+<text x="566" y="238" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">package</text>
+<text x="566" y="261" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">exact proposed diff</text>
+<rect x="824" y="212" width="104" height="60" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+<text x="838" y="238" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">apply</text>
+<text x="838" y="261" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">verify</text>
+<text x="470" y="227" fill="#626262" font-family="system-ui, sans-serif" font-size="12" font-weight="400">show</text>
+<text x="761" y="227" fill="#626262" font-family="system-ui, sans-serif" font-size="12" font-weight="400">approved</text>
+<rect x="280" y="92" width="280" height="60" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+<text x="294" y="118" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">--readiness</text>
+<text x="294" y="141" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">project or global only</text>
+<path d="M560 122 H676" fill="none" stroke="#626262" stroke-width="1.5" marker-end="url(#nxs-setup-light-arrow)"/>
+<rect x="676" y="92" width="252" height="60" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+<text x="690" y="118" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">report and stop</text>
+<text x="690" y="141" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">no proposal or writes</text>
+<text x="32" y="390" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="400">Decline: write nothing. Already current: report and stop.</text>
+<text x="32" y="414" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">A concrete goal does not imply project or global setup.</text>
 </svg>

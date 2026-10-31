@@ -1,23 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" role="img" aria-labelledby="nxs-ticket-status-dark-title nxs-ticket-status-dark-desc">
-<title id="nxs-ticket-status-dark-title">Ticket status</title>
-<desc id="nxs-ticket-status-dark-desc">A status does not prove a prerequisite result or coordinator acceptance. Ready work may resolve or wait for a human; after the human step, recheck evidence. wontfix is set by the user or under the review-ticket exception.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" role="img" aria-labelledby="nxs-ticket-status-dark-title nxs-ticket-status-dark-desc">
+<title id="nxs-ticket-status-dark-title">Ticket Status</title>
+<desc id="nxs-ticket-status-dark-desc">Ticket statuses have conditional transitions; prerequisites and the result of a human step need separate evidence.</desc>
 <defs><marker id="nxs-ticket-status-dark-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#909090"/></marker></defs>
-<rect width="960" height="340" fill="#1c1c1c"/>
-<text x="32" y="42" fill="#dadada" font-family="system-ui, sans-serif" font-size="22" font-weight="600">Ticket status</text>
-<text x="32" y="68" fill="#909090" font-family="system-ui, sans-serif" font-size="14">A status does not prove a prerequisite result or coordinator acceptance</text>
-<rect x="32" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#8dbbff"/>
-<text x="44" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">needs-info</text>
-<text x="44" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">clarification</text>
-<rect x="261" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="273" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">ready-for-agent</text>
-<text x="273" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">check prerequisites</text>
-<rect x="490" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="502" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">ready-for-human</text>
-<text x="502" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">human step</text>
-<rect x="719" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="731" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">resolved</text>
-<text x="731" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">evidence recorded</text>
-<path d="M32 220 H928" stroke="#909090" stroke-width="0.6"/>
-<text x="32" y="250" fill="#dadada" font-family="system-ui, sans-serif" font-size="14">Ready work may resolve or wait for a human; after the human step, recheck evidence.</text>
-<text x="32" y="276" fill="#dadada" font-family="system-ui, sans-serif" font-size="14">wontfix is set by the user or under the review-ticket exception.</text>
+<rect width="960" height="440" fill="#1c1c1c"/>
+<text x="32" y="38" fill="#dadada" font-family="system-ui, sans-serif" font-size="23" font-weight="600">Ticket status</text>
+<text x="32" y="62" fill="#909090" font-family="system-ui, sans-serif" font-size="14" font-weight="400">Status gates work; the working tree supplies evidence.</text>
+<path d="M245 148 H320" fill="none" stroke="#909090" stroke-width="1.5" marker-end="url(#nxs-ticket-status-dark-arrow)"/>
+<path d="M510 148 H590" fill="none" stroke="#909090" stroke-width="1.5" marker-end="url(#nxs-ticket-status-dark-arrow)"/>
+<path d="M700 178 V231 H480 V178" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-ticket-status-dark-arrow)"/>
+<path d="M415 178 V296 H590" fill="none" stroke="#909090" stroke-width="1.5" marker-end="url(#nxs-ticket-status-dark-arrow)"/>
+<rect x="32" y="118" width="213" height="60" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
+<text x="46" y="144" fill="#dadada" font-family="ui-monospace, monospace" font-size="15" font-weight="600">needs-info</text>
+<text x="46" y="167" fill="#909090" font-family="system-ui, sans-serif" font-size="13" font-weight="400">open marker in ticket</text>
+<rect x="320" y="118" width="190" height="60" rx="6" fill="#262626" stroke="#8dbbff" stroke-width="2"/>
+<text x="334" y="144" fill="#dadada" font-family="ui-monospace, monospace" font-size="15" font-weight="600">ready-for-agent</text>
+<text x="334" y="167" fill="#909090" font-family="system-ui, sans-serif" font-size="13" font-weight="400">executor entry</text>
+<rect x="590" y="118" width="235" height="60" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
+<text x="604" y="144" fill="#dadada" font-family="ui-monospace, monospace" font-size="15" font-weight="600">ready-for-human</text>
+<text x="604" y="167" fill="#909090" font-family="system-ui, sans-serif" font-size="13" font-weight="400">human action required</text>
+<rect x="590" y="266" width="180" height="60" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
+<text x="604" y="292" fill="#dadada" font-family="ui-monospace, monospace" font-size="15" font-weight="600">resolved</text>
+<text x="604" y="315" fill="#909090" font-family="system-ui, sans-serif" font-size="13" font-weight="400">criteria and checks pass</text>
+<text x="250" y="132" fill="#909090" font-family="system-ui, sans-serif" font-size="12" font-weight="400">answered</text>
+<text x="515" y="132" fill="#909090" font-family="system-ui, sans-serif" font-size="12" font-weight="400">human step</text>
+<text x="521" y="220" fill="#909090" font-family="system-ui, sans-serif" font-size="12" font-weight="400">human completes; resets status</text>
+<text x="443" y="285" fill="#909090" font-family="system-ui, sans-serif" font-size="12" font-weight="400">verified</text>
+<text x="32" y="230" fill="#dadada" font-family="system-ui, sans-serif" font-size="15" font-weight="600">Before editing</text>
+<text x="32" y="253" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="400">Blockers must be resolved; inspect and check their</text>
+<text x="32" y="274" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="400">required results in the working tree. Missing? Stop.</text>
+<path d="M32 350 H928" stroke="#909090" stroke-width="1"/>
+<text x="32" y="378" fill="#dadada" font-family="ui-monospace, monospace" font-size="15" font-weight="600">wontfix</text>
+<text x="120" y="378" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="400">User closes, or executor when no review-ticket findings reproduce.</text>
+<text x="32" y="408" fill="#909090" font-family="system-ui, sans-serif" font-size="14" font-weight="400">After human return: rerun /plan and verify the recorded result; status or a comment is not proof.</text>
 </svg>

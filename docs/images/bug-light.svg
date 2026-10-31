@@ -1,26 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" role="img" aria-labelledby="nxs-bug-light-title nxs-bug-light-desc">
-<title id="nxs-bug-light-title">Diagnosis to tickets</title>
-<desc id="nxs-bug-light-desc">Evidence determines the next authorized step. Unconfirmed cause: record missing evidence; no ready handoff. Feature classification returns to discussion. dev-bug remains a legacy route.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" role="img" aria-labelledby="nxs-bug-light-title nxs-bug-light-desc">
+<title id="nxs-bug-light-title">Diagnosis and possible next steps</title>
+<desc id="nxs-bug-light-desc">A confirmed cause is classified as right, silent, wrong or feature. Silent and wrong require agreement before ticket eligibility; feature returns to discussion. Unconfirmed causes need evidence.</desc>
 <defs><marker id="nxs-bug-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
-<rect width="960" height="340" fill="#eeeeee"/>
-<text x="32" y="42" fill="#262626" font-family="system-ui, sans-serif" font-size="22" font-weight="600">Diagnosis to tickets</text>
-<text x="32" y="68" fill="#626262" font-family="system-ui, sans-serif" font-size="14">Evidence determines the next authorized step</text>
-<path d="M 241 144 H 257" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-bug-light-arrow)"/>
-<path d="M 470 144 H 486" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-bug-light-arrow)"/>
-<path d="M 699 144 H 715" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-bug-light-arrow)"/>
-<rect x="32" y="104" width="209" height="80" rx="6" fill="#e4e4e4" stroke="#0061d2"/>
-<text x="44" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Symptom</text>
-<text x="44" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">rnd-debug</text>
-<rect x="261" y="104" width="209" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="273" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Investigate</text>
-<text x="273" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">reproduce / evidence</text>
-<rect x="490" y="104" width="209" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="502" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Confirmed cause</text>
-<text x="502" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">classify intent</text>
-<rect x="719" y="104" width="209" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="731" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Eligible cause</text>
-<text x="731" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">to-tickets</text>
-<path d="M32 220 H928" stroke="#626262" stroke-width="0.6"/>
-<text x="32" y="250" fill="#262626" font-family="system-ui, sans-serif" font-size="14">Unconfirmed cause: record missing evidence; no ready handoff.</text>
-<text x="32" y="276" fill="#262626" font-family="system-ui, sans-serif" font-size="14">Feature classification returns to discussion. dev-bug remains a legacy route.</text>
+<rect width="960" height="500" fill="#eeeeee"/>
+<text x="32" y="39" fill="#262626" font-family="system-ui,sans-serif" font-size="22" font-weight="650">Diagnosis and possible next steps</text>
+<text x="32" y="63" fill="#626262" font-family="system-ui,sans-serif" font-size="12">Diagnosis saves evidence; a later ticket step is separately authorized.</text>
+<path d="M222 210 H245 V133 H272" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
+<path d="M222 255 H272" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
+<path d="M482 229 H510 V141 H540" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
+<path d="M482 252 H540" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
+<path d="M482 275 H510 V351 H540" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
+<path d="M725 141 H748 V180 H770" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
+<path d="M725 246 H748 V220 H770" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
+<rect x="32" y="190" width="190" height="92" rx="6" fill="#e4e4e4" stroke="#0061d2" stroke-width="1.2"/>
+<text x="46" y="209" fill="#0061d2" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
+<text x="46" y="232" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/rnd-debug</text>
+<text x="46" y="251" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Reproduce and probe</text>
+<text x="46" y="267" fill="#262626" font-family="system-ui,sans-serif" font-size="11">save root-cause.md</text>
+<rect x="272" y="92" width="210" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
+<text x="286" y="111" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
+<text x="286" y="134" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Unconfirmed</text>
+<text x="286" y="153" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Missing evidence and next probe</text>
+<rect x="272" y="210" width="210" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
+<text x="286" y="229" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
+<text x="286" y="252" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Confirmed cause</text>
+<text x="286" y="271" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Classify against project intent</text>
+<rect x="540" y="100" width="185" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
+<text x="554" y="119" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
+<text x="554" y="142" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">right</text>
+<text x="554" y="161" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Eligible for tickets</text>
+<rect x="540" y="205" width="185" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
+<text x="554" y="224" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
+<text x="554" y="247" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">silent / wrong</text>
+<text x="554" y="266" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Agree intent or correction first</text>
+<rect x="540" y="310" width="185" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
+<text x="554" y="329" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
+<text x="554" y="352" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">feature</text>
+<text x="554" y="371" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Decision change: /rnd-grill</text>
+<rect x="770" y="155" width="158" height="90" rx="6" fill="#e4e4e4" stroke="#0061d2" stroke-width="1.2"/>
+<text x="784" y="174" fill="#0061d2" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
+<text x="784" y="197" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/to-tickets</text>
+<text x="784" y="216" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Eligible cause only</text>
+<text x="784" y="232" fill="#262626" font-family="system-ui,sans-serif" font-size="11">No fix is executed</text>
 </svg>
