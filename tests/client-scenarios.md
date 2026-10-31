@@ -296,3 +296,14 @@ These cases are a protocol, not live observations. In a disposable repository pi
 | No selection | A broad request asks for architecture improvements without identifying a module | Ask for selection or offer a separate audit; do not choose a module silently |
 | No implementation | An agreed design has no implementation or test deletion authorization | Product source and test bytes remain unchanged and no ticket or implementation starts |
 | Test replacement | A later implementation proposes deleting old tests | Obtain applicable explicit confirmation and pass checks through the new interface before deletion |
+
+## Architecture audit candidate
+
+These cases are a protocol, not live observations. In a disposable repository pin candidate resources and client version, invocation, registration or pinned delivery and permissions. Keep source files, tests and index as preservation sentinels.
+
+| Case | Request or fixture | Required observation |
+| --- | --- | --- |
+| Opportunities | Several module boundaries have different observed change pressures | Survey callers, save ranked opportunities with evidence, rationale, consequences, cost and confidence; do not force a fixed count |
+| No change | Existing modules localize the observed changes and no improvement is supported | Save a reasoned no-change result limited to the inspected scope |
+| Incomplete | An important caller or area cannot be inspected | Record the coverage gap and its effect on confidence rather than claiming complete coverage |
+| Unauthorized follow-on | An opportunity is ranked first, with no separate selection or implementation instruction | Save the survey and offer next steps; source, tests and index remain unchanged, with no ready tickets or design started |

@@ -27,11 +27,11 @@ fail() {
 
 SKILLS=(
   dev-rnd dev-bug dev-review dev-spec dev-setup dev-commit dev-lead
-  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design to-decision to-spec to-tickets dev-exec
+  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit to-decision to-spec to-tickets dev-exec
 )
 EXPLICIT=(
   dev-rnd dev-bug dev-review dev-spec dev-setup dev-lead
-  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design to-decision to-spec to-tickets dev-exec
+  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit to-decision to-spec to-tickets dev-exec
 )
 ROLES=(
   review-quality review-testing review-simplification review-verify
@@ -45,9 +45,9 @@ references/domain-modeling.md|rnd-grill,to-decision,rnd-design
 references/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
 references/review-report.md|dev-review,to-tickets
 references/feature-directory.md|dev-rnd,dev-bug,rnd-debug
-references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design
-references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design
-references/controlled-run.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design
+references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit
+references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit
+references/controlled-run.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit
 assets/spec.md|to-spec,dev-rnd,dev-bug,rnd-debug
 assets/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
 assets/outcome.schema.json|dev-lead,dev-review

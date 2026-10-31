@@ -21,6 +21,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.62.0] - 2026-11-01
+
+### Added
+
+- `rnd-audit` saves a prioritized architecture survey or evidence-limited no-change result without implementing an opportunity.
+
 ## [0.61.0] - 2026-11-01
 
 ### Added
