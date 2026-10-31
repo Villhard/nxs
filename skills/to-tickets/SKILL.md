@@ -1,17 +1,17 @@
 ---
 name: to-tickets
-description: Slice an approved feature spec into executable local tickets, preserving existing decisions, dependencies and execution history; stop before implementation.
+description: Turn an approved feature spec or confirmed eligible root cause into executable local tickets, preserving existing decisions, dependencies and execution history; stop before implementation.
 argument-hint: "[feature spec path | tracker spec key or URL]"
 disable-model-invocation: true
 ---
 
 # /to-tickets
 
-Turn an approved feature spec into bounded implementation tickets, then stop. This candidate supports the feature-spec entry; diagnosis and selected review findings keep their existing producers until their separate cutovers.
+Turn an approved feature spec or a confirmed eligible root cause into bounded implementation tickets, then stop. For a root cause, read [cause input](references/cause-input.md), apply its eligibility and repeat gates and use SAVE AND VERIFY and BOUNDARY AND HANDOFF below. Review findings retain their existing producer.
 
 ## ENTRY
 
-Run on explicit invocation or within an explicit controlled scope. Read [spec input](references/spec-input.md) before consuming input or choosing the feature directory. Read relevant code, callers, tests, glossary/ADR entries and [project specs](references/project-specs.md) before proposing work. Validate current facts and distinguish them from assumptions. The source's existence, hash or ready label is not approval.
+Run on explicit invocation or within an explicit controlled scope. For a feature spec, read [spec input](references/spec-input.md) before consuming input or choosing the feature directory. Read relevant code, callers, tests, glossary/ADR entries and [project specs](references/project-specs.md) before proposing work. Validate current facts and distinguish them from assumptions. The source's existence, hash or ready label is not approval.
 
 Before a durable task write, material question or handoff, read [task journal](references/task-journal.md). Keep an established feature's journal. An explicit controlled packet also requires [controlled run](references/controlled-run.md); a journal path alone activates no lead or automation.
 

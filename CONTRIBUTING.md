@@ -116,3 +116,5 @@ HOME="$home" npx skills@latest add "$PWD" -g -y -s '*' -a claude-code
 Run the client against that `HOME`, then remove the temporary directory, keeping credentials out of Git. Repeat the add after edits to refresh the copies. The temporary home has no usual authentication or global settings; sign in if needed.
 
 Publish by pushing to `main` before updating installations; users update with `npx skills update`. Do not modify the user's installed skills during source edits unless requested.
+
+`rnd-debug` is an additive diagnosis candidate. It bundles the feature-directory, spec-template, project-spec reader and journal resources; keep those copies and the checker catalog synchronized. `to-tickets` accepts eligible confirmed causes without switching `dev-bug` or the executor handoff.
