@@ -38,6 +38,17 @@ The `## Done when` block of `skills/dev-rnd/assets/ticket.md` is also copied int
 
 Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions; the exception is a setup skill, which may write rules and config into client instructions only through a diff the user approved. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
+## NAMES
+
+A skill name is a command the user types, so it is chosen to be read at a glance, not to follow a naming scheme.
+
+- Take `dev-` plus one short lowercase word: `dev-review`, `dev-commit`. The prefix is the namespace that keeps the name clear of companion skills and client built-in commands; check a candidate against the shared agents directory and the client before proposing it.
+- Prefer the shortest word the user already says for the work. A verb is welcome and not required: `dev-rnd` and `dev-spec` stay because the user reads them faster than a rewritten action name. Rename an existing skill only when its name hides what the skill does, and state the cost before the user decides.
+- Keep the word for the artifact the skill reads or writes (`spec.md`, `SPEC.md`) and do not move it onto another skill.
+- Add a second word only when the one-word candidate is taken or would be misread.
+
+The reasoning and the rejected alternatives are in [ADR 0007](docs/adr/0007-skill-names.md).
+
 ## STYLE AND SAFETY
 
 Write concise English with ASCII hyphens and straight quotes. Use UPPERCASE instruction headings and sentence case in README and CHANGELOG. Artifact templates retain their required headings.
