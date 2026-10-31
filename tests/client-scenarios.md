@@ -1,5 +1,9 @@
 # CLIENT SCENARIOS
 
+These scenarios combine current source-contract checks and historical observations. Source or fixture evidence is not native registration or live end-to-end verification. The target catalog has 19 commands; `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup` remain as four legacy entries. Cutover and retirement have not occurred.
+
+Legacy scenarios below describe their named routes and version-specific evidence; they do not prescribe `nxs-setup` behavior or prove current client compatibility. In particular, companion bundle offers belong to retained `dev-setup`, while `nxs-setup` offers no companion bundles. Existing `/plan` handoffs remain in source, alongside the separate `dev-exec` candidate.
+
 
 ## NATIVE SUBAGENT DELEGATION
 
@@ -238,7 +242,7 @@ Record the exact version, resource pins, native registration versus pinned deliv
 
 Use an expressly selected, pinned to-tickets candidate in a disposable project with a complete approved local spec, a small observable requirement and existing mixed decision/implementation records. Observe proposal and authorized save of one new ticket, dependency order, exact controlled feature branch when applicable, unchanged existing bytes and the retained `/plan` handoff. A same-session repeat may observe reuse; do not multiply model runs or client matrices to mirror instruction text.
 
-Inspect source contracts for material-question/draft stops, missing source and remote blocker evidence, graph-changing revisions, plain/bold Type exclusion and open/resolved/wontfix preservation. Record which branches were observed versus inspected and leave unexecuted paths unverified. The existing checker regressions cover packaging, shared copies, invocation policies and tracker execution text; they do not prove semantic behavior. Keep exact candidate hashes, client version, invocation/delivery, permissions, artifacts and observations in the feature's separate automated/live evidence. Preserve prior failures and evidence. No default route or installation cutover follows from a source check or single observation; unavailable clients remain unverified.
+Inspect source contracts for material-question/draft stops, missing source and remote blocker evidence, graph-changing revisions, plain/bold Type exclusion and open/resolved/wontfix preservation. Record which branches were observed versus inspected and leave unexecuted paths unverified. The shell structural checker covers packaging, shared copies, invocation policies and tracker execution text; it does not prove semantic behavior. Keep exact candidate hashes, client version, invocation/delivery, permissions, artifacts and observations in the feature's separate structural and live evidence. Preserve prior failures and evidence. No default route or installation cutover follows from a source check or single observation; unavailable clients remain unverified.
 
 ## STANDALONE EXECUTOR CANDIDATE
 

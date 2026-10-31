@@ -39,13 +39,7 @@ Journal resources (`references/task-journal.md` and `references/controlled-run.m
 
 The `## Done when` block of `skills/to-tickets/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
 
-`rnd-grill` owns `references/discussion.md` and `references/domain-modeling.md`; copy edits byte-for-byte into `to-decision`. Both new commands also consume unchanged project-spec reader copies from `dev-rnd`, and journal and controlled-run copies from `dev-lead`. The checker lists every consumer. Keep both commands explicit through `disable-model-invocation: true` and `allow_implicit_invocation: false`; direct domain-document requests are supported within an expressly invoked or controlled scope, without a wrapper artifact.
-
-`to-spec` bundles unchanged discussion rules from `rnd-grill`, project-spec reader rules from `dev-rnd`, and journal and controlled-run resources from `dev-lead`. Its `references/feature-source.md` owns the independent spec input/location rules; the legacy feature-directory reference keeps its consumers. All three feature spec template copies stay byte-identical. Keep the new command explicit through both invocation policies; adding it does not switch the manual or coordinator route.
-
-`to-tickets` owns the shared ticket rules/template; legacy producers keep identical bundled copies and their current routes. Its feature-spec entry owns `references/spec-input.md`, with unchanged project-spec reader resources from `dev-rnd` and journal and controlled-run resources from `dev-lead`. Include it in the checker catalog and every applicable shared fixture, and keep both invocation policies explicit. The executor handoff remains `/plan` until the separate executor cutover; no installed copy is replaced by source edits.
-
-`dev-exec` owns its execution-context reference and bundles unchanged ticket rules/template from `to-tickets`, project-spec reader from `dev-rnd` and journal and controlled-run resources from `dev-lead`. Include it in both explicit invocation policies and applicable checker/shared-copy fixtures, including all-consumer edit loops. Its additive entry does not change generated `/plan` handoffs, the setup tracker block or legacy routes. Keep approval gates in the skill and ticket semantics in their bundled references; native permissions remain independent of instructions.
+Shared discussion and domain references are owned by `rnd-grill`; `to-decision` and `rnd-design` bundle copies. `nxs-setup` owns writing guidance, copied into `nxs-retro`. `dev-review` owns the review report reference, copied into `to-tickets`. Keep the checker catalog and every applicable shared copy synchronized.
 
 Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions; the exception is a setup skill, which may write rules and config into client instructions only through a diff the user approved. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
@@ -53,14 +47,10 @@ Keep process rules with their owning skill or role; a rule several skills apply 
 
 A skill name is a command the user types, so it is chosen to be read at a glance, not to follow a naming scheme.
 
-- Take `dev-` plus one short lowercase word: `dev-review`, `dev-commit`. The prefix is the namespace that keeps the name clear of companion skills and client built-in commands; check a candidate against the shared agents directory and the client before proposing it.
-- Prefer the shortest word the user already says for the work. A verb is welcome and not required: `dev-rnd` and `dev-spec` stay because the user reads them faster than a rewritten action name. Rename an existing skill only when its name hides what the skill does, and state the cost before the user decides.
-- Keep the word for the artifact the skill reads or writes (`spec.md`, `SPEC.md`) and do not move it onto another skill.
-- Add a second word only when the one-word candidate is taken or would be misread.
+- Choose a short name that describes the work or artifact and avoids client and installed-skill collisions. Existing namespaces include `rnd-` for investigation, `to-` for artifact production, `dev-` for development and `nxs-` for project-wide support.
+- Check the installed path and provenance when names collide; naming does not activate another stage.
 
-The reasoning and the rejected alternatives are in [ADR 0007](docs/adr/0007-skill-names.md).
-
-The approved independent-workflow naming extension adds `rnd-` for investigation/discussion and `to-` for producing a named artifact. `rnd-grill` and `to-decision` are additive candidates under that extension; the existing `dev-` routes and installation behavior remain available. Naming does not activate another workflow stage.
+[ADR 0007](docs/adr/0007-skill-names.md) records the earlier naming decision; the additive catalog extends it.
 
 ## STYLE AND SAFETY
 
@@ -117,32 +107,4 @@ Run the client against that `HOME`, then remove the temporary directory, keeping
 
 Publish by pushing to `main` before updating installations; users update with `npx skills update`. Do not modify the user's installed skills during source edits unless requested.
 
-`rnd-debug` is an additive diagnosis candidate. It bundles the feature-directory, spec-template, project-spec reader and journal resources; keep those copies and the checker catalog synchronized. `to-tickets` accepts eligible confirmed causes without switching `dev-bug` or the executor handoff.
-
-`rnd-research` is an additive, explicit research candidate. Keep its project-spec reader, journal and controlled-run copies synchronized with their canonical owners and in the checker catalog. Its result does not authorize a later stage; manual research remains available.
-
-`rnd-prototype` is an additive, explicit experiment candidate. Keep its project-spec reader, journal and controlled-run copies synchronized and in the checker catalog. Its retained prototype and verdict do not authorize transfer, reuse or deletion.
-
-`rnd-design` is an additive, explicit selected-module candidate. Keep its discussion and domain copies identical to `rnd-grill`, project-spec reader to `dev-rnd`, and journal and controlled-run copies to `dev-lead`; include all consumers in the checker. Its design artifact does not authorize implementation or test deletion.
-
-`rnd-audit` is an additive, explicit project survey candidate. Keep its project-spec reader, journal and controlled-run copies synchronized with their owners and in the checker catalog. Its ranked output does not authorize selection or implementation.
-
-`rnd-map` keeps the local wayfinder decision model. Its discussion, research, prototype, project-spec, journal and controlled-run copies match their owners and are checked as shared resources. Decision tickets are not implementation tickets; map completion does not authorize implementation.
-
-`dev-review` owns the review report reference; copy it into `to-tickets` when changed. The explicit `--to-tickets` candidate keeps review selection separate from ticket creation while the legacy route remains available.
-
-`to-questionnaire` is an additive participant-document candidate. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. Preparing a document does not authorize sending or invent answers.
-
-`to-handoff` is an additive resumable-context candidate. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. It supports journal-free work and never uses a branch alone as task identity.
-
-`nxs-retro` is an additive single-session candidate. `nxs-setup` owns `references/writing-for-agents.md`; keep its retro copy identical. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. It creates no session index or period scan.
-
-`nxs-lead` is an additive explicit coordinator. Catalog both invocation policies and its project-spec, journal and controlled-run copies. Keep legacy routes until the separate verified cutover; source changes never update installations.
-
-Keep `nxs-lead` continuation in its own reference: historical records remain evidence, native continuation is capability-dependent, and no recovery engine is bundled.
-
-Keep guarded auto explicitly selected and its local HTML defense and approval order in `nxs-lead` references. Approval of the defense alone authorizes neither saving nor an unrequested stage.
-
-The shared controlled-run contract recognizes either explicitly invoked coordinator; propagate changes to every cataloged consumer. Retain `dev-lead`, `dev-setup` and their active callers until ticket 32's verified cutover. Preserve old records and installations; a replacement needs exact path, provenance, preserved user changes, verification and applicable authorization.
-
-`nxs-setup` is an additive project, goal and global setup candidate. Keep its writing guidance canonical and its retro copy identical, its tracker Done when block synchronized with `to-tickets`, and both explicit invocation policies cataloged. The 19 agreed commands are a checked source subset; four legacy routes remain until their replacement gates pass. Neither source presence nor shell checks establish native client registration.
+The checked catalog contains 19 target commands and four retained legacy routes: `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup`. Preserve legacy callers and `/plan` handoffs until their route-specific cutover gates pass. Source changes do not update installations or establish native registration. `nxs-setup` does not offer companion bundles; the legacy `dev-setup` contract still does. See [README](README.md) and [client scenarios](tests/client-scenarios.md) for the current boundary and evidence.

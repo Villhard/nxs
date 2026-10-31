@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- README, CONTRIBUTING, GLOSSARY, project spec, client scenarios and diagrams describe the additive catalog, retained legacy routes and unverified cutover.
 - README "Run a ticket" says what to do when the executor stops on a missing blocker result.
 
 ### Fixed

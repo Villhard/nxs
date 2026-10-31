@@ -18,3 +18,12 @@ The user-approved approach and scope for delivering one feature, including its w
 
 **Ticket plan**:
 The steps for completing one ticket, reviewed by the lead against the feature plan when the lead coordinates the task.
+
+**Target catalog**:
+The 19 source commands that separate independent workflow operations; their presence does not establish client registration or a completed cutover.
+
+**Legacy route**:
+A retained `dev-rnd`, `dev-bug`, `dev-lead` or `dev-setup` entry and its existing callers, kept until the applicable replacement is verified.
+
+**Cutover**:
+A route-specific switch of callers or installations after the required evidence and authorization; source additions and shell checks alone do not complete it.
