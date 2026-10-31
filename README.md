@@ -61,6 +61,10 @@ Explicit `/dev-exec <ticket-path>` or `/dev-exec <clear request>` proposes a pla
 
 ## Install
 
+Before replacing an installed skill, identify its exact path, provenance and user modifications; preserve those modifications, verify the replacement in isolation and check actual client registration. A name collision alone does not authorize overwrite. Existing installations remain unchanged by source updates. If a candidate fails verification, continue the retained route and leave the existing installation intact.
+
+The candidate installation and upgrade paths, including `to-spec` and `to-tickets` collisions, have not passed the live verification gate. Check existing installations before running install or update.
+
 Install with the [skills CLI](https://skills.sh) and pick your agents at the prompt:
 
 ```bash
@@ -82,8 +86,6 @@ Start a new session after updating.
 The independent [nxs-setup candidate](skills/nxs-setup/SKILL.md) supports a concrete goal, project or global configuration and report-only readiness. It does not install companion skills. Its [15-capability map](skills/nxs-setup/references/capabilities.md) describes source routes, not client registration. Live setup behavior and native registration remain unverified, so the existing setup route remains available.
 
 The agreed 19-command source catalog is `rnd-grill`, `to-decision`, `to-spec`, `to-tickets`, `dev-exec`, `rnd-debug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-questionnaire`, `to-handoff`, `nxs-retro`, `nxs-lead` and `nxs-setup`. The checker also retains four legacy source entries; source presence does not prove registration.
-
-Before replacing an installed skill, identify its exact path, provenance and user modifications; preserve those modifications, verify the replacement in isolation and check actual client registration. A name collision alone does not authorize overwrite. Existing installations remain unchanged by source updates. If a candidate fails verification, continue the retained route and leave the existing installation intact.
 
 Run `/dev-setup global` once per machine and `/dev-setup project` once in each repository. Without an argument, the command asks which mode you mean inside a Git repository and runs `global` outside one.
 

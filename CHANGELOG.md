@@ -21,6 +21,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.73.1] - 2026-11-01
+
+### Changed
+
+- Project and `to-tickets` specs reconcile the additive workflow and its verification limits.
+
+### Fixed
+
+- Shell skill checks reject malformed or duplicate frontmatter, invalid invocation policy blocks and broken reference-style resource links.
+- Pre-commit hook checks the staged snapshot so partial staging cannot bypass the structural checks.
+- README places installation collision and verification guidance before install and update commands.
+
 ## [0.73.0] - 2026-11-01
 
 ### Changed

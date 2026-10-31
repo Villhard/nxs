@@ -80,6 +80,21 @@ frontmatter_field() {
   ' "$1"
 }
 
+check_frontmatter() {
+  awk '
+    NR == 1 { if ($0 != "---") exit 1; next }
+    $0 == "---" { closed = 1; exit }
+    /^[A-Za-z][A-Za-z0-9_-]*:/ {
+      key = $0; sub(/:.*/, "", key)
+      if (seen[key]++) exit 1
+      next
+    }
+    /^[ \t]*($|#)/ || /^ / { next }
+    { exit 1 }
+    END { if (!closed) exit 1 }
+  ' "$1" || fail "$1: invalid, duplicate or unclosed frontmatter"
+}
+
 frontmatter_has() {
   awk -v key="$2" '
     NR == 1 && $0 == "---" { fm = 1; next }
@@ -108,6 +123,7 @@ check_skill() {
   local name=$1 path fields name_value description policy allow
   path="skills/$name/SKILL.md"
   [ -f "$path" ] || fail "$path: missing required file"
+  check_frontmatter "$path"
   name_value=$(frontmatter_field "$path" name)
   [ "$name_value" = "$name" ] || fail "$path: name must match directory $name"
   description=$(frontmatter_field "$path" description)
@@ -130,7 +146,12 @@ check_skill() {
   policy="skills/$name/agents/openai.yaml"
   if is_explicit "$name" || [ -f "$policy" ]; then
     [ -f "$policy" ] || fail "$policy: missing required file"
-    allow=$(awk '/^[ ]{2}allow_implicit_invocation:/ { print $2; exit }' "$policy")
+    allow=$(awk '
+      /^policy:[ \t]*$/ { policies++; inside = 1; next }
+      /^[^ \t#]/ { inside = 0 }
+      inside && /^  allow_implicit_invocation:[ \t]*/ { values++; value = $2 }
+      END { if (policies == 1 && values == 1) print value }
+    ' "$policy")
     if is_explicit "$name"; then
       [ "$allow" = false ] || fail "$policy: incorrect invocation policy"
     else
@@ -146,6 +167,7 @@ check_roles() {
   [ "$expected" = "$actual" ] || fail "skills/dev-review/roles: expected [${ROLES[*]}], found [$actual]"
   for role in "${ROLES[@]}"; do
     path="skills/dev-review/roles/$role.md"
+    check_frontmatter "$path"
     [ "$(frontmatter_field "$path" name)" = "$role" ] || fail "$path: role name must match filename"
     [ -n "$(frontmatter_field "$path" description)" ] || fail "$path: missing or empty description frontmatter field"
     tools=$(frontmatter_field "$path" tools)
@@ -249,7 +271,19 @@ check_links() {
         /^[ \t]*(```|~~~)/ { fence = !fence; next }
         fence { next }
         { gsub(/`[^`]*`/, ""); print }
-      ' "$path" | grep -oE '\]\([^)]*\)' | sed -e 's/^](//' -e 's/)$//'
+      ' "$path" | awk '
+        {
+          line = $0
+          while (match(line, /\]\([^)]*\)/)) {
+            print substr(line, RSTART + 2, RLENGTH - 3)
+            line = substr(line, RSTART + RLENGTH)
+          }
+          if ($0 ~ /^ *\[[^]]+\]:[ \t]*/) {
+            sub(/^ *\[[^]]+\]:[ \t]*/, "")
+            print
+          }
+        }
+      '
     )
   done < <(find skills -type f -name '*.md' | sort)
 }

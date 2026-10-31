@@ -98,7 +98,7 @@ git diff --check
 
 The structural checker is read-only and inspects the working tree. It validates the skill set, frontmatter contracts, invocation policy, role files, identical shared copies, the tracker's Done when copy, links that stay inside their skill and resolve, external-path boundaries and the CHANGELOG entry shape. The runtime guard rejects any `.py` file, bundled `scripts/` or `__pycache__` directory, and active documentation that still names Python 3, the removed terminal app or a bundled Python helper. Historical `CHANGELOG.md` entries and `docs/adr/` records keep their original text. Link checks do not cover anchors or every Markdown form: inspect links, headings and the final diff yourself. Pass untracked Markdown paths explicitly to the style script.
 
-The [pre-commit hook](.githooks/pre-commit) runs both structural checks in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
+The [pre-commit hook](.githooks/pre-commit) runs both structural checks against a temporary staged snapshot in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
 The retained lead and review routes use the selected client native subagent facility. Discover available skills and models without hardcoding names or effort support; readiness uses its documented native discovery probes. Preserve native permissions and enforce repository write denial for read-only workers. State live verification separately from protocol fixtures; missing CLI never implies a verified live route. Tests use disposable repositories and fixture-only approvals, never the user installation.
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
-# Validate the working tree before committing. Enable once per clone: git config core.hooksPath .githooks
+# Validate the staged snapshot. Enable once per clone: git config core.hooksPath .githooks
 set -u
 root=$(git rev-parse --show-toplevel) || exit 1
-bash "$root/.github/scripts/check-skills.sh" || exit 1
-bash "$root/.github/scripts/check-no-runtime.sh" || exit 1
+snapshot=$(mktemp -d) || exit 1
+trap 'rm -rf "$snapshot"' EXIT
+git -C "$root" checkout-index --all --prefix="$snapshot/" || exit 1
+bash "$snapshot/.github/scripts/check-skills.sh" || exit 1
+bash "$snapshot/.github/scripts/check-no-runtime.sh" || exit 1
