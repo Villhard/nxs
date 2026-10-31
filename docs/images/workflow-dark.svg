@@ -41,7 +41,7 @@
 <path d="M765 540 V665" class="arrow"/>
 <rect x="692" y="665" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="708" y="692" class="record">Tickets</text><text x="708" y="712" class="small">to-tickets and legacy routes</text>
 <path d="M668 697 H692" class="arrow"/>
-<path d="M998 697 H1022" class="arrow"/><text x="1038" y="686" class="cmd">/dev-exec</text><text x="1038" y="706" class="small">Ready to-tickets work</text><text x="1038" y="724" class="small">Legacy handoff: /plan</text>
+<path d="M998 697 H1022" class="arrow"/><text x="1038" y="686" class="cmd">/dev-exec</text><text x="1038" y="706" class="small">Ready to-tickets work</text><text x="1038" y="724" class="small">Within approved scope</text>
 <line x1="32" y1="767" x2="1328" y2="767" stroke="#303030" stroke-width="2"/><text x="32" y="798" class="label">SUPPORT ACROSS THE MAP</text>
 <rect x="32" y="815" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="48" y="842" class="cmd">/nxs-lead</text><text x="48" y="862" class="small">Coordinate bounded work</text>
 <rect x="362" y="815" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="378" y="842" class="cmd">/nxs-setup</text><text x="378" y="862" class="small">Audit and configure setup</text>

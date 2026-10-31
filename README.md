@@ -4,7 +4,7 @@ Development skills for coding agents, from investigation and decisions through e
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
-  <img alt="An idea, failure, existing changes or clear request can enter different commands. An approved feature spec, eligible confirmed cause and selected review findings can feed to-tickets. Ready to-tickets work can be handed to dev-exec; legacy routes retain /plan." src="docs/images/workflow-light.svg">
+  <img alt="An idea, failure, existing changes or clear request can enter different commands. An approved feature spec, eligible confirmed cause and selected review findings can feed to-tickets. Ready to-tickets work can be handed to dev-exec." src="docs/images/workflow-light.svg">
 </picture>
 
 Blue names are commands; orange labels are records and grey labels are conditions or results. Dashed arrows show possible conditional handoffs, not automatic actions. The example is one route, not a required sequence: a clear request can also enter execution directly, and investigation can end with evidence or a decision. A saved artifact does not authorize the next operation by itself. An existing instruction or approval can authorize several operations within its scope; otherwise the applicable request or approval is needed.
@@ -68,7 +68,7 @@ Four additional source entries remain: [dev-rnd](skills/dev-rnd/SKILL.md) combin
 
 ## Using the stages
 
-A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to-tickets` -> `dev-exec`; continue only within the authorization already given or after obtaining any missing request or approval. A clear request can go directly to `dev-exec`, which presents a plan before implementation. Review, recording built project intent and committing are separate steps. The retained legacy `/plan` handoff is described above.
+A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to-tickets` -> `dev-exec`; continue only within the authorization already given or after obtaining any missing request or approval. A clear request can go directly to `dev-exec`, which presents a plan before implementation. Review, recording built project intent and committing are separate steps.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/grill-dark.svg">
