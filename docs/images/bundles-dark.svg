@@ -109,12 +109,12 @@
   <text x="261.5" y="431" fill="#909090" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
   <text x="338" y="446" fill="#909090" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">writing-for-agents</text>
   <text x="338" y="461" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">text for agents</text>
-  <rect x="724" y="448" width="188" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="724" y="448" width="188" height="56" rx="6" fill="rgba(144,144,144,0.12)" stroke="#909090" stroke-width="1" stroke-dasharray="4,3"/>
-  <rect x="732" y="454" width="19" height="12" rx="2" fill="transparent" stroke="#909090" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="741.5" y="463" fill="#909090" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NO</text>
-  <text x="818" y="478" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">setup-matt-pocock</text>
-  <text x="818" y="493" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">dev-setup writes it</text>
+  <rect x="696" y="448" width="216" height="56" rx="6" fill="#1c1c1c"/>
+  <rect x="696" y="448" width="216" height="56" rx="6" fill="rgba(144,144,144,0.12)" stroke="#909090" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="704" y="454" width="19" height="12" rx="2" fill="transparent" stroke="#909090" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="713.5" y="463" fill="#909090" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NO</text>
+  <text x="804" y="478" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">setup-matt-pocock-skills</text>
+  <text x="804" y="493" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">dev-setup writes it</text>
   <text x="504" y="470" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">Never offered:</text>
   <line x1="32" y1="526" x2="928" y2="526" stroke="rgba(218,218,218,0.1)" stroke-width="0.8"/>
   <text x="32" y="546" fill="#909090" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>

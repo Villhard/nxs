@@ -23,7 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- `dev-lead` checkpoints each accepted implementation and its verified review corrections through checks, scoped review, built-work specs and atomic commits before the next independent ticket, retaining conservative commit recovery and final whole-feature review.
+- `dev-lead` checkpoints each accepted implementation and its verified review corrections through checks, scoped review, built-work specs and atomic commits before the next independent ticket, retaining conservative commit recovery and final whole-feature review. README and all eight light/dark diagram pairs show agterm-only delegation alongside manual routes, report-only readiness, local status/journal/run records and distinct ticket/checkpoint acceptance, with matching Mono surfaces and readable labels.
 - Runtime tests and client scenarios cover checkpoint composition, lost commit responses, foreign index preservation and readiness/setup boundaries, separating mechanics fixtures from consumer and live verification.
 
 ### Fixed

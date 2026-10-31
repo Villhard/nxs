@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-workflow-dark-title nxs-workflow-dark-desc" id="nxs-workflow-dark-root">
-  <title id="nxs-workflow-dark-title">nxs workflow</title>
-  <desc id="nxs-workflow-dark-desc">dev-rnd, dev-bug or the mattpocock route write a ticket, the built-in /plan runs it, optional dev-review turns findings into new tickets, optional dev-spec records specs, and dev-commit commits.</desc>
+<svg viewBox="0 0 960 1120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-workflow-dark-title nxs-workflow-dark-desc" id="nxs-workflow-dark-root">
+  <title id="nxs-workflow-dark-title">Delegated and manual nxs workflows</title>
+  <desc id="nxs-workflow-dark-desc">In agterm, dev-lead coordinates user-approved scope and lead-approved ticket plans, checkpoints accepted work before each next independent ticket and finishes with complete-feature review; the separate manual route retains standalone skills and optional companion preparation outside lead automation.</desc>
   <defs>
     <marker id="nxs-workflow-dark-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#909090"/></marker>
     <marker id="nxs-workflow-dark-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ffa083"/></marker>
@@ -9,6 +9,47 @@
     <marker id="nxs-workflow-dark-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#909090"/></marker>
   </defs>
   <rect width="100%" height="100%" fill="#1c1c1c"/>
+  <text x="32" y="36" fill="#dadada" font-size="12" font-family="'Geist', system-ui, sans-serif" font-weight="600">DELEGATED: /dev-lead IN AGTERM</text>
+  <text x="32" y="62" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif">Outside agterm: open this repository there and invoke dev-lead again; no partial coordination.</text>
+  <path d="M 312 132 L 348 132" fill="none" stroke="#909090" stroke-width="1.2" marker-end="url(#nxs-workflow-dark-arrow)"/>
+  <path d="M 612 132 L 648 132" fill="none" stroke="#909090" stroke-width="1.2" marker-end="url(#nxs-workflow-dark-arrow)"/>
+  <path d="M 780 176 L 780 244" fill="none" stroke="#909090" stroke-width="1.2" marker-end="url(#nxs-workflow-dark-arrow)"/>
+  <path d="M 648 288 L 612 288" fill="none" stroke="#909090" stroke-width="1.2" marker-end="url(#nxs-workflow-dark-arrow)"/>
+  <path d="M 480 244 L 480 208 L 628 208 L 628 160 L 648 160" fill="none" stroke="#ffa083" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-workflow-dark-arrow-accent)"/>
+  <path d="M 780 332 L 780 384 L 180 384 L 180 332" fill="none" stroke="#909090" stroke-width="1.2" marker-end="url(#nxs-workflow-dark-arrow)"/>
+  <text x="480" y="372" fill="#909090" font-size="10" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">AFTER ALL TICKETS</text>
+  <rect x="48" y="88" width="264" height="88" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
+  <text x="180" y="114" fill="#dadada" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Verified lead session</text>
+  <text x="180" y="134" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">saved window / workspace</text>
+  <text x="180" y="150" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">stable worker destination</text>
+  <rect x="348" y="88" width="264" height="88" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
+  <text x="480" y="114" fill="#dadada" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">User approves feature plan</text>
+  <text x="480" y="134" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">scope / permissions / checks</text>
+  <text x="480" y="150" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">new behavior returns to user</text>
+  <rect x="648" y="88" width="264" height="88" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
+  <text x="780" y="114" fill="#dadada" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Lead approves ticket plan</text>
+  <text x="780" y="134" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">visible worker implements</text>
+  <text x="780" y="150" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">lead independently accepts work</text>
+  <rect x="648" y="244" width="264" height="88" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
+  <text x="780" y="270" fill="#dadada" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Per-ticket checkpoint</text>
+  <text x="780" y="290" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">full checks / review / fixes</text>
+  <text x="780" y="306" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">dev-spec / atomic dev-commit</text>
+  <text x="780" y="322" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">verify resulting HEAD</text>
+  <rect x="348" y="244" width="264" height="88" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
+  <text x="480" y="270" fill="#dadada" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Next independent ticket</text>
+  <text x="480" y="290" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">only after verified checkpoint</text>
+  <text x="480" y="306" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">planning has no empty commits</text>
+  <rect x="48" y="244" width="264" height="88" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
+  <text x="180" y="270" fill="#dadada" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Complete-feature review</text>
+  <text x="180" y="290" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">committed + remaining work</text>
+  <text x="180" y="306" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">final checks / specs / commits</text>
+  <text x="32" y="428" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif">While lead is active: HUD/status, decision.log and run/question records; submitted answers continue the work.</text>
+  <text x="32" y="450" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif">Cleanup: stopped, owned, accepted idle terminals only; exact native continuation survives closure.</text>
+  <text x="32" y="472" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif">Unanswered, invalid or uncertain ancestry stays protected; recovery reconciles effects before retry.</text>
+  <text x="32" y="494" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif">Writing executors never commit. Review, specs and atomic commits remain lead-controlled stages.</text>
+  <line x1="32" y1="524" x2="928" y2="524" stroke="#909090" stroke-width="0.8"/>
+  <text x="32" y="556" fill="#dadada" font-size="12" font-family="'Geist', system-ui, sans-serif" font-weight="600">MANUAL: INDEPENDENT SKILLS; MP COMPANIONS OUTSIDE LEAD AUTOMATION</text>
+  <g transform="translate(0 540)">
   <path d="M 138 96 L 138 172 Q 138 180 146 180 L 228 180" fill="none" stroke="#909090" stroke-width="1.2" marker-end="url(#nxs-workflow-dark-arrow)"/>
   <path d="M 366 96 L 366 160" fill="none" stroke="#909090" stroke-width="1.2" marker-end="url(#nxs-workflow-dark-arrow)"/>
   <path d="M 594 96 L 594 180 Q 594 188 586 188 L 504 188" fill="none" stroke="#909090" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-workflow-dark-arrow-soft)"/>
@@ -76,7 +117,7 @@
   <text x="764.5" y="415" fill="#dadada" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NXS</text>
   <text x="834" y="430" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/dev-commit</text>
   <text x="834" y="445" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">atomic commits</text>
-  <text x="32" y="496" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">Run /dev-setup global once per machine and /dev-setup project once per repository first.</text>
+  <text x="32" y="496" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">Setup: global per machine, project per repository; optional explicit-mode --readiness only reports prerequisites.</text>
   <line x1="32" y1="526" x2="928" y2="526" stroke="rgba(218,218,218,0.1)" stroke-width="0.8"/>
   <text x="32" y="546" fill="#909090" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
   <rect x="100" y="536" width="24" height="14" rx="3" fill="#262626" stroke="#dadada" stroke-width="1"/>
@@ -93,4 +134,5 @@
   <text x="763.0" y="546" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">optional</text>
   <path d="M 830.2 543 L 854.2 543" fill="none" stroke="#ffa083" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-workflow-dark-arrow-accent)"/>
   <text x="862.2" y="546" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">review loop</text>
+  </g>
 </svg>
