@@ -42,7 +42,7 @@ Show proposed ticket titles, scope, criteria, dependencies, every `**Branch:**` 
 
 ## SAVE AND VERIFY
 
-Save only authorized new tickets or specifically approved revisions in the resolved `issues/` directory. Copy the template's complete English `## Done when` verbatim, retaining `/plan`, branch, blocker-result, ready-for-human and no-commit semantics. Preserve existing execution text on repeats; do not migrate old tickets to a new executor.
+Save only authorized new tickets or specifically approved revisions in the resolved `issues/` directory. Copy the template's complete English `## Done when` verbatim, retaining both executor examples and branch, blocker-result, ready-for-human and no-commit semantics. Preserve existing execution text on repeats; do not migrate old tickets to a new executor.
 
 Re-read saved files against the approved breakdown and current source; for review input apply its report-link exception. Verify numbering, dependency order, branches, criteria and exact execution block; compare all preserved issue bytes with their pre-write state. Journal the source identity/path/hash, local spec hash when applicable, approval/scope, created and reused paths, dependency evidence, limitations and no-op reuse. Pins belong in the journal and handoff without adding a Parent section or rewriting an unchanged spec/ticket.
 
@@ -50,4 +50,4 @@ Re-read saved files against the approved breakdown and current source; for revie
 
 Writes are limited to authorized local implementation tickets, applicable task journal records and the narrowly permitted review ticket-link updates. Source/local specs, decision/map histories, product code, project/domain specs, Git/index, settings, installations and remote records remain unchanged. Ticket creation does not execute tickets or authorize review/commit.
 
-Return source/spec pins, created or preserved paths, scope and precise remaining blockers. Suggest `/plan <ticket-path>` only for the first `ready-for-agent` non-decision implementation ticket with resolved, inspected prerequisite results and no material open questions. Open dependencies or missing evidence have no ready handoff; resolved/wontfix repeats are not new work. dev-exec is not this candidate's executor handoff. In a controlled run return the bounded outcome and evidence to lead, who chooses the next stage.
+Return source/spec pins, created or preserved paths, scope and precise remaining blockers. Suggest `/dev-exec <ticket-path>` only for the first `ready-for-agent` non-decision implementation ticket with resolved, inspected prerequisite results and no material open questions. Open dependencies or missing evidence have no ready handoff; resolved/wontfix repeats are not new work. In a controlled run return the bounded outcome and evidence to lead, who chooses the next stage.
