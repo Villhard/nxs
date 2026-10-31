@@ -1,17 +1,17 @@
 # nxs
 
-Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes, record project specs and commit in atomic groups. The standalone skills target Claude Code, Codex and OpenCode; [tests/client-scenarios.md](tests/client-scenarios.md) records the flows verified in each client. Standalone stages are commands you start yourself. Explicit `dev-lead` delegates a sequential cycle from a live agterm session in the selected client, within a feature plan you approve.
+Development skills for coding agents: shape features and bugs into tickets for the client's plan mode, review changes, record project specs and commit in atomic groups. The standalone skills target Claude Code, Codex and OpenCode; [tests/client-scenarios.md](tests/client-scenarios.md) records the flows verified in each client. Standalone stages are commands you start yourself. Explicit `dev-lead` delegates a sequential cycle through the selected client's native subagents, within a feature plan you approve.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
-  <img alt="Delegated route: dev-lead requires agterm, user feature approval and lead ticket-plan approval; each accepted independent ticket has checks, review, fixes, specs and atomic commits, followed by complete-feature review. Separate manual route: rnd, bug or dim dashed companions write tickets for /plan, with optional review/spec and separate commit; a clear request can go straight to /plan." src="docs/images/workflow-light.svg">
+  <img alt="Delegated route: dev-lead requires a native subagent capability, user feature approval and lead ticket-plan approval; each accepted independent ticket has checks, review, fixes, specs and atomic commits, followed by complete-feature review. Separate manual route: rnd, bug or dim dashed companions write tickets for /plan, with optional review/spec and separate commit; a clear request can go straight to /plan." src="docs/images/workflow-light.svg">
 </picture>
 
 ## Skills
 
 | Skill | Use it to |
 | --- | --- |
-| [dev-lead](skills/dev-lead/SKILL.md) | Delegate one task from agterm through an approved feature plan, visible sequential workers and a checks/review/spec/commit checkpoint before each next independent ticket. |
+| [dev-lead](skills/dev-lead/SKILL.md) | Delegate one task through an approved feature plan, native subagents and a checks/review/spec/commit checkpoint before each next independent ticket. |
 | [dev-setup](skills/dev-setup/SKILL.md) | `global`: wire every client to one instruction file with the rules the skills rely on, and install chosen mattpocock/skills bundles (Core, Wayfinding, Architecture, Sessions) configured for local `.scratch/` tickets; `project`: add the branch rule and check commands to a repository and keep `.scratch/` out of Git. Each through one approved diff; optional `global --readiness` or `project --readiness` only reports lead prerequisites. |
 | [dev-rnd](skills/dev-rnd/SKILL.md) | Shape a feature or open question into an agreed spec and tickets; `--decision-only` saves a research conclusion without tickets. |
 | [dev-bug](skills/dev-bug/SKILL.md) | Investigate a reported failure; write a fix ticket once the cause is confirmed. |
@@ -73,7 +73,7 @@ To audit the selected lead environment without running setup, use an explicit mo
 /dev-setup project --readiness
 ```
 
-These optional commands report Python, Git, agterm identity/connectivity, the selected CLI and native skill/model discovery, with exact missing items or errors and remedies. They stop without a setup proposal, setup writes, installs or automatic remediation. A successful report establishes only the audited prerequisites, not worker execution, permission enforcement or workflow compatibility. Details: [readiness report](skills/dev-setup/references/readiness.md).
+These optional commands report Git, native subagent capability, the selected CLI and native skill/model discovery, with exact missing items or errors and remedies. They stop without a setup proposal, setup writes, installs or automatic remediation. A successful report establishes only the audited prerequisites, not worker execution, permission enforcement or workflow compatibility. Details: [readiness report](skills/dev-setup/references/readiness.md).
 
 ## Usage
 
@@ -83,17 +83,17 @@ These optional commands report Python, Git, agterm identity/connectivity, the se
 /dev-lead <request or .scratch/feature path>
 ```
 
-Open this repository in agterm before invoking `dev-lead`. Entry requires a reachable control socket and a verified live lead session. Outside agterm it stops before task/runtime effects: "dev-lead requires agterm; open this repository in agterm and invoke dev-lead again." Missing CLI, socket access/connectivity and stale or contradictory session identity are reported by their actual cause. Standalone skills remain available.
+Before invoking `dev-lead`, check that the client exposes a native subagent facility: a tool that starts a fresh-context agent with a complete prompt and reports or waits for its result. If it does not, `dev-lead` stops before task effects with the missing capability; standalone skills remain available. Discovery errors and unverified client routes are reported by their actual cause.
 
-The lead resolves questions with you and waits for approval of a feature plan covering scope, permissions, checks and runtime choices. It approves technical ticket plans within that scope, then runs one writing worker at a time in visible sessions in the recorded lead window/workspace, even if GUI focus changes. Unique lower_snake_case worker names (`nxs_<feature>_<step>_<run>`, with collision handling) are separate from run and native session IDs. New scope, external-contract or agreed-decision changes return to you.
+The lead resolves questions with you and waits for approval of a feature plan covering scope, permissions, checks and model choices. It approves technical ticket plans within that scope, then delegates one writing subagent at a time with the complete packet, write boundaries and expected result. A subagent starts from a fresh context; the lead never passes the parent conversation. New scope, external-contract or agreed-decision changes return to you.
 
 Before the next independent ticket, each independently accepted implementation and its verified dependent corrections pass relevant/full required checks, scoped read-only `dev-review`, in-scope fixes, built-work `dev-spec` and atomic `dev-commit`. The lead verifies the resulting checkpoint and HEAD. Executors never commit; research, planning and no-change groups create no empty commits. A final complete-feature review includes committed tickets and remaining task changes before final checks/spec/commit reconciliation. It never pushes. See [the checkpoint contract](skills/dev-lead/SKILL.md#review-and-finish).
 
-The lead HUD shows the current stage, ticket/action and wait or blocker reason, backed by [local status and run records](#where-things-live). While the lead is active, a pending form keeps coordination active: it records and interprets a submitted answer without another user message. Revisions reopen only affected scope; dismissal and timeout grant no approval. Covering or foreign UI is preserved; UI failures are reported with the local status path. See [visible status and questions](skills/dev-lead/references/visibility.md).
+The lead publishes its stage, ticket/action and wait or blocker reason in [local status records](#where-things-live). Questions use the host's native dialog when one is exposed, otherwise the conversation. A revision reopens only affected scope; dismissal and timeout grant no approval. See [local progress and questions](skills/dev-lead/references/questions.md).
 
-Only recorded task-owned, idle worker terminals with stopped processes and current independent acceptance are eligible for cleanup. An answered or resolved blocked turn needs its explicitly verified exact continuation; unanswered, invalid, stale and uncertain ancestry remains protected. Closing a terminal preserves native continuation evidence. After interruption, reconcile journal, questions, processes, outcomes and Git state before retrying an uncertain effect. See [owned cleanup](skills/dev-lead/references/runner.md#owned-terminal-cleanup) and [recovery](skills/dev-lead/SKILL.md#recovery).
+A subagent session is closed or released only through the host's documented mechanism after its result is collected. A lost reply is reconciled from artifacts and host records, never replayed automatically. After interruption, reconcile journal, questions, subagent runs, outcomes and Git state before retrying an uncertain effect. See [native subagents](skills/dev-lead/references/subagents.md#failure-and-recovery) and [recovery](skills/dev-lead/SKILL.md#recovery).
 
-The adapters require Python 3, Git, agterm and the selected Claude Code, Codex or OpenCode v2 CLI. Read-only Claude/OpenCode workers also require macOS sandbox-exec. One feature branch and nxs alone form the baseline; parallel worktrees, merges and autonomous companion integrations remain outside its scope. [dev-lead](skills/dev-lead/SKILL.md) owns runtime policy. [Client scenarios](tests/client-scenarios.md) distinguish fixtures, selected Codex live observations, consumer permission failures and unverified routes; adapter availability does not establish full multi-client workflow compatibility.
+The skills require Git, the selected Claude Code, Codex or OpenCode client and its native subagent facility. One feature branch and nxs alone form the baseline; parallel worktrees, merges and autonomous companion integrations remain outside its scope. [dev-lead](skills/dev-lead/SKILL.md) owns the delegation policy. [Client scenarios](tests/client-scenarios.md) distinguish recorded native-subagent observations, consumer permission failures and unverified routes; availability does not establish full multi-client workflow compatibility.
 
 ### Shape a feature
 
@@ -198,7 +198,7 @@ It commits what is already there in atomic groups, one logical change per commit
   <img alt="Feature-local records include spec, root cause, tickets, review, decision.log and research/dev-lead feature-plan/status/runs/questions. Manual task skills also journal decisions. dev-spec records built intent as SPEC.md or private local .SPEC.md; manual domain-modeling maintains glossary and ADRs." src="docs/images/artifacts-light.svg">
 </picture>
 
-Feature records stay local under `.scratch/<feature-slug>/`: spec, root cause, tickets, research, review reports and append-only JSONL `decision.log`. Task skills journal standalone work too. The lead keeps its feature plan, readable `status.md`, `runs/<run-id>/` and `questions/<question-id>/` under `research/dev-lead/`; status names the stage, ticket/action, wait reason, accepted tickets, current run, last verified commit and observation time. Presentation caches are derived; the journal and independently checked evidence establish accepted progress. When review resolves no feature, its report and tickets go under `.scratch/reviews/<branch-slug>/`. Keep `.scratch/` ignored; `dev-setup project` does that for you. Tracker issues are read, never written.
+Feature records stay local under `.scratch/<feature-slug>/`: spec, root cause, tickets, research, review reports and append-only JSONL `decision.log`. Task skills journal standalone work too. The lead keeps its feature plan, readable `status.md`, `runs/<run-id>/` and `questions/<question-id>/` under `research/dev-lead/`; status names the stage, ticket/action, wait reason, accepted tickets, current run, last verified commit and observation time. The journal and independently checked evidence establish accepted progress. When review resolves no feature, its report and tickets go under `.scratch/reviews/<branch-slug>/`. Keep `.scratch/` ignored; `dev-setup project` does that for you. Tracker issues are read, never written.
 
 Durable knowledge lives in the repository: project specs (committed `SPEC.md` or private local `.SPEC.md`), and a glossary with decision records when the project keeps them. Feature records contain plans and execution evidence; project specs capture durable intent established by built work.
 

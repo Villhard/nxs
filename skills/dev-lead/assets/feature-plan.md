@@ -10,7 +10,7 @@
 - Environment actions: <required action and target, or none>
 - User changes to preserve: <required paths and ownership, or none>
 
-| Purpose | Harness | Catalog model | Supported effort | Reason |
+| Purpose | Client | Catalog model | Supported effort | Reason |
 | --- | --- | --- | --- | --- |
 | <required step> | <active client> | <actual model> | <actual effort or native default> | <quality and task fit> |
 

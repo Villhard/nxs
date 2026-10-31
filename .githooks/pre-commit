@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
-# Validate the index being committed. Enable once per clone: git config core.hooksPath .githooks
-exec bash "$(git rev-parse --show-toplevel)/.github/scripts/check-skills.sh" --staged
+# Validate the working tree before committing. Enable once per clone: git config core.hooksPath .githooks
+set -u
+root=$(git rev-parse --show-toplevel) || exit 1
+bash "$root/.github/scripts/check-skills.sh" || exit 1
+bash "$root/.github/scripts/check-no-runtime.sh" || exit 1

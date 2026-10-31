@@ -19,11 +19,8 @@ jobs:
       - name: Check the skills tree
         run: bash .github/scripts/check-skills.sh
 
-      - name: Run checker regressions (Python 3 standard library)
-        run: python3 .github/scripts/test_check_skills.py
-
-      - name: Run sequential lead regressions (Python 3 standard library)
-        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Reject runtime and Python remnants
+        run: bash .github/scripts/check-no-runtime.sh
 
   discovery:
     name: Skills CLI discovery

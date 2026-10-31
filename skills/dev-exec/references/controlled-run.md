@@ -22,7 +22,7 @@ Put explanations and nonblocking limitations in summary/evidence; `done.question
 
 Artifacts are existing FILE paths under the allowed artifact root, unique after resolution; directories are invalid. Resolve relative paths from that root and check absolute paths and symlinks by their resolved targets. An empty artifacts array (`[]`) is valid.
 
-For `needs_input`, save the question and finish the process. Persist the session ID outside the envelope too, from session events. Lead resumes only that session after recording the answer.
+For `needs_input`, save the question and end the subagent turn. Record the host's session identity outside the envelope when the host exposes one. Lead continues that exact session only when the host documents continuation; otherwise it starts a new bounded subagent with the approved answer and saved artifacts.
 
 `done` is a proposal, accepted only after independent artifact, acceptance, command-output and Git checks. It never replaces ticket statuses. A valid JSON shape, a zero exit code or the executor's assertion alone is insufficient. A ticket planning turn returns `needs_input` with the proposed ticket plan and waits for recorded lead approval before implementation. A source-changing ticket executor never commits.
 

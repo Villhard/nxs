@@ -21,6 +21,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.55.0] - 2026-11-01
+
+### Added
+
+- `dev-lead` delegates bounded steps to the selected client's native subagents through `references/subagents.md`, and keeps progress and questions in ordinary local files through `references/questions.md`; missing capability stops the affected step.
+- `dev-review` launches finder and verifier roles only through native subagents, with host-enforced permissions and prompt prohibitions reported separately.
+- Shell structural checks in `.github/scripts/check-skills.sh` and a runtime guard in `.github/scripts/check-no-runtime.sh` replace the Python checker; both run in CI and the pre-commit hook.
+- [ADR 0008](docs/adr/0008-native-subagent-coordination.md) records native-subagent coordination and the removal of the custom runtime.
+- `tests/client-scenarios.md` covers native-subagent delegation, local questions, capability stops and the structural checks.
+
+### Changed
+
+- `dev-lead`, `dev-review`, `dev-setup` readiness, `README.md`, `SPEC.md` and `CONTRIBUTING.md` no longer require Python 3, a terminal session, a controller, a HUD, a nested CLI runner or the removed terminal app.
+- Task journals and controlled-run packets use plain append-only files; the shared ticket `## Done when` block and the `dev-setup` tracker copy record the journal and native-continuation rules.
+- Setup and workflow diagrams and their alternative text describe native subagents and the current readiness checks.
+
+### Removed
+
+- All repository Python: the `dev-lead` runner, approval, status, inventory, harness, outcome, mechanics and commit helpers, the `dev-review` adapter copies, every bundled `journal.py`, the Python checker and its regression suite, and `tests/test_dev_lead.py` and `tests/test_harnesses.py`.
+- Bundled `scripts/` and `__pycache__` directories, the bounded CLI review route and the terminal identity, HUD, questionnaire-waiter and owned-terminal cleanup contracts.
+
 ## [0.54.0] - 2026-10-31
 
 ### Added

@@ -1,0 +1,9 @@
+# Coordinate through native subagents without a custom runtime
+
+`dev-lead` delegates every bounded writing or review step to the selected client's native subagents. A route is usable only when the host starts a fresh-context agent, carries a complete prompt, reports or waits for a result, and enforces its own permissions. The lead keeps the workflow decisions, records intent in the journal and independently verifies each result. Missing or restricted capability stops the affected step; the skills never launch a nested Claude Code, Codex or OpenCode process instead.
+
+This supersedes [ADR 0001](0001-dev-lead-boundaries.md) where it requires visible terminal sessions and [ADR 0005](0005-bounded-runs-and-recovery-first.md) where it requires deterministic helpers for inventory, launch, outcome validation, journal writes and worktree preparation. Those records remain as history.
+
+The repository carries no Python runtime, bundled scripts or Python test suite. Coordination state is ordinary text: an append-only `decision.log`, a readable `status.md`, the approved feature plan, context packets and the subagent results. Skill integrity is checked by shell scripts, and active documentation is guarded against reintroducing the removed Python helpers or the terminal-app coupling. Historical `CHANGELOG.md` entries and earlier ADRs keep their original text.
+
+Rejected alternatives: keeping the terminal integration behind a compatibility layer continues the dependency this decision removes; moving the same controller and recovery code into the new coordinator would be a workflow engine by another name; requiring one cross-client subagent API would claim compatibility that no client exposes. Client-specific capability observations are recorded per case and never generalized into a compatibility guarantee.

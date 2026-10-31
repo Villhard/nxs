@@ -35,17 +35,17 @@ cp skills/to-tickets/assets/ticket.md skills/dev-bug/assets/ticket.md
 cp skills/to-tickets/assets/ticket.md skills/dev-review/assets/ticket.md
 ```
 
-Journal resources (`references/task-journal.md`, `references/controlled-run.md` and `scripts/journal.py`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec` and `dev-commit`. Propagate canonical edits byte-for-byte. Runtime helpers needed by the native CLI review adapter are also bundled in `dev-review`; keep their copies identical to `dev-lead`. No installed skill may depend on a developer checkout or another skill's installation path.
+Journal resources (`references/task-journal.md` and `references/controlled-run.md`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-grill`, `to-decision`, `to-spec`, `to-tickets` and `dev-exec`. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
 
 The `## Done when` block of `skills/to-tickets/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
 
-`rnd-grill` owns `references/discussion.md` and `references/domain-modeling.md`; copy edits byte-for-byte into `to-decision`. Both new commands also consume unchanged project-spec reader copies from `dev-rnd`, and journal/controlled-run/helper copies from `dev-lead`. The checker lists every consumer. Keep both commands explicit through `disable-model-invocation: true` and `allow_implicit_invocation: false`; direct domain-document requests are supported within an expressly invoked or controlled scope, without a wrapper artifact.
+`rnd-grill` owns `references/discussion.md` and `references/domain-modeling.md`; copy edits byte-for-byte into `to-decision`. Both new commands also consume unchanged project-spec reader copies from `dev-rnd`, and journal and controlled-run copies from `dev-lead`. The checker lists every consumer. Keep both commands explicit through `disable-model-invocation: true` and `allow_implicit_invocation: false`; direct domain-document requests are supported within an expressly invoked or controlled scope, without a wrapper artifact.
 
-`to-spec` bundles unchanged discussion rules from `rnd-grill`, project-spec reader rules from `dev-rnd`, and journal/controlled-run/helper resources from `dev-lead`. Its `references/feature-source.md` owns the independent spec input/location rules; the legacy feature-directory reference keeps its consumers. All three feature spec template copies stay byte-identical. Keep the new command explicit through both invocation policies; adding it does not switch the manual or coordinator route.
+`to-spec` bundles unchanged discussion rules from `rnd-grill`, project-spec reader rules from `dev-rnd`, and journal and controlled-run resources from `dev-lead`. Its `references/feature-source.md` owns the independent spec input/location rules; the legacy feature-directory reference keeps its consumers. All three feature spec template copies stay byte-identical. Keep the new command explicit through both invocation policies; adding it does not switch the manual or coordinator route.
 
-`to-tickets` owns the shared ticket rules/template; legacy producers keep identical bundled copies and their current routes. Its feature-spec entry owns `references/spec-input.md`, with unchanged project-spec reader resources from `dev-rnd` and journal/controlled-run/helper resources from `dev-lead`. Include it in the checker catalog and every applicable shared fixture, and keep both invocation policies explicit. The executor handoff remains `/plan` until the separate executor cutover; no installed copy is replaced by source edits.
+`to-tickets` owns the shared ticket rules/template; legacy producers keep identical bundled copies and their current routes. Its feature-spec entry owns `references/spec-input.md`, with unchanged project-spec reader resources from `dev-rnd` and journal and controlled-run resources from `dev-lead`. Include it in the checker catalog and every applicable shared fixture, and keep both invocation policies explicit. The executor handoff remains `/plan` until the separate executor cutover; no installed copy is replaced by source edits.
 
-`dev-exec` owns its execution-context reference and bundles unchanged ticket rules/template from `to-tickets`, project-spec reader from `dev-rnd` and journal/controlled-run/helper resources from `dev-lead`. Include it in both explicit invocation policies and applicable checker/shared-copy fixtures, including all-consumer edit loops. Its additive entry does not change generated `/plan` handoffs, the setup tracker block or legacy routes. Keep approval gates in the skill and ticket semantics in their bundled references; native permissions remain independent of instructions.
+`dev-exec` owns its execution-context reference and bundles unchanged ticket rules/template from `to-tickets`, project-spec reader from `dev-rnd` and journal and controlled-run resources from `dev-lead`. Include it in both explicit invocation policies and applicable checker/shared-copy fixtures, including all-consumer edit loops. Its additive entry does not change generated `/plan` handoffs, the setup tracker block or legacy routes. Keep approval gates in the skill and ticket semantics in their bundled references; native permissions remain independent of instructions.
 
 Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions; the exception is a setup skill, which may write rules and config into client instructions only through a diff the user approved. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
@@ -87,27 +87,18 @@ An unchanged contract is a patch. During `0.x`, contract changes require a minor
 
 ## CHECKS
 
-Run from the repository root with Git, Bash and Python 3 available:
+Run from the repository root with Git and Bash available:
 
 ```bash
 bash .github/scripts/check-skills.sh
-python3 .github/scripts/test_check_skills.py
-python3 -m unittest discover -s tests -p 'test_*.py' -v
+bash .github/scripts/check-no-runtime.sh
 bash .github/scripts/lint-house-style.sh
 git diff --check
 ```
 
-The checker supports three read-only comparisons:
+The structural checker is read-only and inspects the working tree. It validates the skill set, frontmatter contracts, invocation policy, role files, identical shared copies, the tracker's Done when copy, links that stay inside their skill and resolve, external-path boundaries and the CHANGELOG entry shape. The runtime guard rejects any `.py` file, bundled `scripts/` or `__pycache__` directory, and active documentation that still names Python 3, the removed terminal app or a bundled Python helper. Historical `CHANGELOG.md` entries and `docs/adr/` records keep their original text. Link checks do not cover anchors or every Markdown form: inspect links, headings and the final diff yourself. Pass untracked Markdown paths explicitly to the style script.
 
-| Arguments | Compared state |
-| --- | --- |
-| none | Working files against HEAD |
-| `--staged` | Index against HEAD |
-| `--base REF --head REF` | Two Git snapshots |
-
-The first two require HEAD. It validates the skill set, frontmatter contracts, invocation policy, role files, identical shared copies, the tracker's Done when copy, links that stay inside their skill and resolve, and the CHANGELOG entry shape. Link checks do not cover anchors or every Markdown form: inspect links, headings and the final diff yourself. Pass untracked Markdown paths explicitly to the style script.
-
-The [pre-commit hook](.githooks/pre-commit) runs the staged check in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
+The [pre-commit hook](.githooks/pre-commit) runs both structural checks in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
 The sequential lead and controlled-run adapters target Claude Code, Codex and OpenCode v2. Discover native skills/models rather than hardcoding names or effort support. Codex uses app-server; Claude uses Agent SDK control metadata; OpenCode uses its native HTTP catalog after plugin readiness. Preserve native permissions and enforce repository write denial for read-only workers. State live verification separately from protocol fixtures; missing CLI never implies a verified live route. Tests use disposable repositories and fixture-only approvals, never the user installation.
 

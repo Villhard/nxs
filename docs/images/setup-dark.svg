@@ -89,7 +89,7 @@
   <text x="32" y="508" fill="#dadada" font-size="12" font-family="'Geist', system-ui, sans-serif" font-weight="600">OPTIONAL READINESS: REPORT AND STOP</text>
   <rect x="32" y="528" width="896" height="128" rx="6" fill="#262626" stroke="#909090" stroke-width="1"/>
   <text x="52" y="556" fill="#dadada" font-size="12" font-family="'Geist Mono', ui-monospace, monospace">/dev-setup global --readiness   or   /dev-setup project --readiness</text>
-  <text x="52" y="582" fill="#909090" font-size="12" font-family="'Geist', system-ui, sans-serif">Python / Git / agterm identity / selected CLI / native skills and models</text>
+  <text x="52" y="582" fill="#909090" font-size="12" font-family="'Geist', system-ui, sans-serif">Git / native subagent / selected CLI / native skills and models</text>
   <text x="52" y="608" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif">Missing items, exact errors and remedies; verified prerequisites only, not workflow compatibility.</text>
   <text x="52" y="634" fill="#909090" font-size="11" font-family="'Geist', system-ui, sans-serif">No setup proposal, setup writes, installs or automatic remediation. Report, then stop.</text>
   <g transform="translate(0 240)">

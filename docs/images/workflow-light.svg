@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 960 1120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-workflow-light-title nxs-workflow-light-desc" id="nxs-workflow-light-root">
   <title id="nxs-workflow-light-title">Delegated and manual nxs workflows</title>
-  <desc id="nxs-workflow-light-desc">In agterm, dev-lead coordinates user-approved scope and lead-approved ticket plans, checkpoints accepted work before each next independent ticket and finishes with complete-feature review; the separate manual route retains standalone skills and optional companion preparation outside lead automation.</desc>
+  <desc id="nxs-workflow-light-desc">Within a client that exposes native subagents, dev-lead coordinates user-approved scope and lead-approved ticket plans, checkpoints accepted work before each next independent ticket and finishes with complete-feature review; the separate manual route retains standalone skills and optional companion preparation outside lead automation.</desc>
   <defs>
     <marker id="nxs-workflow-light-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#626262"/></marker>
     <marker id="nxs-workflow-light-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b73800"/></marker>
@@ -9,8 +9,8 @@
     <marker id="nxs-workflow-light-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7e7e7e"/></marker>
   </defs>
   <rect width="100%" height="100%" fill="#eeeeee"/>
-  <text x="32" y="36" fill="#262626" font-size="12" font-family="'Geist', system-ui, sans-serif" font-weight="600">DELEGATED: /dev-lead IN AGTERM</text>
-  <text x="32" y="62" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Outside agterm: open this repository there and invoke dev-lead again; no partial coordination.</text>
+  <text x="32" y="36" fill="#262626" font-size="12" font-family="'Geist', system-ui, sans-serif" font-weight="600">DELEGATED: /dev-lead VIA NATIVE SUBAGENTS</text>
+  <text x="32" y="62" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">No native subagent tool: stop with the missing capability; no partial coordination.</text>
   <path d="M 312 132 L 348 132" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
   <path d="M 612 132 L 648 132" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
   <path d="M 780 176 L 780 244" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
@@ -19,16 +19,16 @@
   <path d="M 780 332 L 780 384 L 180 384 L 180 332" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
   <text x="480" y="372" fill="#626262" font-size="10" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">AFTER ALL TICKETS</text>
   <rect x="48" y="88" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
-  <text x="180" y="114" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Verified lead session</text>
-  <text x="180" y="134" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">saved window / workspace</text>
-  <text x="180" y="150" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">stable worker destination</text>
+  <text x="180" y="114" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Native subagent tool</text>
+  <text x="180" y="134" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">fresh context / complete packet</text>
+  <text x="180" y="150" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">completion wait / result</text>
   <rect x="348" y="88" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
   <text x="480" y="114" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">User approves feature plan</text>
   <text x="480" y="134" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">scope / permissions / checks</text>
   <text x="480" y="150" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">new behavior returns to user</text>
   <rect x="648" y="88" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
   <text x="780" y="114" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Lead approves ticket plan</text>
-  <text x="780" y="134" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">visible worker implements</text>
+  <text x="780" y="134" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">one writing subagent</text>
   <text x="780" y="150" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">lead independently accepts work</text>
   <rect x="648" y="244" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
   <text x="780" y="270" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Per-ticket checkpoint</text>
@@ -43,9 +43,9 @@
   <text x="180" y="270" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Complete-feature review</text>
   <text x="180" y="290" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">committed + remaining work</text>
   <text x="180" y="306" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">final checks / specs / commits</text>
-  <text x="32" y="428" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">While lead is active: HUD/status, decision.log and run/question records; submitted answers continue the work.</text>
-  <text x="32" y="450" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Cleanup: stopped, owned, accepted idle terminals only; exact native continuation survives closure.</text>
-  <text x="32" y="472" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Unanswered, invalid or uncertain ancestry stays protected; recovery reconciles effects before retry.</text>
+  <text x="32" y="428" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">While lead is active: status.md, decision.log and run/question records; submitted answers continue the work.</text>
+  <text x="32" y="450" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Close or release subagent sessions only through the host; native evidence survives.</text>
+  <text x="32" y="472" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Unanswered, invalid or uncertain results stay protected; recovery reconciles effects before retry.</text>
   <text x="32" y="494" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Writing executors never commit. Review, specs and atomic commits remain lead-controlled stages.</text>
   <line x1="32" y1="524" x2="928" y2="524" stroke="#626262" stroke-width="0.8"/>
   <text x="32" y="556" fill="#262626" font-size="12" font-family="'Geist', system-ui, sans-serif" font-weight="600">MANUAL: INDEPENDENT SKILLS; MP COMPANIONS OUTSIDE LEAD AUTOMATION</text>

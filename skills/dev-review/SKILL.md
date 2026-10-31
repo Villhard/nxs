@@ -15,7 +15,7 @@ In standalone use, suggest the next command at a handoff; never start it automat
 
 ## TASK CONTEXT
 
-Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and journal state to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
+Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and its records to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
 
 ## STANCE
 
