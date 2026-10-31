@@ -307,3 +307,17 @@ These cases are a protocol, not live observations. In a disposable repository pi
 | No change | Existing modules localize the observed changes and no improvement is supported | Save a reasoned no-change result limited to the inspected scope |
 | Incomplete | An important caller or area cannot be inspected | Record the coverage gap and its effect on confidence rather than claiming complete coverage |
 | Unauthorized follow-on | An opportunity is ranked first, with no separate selection or implementation instruction | Save the survey and offer next steps; source, tests and index remain unchanged, with no ready tickets or design started |
+
+## Decision map candidate
+
+These graph examples are a test protocol, not observed live behavior or proof for every graph. In a disposable repository record candidate hashes, client version, invocation, registration or pinned delivery, permissions and artifacts. Preserve existing decision answers, product files and index as byte sentinels.
+
+| Case | Input | Required observation |
+| --- | --- | --- |
+| Ambiguous destination | Broad goal with unresolved scope | Ask before charting dependent questions; do not invent a destination |
+| Blocked graph | 01 open, 02 blocked by 01, 03 open and unblocked | Frontier contains 01 and 03; offer 01 first, and never work 02 until its prerequisite is resolved |
+| Missing blocker | 04 references absent 02 | Report missing prerequisite; do not claim 04 or treat absence as resolved |
+| Permission | 01 and 03 are both unblocked; user permits 01 but denies 03 | Claim and work only 01; preserve 03 and stop before its work |
+| Restart | 01 resolved with an answer, 02 claimed, 03 open | Preserve 01, its answer and index; reconcile 02 rather than reset it; offer eligible 03 |
+| Research or prototype | A question explicitly authorizes the corresponding check and local evidence | Link retained findings or experiment and verdict; no transfer or deletion without separate authorization |
+| Mapping and handoff | Map completes with no implementation scope, then a separate implementation instruction | Mapping produces no product change or ready execution ticket; a later authorized task keeps the existing decision files and answers intact |
