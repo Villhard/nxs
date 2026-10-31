@@ -35,7 +35,7 @@ cp skills/to-tickets/assets/ticket.md skills/dev-bug/assets/ticket.md
 cp skills/to-tickets/assets/ticket.md skills/dev-review/assets/ticket.md
 ```
 
-Journal resources (`references/task-journal.md` and `references/controlled-run.md`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-grill`, `rnd-debug`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-decision`, `to-spec`, `to-tickets`, `dev-exec`, `to-questionnaire`, `to-handoff` and `nxs-retro`. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
+Journal resources (`references/task-journal.md` and `references/controlled-run.md`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-grill`, `rnd-debug`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-decision`, `to-spec`, `to-tickets`, `dev-exec`, `to-questionnaire`, `to-handoff`, `nxs-retro` and `nxs-lead`. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
 
 The `## Done when` block of `skills/to-tickets/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
 
@@ -100,7 +100,7 @@ The structural checker is read-only and inspects the working tree. It validates 
 
 The [pre-commit hook](.githooks/pre-commit) runs both structural checks in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
-The sequential lead and controlled-run adapters target Claude Code, Codex and OpenCode v2. Discover native skills/models rather than hardcoding names or effort support. Codex uses app-server; Claude uses Agent SDK control metadata; OpenCode uses its native HTTP catalog after plugin readiness. Preserve native permissions and enforce repository write denial for read-only workers. State live verification separately from protocol fixtures; missing CLI never implies a verified live route. Tests use disposable repositories and fixture-only approvals, never the user installation.
+The retained lead and review routes use the selected client native subagent facility. Discover available skills and models without hardcoding names or effort support; readiness uses its documented native discovery probes. Preserve native permissions and enforce repository write denial for read-only workers. State live verification separately from protocol fixtures; missing CLI never implies a verified live route. Tests use disposable repositories and fixture-only approvals, never the user installation.
 
 For behavior changes, use disposable projects and the [client scenarios](tests/client-scenarios.md); documentation-only edits need source, command and link checks, not repeated workflows.
 
@@ -142,3 +142,5 @@ Publish by pushing to `main` before updating installations; users update with `n
 Keep `nxs-lead` continuation in its own reference: historical records remain evidence, native continuation is capability-dependent, and no recovery engine is bundled.
 
 Keep guarded auto explicitly selected and its local HTML defense and approval order in `nxs-lead` references. Approval of the defense alone authorizes neither saving nor an unrequested stage.
+
+The shared controlled-run contract recognizes either explicitly invoked coordinator; propagate changes to every cataloged consumer. Retain `dev-lead`, `dev-setup` and their active callers until ticket 32's verified cutover. Preserve old records and installations; a replacement needs exact path, provenance, preserved user changes, verification and applicable authorization.

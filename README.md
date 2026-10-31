@@ -276,3 +276,5 @@ Use `nxs-lead [request, feature or ticket]` for explicit ordinary coordination. 
 After interruption, `nxs-lead` reconciles current evidence before continuing; native session continuation depends on the client. Missing evidence blocks the affected action rather than triggering a replay.
 
 Explicitly selected `nxs-lead` auto presents a local standalone HTML defense and requires approval of its current decisions and scope. Defense approval alone neither saves a decision nor starts another stage.
+
+The coordinator candidate and retained `dev-lead` route coexist. Existing review and readiness consumers retain their routes; source retirement and installation replacement are deferred to the verified final cutover. The prior runtime removal does not migrate old sessions. To update or roll back an installation later, first identify the exact installed path and provenance, preserve user changes, verify the intended replacement and obtain applicable authorization; this source change updates no installation.

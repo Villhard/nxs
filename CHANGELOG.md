@@ -21,6 +21,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.70.0] - 2026-11-01
+
+### Changed
+
+- Shared controlled-run references recognize explicit `nxs-lead` authorization alongside the retained lead.
+- `dev-review` and contributor guidance name native subagents for retained routes.
+
 ## [0.69.0] - 2026-11-01
 
 ### Added

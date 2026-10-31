@@ -63,7 +63,7 @@ Preserve open follow-ups with origin before overwriting. A request to use review
 
 ## LAUNCH THE AGENTS
 
-Before mutating the report for an agent-based sweep, read [agent launch](references/agent-launch.md) and complete its capability check for every required role. Use the selected adapter and its complete reviewer packet for every launch. Before any launch or direct pass, read [findings](references/findings.md): its SEVERITY BAR is the bar for every reviewer, for LEAD CHECKS and for VERIFY, and its VERIFY A FINDING decides every verdict.
+Before mutating the report for an agent-based sweep, read [agent launch](references/agent-launch.md) and complete its capability check for every required role. Use the selected native subagent facility and its complete reviewer packet for every launch. Before any launch or direct pass, read [findings](references/findings.md): its SEVERITY BAR is the bar for every reviewer, for LEAD CHECKS and for VERIFY, and its VERIFY A FINDING decides every verdict.
 
 Before any agent launch or direct pass, write Scope, Requirements and `sweep: incomplete` to the report, retaining carried follow-ups. Use the review report FORMAT. Never leave the old complete report in place while a new sweep runs.
 
