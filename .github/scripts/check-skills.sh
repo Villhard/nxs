@@ -27,11 +27,11 @@ fail() {
 
 SKILLS=(
   dev-rnd dev-bug dev-review dev-spec dev-setup dev-commit dev-lead
-  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro
+  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro nxs-lead
 )
 EXPLICIT=(
   dev-rnd dev-bug dev-review dev-spec dev-setup dev-lead
-  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro
+  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro nxs-lead
 )
 ROLES=(
   review-quality review-testing review-simplification review-verify
@@ -48,9 +48,9 @@ references/writing-for-agents.md|nxs-retro
 references/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
 references/review-report.md|dev-review,to-tickets
 references/feature-directory.md|dev-rnd,dev-bug,rnd-debug
-references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro
-references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro
-references/controlled-run.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro
+references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro,nxs-lead
+references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro,nxs-lead
+references/controlled-run.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro,nxs-lead
 assets/spec.md|to-spec,dev-rnd,dev-bug,rnd-debug
 assets/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
 assets/outcome.schema.json|dev-lead,dev-review

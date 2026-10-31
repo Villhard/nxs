@@ -360,3 +360,7 @@ These are scenarios to exercise, not observed client behavior. Pin the candidate
 | Prior results | Relevant prior retrospective supplied | Consider it and state that discovery may be incomplete |
 | Unauthorized rule | Proposed new personal rule without approval | Save the proposal only; preserve instruction files |
 | Scoped authorization | Precise improvement already authorized | Apply and verify only that scope; report what changed |
+
+## Ordinary coordinator candidate
+
+These cases are source-level scenarios, not live candidate observations. In a disposable task, pin the candidate, client, permissions and inputs. Check a bounded native delegation and independent artifact, check and Git assessment. A missing native capability stops the affected step; a scope change returns to the user. Confirm technical plan approval precedes edits, no empty commit or push occurs, and standalone and legacy routes remain available. Native permission enforcement and client compatibility require separate evidence.

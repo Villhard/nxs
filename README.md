@@ -26,6 +26,7 @@ Development skills for coding agents: shape features and bugs into tickets for t
 | [rnd-prototype](skills/rnd-prototype/SKILL.md) | Test a hypothesis with a retained prototype and verdict. Candidate route; live behavior is unverified. |
 | [rnd-design](skills/rnd-design/SKILL.md) | Agree and save a selected module's interface and responsibilities. Candidate route; live behavior is unverified. |
 | [rnd-audit](skills/rnd-audit/SKILL.md) | Survey a project and save ranked architecture opportunities. Candidate route; live behavior is unverified. |
+| [nxs-lead](skills/nxs-lead/SKILL.md) | Coordinate approved work through native subagents. Additive candidate; live behavior is unverified. |
 | [nxs-retro](skills/nxs-retro/SKILL.md) | Review one session and save evidence-based improvement proposals. Candidate route; live behavior is unverified. |
 | [to-handoff](skills/to-handoff/SKILL.md) | Save resumable task context with or without a journal. Candidate route; live behavior is unverified. |
 | [to-questionnaire](skills/to-questionnaire/SKILL.md) | Prepare a participant questionnaire without sending it. Candidate route; live behavior is unverified. |
@@ -269,3 +270,5 @@ Use `to-questionnaire <participant and context>` to prepare a document linking u
 Use `to-handoff [task or destination path]` to save accepted, open and unverified context for a fresh session. A branch alone does not identify a task; client behavior is unverified.
 
 Use `nxs-retro [one session or evidence path]` to review the current or one explicitly selected session. Apply improvements only within the authorized scope; client session access is unverified.
+
+Use `nxs-lead [request, feature or ticket]` for explicit ordinary coordination. It preserves native permissions and independently checks results; the existing `dev-lead` route remains available.

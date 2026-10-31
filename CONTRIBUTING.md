@@ -136,3 +136,5 @@ Publish by pushing to `main` before updating installations; users update with `n
 `to-handoff` is an additive resumable-context candidate. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. It supports journal-free work and never uses a branch alone as task identity.
 
 `nxs-retro` is an additive single-session candidate. It initially owns `references/writing-for-agents.md`; move canonical ownership to `nxs-setup` in ticket 30 and keep consumer copies identical. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. It creates no session index or period scan.
+
+`nxs-lead` is an additive explicit coordinator. Catalog both invocation policies and its project-spec, journal and controlled-run copies. Keep legacy routes until the separate verified cutover; source changes never update installations.
