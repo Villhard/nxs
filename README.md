@@ -237,7 +237,9 @@ Durable knowledge lives in the repository: project specs (committed `SPEC.md` or
 
 ## Companion skills (not part of nxs)
 
-These skills come from [mattpocock/skills](https://github.com/mattpocock/skills), not from this repository. nxs works without them. They are manual routes outside lead automation, marked MP with dim dashed outlines and readable labels in the diagrams. `dev-setup global` offers them in bundles, installs the ones you choose together with the skills they call, and configures them to write local `.scratch/` tickets in the nxs format:
+The companion implementations in this section come from [mattpocock/skills](https://github.com/mattpocock/skills). nxs works without them. They are manual routes outside lead automation, marked MP with dim dashed outlines and readable labels in the diagrams. `dev-setup global` offers them in bundles, installs the ones you choose together with the skills they call, and configures them to write local `.scratch/` tickets in the nxs format:
+
+nxs also provides separate `to-spec`, `to-tickets` and `to-questionnaire` skills with the same names. The diagrams and bundle table below refer to the mattpocock implementations, not the nxs candidates. Before choosing either route, inspect the installed skill path and its provenance in the selected client; a command name alone does not identify which implementation will run. Follow the collision and replacement checks above before changing an installation.
 
 | Bundle | Skills | Where it fits |
 | --- | --- | --- |
@@ -256,7 +258,7 @@ A skill that calls another pulls it in: choosing Wayfinding without Core also in
 Two routes lead to the same `spec.md` and `issues/` files:
 
 - `dev-rnd` alone: it asks its own questions, compares approaches and writes the spec and tickets in one command. Use it when you start from a request.
-- `grill-me` or `wayfinder`, then `to-spec` and `to-tickets`: the interview or the map settles the decisions, and the `to-*` skills only write them down. `dev-rnd` would ask again, so use this route when the decisions are already made in the session. `/dev-rnd <spec-path>` can also slice a spec written by `to-spec`.
+- `grill-me` or `wayfinder`, then the companion `to-spec` and `to-tickets`: the interview or the map settles the decisions, and those companion skills write them down. `dev-rnd` would ask again, so use this route when the decisions are already made in the session. `/dev-rnd <spec-path>` can also slice a spec written by `to-spec`.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/grill-dark.svg">

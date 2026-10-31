@@ -64,12 +64,14 @@ frontmatter_field() {
   # Print one top-level frontmatter scalar, joining a block scalar.
   awk -v key="$2" '
     NR == 1 && $0 == "---" { fm = 1; next }
-    fm && $0 == "---" { done = 1; exit }
+    fm && $0 == "---" { if (block) print text; done = 1; exit }
     !fm { next }
     index($0, key ":") == 1 {
       value = substr($0, length(key) + 2)
       sub(/^[ \t]+/, "", value)
       if (value ~ /^[>|][+-]?$/) { block = 1; next }
+      if (key == "name" && value ~ /^"[^"]*"$/) value = substr(value, 2, length(value) - 2)
+      if (key == "name" && value ~ /^\047[^\047]*\047$/) value = substr(value, 2, length(value) - 2)
       print value
       done = 1
       exit
@@ -82,14 +84,52 @@ frontmatter_field() {
 
 check_frontmatter() {
   awk '
+    function valid_quoted(value, quote,    i, c, nextc, hex) {
+      for (i = 2; i <= length(value); i++) {
+        c = substr(value, i, 1)
+        if (c == quote) {
+          if (quote == sq && substr(value, i + 1, 1) == sq) { i++; continue }
+          return substr(value, i + 1) ~ /^[ \t]*(#.*)?$/
+        }
+        if (quote == "\"" && c == "\\") {
+          nextc = substr(value, ++i, 1)
+          if (nextc == "u") {
+            hex = substr(value, i + 1, 4)
+            if (length(hex) != 4 || hex !~ /^[[:xdigit:]]+$/) return 0
+            i += 4
+          } else if (index("\"\\/bfnrt", nextc) == 0 || nextc == "") return 0
+        }
+      }
+      return 0
+    }
+    BEGIN { sq = sprintf("%c", 39) }
     NR == 1 { if ($0 != "---") exit 1; next }
-    $0 == "---" { closed = 1; exit }
+    $0 == "---" { if (block && !block_content) exit 1; closed = 1; exit }
+    block && /^[ ]+[^ ]/ {
+      indent = match($0, /[^ ]/) - 1
+      if (block_content && indent < block_indent) exit 1
+      if (!block_content) block_indent = indent
+      block_content = 1; next
+    }
+    block && /^[ \t]*$/ { next }
+    block { if (!block_content) exit 1; block = 0 }
     /^[A-Za-z][A-Za-z0-9_-]*:/ {
       key = $0; sub(/:.*/, "", key)
       if (seen[key]++) exit 1
+      value = substr($0, length(key) + 2); sub(/^[ \t]+/, "", value)
+      if (value ~ /^[>|]/) {
+        if (value !~ /^[>|][+-]?$/) exit 1
+        block = 1; block_content = 0; next
+      }
+      first = substr(value, 1, 1)
+      if (first == "\"" || first == sq) {
+        if (!valid_quoted(value, first)) exit 1
+        if ((key == "name" || key == "description") && value ~ ("^" first first "[ \t]*(#.*)?$")) exit 1
+      } else if (value ~ /:[ \t]/ || value ~ /^[\[\]{}&*!%@`]/) exit 1
+      else if ((key == "name" || key == "description") && value ~ /^(null|~|true|false)([ \t]*(#.*)?)?$/) exit 1
       next
     }
-    /^[ \t]*($|#)/ || /^ / { next }
+    /^[ \t]*($|#)/ { next }
     { exit 1 }
     END { if (!closed) exit 1 }
   ' "$1" || fail "$1: invalid, duplicate or unclosed frontmatter"
@@ -301,8 +341,27 @@ check_runtime_paths() {
 }
 
 check_changelog() {
-  grep -Eq '^## \[[^]]+\] - [0-9]{4}-[0-9]{2}-[0-9]{2}[ \t]*$' CHANGELOG.md ||
-    fail "CHANGELOG.md: no dated release entries"
+  awk '
+    function finish_release() {
+      if (release && !body) { print "empty release entry: " heading > "/dev/stderr"; bad = 1 }
+    }
+    /^## / {
+      finish_release(); release = 0; body = 0
+      if ($0 ~ /^## \[Unreleased\]/) next
+      if ($0 !~ /^## \[[^]]+\] - [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9][ \t]*$/) {
+        print "invalid release heading: " $0 > "/dev/stderr"; bad = 1; next
+      }
+      heading = $0; date = $0; sub(/^.* - /, "", date); sub(/[ \t]*$/, "", date)
+      split(date, parts, "-"); year = parts[1] + 0; month = parts[2] + 0; day = parts[3] + 0
+      days = (month == 2 ? 28 + (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) : (month == 4 || month == 6 || month == 9 || month == 11 ? 30 : 31))
+      if (year < 1 || month < 1 || month > 12 || day < 1 || day > days) {
+        print "invalid release date: " date > "/dev/stderr"; bad = 1
+      }
+      release = 1; count++; next
+    }
+    release && $0 ~ /[^[:space:]]/ && $0 !~ /^#/ { body = 1 }
+    END { finish_release(); if (!count) { print "no dated release entries" > "/dev/stderr"; bad = 1 }; exit bad }
+  ' CHANGELOG.md || fail "CHANGELOG.md: invalid release entries"
 }
 
 check_catalog
