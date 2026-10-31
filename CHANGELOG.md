@@ -26,6 +26,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - README distinguishes same-name nxs and companion skills before choosing a route.
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.74.2] - 2026-11-01
+
+### Changed
+
+- `dev-review` checks affected diagrams and accessibility text when command routes change, distinguishing current and legacy behavior.
+- Client scenarios pin final ticket fixtures and resources and keep changed-resource observations unverified until rechecked.
+
 ## [0.74.1] - 2026-11-01
 
 ### Fixed
