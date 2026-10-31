@@ -384,3 +384,7 @@ These cases describe expected behavior and have not been observed live. Use disp
 ## Independent global setup candidate
 
 These cases are source scenarios, not observed client behavior. In disposable homes, test clean and existing instructions, symlink targets, private client content, conflicting or duplicate sections, already-current repeats and declined packages. Confirm the package contains all changes and that only approved bytes are written. Place independent same-name skills and modified installations as sentinels; confirm setup neither installs nor replaces them. A source capability map does not establish registration.
+
+## Setup transition boundary
+
+The 19-command source catalog and capability map are checked as source artifacts. A clean installation, an existing installation upgrade, collision preservation and native registration for the candidate are unverified in each client. In particular, Claude Code was unavailable for the preceding native observation. These gaps prevent a retirement claim: retain `dev-setup` and the other legacy routes, and do not modify user installations. Source checks do not substitute for a live setup run or a native registration check.

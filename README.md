@@ -26,6 +26,7 @@ Development skills for coding agents: shape features and bugs into tickets for t
 | [rnd-prototype](skills/rnd-prototype/SKILL.md) | Test a hypothesis with a retained prototype and verdict. Candidate route; live behavior is unverified. |
 | [rnd-design](skills/rnd-design/SKILL.md) | Agree and save a selected module's interface and responsibilities. Candidate route; live behavior is unverified. |
 | [rnd-audit](skills/rnd-audit/SKILL.md) | Survey a project and save ranked architecture opportunities. Candidate route; live behavior is unverified. |
+| [nxs-setup](skills/nxs-setup/SKILL.md) | Audit a concrete setup goal or project/global configuration, then apply only the approved package. Candidate; live behavior is unverified. |
 | [nxs-lead](skills/nxs-lead/SKILL.md) | Coordinate approved work through native subagents. Additive candidate; live behavior is unverified. |
 | [nxs-retro](skills/nxs-retro/SKILL.md) | Review one session and save evidence-based improvement proposals. Candidate route; live behavior is unverified. |
 | [to-handoff](skills/to-handoff/SKILL.md) | Save resumable task context with or without a journal. Candidate route; live behavior is unverified. |
@@ -36,7 +37,7 @@ Development skills for coding agents: shape features and bugs into tickets for t
 
 `dev-lead`, `dev-setup`, `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". For OpenCode, select a skill with `@dev-<name>` instead of `/dev-<name>`.
 
-`rnd-grill`, `rnd-debug`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-questionnaire`, `to-handoff`, `nxs-retro`, `to-decision`, `to-spec` and `to-tickets` also require explicit invocation (OpenCode uses `@` and the skill name). They are additive candidates; existing manual and coordinator routes remain available. See client scenarios for actual verification limits before relying on a client route.
+`rnd-grill`, `rnd-debug`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-questionnaire`, `to-handoff`, `nxs-retro`, `nxs-lead`, `nxs-setup`, `dev-exec`, `to-decision`, `to-spec` and `to-tickets` also require explicit invocation (OpenCode uses `@` and the skill name). They are additive candidates; existing manual and coordinator routes remain available. See client scenarios for actual verification limits before relying on a client route.
 
 Use `to-spec <decision-path>` or `to-spec <clear request>` to propose a feature spec without slicing tickets. Existing approval is reused within its scope; a changed existing spec needs approval of its concrete revision. An expressly requested draft keeps its open questions and cannot hand off ready work while material evidence is missing. See [to-spec](skills/to-spec/SKILL.md) for its source, preservation and handoff rules. This addition leaves the complete `dev-rnd` route and existing installations available.
 
@@ -77,6 +78,12 @@ npx skills@latest update -g
 Start a new session after updating.
 
 ## Set up
+
+The independent [nxs-setup candidate](skills/nxs-setup/SKILL.md) supports a concrete goal, project or global configuration and report-only readiness. It does not install companion skills. Its [15-capability map](skills/nxs-setup/references/capabilities.md) describes source routes, not client registration. Live setup behavior and native registration remain unverified, so the existing setup route remains available.
+
+The agreed 19-command source catalog is `rnd-grill`, `to-decision`, `to-spec`, `to-tickets`, `dev-exec`, `rnd-debug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-questionnaire`, `to-handoff`, `nxs-retro`, `nxs-lead` and `nxs-setup`. The checker also retains four legacy source entries; source presence does not prove registration.
+
+Before replacing an installed skill, identify its exact path, provenance and user modifications; preserve those modifications, verify the replacement in isolation and check actual client registration. A name collision alone does not authorize overwrite. Existing installations remain unchanged by source updates. If a candidate fails verification, continue the retained route and leave the existing installation intact.
 
 Run `/dev-setup global` once per machine and `/dev-setup project` once in each repository. Without an argument, the command asks which mode you mean inside a Git repository and runs `global` outside one.
 

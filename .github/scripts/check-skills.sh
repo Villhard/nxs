@@ -33,6 +33,10 @@ EXPLICIT=(
   dev-rnd dev-bug dev-review dev-spec dev-setup nxs-setup dev-lead
   rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro nxs-lead
 )
+TARGET=(
+  rnd-grill to-decision to-spec to-tickets dev-exec rnd-debug dev-review dev-spec dev-commit
+  rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-questionnaire to-handoff nxs-retro nxs-lead nxs-setup
+)
 ROLES=(
   review-quality review-testing review-simplification review-verify
 )
@@ -223,8 +227,8 @@ normalize_path() {
 check_links() {
   local path skill_root destination target
   while IFS= read -r path; do
-    skill_root=skills/${path#skills/}
-    skill_root=${skill_root%%/*}
+    skill_root=${path#skills/}
+    skill_root=skills/${skill_root%%/*}
     while IFS= read -r destination; do
       case $destination in
         http://*|https://*|mailto:*|\#*|'') continue ;;
@@ -268,6 +272,11 @@ check_changelog() {
 }
 
 check_catalog
+[ "${#TARGET[@]}" -eq 19 ] || fail "target catalog must have 19 commands"
+[ "$(printf '%s\n' "${TARGET[@]}" | sort -u | wc -l | tr -d ' ')" -eq 19 ] || fail "duplicate target command"
+for name in "${TARGET[@]}"; do
+  [ -f "skills/$name/SKILL.md" ] || fail "target command $name missing"
+done
 for name in "${SKILLS[@]}"; do
   check_skill "$name"
 done

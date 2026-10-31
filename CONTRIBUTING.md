@@ -144,3 +144,5 @@ Keep `nxs-lead` continuation in its own reference: historical records remain evi
 Keep guarded auto explicitly selected and its local HTML defense and approval order in `nxs-lead` references. Approval of the defense alone authorizes neither saving nor an unrequested stage.
 
 The shared controlled-run contract recognizes either explicitly invoked coordinator; propagate changes to every cataloged consumer. Retain `dev-lead`, `dev-setup` and their active callers until ticket 32's verified cutover. Preserve old records and installations; a replacement needs exact path, provenance, preserved user changes, verification and applicable authorization.
+
+`nxs-setup` is an additive project, goal and global setup candidate. Keep its writing guidance canonical and its retro copy identical, its tracker Done when block synchronized with `to-tickets`, and both explicit invocation policies cataloged. The 19 agreed commands are a checked source subset; four legacy routes remain until their replacement gates pass. Neither source presence nor shell checks establish native client registration.
