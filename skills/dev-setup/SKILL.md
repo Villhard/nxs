@@ -1,7 +1,7 @@
 ---
 name: dev-setup
-description: Set up agent instructions for the dev skills when the user explicitly invokes /dev-setup. `global` wires Claude Code, Codex and OpenCode to `~/.agents/AGENTS.md` and adds the `## nxs` section and accepted working rules, and installs the chosen mattpocock/skills bundles with their tracker config; `project` writes a repository `## nxs` section with the branch rule and check commands and keeps `.scratch/` out of Git. Each mode audits, shows one diff and writes only after approval. Not for discussing instructions; dev-spec records project specs and dev-rnd shapes work.
-argument-hint: "[global|project]"
+description: Set up agent instructions when the user explicitly invokes /dev-setup. `global` wires clients to shared instructions and installs approved skill bundles; `project` proposes repository rules and checks. Both write only an approved diff. Add `--readiness` to either explicit mode for a report-only audit of the selected lead environment, without setup writes or installs. Not for discussing instructions; dev-spec records project specs and dev-rnd shapes work.
+argument-hint: "[global|project] [--readiness]"
 disable-model-invocation: true
 ---
 
@@ -9,11 +9,13 @@ disable-model-invocation: true
 
 Give the user's agents and a repository the settings the other dev skills rely on: an executor reads project specs on its path, tickets name a `**Branch:**` from the project's branch rule, a ticket's `Done when` runs "the full test suite and linter", and feature records under `.scratch/` stay out of Git. Audit, show one diff, write only what the user approves, then stop.
 
-Accepted input: `project` or `global`.
+Accepted input: `project` or `global`, optionally followed by `--readiness`.
 
 Example: /dev-setup project
 
 Suggest the next command at a handoff; never start it automatically.
+
+Handle `project --readiness` and `global --readiness` before normal setup: read [readiness](references/readiness.md), report and stop. Require an explicit mode with this flag. Skip the setup AUDIT, questions, diff, upstream bundle listing, INSTALL, WRITE and CHECK. Ordinary setup below retains its approval, repeat and decline contract.
 
 ## CONTRACT
 
@@ -31,6 +33,7 @@ Both modes follow these rules. Each mode's STANCE names the files it writes, its
 
 | Input | Action |
 | --- | --- |
+| `project --readiness` or `global --readiness` | Run only the bundled readiness report and stop |
 | `project` | Run the steps below |
 | `global` | Read [global mode](references/global.md) and follow it instead of the sections below |
 | No argument, inside a Git repository (`git rev-parse --show-toplevel` succeeds) | Ask once: `project` for this repository or `global` for the user's agent instructions; then act on the answer as above |

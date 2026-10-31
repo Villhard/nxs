@@ -19,6 +19,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - `dev-lead` adds lead-only timestamped status/HUD presentation and durable bounded questionnaire transport, with recoverable ownership of updated HUDs, genuine approval/form regressions and release-controlled pending fixtures; the lead retains approval and workflow decisions.
+- `dev-setup` adds explicit global/project `--readiness` reports with bundled native discovery, actual requirement diagnoses and remedies, without setup writes or installation.
+
+### Changed
+
+- `dev-lead` checkpoints each accepted implementation and its verified review corrections through checks, scoped review, built-work specs and atomic commits before the next independent ticket, retaining conservative commit recovery and final whole-feature review.
+- Runtime tests and client scenarios cover checkpoint composition, lost commit responses, foreign index preservation and readiness/setup boundaries, separating mechanics fixtures from consumer and live verification.
+
+### Fixed
+
+- `dev-lead` outcome packets, schema descriptions and shared controlled-run instructions clarify existing status fields and file artifacts for native emitters.
 
 ## [0.48.0] - 2026-10-30
 

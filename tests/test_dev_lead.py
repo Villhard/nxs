@@ -1917,5 +1917,249 @@ class Visibility(unittest.TestCase):
         self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
 
 
+class Checkpoints(unittest.TestCase):
+    """Explicit fixture orchestration, not a production stage selector or consumer run."""
+    configure = Helpers.configure
+    git = Helpers.git
+    tearDown = Visibility.tearDown
+
+    def setUp(self):
+        Helpers.setUp(self)
+        self.task = self.repo / '.scratch' / 'checkpoint'
+        self.task.mkdir(parents=True)
+        (self.repo / '.git/info/exclude').write_text('.scratch/\n')
+        self.owner = runner.controller(self.task)
+        self.owner.__enter__()
+        self.identity = runner.preflight(str(self.agterm))
+        self.waiters = []
+        self.progress = {'stage': 'planning', 'step_id': 'A', 'action': 'Inspect evidence',
+                         'reason': '', 'current_run': None, 'accepted_tickets': [], 'last_commit': None}
+
+    def test_checkpoint_sequence_lost_reply_and_status_cache_recovery(self):
+        base = self.git('rev-parse', 'HEAD').decode().strip()
+        initial = mechanics.git_snapshot(self.repo)
+        journal.append_event(self.task / 'decision.log', 'research', 'decision',
+                             {'summary': 'Planning only; no commit group selected'})
+        self.assertEqual(initial, mechanics.git_snapshot(self.repo))
+        plan_a = self.task / 'A-plan.md'
+        plan_a.write_text('Add the reviewed A result in result.txt.\n')
+        journal.append_event(self.task / 'decision.log', 'A-plan', 'approval',
+                             {'scope': 'A', 'artifact': str(plan_a), 'plan_sha256': mechanics.sha256(plan_a)})
+        self.artifact.write_text('Ticket A\n')
+        initial_check = mechanics.capture([sys.executable, '-c',
+                                           "from pathlib import Path; assert Path('result.txt').read_text() == 'Ticket A\\n'"],
+                                          self.repo, self.task / 'checks-initial', 3, terminal=False)
+        self.assertEqual(initial_check['exit_code'], 0)
+        journal.append_event(self.task / 'decision.log', 'A-accepted', 'ticket.implementation.accepted',
+                             {'ticket': 'issues/A.md', 'evidence': [str(self.task / 'checks-initial/exit.json')]})
+        # The fixture lead explicitly selects a dependent review correction.
+        reviewed_hash = mechanics.sha256(self.artifact)
+        fix_plan = self.task / 'A-fix-plan.md'
+        fix_plan.write_text('Apply the selected reviewed A correction.\n')
+        journal.append_event(self.task / 'decision.log', 'A-fix-plan', 'approval',
+                             {'scope': 'A correction', 'artifact': str(fix_plan), 'plan_sha256': mechanics.sha256(fix_plan)})
+        self.artifact.write_text('Ticket A corrected\n')
+        report = self.task / 'review.md'
+        report.write_text('Correction verified against A: ' + reviewed_hash + '\n')
+        check = mechanics.capture([sys.executable, '-c',
+                                   "from pathlib import Path; assert Path('result.txt').read_text() == 'Ticket A corrected\\n'"],
+                                  self.repo, self.task / 'checks', 3, terminal=False)
+        self.assertEqual(check['exit_code'], 0)
+        journal.append_event(self.task / 'decision.log', 'A-fix-accepted', 'ticket.implementation.accepted',
+                             {'ticket': 'issues/A-fix.md', 'evidence': [str(report), str(self.task / 'checks/exit.json')]})
+        journal.append_event(self.task / 'decision.log', 'A-review', 'review.complete',
+                             {'scope': ['result.txt'], 'corrections': ['A-fix-accepted'],
+                              'evidence': [str(report), str(self.task / 'checks/exit.json')]})
+        built_spec = self.repo / 'built-intent.md'
+        built_spec.write_text('A preserves the reviewed correction.\n')
+        journal.append_event(self.task / 'decision.log', 'A-spec', 'spec.accepted',
+                             {'path': 'built-intent.md', 'sha256': mechanics.sha256(built_spec)})
+        self.git('add', 'result.txt', 'built-intent.md')
+        proposed = self.git('diff', '--cached')
+        commit.intent(self.task, 'A', self.repo)
+        before = mechanics.git_snapshot(self.repo)
+        self.git('commit', '-qm', 'Fixture A and dependent correction')  # Discard the reply.
+        observed = commit.reconcile(self.task, 'A', self.repo)
+        self.assertEqual(observed['status'], 'committed_observed')
+        self.assertFalse(observed['replay_safe'])
+        head_a = observed['head']
+        self.assertEqual(self.git('rev-parse', 'HEAD^').decode().strip(), base)
+        self.assertEqual(proposed, self.git('diff', 'HEAD^', 'HEAD'))
+        self.assertEqual(before['files'], observed['git']['files'])
+        evidence = {'head': head_a, 'tickets': ['issues/A.md', 'issues/A-fix.md'],
+                    'evidence': [str(report), str(self.task / 'checks/exit.json')],
+                    'review': 'A-review', 'spec': 'A-spec'}
+        with patch.object(journal, '_cache', side_effect=OSError('cache interrupted')):
+            with self.assertRaisesRegex(OSError, 'cache interrupted'):
+                journal.append_event(self.task / 'decision.log', 'A-checkpoint', 'ticket.checkpoint.accepted', evidence)
+        journal.recover_state(self.task / 'decision.log')
+        journal.append_event(self.task / 'decision.log', 'A-checkpoint', 'ticket.checkpoint.accepted', evidence)
+        self.progress.update(stage='checkpoint', action='Publish observed commit',
+                             accepted_tickets=[{'ticket': 'issues/A.md', 'event_id': 'A-accepted'},
+                                               {'ticket': 'issues/A-fix.md', 'event_id': 'A-fix-accepted'}],
+                             last_commit={'head': head_a, 'event_id': 'A-checkpoint'})
+        after = mechanics.git_snapshot(self.repo)
+        with patch.object(lead_status, '_text', side_effect=OSError('status interrupted')):
+            with self.assertRaisesRegex(OSError, 'status interrupted'):
+                lead_status.publish(self.task, 'A-progress', self.progress, self.identity)
+        (self.task / 'research/dev-lead/presentation.json').unlink()
+        restored = lead_status.reconcile(self.task, self.identity)
+        self.assertEqual(restored['stale'], [])
+        self.assertIn(head_a, (self.task / 'research/dev-lead/status.md').read_text())
+        self.assertEqual(after, mechanics.git_snapshot(self.repo))
+        self.assertEqual(commit.reconcile(self.task, 'A', self.repo)['head'], head_a)
+        with self.assertRaisesRegex(ValueError, 'intent exists'):
+            commit.intent(self.task, 'A', self.repo)
+        journal.append_event(self.task / 'decision.log', 'B-start', 'decision',
+                             {'summary': 'Lead selected independent B after A checkpoint', 'checkpoint': 'A-checkpoint'})
+        second = self.repo / 'second.txt'
+        plan_b = self.task / 'B-plan.md'
+        plan_b.write_text('Add second.txt with the reviewed B result.\n')
+        journal.append_event(self.task / 'decision.log', 'B-plan-approved', 'approval',
+                             {'scope': 'B', 'artifact': str(plan_b), 'plan_sha256': mechanics.sha256(plan_b)})
+        second.write_text('Ticket B\n')
+        check_b = mechanics.capture([sys.executable, '-c',
+                                     "from pathlib import Path; assert Path('second.txt').read_text() == 'Ticket B\\n'"],
+                                    self.repo, self.task / 'checks-b', 3, terminal=False)
+        self.assertEqual(check_b['exit_code'], 0)
+        journal.append_event(self.task / 'decision.log', 'B-accepted', 'ticket.implementation.accepted',
+                             {'ticket': 'issues/B.md', 'evidence': [str(self.task / 'checks-b/exit.json')]})
+        journal.append_event(self.task / 'decision.log', 'B-review-spec', 'decision',
+                             {'scope': ['second.txt'], 'review': 'Fixture lead inspected exact B bytes',
+                              'spec': 'No additional durable intent', 'evidence': [str(self.task / 'checks-b/exit.json')]})
+        self.git('add', 'second.txt')
+        commit.intent(self.task, 'B', self.repo)
+        self.git('commit', '-qm', 'Fixture B')
+        self.assertEqual(commit.reconcile(self.task, 'B', self.repo)['status'], 'committed_observed')
+        journal.append_event(self.task / 'decision.log', 'B-checkpoint', 'ticket.checkpoint.accepted',
+                             {'head': self.git('rev-parse', 'HEAD').decode().strip(), 'tickets': ['issues/B.md'],
+                              'evidence': ['B-review-spec']})
+        remaining = self.repo / 'remaining.txt'
+        remaining.write_text('Uncommitted final scope\n')
+        final_scope = set(self.git('diff', '--name-only', base, 'HEAD').decode().splitlines())
+        final_scope.update(self.git('ls-files', '--others', '--exclude-standard').decode().splitlines())
+        self.assertEqual(final_scope, {'result.txt', 'built-intent.md', 'second.txt', 'remaining.txt'})
+        rows = journal.read_events(self.task / 'decision.log')
+        ids = [r['event_id'] for r in rows]
+        self.assertLess(ids.index('A-review'), ids.index('A-spec'))
+        self.assertLess(ids.index('A-spec'), ids.index('A:commit'))
+        self.assertLess(ids.index('A-checkpoint'), ids.index('B-start'))
+        self.assertLess(ids.index('B-plan-approved'), ids.index('B-accepted'))
+        self.assertLess(ids.index('B-accepted'), ids.index('B-review-spec'))
+        self.assertLess(ids.index('B-review-spec'), ids.index('B:commit'))
+        self.assertEqual(ids.count('A-checkpoint'), 1)
+        self.assertEqual(self.git('rev-list', '--count', base + '..HEAD').strip(), b'2')
+
+    def test_checkpoint_references_reject_outcome_missing_evidence_and_wrong_head(self):
+        head = self.git('rev-parse', 'HEAD').decode().strip()
+        for name, kind, data, referred in [
+                ('done', 'worker.outcome', {'status': 'done', 'head': head, 'evidence': ['result.txt']}, head),
+                ('empty', 'ticket.checkpoint.accepted', {'head': head}, head),
+                ('mismatch', 'ticket.checkpoint.accepted', {'head': head, 'evidence': ['result.txt']}, '0' * 40)]:
+            with self.subTest(name=name):
+                journal.append_event(self.task / 'decision.log', name, kind, data)
+                self.progress['last_commit'] = {'head': referred, 'event_id': name}
+                before = mechanics.git_snapshot(self.repo)
+                with self.assertRaisesRegex(ValueError, 'checkpoint evidence'):
+                    lead_status.publish(self.task, name + '-progress', self.progress, self.identity)
+                self.assertEqual(before, mechanics.git_snapshot(self.repo))
+        self.progress['last_commit'] = {'head': head, 'event_id': 'missing'}
+        with self.assertRaisesRegex(ValueError, 'checkpoint evidence'):
+            lead_status.publish(self.task, 'missing-progress', self.progress, self.identity)
+        journal.append_event(self.task / 'decision.log', 'actual', 'ticket.checkpoint.accepted',
+                             {'head': head, 'evidence': ['result.txt']})
+        self.progress['last_commit'] = {'head': head, 'event_id': 'actual'}
+        lead_status.publish(self.task, 'actual-progress', self.progress, self.identity)
+        self.git('commit', '--allow-empty', '-qm', 'Unrelated later fixture HEAD')
+        self.assertIn('HEAD differs from last verified checkpoint',
+                      lead_status.reconcile(self.task, self.identity)['stale'])
+
+    def test_checkpoint_unknown_effects_do_not_change_git_or_authorize_retry(self):
+        self.artifact.write_text('Intended\n')
+        self.git('add', 'result.txt')
+        commit.intent(self.task, 'unknown', self.repo)
+        original_branch = self.git('branch', '--show-current').decode().strip()
+        original_head = self.git('rev-parse', 'HEAD').decode().strip()
+        for _ in range(2):
+            before = mechanics.git_snapshot(self.repo)
+            result = commit.reconcile(self.task, 'unknown', self.repo)
+            self.assertEqual(result['status'], 'uncertain')
+            self.assertFalse(result['replay_safe'])
+            self.assertEqual(before, mechanics.git_snapshot(self.repo))
+        self.git('commit', '-qm', 'Known fixture effect')
+        self.assertEqual(commit.reconcile(self.task, 'unknown', self.repo)['status'], 'committed_observed')
+        for variant in ('working', 'index', 'branch', 'prior', 'later'):
+            with self.subTest(variant=variant):
+                if variant == 'working':
+                    self.artifact.write_text('Changed after effect\n')
+                elif variant == 'index':
+                    (self.repo / 'foreign.txt').write_text('Foreign\n')
+                    self.git('add', 'foreign.txt')
+                elif variant == 'branch':
+                    self.git('switch', '-qc', 'fixture-other')
+                elif variant == 'prior':
+                    self.git('switch', '--detach', original_head)
+                else:
+                    self.git('commit', '--allow-empty', '-qm', 'Unrelated later fixture effect')
+                before = mechanics.git_snapshot(self.repo)
+                for _ in range(2):
+                    result = commit.reconcile(self.task, 'unknown', self.repo)
+                    self.assertEqual(result['status'], 'uncertain')
+                    self.assertFalse(result['replay_safe'])
+                self.assertEqual(before, mechanics.git_snapshot(self.repo))
+                if variant == 'working':
+                    self.artifact.write_text('Intended\n')
+                elif variant == 'index':
+                    self.git('restore', '--staged', 'foreign.txt')
+                    (self.repo / 'foreign.txt').unlink()
+                elif variant == 'branch':
+                    self.git('switch', '-')
+                elif variant == 'prior':
+                    self.git('switch', original_branch)
+        with self.assertRaisesRegex(ValueError, 'intent exists'):
+            commit.intent(self.task, 'unknown', self.repo)
+
+    def test_checkpoint_only_commit_preserves_foreign_index_and_stays_conservative(self):
+        foreign = self.repo / 'foreign.txt'
+        foreign.write_text('Foreign staged content\n')
+        self.git('add', 'foreign.txt')
+        self.artifact.write_text('Selected task\n')
+        original_index = self.git('diff', '--cached')
+        original_files = mechanics.git_snapshot(self.repo)['files']
+        selected = self.git('diff', 'HEAD', '--', 'result.txt')
+        commit.intent(self.task, 'selected', self.repo)
+        self.git('commit', '--only', '-qm', 'Fixture selected task', '--', 'result.txt')
+        self.assertEqual(self.git('diff', 'HEAD^', 'HEAD'), selected)
+        self.assertEqual(self.git('diff', '--cached'), original_index)
+        self.assertEqual(mechanics.git_snapshot(self.repo)['files'], original_files)
+        before = mechanics.git_snapshot(self.repo)
+        result = commit.reconcile(self.task, 'selected', self.repo)
+        self.assertEqual(result['status'], 'uncertain')
+        self.assertFalse(result['replay_safe'])
+        self.assertEqual(before, mechanics.git_snapshot(self.repo))
+        self.assertEqual(self.git('show', 'HEAD:result.txt'), b'Selected task\n')
+        self.assertNotIn(b'foreign.txt', self.git('ls-tree', '--name-only', 'HEAD'))
+
+    def test_checkpoint_separable_task_hunk_preserves_user_working_bytes(self):
+        lines = ['line ' + str(n) + '\n' for n in range(20)]
+        self.artifact.write_text(''.join(lines))
+        self.git('add', 'result.txt')
+        self.git('commit', '-qm', 'Fixture spaced hunks')
+        lines[0], lines[-1] = 'task change\n', 'user change\n'
+        self.artifact.write_text(''.join(lines))
+        working = self.artifact.read_bytes()
+        task_patch = b'diff --git a/result.txt b/result.txt\n--- a/result.txt\n+++ b/result.txt\n@@ -1 +1 @@\n-line 0\n+task change\n'
+        applied = subprocess.run(['git', '-C', str(self.repo), 'apply', '--cached', '--unidiff-zero', '-'],
+                                 input=task_patch, capture_output=True)
+        self.assertEqual(applied.returncode, 0, applied.stderr)
+        self.assertNotIn(b'user change', self.git('diff', '--cached'))
+        commit.intent(self.task, 'hunk', self.repo)
+        self.git('commit', '-qm', 'Fixture separable task hunk')
+        self.assertEqual(commit.reconcile(self.task, 'hunk', self.repo)['status'], 'committed_observed')
+        self.assertEqual(self.artifact.read_bytes(), working)
+        self.assertIn(b'user change', self.git('diff'))
+        self.assertNotIn(b'user change', self.git('show', 'HEAD:result.txt'))
+
+
 if __name__ == '__main__':
     unittest.main()

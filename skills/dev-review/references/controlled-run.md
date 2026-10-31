@@ -10,7 +10,19 @@ The user explicitly invoking `dev-lead` delegates internal use of the task skill
 
 ## OUTCOME
 
-End each bounded worker turn with a schema-constrained JSON envelope: `status` (`done`, `needs_input`, `blocked`), `step_id`, `summary`, `artifacts`, `evidence`, `question` and `reason`. Use the supplied schema and exact step ID. List only existing artifacts within allowed paths. `needs_input` includes the saved question and finishes the process; `blocked` names the cause. Persist the session ID outside the envelope too, from session events. Lead resumes only that session after recording the answer.
+End each bounded worker turn with a schema-constrained JSON envelope containing exactly seven fields: `status` (`done`, `needs_input`, `blocked`), `step_id`, `summary`, `artifacts`, `evidence`, `question` and `reason`. Use the supplied schema and exact nonempty step ID; summary must contain non-whitespace text.
+
+| Status | question | reason |
+| --- | --- | --- |
+| `done` | Exactly `""` | Exactly `""` |
+| `needs_input` | Question containing non-whitespace text | Any string, including empty or explanatory text |
+| `blocked` | Exactly `""` | Blocker reason containing non-whitespace text |
+
+Put explanations and nonblocking limitations in summary/evidence; `done.question` and `done.reason` remain exactly empty strings. Evidence contains nonblank check descriptions or references; `[]` is valid.
+
+Artifacts are existing FILE paths under the allowed artifact root, unique after resolution; directories are invalid. Resolve relative paths from that root and check absolute paths and symlinks by their resolved targets. An empty artifacts array (`[]`) is valid.
+
+For `needs_input`, save the question and finish the process. Persist the session ID outside the envelope too, from session events. Lead resumes only that session after recording the answer.
 
 `done` is a proposal, accepted only after independent artifact, acceptance, command-output and Git checks. It never replaces ticket statuses. A valid JSON shape, a zero exit code or the executor's assertion alone is insufficient. A ticket planning turn returns `needs_input` with the proposed ticket plan and waits for recorded lead approval before implementation. A source-changing ticket executor never commits.
 
