@@ -368,3 +368,7 @@ These cases are source-level scenarios, not live candidate observations. In a di
 ## Coordinator continuation candidate
 
 These cases are unobserved scenarios. Interrupt after an uncertain worker launch or commit and inspect the artifacts, host records, index and HEAD: a missing reply alone must not cause replay. With insufficient evidence, the affected action stops; independent authorized work can continue. An unanswered question or approval for changed content grants no authorization. Continue a native session only where the active client supports it and its identity is known; otherwise reconcile before a fresh bounded worker. Preserve old records and distinguish source inspection from live behavior.
+
+## Guarded auto candidate
+
+These scenarios are source-level, not live observations. Explicitly select auto and confirm participants and approval order, including the user deciding alone. With a critical unanswered participant question, keep dependent decisions blocked. Open the resulting standalone HTML directly from disk without network or server; inspect comparisons, evidence, assumptions, alternatives, risks and next action. A revision requires renewed matching approval; dismissal, timeout and probes grant none. Approve the defense alone and verify no decision is saved and no unrequested stage starts. Separately authorize implementation and check lead plan approval, native permissions and scope-change stops. Candidate behavior and HTML rendering remain unverified until exercised.

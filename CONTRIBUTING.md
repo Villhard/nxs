@@ -140,3 +140,5 @@ Publish by pushing to `main` before updating installations; users update with `n
 `nxs-lead` is an additive explicit coordinator. Catalog both invocation policies and its project-spec, journal and controlled-run copies. Keep legacy routes until the separate verified cutover; source changes never update installations.
 
 Keep `nxs-lead` continuation in its own reference: historical records remain evidence, native continuation is capability-dependent, and no recovery engine is bundled.
+
+Keep guarded auto explicitly selected and its local HTML defense and approval order in `nxs-lead` references. Approval of the defense alone authorizes neither saving nor an unrequested stage.

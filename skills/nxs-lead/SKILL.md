@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Coordinate explicitly requested work through the active client's native subagents. Ordinary coordination is the default; do not enable auto implicitly. Read [project specs](references/project-specs.md) for affected paths and [task journal](references/task-journal.md) before a task write, question or handoff. Use an explicit [controlled run](references/controlled-run.md) packet only where required by a selected stage.
 
-For interruption or uncertain effects, read [continuation](references/recovery.md) before continuing.
+For explicitly selected auto, read [guarded auto](references/auto.md). For interruption or uncertain effects, read [continuation](references/recovery.md) before continuing.
 
 ## COORDINATE
 

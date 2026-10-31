@@ -274,3 +274,5 @@ Use `nxs-retro [one session or evidence path]` to review the current or one expl
 Use `nxs-lead [request, feature or ticket]` for explicit ordinary coordination. It preserves native permissions and independently checks results; the existing `dev-lead` route remains available.
 
 After interruption, `nxs-lead` reconciles current evidence before continuing; native session continuation depends on the client. Missing evidence blocks the affected action rather than triggering a replay.
+
+Explicitly selected `nxs-lead` auto presents a local standalone HTML defense and requires approval of its current decisions and scope. Defense approval alone neither saves a decision nor starts another stage.
