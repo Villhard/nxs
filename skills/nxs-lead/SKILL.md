@@ -9,6 +9,8 @@ disable-model-invocation: true
 
 Coordinate explicitly requested work through the active client's native subagents. Ordinary coordination is the default; do not enable auto implicitly. Read [project specs](references/project-specs.md) for affected paths and [task journal](references/task-journal.md) before a task write, question or handoff. Use an explicit [controlled run](references/controlled-run.md) packet only where required by a selected stage.
 
+For interruption or uncertain effects, read [continuation](references/recovery.md) before continuing.
+
 ## COORDINATE
 
 1. Resolve the request, feature or ticket from evidence, not branch alone. Establish user-approved scope, existing decisions, permissions, prerequisites and desired stages. Ask the user for material unresolved decisions; do not invent approval. Keep task records proportionate to the work.

@@ -272,3 +272,5 @@ Use `to-handoff [task or destination path]` to save accepted, open and unverifie
 Use `nxs-retro [one session or evidence path]` to review the current or one explicitly selected session. Apply improvements only within the authorized scope; client session access is unverified.
 
 Use `nxs-lead [request, feature or ticket]` for explicit ordinary coordination. It preserves native permissions and independently checks results; the existing `dev-lead` route remains available.
+
+After interruption, `nxs-lead` reconciles current evidence before continuing; native session continuation depends on the client. Missing evidence blocks the affected action rather than triggering a replay.

@@ -364,3 +364,7 @@ These are scenarios to exercise, not observed client behavior. Pin the candidate
 ## Ordinary coordinator candidate
 
 These cases are source-level scenarios, not live candidate observations. In a disposable task, pin the candidate, client, permissions and inputs. Check a bounded native delegation and independent artifact, check and Git assessment. A missing native capability stops the affected step; a scope change returns to the user. Confirm technical plan approval precedes edits, no empty commit or push occurs, and standalone and legacy routes remain available. Native permission enforcement and client compatibility require separate evidence.
+
+## Coordinator continuation candidate
+
+These cases are unobserved scenarios. Interrupt after an uncertain worker launch or commit and inspect the artifacts, host records, index and HEAD: a missing reply alone must not cause replay. With insufficient evidence, the affected action stops; independent authorized work can continue. An unanswered question or approval for changed content grants no authorization. Continue a native session only where the active client supports it and its identity is known; otherwise reconcile before a fresh bounded worker. Preserve old records and distinguish source inspection from live behavior.
