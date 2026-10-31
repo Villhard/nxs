@@ -21,12 +21,15 @@ Development skills for coding agents: shape features and bugs into tickets for t
 | [rnd-grill](skills/rnd-grill/SKILL.md) | Discuss an idea, question or plan; conclude in dialogue without saving or starting development. Candidate route alongside dev-rnd. |
 | [to-decision](skills/to-decision/SKILL.md) | Show and save an approved decision or unfinished discussion; write only approved glossary/ADR proposals. Candidate route alongside existing manual saving. |
 | [to-spec](skills/to-spec/SKILL.md) | Prepare a local feature spec from a saved decision or clear request; retain draft questions and stop before tickets. Candidate route alongside dev-rnd. |
+| [to-tickets](skills/to-tickets/SKILL.md) | Slice an approved feature spec into local implementation tickets while preserving existing ticket history. Candidate route alongside dev-rnd. |
 
 `dev-lead`, `dev-setup`, `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". For OpenCode, select a skill with `@dev-<name>` instead of `/dev-<name>`.
 
-`rnd-grill`, `to-decision` and `to-spec` also require explicit invocation (OpenCode: `@rnd-grill`, `@to-decision` or `@to-spec`). They are additive candidates; existing manual and coordinator routes remain available. See client scenarios for actual verification limits before relying on a client route.
+`rnd-grill`, `to-decision`, `to-spec` and `to-tickets` also require explicit invocation (OpenCode: `@rnd-grill`, `@to-decision`, `@to-spec` or `@to-tickets`). They are additive candidates; existing manual and coordinator routes remain available. See client scenarios for actual verification limits before relying on a client route.
 
 Use `to-spec <decision-path>` or `to-spec <clear request>` to propose a feature spec without slicing tickets. Existing approval is reused within its scope; a changed existing spec needs approval of its concrete revision. An expressly requested draft keeps its open questions and cannot hand off ready work while material evidence is missing. See [to-spec](skills/to-spec/SKILL.md) for its source, preservation and handoff rules. This addition leaves the complete `dev-rnd` route and existing installations available.
+
+Use `to-tickets <spec-path>` to propose implementation tickets from an approved local feature spec. Covered tickets and decision histories stay unchanged; genuinely new scope appends. It retains the `/plan` executor handoff. See [to-tickets](skills/to-tickets/SKILL.md) for source, dependency and revision gates. This candidate does not replace an installed same-name skill or switch the existing manual/coordinator routes.
 
 ## Install
 

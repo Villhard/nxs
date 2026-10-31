@@ -21,6 +21,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.53.0] - 2026-10-31
+
+### Added
+
+- `to-tickets` adds explicit independent feature-spec slicing, history-preserving reuse, dependency evidence and authorized revision gates with the retained `/plan` handoff.
+
+### Changed
+
+- `to-tickets` owns the byte-identical ticket rules/template consumed by `dev-rnd`, `dev-bug` and `dev-review`; existing routes and execution text remain available.
+- Checker catalog, shared-copy expectations, tracker Done when source and regression fixtures include the self-contained `to-tickets` candidate.
+- README, CONTRIBUTING and client scenarios document the additive ticket candidate, canonical propagation and proportionate observation limits.
+
 ## [0.52.0] - 2026-10-31
 
 ### Added

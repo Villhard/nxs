@@ -1,6 +1,6 @@
 # TICKET
 
-Read this reference before writing a ticket. `dev-rnd`, `dev-bug` and `dev-review` create tickets by these rules; each command keeps its own gates for when a ticket may be written.
+Read this reference before writing a ticket. `to-tickets` owns these rules and the template; `dev-rnd`, `dev-bug` and `dev-review` retain identical bundled copies and their own gates for when a ticket may be written.
 
 ## TEMPLATE
 
