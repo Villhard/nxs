@@ -38,6 +38,7 @@ jobs:
         run: |
           listed=$(npx -y skills@latest add . -l)
           echo "$listed"
+          listed=$(printf '%s\n' "$listed" | sed -E $'s/\033\\[[0-9;]*[mK]//g')
           for skill in dev-rnd dev-bug dev-lead dev-setup rnd-grill to-decision to-spec to-tickets dev-exec rnd-debug dev-review dev-spec dev-commit rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-questionnaire to-handoff nxs-retro nxs-lead nxs-setup; do
             echo "$listed" | grep -E -q "(^|[^[:alnum:]-])${skill}([^[:alnum:]-]|$)" || { echo "missing skill: $skill"; exit 1; }
           done
