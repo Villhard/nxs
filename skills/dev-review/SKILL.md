@@ -1,7 +1,7 @@
 ---
 name: dev-review
 description: Review the staged changes, or the branch against its base when nothing is staged, when the user explicitly invokes /dev-review. Save verified findings, then propose tickets and create only the ones the user picks. Never changes code or Git state.
-argument-hint: "[ticket path | feature dir]"
+argument-hint: "[--to-tickets] [ticket path | feature dir]"
 disable-model-invocation: true
 ---
 
@@ -13,9 +13,11 @@ Example: /dev-review
 
 In standalone use, suggest the next command at a handoff; never start it automatically. A controlled run returns its outcome to lead, who selects the next stage.
 
+For the additive `--to-tickets` route, produce verified findings and a selection record under SELECTION HANDOFF; `to-tickets` alone creates tickets on that route. Without the flag, retain the complete legacy review-to-fix route below. Neither route changes code or Git state.
+
 ## TASK CONTEXT
 
-Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and journal state to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
+Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and its records to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
 
 ## STANCE
 
@@ -25,7 +27,7 @@ Use read-only inspection, with `GIT_OPTIONAL_LOCKS=0` for git. Checks may create
 
 ## RESOLVE THE SCOPE
 
-Review has one mode. The only argument is a ticket or feature path under `.scratch/`, which identifies requirements, never the code. Any other argument, such as `quick`, `staged`, `fix` or a code path, stops before any write: say that review takes no mode or selector, staged changes come first and the branch otherwise.
+Review accepts the optional `--to-tickets` selector and a ticket or feature path under `.scratch/`, which identifies requirements, never the code. Any other argument, such as `quick`, `staged`, `fix` or a code path, stops before any write: say that scope cannot be selected, staged changes come first and the branch otherwise.
 
 Record repository root from `git rev-parse --show-toplevel`, optional origin URL with credentials removed, current branch (`HEAD` when detached), and HEAD as an immutable tip OID. Then pick the scope, checking the index first. Detect the base only when the index is empty: `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Staged scope needs no base.
 
@@ -61,7 +63,7 @@ Preserve open follow-ups with origin before overwriting. A request to use review
 
 ## LAUNCH THE AGENTS
 
-Before mutating the report for an agent-based sweep, read [agent launch](references/agent-launch.md) and complete its capability check for every required role. Use the selected adapter and its complete reviewer packet for every launch. Before any launch or direct pass, read [findings](references/findings.md): its SEVERITY BAR is the bar for every reviewer, for LEAD CHECKS and for VERIFY, and its VERIFY A FINDING decides every verdict.
+Before mutating the report for an agent-based sweep, read [agent launch](references/agent-launch.md) and complete its capability check for every required role. Use the selected native subagent facility and its complete reviewer packet for every launch. Before any launch or direct pass, read [findings](references/findings.md): its SEVERITY BAR is the bar for every reviewer, for LEAD CHECKS and for VERIFY, and its VERIFY A FINDING decides every verdict.
 
 Before any agent launch or direct pass, write Scope, Requirements and `sweep: incomplete` to the report, retaining carried follow-ups. Use the review report FORMAT. Never leave the old complete report in place while a new sweep runs.
 
@@ -152,6 +154,12 @@ Expect about one group per critical or major finding plus one or two for the min
 
 In a controlled run, return the proposed groups to lead for selection within the approved feature plan; a material choice still goes to the user. In standalone use, ask the user to answer with finding numbers, for example "1, 3", "1-6", "all", "7 separately", "1 and 3 together", "4: <option>" or "none", and stop until the answer arrives.
 
+## SELECTION HANDOFF
+
+With `--to-tickets`, after PROPOSE TICKETS collect the user selection and grouping choices using the same answer rules below. Unknown, covered or ambiguous numbers require clarification before writing. Save an exact report snapshot as `review-selection-source.md` beside the report and a separate `review-selection.md` with the report path, snapshot path and SHA256, selected finding IDs, exact grouping and reasons, choices and their approval source, and covered ticket paths. Include an explicit empty selection for `none`. Recheck the report currency and requirement pins before saving; if stale or incomplete, stop. Return the report and selection paths and suggest an explicit `to-tickets` invocation. Do not create or modify tickets or change report ticket links on this route. A controlled run returns selection evidence to lead.
+
+Without `--to-tickets`, follow CREATE TICKETS and NEXT as the retained legacy route.
+
 ## CREATE TICKETS
 
 Create tickets only for the findings the answer selects:
@@ -184,4 +192,4 @@ A finding beyond the reviewed scope goes to Follow-ups and gets no proposed tick
 
 ## NEXT
 
-After the answer, give the created ticket paths and suggest `/plan <ticket-path>` for each `ready-for-agent` one; a `needs-info` ticket names its question instead. When every finding was already covered, suggest `/plan <ticket-path>` for each covering `ready-for-agent` ticket. Commit, push and MR/PR creation require the user's explicit request.
+On the legacy route, after the answer, give the created ticket paths and suggest `/plan <ticket-path>` for each `ready-for-agent` one; a `needs-info` ticket names its question instead. When every finding was already covered, suggest `/plan <ticket-path>` for each covering `ready-for-agent` ticket. Commit, push and MR/PR creation require the user's explicit request.

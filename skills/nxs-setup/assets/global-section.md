@@ -1,0 +1,6 @@
+## nxs
+
+- Project specs: when executing a ticket, before changing a file, list the repository root and every ancestor directory of that file (`ls -a <dir>`) for `SPEC.md` and `.SPEC.md` by exact name, and read each one found, root first. Find them only through these listings: content search misses a `.SPEC.md` kept out of Git, and a case-insensitive filesystem opens `spec.md` for `SPEC.md`. Only `/dev-spec` edits specs.
+- Branches: `<type>/<short-description>`, with `<type>` one of `feat`, `fix`, `refactor`, `chore`, `docs`. A branch rule in the project's instructions wins.
+
+- Task journal: when working on a task, append meaningful decisions, questions, answers, stage completions, blockers and handoffs as concise JSONL events with unique IDs to the feature's `decision.log`, using a system file lock. Resolve it from an explicit task/ticket path or unambiguous context, ask when several fit, and pass the same path at handoff. Record links and evidence, never secrets or full conversations. Reconcile the journal with actual artifacts and Git state before resuming; an incomplete companion journal proves no completion. Taskless setup, empty review and declined writes create no journal. Only an explicit controlled-run packet carries the lead's approved plan and bounded outcome contract; standalone calls retain their normal approval gates.

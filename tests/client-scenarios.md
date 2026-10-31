@@ -1,30 +1,32 @@
 # CLIENT SCENARIOS
 
-## VISIBLE STATUS AND QUESTION CONTINUITY
+These scenarios combine current source-contract checks and historical observations. Source or fixture evidence is not native registration or live end-to-end verification. The target catalog has 19 commands; `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup` remain as four legacy entries. Cutover and retirement have not occurred.
 
-The `Visibility` disposable Git/fake-agterm fixtures exercise timestamped status transitions, explicit lead acceptance references, pinned HUD targeting, manual HUD adoption by full observed spec, foreign UI preservation, active controller ownership, bounded page waiting, nested page outcomes, one-time answer use and exact native continuation. They also inject missing caches while an updated HUD remains present, lost open/HUD responses and interruption between receipt, answer, journal and continuation bookkeeping. Genuine approval uses a matching current artifact/hash/scope and records one answer use; generated decision forms start unselected without automatic submission, while probes retain their separate defaults. Pending-state, lost-open and replacement-controller assertions hold fixture submission behind an explicit release signal. Revisions, dismissal, timeout and presentation probes do not grant approval. Run `python3 -m unittest discover -s tests -p test_dev_lead.py -k Visibility -v` for this focused route; no live terminal, native loopback server or dependency installation is involved.
+Legacy scenarios below describe their named routes and version-specific evidence; they do not prescribe `nxs-setup` behavior or prove current client compatibility. In particular, companion bundle offers belong to retained `dev-setup`, while `nxs-setup` offers no companion bundles. Existing `/plan` handoffs remain in source, alongside the separate `dev-exec` candidate.
 
-For a bounded live presentation check, the existing lead controller first records/adopts only its own actual observed HUD and publishes explicit progress. Use one authorized `purpose: probe` form with fixture choices, eight-second self-submit and a 30-second overall observation bound. Keep polling and refreshing status without replacing the pending form; verify a second controller is rejected, save the actual nested reply, consume only a probe observation, reconcile a deleted derived cache and restore the owned HUD afterward. Record source/app versions, timestamps, before/after pinned tree and raw wait evidence under the feature, separately from fixtures. No user decision, feature approval, worker launch, source change, app restart or foreign-session cleanup belongs to this probe. Application/controller death and retained-outcome exhaustion remain fixture-only until independently demonstrated; a passed protocol fixture is not live verification.
 
-Verified on 2026-10-31 with agterm 0.36.0 (6cef448a): one source-helper presentation probe completed in 10.46 seconds across six ticks, preserving the same pending form with suppressed HUD writes, rejecting a second controller, consuming the nested fixture answer once, rebuilding consumed state and restoring the owned HUD. Git/source stayed unchanged; no native worker launch or feature approval occurred. All five required controller checks passed, including 104 unittest tests, plus the untracked visibility reference style check. After the probe, a caller delay exceeded 60 seconds while preparing handoff; the helper flagged it and heartbeats resumed. This does not establish uninterrupted live cadence or verify the subsequent retained-HUD cache-loss correction. Full application/controller-death recovery, retained-outcome eviction and non-Codex live behavior remain fixture-only.
+## NATIVE SUBAGENT DELEGATION
 
-The subsequent correction passed all five controller checks, 108 tests and the targeted OpenCode failed/waiting fixture. With the same live interpreter/controller, only status was reloaded; preserved core modules were explicitly reconciled by byte equality. Two confirmed HUD updates retained durable exact-spec ownership. Removing only presentation.json while the HUD remained present allowed the absent-cache approval-slot check and reconciliation without adoption or semantic progress. Source/index/HEAD stayed unchanged; no form, worker or approval was created. Genuine approval and decision-form protection remain fixture/generated-output evidence; the earlier transport probe is historical.
+`dev-lead` delegates bounded work to the selected client's native subagents. The route must start a fresh-context agent with a complete prompt and report or wait for its result. A matching tool name alone is not evidence; record the actual tool, schema, model/effort selection, completion wait, permission boundary and continuation behavior.
 
-The generated decision-form regression also executes its extracted script with an existing Node executable, parsed controls and controlled document/FormData/agterm stubs. It checks explicit submit, preventDefault and exact decoded choice/text values including escaping and Unicode. Without Node, only this JavaScript subtest is explicitly skipped; unconditional controls/probe checks still run, leaving submit behavior unverified. Execution errors with Node present fail. This fixture does not verify a live DOM, browser or agterm transport.
+| Case | Required observation |
+| --- | --- |
+| Capability check | Inspect exposed tools and schemas; absent fresh context, completion wait, model selection or read-only boundary is reported by its actual cause. No nested CLI runner is started. |
+| Writing step | One writing subagent receives the complete packet, exact cwd, allowed writes and result contract; it does not inherit the parent conversation. The lead records intent before launch. |
+| Needs input | A ticket-planning turn returns `needs_input`; the lead saves the question, records approval and continues the same session only where the host documents continuation, otherwise starts a new bounded run with the approved plan. |
+| Independent acceptance | A `done` envelope is checked against artifacts, acceptance criteria, command output and Git state; the envelope alone does not accept work. |
+| Read-only review | Three finder roles and then the verifier run as native subagents; only the lead writes the report. Prompt-only tool restrictions are not reported as host enforcement. |
+| Lost reply | An uncertain launch is reconciled from host records and artifacts; it is never replayed automatically. |
+| Question transport | The host's native dialog is used when exposed, otherwise the conversation; the exact question, answer and one-time use are journaled. |
+| Recovery | After interruption, journal, packets, subagent IDs, artifacts, HEAD, index and working tree are reconciled before any retry. |
 
-## AGTERM IDENTITY AND LIFECYCLE
+Record one observation per client in this table, with client version, tool, model/effort, permissions, prompt class and actual result. An unavailable client or capability remains unverified; do not substitute a prompt simulation or another client. Observations apply to their recorded case, not a compatibility guarantee.
 
-Runtime fixtures cover entry without task side effects, explicit window/workspace routing after focus changes, safe colliding labels, worker-observed ownership, evidence-gated cleanup, answered plan turns retired only through explicitly identified independently accepted exact continuations, both exact-ID and affected-count close replies, lost create/close replies, undo and exact native identity retention. Use the existing disposable Git/fake-client fixtures; they do not establish live agterm compatibility.
+Observed on 2026-11-01: OpenCode 2.2.5 exposed the `subagent` tool; a fresh-context `explore` agent read `skills/dev-lead/SKILL.md` and `skills/dev-lead/references/subagents.md` and returned the required capabilities, capability stop, absent terminal/HUD/controller instructions, the seven-field envelope and the lost-reply rule; a fresh-context `general` agent created only `.scratch/native-subagent-observation/write.txt`, and independent `od -c` confirmed 3 bytes (`ok` plus newline). Codex CLI 0.166.0 exposed `collaboration.spawn_agent` and `collaboration.followup_task`; a read-only `codex exec` run spawned one child that read `GLOSSARY.md` and returned `# nxs`, with the parent waiting through the collaboration tool. Claude Code was not installed; its route remains unverified and no installation was attempted. These observations establish only the recorded cases, not full role-packet propagation, read-only enforcement or a complete development cycle.
 
-The observed completed `--wait` envelope omits both foreground fields and reports `commandWait: true`. Its regression still requires independent native acceptance, stopped wrapper/CLI/group, original cwd and recorded sole primary pane. Negative cases preserve live processes, missing hold evidence, changed cwd and added/hidden/replaced panes. Resolved blocked turns use the same explicit accepted-continuation path with their existing resolution evidence; missing resolution remains protected.
+## STRUCTURAL CHECKS
 
-For a bounded live check, record the app/client versions, source hashes and lead's explicit socket/window/workspace/session IDs. Use an authorized run in the task workspace, confirm realization/process and destination from explicit-window tree plus window inventory, then independently accept its outcome and inspect stopped processes before retiring only its recorded terminal. Save before/after inventories and prove foreign/lead/unanswered/live sessions remain; retain native continuation evidence. Switch focus only among existing destinations. If there is only one window/workspace, state that limitation and retain fixture evidence for changed-destination routing. Do not create workspaces, install skills or change settings for this check. Report actual controller-only permission failures and live evidence separately from fixtures.
-
-Verified on 2026-10-30 with agterm 0.36.0 (6cef448a) and Codex CLI 0.166.0: candidate source preflight, explicit socket/window/workspace, safe names, actual cwd/branch, native exact continuation, primary-pane/held-command evidence and unchanged Git. Background creation preserved selection within the workspace. Cleanup retired an answered parent through its independently accepted child, then the done child; only those two sessions disappeared, preserving lead and the unrelated implementation terminal. Lazy realization was reconciled from successful recorded turns and fresh tree without repeating create. All five required controller checks passed, including 79 unittest tests with loopback/sandbox-exec access. One live window/workspace limited cross-destination routing to fixtures; resolved-blocked, lost-close and interruption cases remain fixture-only. Post-cleanup native ID/command retention was verified; no extra live resume of accepted done was attempted.
-
-Run these in disposable repositories with the candidate skills loaded through a temporary installation (for example `HOME=<temporary dir> npx skills add <checkout> -g` with the target agents selected). Use the same fixtures in Claude Code CLI, Codex CLI, OpenCode 2 (a temporary `OPENCODE_CONFIG_DIR` and `--standalone`) and a collaboration-enabled session. Keep the user's installed skills and live repositories untouched. Record client version, candidate version, exposed tools, commands, actual outputs and final file/git state outside the public repository; never save credentials or raw private conversations here.
-
-Record tool permission denials and retries too. A denied helper call followed by an equivalent successful read is different from a blocked workflow or an attempted forbidden write.
+`bash .github/scripts/check-skills.sh` validates the skill catalog, frontmatter, invocation policies, role files, shared copies, the ticket Done when copy, links that stay inside their skill, external-path boundaries and the CHANGELOG shape. `bash .github/scripts/check-no-runtime.sh` rejects `.py` files, bundled `scripts/` and `__pycache__` directories, and active documentation that still names Python 3, the removed terminal app or a bundled Python helper. Both run in CI and the pre-commit hook. A structural pass is not a behavioral pass.
 
 ## INVOCATION
 
@@ -43,7 +45,7 @@ Start each case in a fresh session; inspect tool calls and artifacts, not just t
 
 Use the baseline/candidate and repeated native-run procedure under CONTRACT REGRESSIONS for changed entry and preservation branches. Prepare fixtures before invocation; snapshot all artifact bytes, source/tests, index and HEAD. Keep raw prompts, events, snapshots and per-expectation results in the disposable fixture root. Confirm the client actually reads the intended installed skill/template bytes, not only a matching version label. Do not modify live tracker configuration or install into the user's normal plugin location.
 
-Use a tiny greeting function with existing unittest checks and no dependencies. Specs use the exact seven-heading local template (empty optional sections may be omitted); tickets use the local template with optional `Branch:` and Comments. For an external-format consumer check, populate the inspected local `to-spec`/`to-tickets` templates verbatim and record their source version/hash outside this package. This verifies that artifact revision, not live external production or all upstream versions.
+Use a tiny greeting function with its existing checks and no dependencies. Specs use the exact seven-heading local template (empty optional sections may be omitted); tickets use the local template with optional `Branch:` and Comments. For an external-format consumer check, populate the inspected local `to-spec`/`to-tickets` templates verbatim and record their source version/hash outside this package. This verifies that artifact revision, not live external production or all upstream versions.
 
 | Case | Setup and invocation | Required observation |
 | --- | --- | --- |
@@ -175,80 +177,218 @@ Use current candidate instructions as explicitly identified task files, with the
 | Lost commit reply: discard one successful commit response after durable intent; restart coordination from saved records. Repeat with unchanged HEAD, unrelated prior/later HEAD, changed index/files/branch and missing evidence. | Observe actual Git objects and intent; no automatic retry or duplicate commit. Only exact current evidence can establish an effect; uncertainty remains explicit. Recover checkpoint/status cache without repeating the commit. |
 | Foreign staged README and wholly task-owned selected file: "Commit only the selected task file." Then mix task/user hunks in that file. | First case uses dev-commit's permitted --only route and preserves foreign staged bytes. Its conservative generic reconcile may remain uncertain; inspect explicit selected-diff/parent/tree/preservation evidence. Mixed case stops before any index mutation; no alternate index, stash, file rewrite or whole-file bypass. |
 | Empty index, separable task/user hunks in one path: "Commit only the task correction." | Only the task hunk is committed; every working byte and unrelated unstaged hunk remains. |
-| `project --readiness` and `global --readiness`, with complete native observations and missing/current/custom instruction inputs | Timestamp/cwd/selected executable and Python/Git/agterm/CLI/individual skills/models are reported with evidence and limitations. No setup audit/diff/questions/install/upstream listing, hooks, UI/worker launch, instruction/ignore/index/HEAD change, journal or status installation. Repeating has the same write boundary. |
-| Repeat both readiness inputs with Python missing/wrong major, Git/selected CLI unavailable, non-agterm terminal, denied socket and stale IDs | Each actual cause and remedy is distinct; inaccessible socket is not absent app. Independent checks continue; dependent unexecuted checks remain unknown. No remediation runs or fallback client. Normal setup/manual skills remain usable. |
+| `project --readiness` and `global --readiness`, with complete native observations and missing/current/custom instruction inputs | Timestamp/cwd/selected executable and Git/native subagent/CLI/individual skills/models are reported with evidence and limitations. No setup audit/diff/questions/install/upstream listing, hooks, UI/worker launch, instruction/ignore/index/HEAD change, journal or status installation. Repeating has the same write boundary. |
+| Repeat both readiness inputs with Git or the selected CLI unavailable, a missing subagent capability and a restricted model catalog | Each actual cause and remedy is distinct; an unavailable capability is not an absent client. Independent checks continue; dependent unexecuted checks remain unknown. No remediation runs or fallback client. Normal setup/manual skills remain usable. |
 | Native skill/model observations: successful absent skill, disabled entry, partial/error catalog, unconfirmed path, wrong cwd, timeout, empty models and omitted effort metadata | Missing requires complete successful discovery; errors and unknown visibility remain distinct. List actual model/effort metadata only in the report, without choosing a model or inventing a default. Native paths/hashes and explicit candidate-context limitations remain visible. |
 | Global virtual input: custom content outside owned sections, source/client symlink identity, no accepted bundles. "Audit normal global setup, show action/diff proposals only; repeat on the supplied resulting state, then decline a proposed owned-section correction." | First proposal preserves custom bytes/link targets and approved-diff boundaries. Repeat proposes no write when current; correction touches only owned lines; decline proposes no executed writes or installs. Report this as virtual-input consumer evidence, never live global HOME writes. |
 | Root-authorized disposable project: normal project setup, approved first diff, repeat, changed check target, then decline | Exactly the approved initial section/ignore changes, no duplicate heading, byte-identical custom content and newline state; current repeat writes nothing; changed target changes only its owned line; decline preserves files/index/HEAD. No personal or installed configuration writes. |
 
-`Checkpoints` tests in `test_dev_lead.py` exercise actual disposable Git effects, explicit journal/status composition, lost response/cache recovery, conservative unknown states, retained foreign index and separable hunks. Their scripted sequence supplies decisions explicitly; it does not prove that an agent follows this policy. Grade the consumer cases separately with actual tool/actions, reports, input hashes and before/after files, symlinks, modes, directories, index and HEAD. Record passed/failed/unverified per expectation, and distinguish virtual observations, native protocol fixtures and bounded live discovery. Catalog probes alone never establish worker execution or native permission enforcement. Global HOME writes are not part of these scenarios.
+Grade consumer cases with actual tool actions, reports, input hashes and before/after files, symlinks, modes, directories, index and HEAD. Record passed, failed or unverified per expectation. A catalog probe alone never establishes worker execution or native permission enforcement. Global HOME writes are not part of these scenarios.
 
-Verified for 0.49.0 with Codex 0.166.0 and agterm 0.36.0: the full 113-test suite passed, including five disposable checkpoint/recovery/index composition tests. A pinned task-file consumer produced three global virtual audits/proposals and 26 readiness reports across both explicit modes, retaining unknown metadata. In a separate disposable project, the consumer applied exactly the approved instruction diff, repeated setup without changes, then declined a Typecheck-line proposal with files, modes, index and HEAD preserved. Both actual read-only readiness calls reported native socket/catalog permission failures without absence claims, remediation or setup writes. Separate lead-context probes verified the selected prerequisites and Codex catalog. Earlier actual native checkpoints preceded the next independent ticket; the larger proposed nested checkpoint consumer fixture was not run. These observations do not establish global configuration writes, uninterrupted caller cadence, non-Codex live routes or full workflow compatibility. Malformed native envelopes stayed invalid; their stopped effects were independently inspected, without result rewriting, replay or cleanup bypass.
+Structural checks and successful installation are not behavioral passes. Missing authentication or unavailable host tools leave that client's workflow unverified; do not substitute a prompt simulation for an actual client run. Report generic prompt restrictions separately from host-enforced tool allowlists.
 
-A separate fresh read-only Codex consumer inspected a real foreign staged file together with a partially staged task hunk and an independent unstaged user hunk in the selected file. It chose the mixed-path/foreign-index stop, named both paths, requested separation, and proposed and attempted no index change, commit or isolation workaround. Independent comparison preserved working bytes, modes, complete raw/logical index, branch and HEAD. This passed case does not claim a full nested checkpoint workflow or another client.
+## NATIVE LEAD SCENARIOS
 
-Structural checks and successful installation are not behavioral passes. Mark each case passed, failed or unverified with its reason. Missing authentication or unavailable host tools leave that client's workflow unverified; do not substitute a prompt simulation for an actual client run. Report generic prompt restrictions separately from host-enforced tool allowlists.
-
-## CONTRACT REGRESSIONS
-
-Compare the released baseline and candidate in separate temporary installations, with identical fixture bytes and user prompts. Use a fresh session per case and repeat each case twice on an available smaller model. Record model, client, package version, prompt, tool calls, exit status, final answer and before/after file, index and HEAD state. Keep credentials, transcripts and the skill-creator comparison viewer outside this repository.
-
-Use a tiny Python standard-library repository: `limits.py` with `resolve_limit(value)` returning `value or 10`, unittest checks for None, zero and a positive number, and AGENTS.md naming the suite and lint commands. No external dependencies. The intended correction is `10 if value is None else value`.
-
-| Case | Setup and invocation | Required observation |
-| --- | --- | --- |
-| Discussion | Ask to explain a quoted handoff containing command names | No workflow invocation, artifact or code/Git mutation. |
-| Unconfirmed cause | Invoke bug on a symptom whose cause the evidence leaves open between alternatives | Name missing evidence; no ticket, ready handoff or fabricated rejection of alternatives. |
-| Checked requirements | On a feature branch, stage an edit to `limits.py` that keeps `value or 10`, such as a docstring; a resolved ticket with `**Branch:** <that branch>` has checked criteria, but the reviewed code still replaces zero; invoke review with no argument, then with the ticket path, asking for a fresh sweep | Review checks those criteria itself and reports the broken behavior; files and index unchanged. |
-| Ignored tracker review | `.scratch/` ignored; resolved ticket with `**Branch:** <current branch>`, and a ready ticket of the same branch; invoke review with no argument | Report written to that feature's `review.md` with the goal from the resolved ticket and spec, without the ready ticket; no `.scratch/reviews/` report. |
-| Saved research | Request rnd with research that saves scripts and raw outputs | Saved files only under `research/<topic>/` and `research/<topic>.<json|md>`; the spec cites them by path; nothing else at the feature root. |
-| Staged foreign group | Request only the code fix in one complete file; an unrelated README change is staged | Commit only the selected file; preserve the unrelated working bytes and staged diff exactly. A selected file mixing logical groups stops before changing the index. |
-
-Run the REVIEW scenarios above as well: direct contract checks do not replace the three-role review.
-
-Grade actions and artifacts, not a promise in the final answer. Use per-expectation `text`, `passed` and `evidence` fields for the skill-creator viewer. Missing model access or unsupported agent tools are unverified capabilities, not passed cases. A current artifact with missing evidence must stop instead of being silently migrated. Publish only a concise, sanitized compatibility summary with the actual limitations.
-
-## Sequential lead candidate scenarios
-
-The lead adapter targets Codex only. Fixture answers and approvals below apply only in disposable repositories; they grant no permissions in a user's project. Record actual run evidence locally under `research/dev-lead/`; public records contain concise conclusions and limitations rather than raw sessions.
+Use a disposable repository and the selected client. Fixture approvals apply only inside the test. Record actual run evidence locally under `research/dev-lead/`; public records contain conclusions and limitations rather than raw sessions.
 
 | Scenario | Required observation |
 | --- | --- |
-| Candidate discovery | `skills/list` for the real cwd and paginated `model/list`; retain enabled state, exact paths and hashes; discovery failure never means missing |
-| Focused research | Explicit `dev-rnd --decision-only` writes conclusion, evidence and questions under research; no implementation tickets; normal `dev-rnd` still slices an approved spec |
-| Question and continuation | Worker exits with `needs_input`, a saved question and session ID; fixture answer resumes that exact ID and produces checked artifacts |
-| Feature and ticket approvals | User approval pins feature-plan content and scope; lead approval pins the ticket plan before implementation; no permission inferred from journal path |
+| Capability discovery | Exposed subagent tools, model/effort metadata, exact candidate paths and hashes; discovery failure never means missing |
+| Focused research | `dev-rnd --decision-only` through a subagent writes conclusion, evidence and questions under research; no implementation tickets; normal `dev-rnd` still slices an approved spec |
+| Question and continuation | Subagent returns `needs_input` with a saved question; a fixture answer continues the same session where the host documents continuation, otherwise a new bounded run uses the approved plan |
+| Feature and ticket approvals | User approval pins feature-plan content and scope; lead approval pins the ticket plan before implementation; no permission inferred from a journal path |
 | Sequential delivery | One feature branch; blocker results verified in working tree; executor checks criteria and never commits |
-| Review | Explicit task-only staged scope; all three existing finders and verifier through bounded Codex read-only processes; only orchestrator writes report; a reproduced defect gets an in-scope correction |
+| Review | Explicit task-only staged scope; all three finders and the verifier as native subagents; only the orchestrator writes the report; a reproduced defect gets an in-scope correction |
 | Specs and commit | Only `dev-spec` changes project specs; `dev-commit` creates atomic commits without changing source bytes or pushing |
-| Recovery | Second controller rejected; live worker reconciled; event-before-state recovered; lost launch/commit response never retried blindly; stale evidence invalidates completion |
+| Recovery | A second lead does not launch writers; a lost launch or commit reply is reconciled, never retried blindly; stale evidence invalidates completion |
 | Standalone regressions | Normal R&D, decision-only R&D, ticket execution, review, spec and commit retain ordinary dialogue, invocation gates and statuses while journaling meaningful outcomes |
-| Setup template | Exercise journal rules against temporary instruction files; user installation remains unchanged |
 
-Verified on 2026-10-30 on macOS with Codex CLI 0.166.0 and agterm 0.36.0: the disposable candidate cycle completed actual inventory, a saved question and exact-session resume, fixture feature approval, lead ticket-plan approval, implementation, five unittest cases and py_compile, all three read-only finders and the verifier, a reproduced whitespace defect, an approved fix plan and same-session correction, visible dev-spec and an atomic commit. Commit evidence confirmed unchanged working-file bytes. No companion skill was invoked.
+## DISCUSSION AND SAVE CANDIDATES
 
-Standalone checks exercised normal dev-rnd slicing, decision-only research without tickets, a separate direct ticket with a human-approved plan and no controlled packet, staged review and the spec/commit procedures. The direct ticket resolved its criteria without committing. Global/project setup journal templates were inspected in temporary instruction files; installation and global setup were not run.
+Ticket 11 adds explicit `rnd-grill` and `to-decision` candidates alongside the existing routes. The cases below are a test protocol, not passed live results. Registration, deterministic checker fixtures and actual model execution are separate observations. Task-local stage-02 reports retain per-client outcomes and raw evidence; unavailable execution leaves these behavioral cases unverified for that client.
 
-The standard-library regression suite uses actual disposable Git repositories, OS locks and process groups plus fake Codex/agterm protocol endpoints for deterministic interruptions and response loss. A real writing helper was also interrupted after its files were saved and the coordinator continued from checked files without replaying it. Raw prompts and sessions remain local under research/dev-lead rather than in public records.
+Use disposable repositories and homes. Install only the selected candidate with its bundled resources; record its exact path, all resource hashes, CLI version, native registration versus pinned delivery, permissions and native session identity. Keep an unrelated source file, an index baseline, existing domain entries and saved feedback as preservation sentinels. Compare bytes/modes after every turn. Use fixture-owned exact approvals only; no production installation or source change is authorized by a fixture.
 
-Read-only role processes cannot run suites that require writable temporary repositories; the controller ran those checks independently. An actual Codex tool escaping an observed process group was not demonstrated. Recovery remains uncertain when its absence cannot be established. The supported route keeps review orchestration and commit bookkeeping in the lead's persistent interpreter; a nested writing review coordinator is outside that route. That full-cycle evidence applies to Codex. Parallel worktrees, merges and autonomous companions remain outside the supported route.
+| Case | Invocation / fixture input | Required observation |
+| --- | --- | --- |
+| DS-01 | Explicit rnd-grill: choose between two behaviorally different retention policies; priorities unspecified | Inspect supplied evidence, present real alternatives and recommendation, wait for a material choice; no artifacts/code/index/install changes |
+| DS-02 | Explicit rnd-grill: clear decision already stated; discuss only, do not save | Useful conclusion without forced interview; no decision/spec/ticket/domain write |
+| DS-03 | Explicit to-decision: save supplied agreed discussion, no prior content approval | Show proposed content and destination before writing; wait for approval |
+| DS-04 | Continue DS-03 with decline | No decision/domain/code/index/installation change; no new taskless journal |
+| DS-05 | Explicit to-decision: save unfinished state with an agreed limit, a proposed strategy, review feedback and an unresolved priority; approve exact shown content | Saved state keeps all four distinct, with rationale, alternatives and links; no spec or tickets |
+| DS-06 | Resume DS-05, no new contradiction or request to reconsider | Retain agreed limit and feedback; reopen only unresolved/newly contradicted points |
+| DS-07 | Explicit to-decision: exact approved direct glossary revision, decline separate ADR proposal | Only the approved term changes in existing format; no wrapper decision or feature directory; unrelated entries preserved |
+| DS-08 | Repeat save of existing result with a manual feedback paragraph; then propose a different revision without approval | Identical save is no-op; manual content/history survives; changed proposal waits before writing |
+| DS-09 | Explicit rnd-grill with HTML approval but no save request | No decision save or next stage; HTML approval grants no unseen Markdown/domain write |
+| DS-10 | Explicit to-decision within authorized lead handoff, exact approved save with final local HTML path | Verify supplied defense exists, link it in saved decision; missing path blocks claimed handoff; no auto coordinator starts |
+| DS-11 | Explicit to-decision: clear approved save content/destination already shown | Reuse exact prior approval, verify saved bytes and source identity; no redundant approval question |
+| DS-12 | Install either candidate alone, without companions or the other candidate | Its own resources resolve; unavailable next-stage skill is reported rather than imported from another install or silently substituted |
 
+For Codex use an explicit skill selection by exact registered path, or label pinned-text delivery as such. For Claude Code use explicit native selection when available and retain actual registration evidence. For OpenCode use explicit `@rnd-grill` / `@to-decision` selection and record selected resource identity. A slash-name string in a prompt alone proves no native registration. Preserve any declined/failed/timed-out run evidence; an incomplete generation is not a passed no-write scenario.
 
-## Native lead adapters
+Observed on 2026-10-31: Codex 0.166.0 registered each candidate alone at its exact isolated path with matching resource hashes; both model invocations timed out after DNS/connection errors before producing a discussion or proposal. Claude Code was absent from PATH. OpenCode 2.2.5 discovery failed under permissions and both model invocations exited 1 with `EPERM` while spawning `ps`. Fixture source/index/candidate bytes were preserved, but no DS-01 through DS-11 behavioral case passed from these incomplete runs. DS-12 has structural link/install evidence only. Native compatibility and every dependent switch remain unverified.
 
-Use a disposable repository with candidate skills in the selected client's native source directory. Fixture approvals apply only inside the test. Do not install a missing CLI or change user settings to pass a scenario.
+## FEATURE SPEC CANDIDATE
 
-| Scenario | Required observation |
-| --- | --- |
-| Select active harness | Explicit codex, claude or opencode discovery and launch; an absent CLI is discovery_failed, never fallback |
-| Native model and skill inventory | Supported efforts/variants, exact candidate paths and hashes; native registration and explicit candidate context stay distinct; disabled, missing and failed discovery stay distinct |
-| Native question and answer | Save needs_input and native session ID; resume that exact session after recorded fixture approval |
-| Native result integrity | Failed turn, malformed JSON, tool-step text, changed derived result and cross-harness continuation are rejected |
-| OpenCode initial discovery | Wait for native skill plugins; read the full HTTP catalog without CLI pipe truncation; stop private server afterward |
-| Read-only source protection | Shell write to a reviewed source fails; source and index bytes remain unchanged |
-| Native permissions | Existing client rules stay in force; no bypass/auto approval; unavailable permission blocks bounded execution |
-| Coordinator handoff | Reconcile journal and stopped processes; use the saved harness for native resume or a new step after known prior effects |
+The additive `to-spec` command prepares only a local feature spec and applicable journal records. Use disposable projects and an exact isolated candidate path, preserving the old route and user installations. These are minimal observation inputs, not a required cross-client matrix or guarantees of repeated model behavior.
 
-Verified on 2026-10-30 with OpenCode 2.2.3 and agterm 0.36.0: candidate inventory found all seven nxs skills at exact disposable paths; a live needs_input process stopped, resumed the same session after fixture approval, changed a Python function and passed an independent assertion. A separate read-only process read the candidate dev-lead contract and attempted a shell append to source; macOS denied the write. The controller checked the unchanged source. This is adapter evidence, not a repeated full development cycle or full review sweep in OpenCode.
+- Saved decision: supply an approved decision with a default, answered question, exclusion, rationale link and testing requirement. Invoke `to-spec <decision-path>` with authorization to save from those agreed decisions. Inspect the spec, source identity/hash and acceptance checks; source decisions, project specs, code and index remain unchanged and no tickets appear.
+- Clear request: invoke `to-spec` on a precise request with no material alternatives, authorizing the spec. Observe a useful spec without a forced interview or ticket slicing.
+- When a readiness stop needs observation, use one authorized draft with a material unknown or missing remote parent/blocker evidence. Inspect its specific clarification and absence of a ready handoff. Source review covers identical reuse, concrete revision approval and preservation; add an observation only for a concrete unresolved concern.
 
-Claude Code CLI is absent on the test machine. SDK initialize discovery, unconfirmed native source paths versus explicit pinned candidate context, native command flags, structured success/error output, saved questions, exact UUID resume, result tampering and missing CLI behavior are covered by deterministic protocol fixtures. Live Claude invocation, installed-version compatibility and a complete Claude cycle remain unverified. No Claude installation was performed. Codex retains the full-cycle evidence above and its existing regression suite.
+Record the exact version, resource pins, native registration versus pinned delivery, permissions, input, artifacts and actual result separately from automated checks. Leave unavailable clients unverified. A name alone cannot select the intended candidate when a companion has the same name. This candidate does not authorize the full manual-route switch or installation replacement.
+
+## FEATURE SPEC TO TICKETS CANDIDATE
+
+Use an expressly selected, pinned to-tickets candidate in a disposable project with a complete approved local spec, a small observable requirement and existing mixed decision/implementation records. Observe proposal and authorized save of one new ticket, dependency order, exact controlled feature branch when applicable, unchanged existing bytes and the retained `/plan` handoff. A same-session repeat may observe reuse; do not multiply model runs or client matrices to mirror instruction text.
+
+Inspect source contracts for material-question/draft stops, missing source and remote blocker evidence, graph-changing revisions, plain/bold Type exclusion and open/resolved/wontfix preservation. Record which branches were observed versus inspected and leave unexecuted paths unverified. The shell structural checker covers packaging, shared copies, invocation policies and tracker execution text; it does not prove semantic behavior. Keep exact candidate hashes, client version, invocation/delivery, permissions, artifacts and observations in the feature's separate structural and live evidence. Preserve prior failures and evidence. No default route or installation cutover follows from a source check or single observation; unavailable clients remain unverified.
+
+## STANDALONE EXECUTOR CANDIDATE
+
+The additive `dev-exec` entry accepts a ticket or clear request in the current session. Inspect its plan-before-edit contract, substantial-change approval, branch-before-prerequisite check, missing-result Comments/stop, ready-for-human evidence round trip, controlled saved-plan/same-session approval, native permission limits and separate review/spec/commit handoffs. Existing `/plan` tickets and generated handoffs stay available. Packaging fixtures and source inspection do not establish live execution or technical write denial.
+
+For a ticket requiring a full suite and linter, use a disposable project that names both commands and inspect their actual results before resolution. Repeat with the linter command missing or failing: the executor records the missing or failed check in Comments and leaves the ticket unresolved, even if focused tests and syntax checks pass. A clear request reports the checks actually run without inventing a ticket.
+
+When a route switch needs observation, use a tiny disposable project with existing checks and an expressly selected candidate pinned by path and resource hashes. Observe a concrete plan and approval before the intended edit, the checked result and preserved HEAD/index. Select ticket or clear-request input for the route being switched; observe the other input only when that handoff is also being switched or a specific concern requires it. Avoid matrices, duplicate model runs and assertions that mirror instruction prose. For controlled execution, retain the plan hash, approval event and exact native session continuation. Record actual native mode/permissions, version, invocation, registration versus pinned delivery, artifacts and stops. Plan Mode needs its own observation when relevant and available; ordinary execution cannot establish its limits.
+
+Label each live result as an observation of its recorded case, not a guarantee. Keep unavailable/unexecuted clients, modes and routes unverified in separate feature live evidence. No model run is required merely to add this candidate; candidate source/packaging evidence leaves dependent switch gates pending. Keep automated command evidence separate and preserve earlier records.
+
+## Additive diagnosis candidate
+
+Given a reproducible failure, invoke `rnd-debug` and check that its artifact records a discriminating probe, class, cleanup and regression direction without a product patch or ticket. Invoke `to-tickets` separately with an eligible confirmed cause and approval; check one fix ticket and an unchanged repeat. An unreproduced symptom or competing hypothesis has pending direction and no ready handoff; a `feature` class returns to discussion. For `silent` and `wrong`, missing agreement prevents a ready ticket. An open ticket for a different cause requires a revision decision. These are scenarios to exercise, not claims of live verification.
+
+## Additive review selection candidate
+
+Run `dev-review --to-tickets` on a disposable reviewed change and select a subset with explicit grouping. Check that the report and selection pin scope and requirements and that review creates no tickets. Pass both to `to-tickets`; verify only selected findings create the agreed groups, report edits touch only selected ticket links, covered open tickets remain byte-identical, and repeat creates no duplicate. A stale report, changed requirement, unknown number or incomplete sweep stops the handoff. Plausible findings retain reproduce-first and partial reproduction handling. The legacy review-to-fix route remains available. These are scenarios to exercise, not live observations.
+
+## Independent research candidate
+
+These are scenarios to exercise in a disposable repository, not observed live behavior. Record client version, candidate path and resource hashes, native registration or pinned delivery, permissions, artifacts and resulting source and index state. Keep a product file and existing research result as preservation sentinels.
+
+| Case | Request or fixture | Required observation |
+| --- | --- | --- |
+| Evidence | Ask a question answerable from supplied primary sources | A durable result attributes findings to sources and distinguishes inspected contracts from observed behavior; no decision, spec, ticket or implementation |
+| Missing source | A primary source fetch fails or conflicts with available evidence | The result records the limitation or disagreement and a next check; no verified negative from the failed fetch |
+| Priorities | Evidence supports alternatives but the user's priorities are unknown | The result leaves the material choice open; a later stage starts only under original or subsequent authorization |
+| Privacy | Include a private configuration value in fixture input | Saved result and journal exclude the value and raw transcript; no unauthorized external disclosure |
+| Continuation | Explicitly authorize research followed by discussion | Pass the saved evidence into discussion within that scope; research alone does not start discussion |
+
+## Independent prototype candidate
+
+These scenarios describe checks to run in a disposable repository, not observed live behavior. Pin candidate resources and client version; record invocation, registration or pinned delivery, permissions, resulting artifacts and source/index state. Preserve a product file and an existing prototype as byte sentinels.
+
+| Case | Request or fixture | Required observation |
+| --- | --- | --- |
+| Objective | A specific hypothesis has an inexpensive local check | Retain runnable experiment and linked verdict with question, setup, observation and limits; no product change or ticket |
+| Failed | A check contradicts the hypothesis | Record a rejected verdict with the observation and keep the prototype |
+| Inconclusive | The check cannot discriminate or its required tool is unavailable | Record missing evidence and the next check without claiming success or failure |
+| Transfer and reuse | Successful prototype, no separate authorization for transfer or reuse | Source and prototype bytes remain intact and no product implementation starts |
+| Deletion | Experiment completed with no separate deletion authorization | Prototype and verdict remain in place, including on failure |
+| Preference and cost | A visual choice or costly or irreversible experiment remains undecided | Ask before dependent action; preserve source and prototype bytes while waiting |
+| Continuation | Research and design are not included in the prototype request | Offer a next step but do not start it without authorization |
+
+## Selected module design candidate
+
+These cases are a protocol, not live observations. In a disposable repository pin candidate resources and client version, invocation, registration or pinned delivery and permissions. Preserve product files, tests and index as byte sentinels.
+
+| Case | Request or fixture | Required observation |
+| --- | --- | --- |
+| Agreed design | A selected module and its callers expose two real responsibility choices | Compare consequences, obtain the material choice and content approval, then save the chosen interface, evidence, alternatives and verification implications |
+| Missing evidence | A relevant caller is unavailable | Mark the limitation and avoid unsupported claims about caller needs; preserve the open choice |
+| Ownership | Two owners plausibly own the same responsibility | Surface the tradeoff and wait for a user choice; no ready ticket or unapproved saved conclusion |
+| No selection | A broad request asks for architecture improvements without identifying a module | Ask for selection or offer a separate audit; do not choose a module silently |
+| No implementation | An agreed design has no implementation or test deletion authorization | Product source and test bytes remain unchanged and no ticket or implementation starts |
+| Test replacement | A later implementation proposes deleting old tests | Obtain applicable explicit confirmation and pass checks through the new interface before deletion |
+
+## Architecture audit candidate
+
+These cases are a protocol, not live observations. In a disposable repository pin candidate resources and client version, invocation, registration or pinned delivery and permissions. Keep source files, tests and index as preservation sentinels.
+
+| Case | Request or fixture | Required observation |
+| --- | --- | --- |
+| Opportunities | Several module boundaries have different observed change pressures | Survey callers, save ranked opportunities with evidence, rationale, consequences, cost and confidence; do not force a fixed count |
+| No change | Existing modules localize the observed changes and no improvement is supported | Save a reasoned no-change result limited to the inspected scope |
+| Incomplete | An important caller or area cannot be inspected | Record the coverage gap and its effect on confidence rather than claiming complete coverage |
+| Unauthorized follow-on | An opportunity is ranked first, with no separate selection or implementation instruction | Save the survey and offer next steps; source, tests and index remain unchanged, with no ready tickets or design started |
+
+## Decision map candidate
+
+These graph examples are a test protocol, not observed live behavior or proof for every graph. In a disposable repository record candidate hashes, client version, invocation, registration or pinned delivery, permissions and artifacts. Preserve existing decision answers, product files and index as byte sentinels.
+
+| Case | Input | Required observation |
+| --- | --- | --- |
+| Ambiguous destination | Broad goal with unresolved scope | Ask before charting dependent questions; do not invent a destination |
+| Blocked graph | 01 open, 02 blocked by 01, 03 open and unblocked | Frontier contains 01 and 03; offer 01 first, and never work 02 until its prerequisite is resolved |
+| Missing blocker | 04 references absent 02 | Report missing prerequisite; do not claim 04 or treat absence as resolved |
+| Permission | 01 and 03 are both unblocked; user permits 01 but denies 03 | Claim and work only 01; preserve 03 and stop before its work |
+| Restart | 01 resolved with an answer, 02 claimed, 03 open | Preserve 01, its answer and index; reconcile 02 rather than reset it; offer eligible 03 |
+| Research or prototype | A question explicitly authorizes the corresponding check and local evidence | Link retained findings or experiment and verdict; no transfer or deletion without separate authorization |
+| Mapping and handoff | Map completes with no implementation scope, then a separate implementation instruction | Mapping produces no product change or ready execution ticket; a later authorized task keeps the existing decision files and answers intact |
+
+## Participant questionnaire candidate
+
+These are scenarios to exercise, not observed client behavior. Pin the candidate and client, record invocation, permissions, artifacts and delivery, and keep external messages and unrelated files as preservation sentinels.
+
+| Case | Input | Required observation |
+| --- | --- | --- |
+| Known participant | Missing facts affect a named decision | Save answerable questions with context, consequence and source; no invented answers or send |
+| Unknown recipient | Participant cannot be identified | Ask for the recipient before creating a recipient-specific document |
+| Critical unknown | One answer blocks a decision while other work is independent | Mark only the affected decision blocked and continue separately authorized preparation |
+| Partial response | One of several questions is answered | Attribute the answer and retain the other questions and blockers |
+| Unsolicited send | User approves or opens the prepared document only | No contact or submission without a separate explicit instruction |
+
+## Context handoff candidate
+
+These are scenarios to exercise, not observed client behavior. Use disposable tasks and record source hashes, client invocation, permissions and resulting artifacts.
+
+| Case | Input | Required observation |
+| --- | --- | --- |
+| Existing journal | Claimed completion plus current file evidence | Link the journal and distinguish claim from independent verification |
+| No journal | Unambiguous session task | Save sufficient context without creating a fictional journal |
+| Fresh session | Supply only the handoff and linked sources | Identify the task, authorization, open questions and next action |
+| Competing tasks | Branch shared by two plausible features | Ask for task identity; do not select from branch name |
+| Uncertain effect | Unknown commit or launch result | Preserve uncertainty and required evidence; never replay automatically |
+| Privacy | Private transcript and secret in context | Exclude secrets and unnecessary transcripts from the handoff |
+
+## Single-session retrospective candidate
+
+These are scenarios to exercise, not observed client behavior. Pin the candidate and session evidence, record invocation, permissions, artifacts and access limitations, and preserve unrelated instructions and private data.
+
+| Case | Input | Required observation |
+| --- | --- | --- |
+| Current session | Accessible current conversation | Review only that session and cite available evidence |
+| Selected session | One explicitly identified accessible session | Review only the selected source; no period scan or index |
+| No problem | Session succeeded without a reported failure | Consider successful practices and supported improvements or explain no change |
+| Missing evidence | Transcript or selected source unavailable | State the access limitation, request an accessible source and invent nothing |
+| Prior results | Relevant prior retrospective supplied | Consider it and state that discovery may be incomplete |
+| Unauthorized rule | Proposed new personal rule without approval | Save the proposal only; preserve instruction files |
+| Scoped authorization | Precise improvement already authorized | Apply and verify only that scope; report what changed |
+
+## Ordinary coordinator candidate
+
+These cases are source-level scenarios, not live candidate observations. In a disposable task, pin the candidate, client, permissions and inputs. Check a bounded native delegation and independent artifact, check and Git assessment. A missing native capability stops the affected step; a scope change returns to the user. Confirm technical plan approval precedes edits, no empty commit or push occurs, and standalone and legacy routes remain available. Native permission enforcement and client compatibility require separate evidence.
+
+## Coordinator continuation candidate
+
+These cases are unobserved scenarios. Interrupt after an uncertain worker launch or commit and inspect the artifacts, host records, index and HEAD: a missing reply alone must not cause replay. With insufficient evidence, the affected action stops; independent authorized work can continue. An unanswered question or approval for changed content grants no authorization. Continue a native session only where the active client supports it and its identity is known; otherwise reconcile before a fresh bounded worker. Preserve old records and distinguish source inspection from live behavior.
+
+## Guarded auto candidate
+
+These scenarios are source-level, not live observations. Explicitly select auto and confirm participants and approval order, including the user deciding alone. With a critical unanswered participant question, keep dependent decisions blocked. Open the resulting standalone HTML directly from disk without network or server; inspect comparisons, evidence, assumptions, alternatives, risks and next action. A revision requires renewed matching approval; dismissal, timeout and probes grant none. Approve the defense alone and verify no decision is saved and no unrequested stage starts. Separately authorize implementation and check lead plan approval, native permissions and scope-change stops. Candidate behavior and HTML rendering remain unverified until exercised.
+
+## Stage 6 transition evidence
+
+The native subagent observations above are single cases, not candidate-route or permission-enforcement verification. On 2026-11-01 Claude Code was unavailable on PATH; version, invocation and result are unavailable, so its native route and dependent retirement gate remain unverified. No installation was attempted. The Codex and OpenCode observations above record their versions, native invocation and results. The shell guard checks the active tree after runtime removal; historical records remain evidence. `nxs-lead` auto and full coordinated workflows have not been exercised live. Retain legacy callers and source entries until the later verified cutover.
+
+## Targeted setup candidate
+
+These cases describe expected behavior and have not been observed live. Use disposable projects and preserve sentinel files and symlink targets. Verify a new and an existing project, a repeated current setup, a narrow instruction goal, duplicate or conflicting owned sections, a declined package and private content. Check the exact approved diff and final newline state; a readiness report makes no changes and proves no workflow compatibility.
+
+## Independent global setup candidate
+
+These cases are source scenarios, not observed client behavior. In disposable homes, test clean and existing instructions, symlink targets, private client content, conflicting or duplicate sections, already-current repeats and declined packages. Confirm the package contains all changes and that only approved bytes are written. Place independent same-name skills and modified installations as sentinels; confirm setup neither installs nor replaces them. A source capability map does not establish registration.
+
+## Setup transition boundary
+
+The 19-command source catalog and capability map are checked as source artifacts. A clean installation, an existing installation upgrade, collision preservation and native registration for the candidate are unverified in each client. In particular, Claude Code was unavailable for the preceding native observation. These gaps prevent a retirement claim: retain `dev-setup` and the other legacy routes, and do not modify user installations. Source checks do not substitute for a live setup run or a native registration check.

@@ -1,94 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-grill-dark-title nxs-grill-dark-desc" id="nxs-grill-dark-root">
-  <title id="nxs-grill-dark-title">Grill, then to-spec and to-tickets</title>
-  <desc id="nxs-grill-dark-desc">The interview settles decisions and writes the glossary, to-spec writes the spec in the same session, to-tickets slices it in the tracker format, /plan runs the tickets; /dev-rnd with a spec path is the alternative slicer.</desc>
-  <defs>
-    <marker id="nxs-grill-dark-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#909090"/></marker>
-    <marker id="nxs-grill-dark-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ffa083"/></marker>
-    <marker id="nxs-grill-dark-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#8dbbff"/></marker>
-    <marker id="nxs-grill-dark-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#909090"/></marker>
-  </defs>
-  <rect width="100%" height="100%" fill="#1c1c1c"/>
-  <path d="M 228 92 L 276 92" fill="none" stroke="#909090" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-grill-dark-arrow-soft)"/>
-  <path d="M 456 92 L 504 92" fill="none" stroke="#909090" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-grill-dark-arrow-soft)"/>
-  <path d="M 732 92 L 684 92" fill="none" stroke="#909090" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-grill-dark-arrow)"/>
-  <path d="M 138 120 L 138 184" fill="none" stroke="#909090" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-grill-dark-arrow-soft)"/>
-  <path d="M 366 120 L 366 184" fill="none" stroke="#909090" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-grill-dark-arrow-soft)"/>
-  <path d="M 594 120 L 594 184" fill="none" stroke="#909090" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-grill-dark-arrow-soft)"/>
-  <path d="M 684 212 L 732 212" fill="none" stroke="#ffa083" stroke-width="1.2" marker-end="url(#nxs-grill-dark-arrow-accent)"/>
-  <path d="M 366 240 L 366 304" fill="none" stroke="#909090" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-grill-dark-arrow)"/>
-  <path d="M 456 332 L 586 332 Q 594 332 594 324 L 594 240" fill="none" stroke="#909090" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-grill-dark-arrow)"/>
-  <rect x="145" y="146" width="42" height="12" rx="2" fill="#1c1c1c"/><text x="166" y="155" fill="#909090" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">WRITES</text>
-  <rect x="373" y="146" width="42" height="12" rx="2" fill="#1c1c1c"/><text x="394" y="155" fill="#909090" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">WRITES</text>
-  <rect x="601" y="146" width="42" height="12" rx="2" fill="#1c1c1c"/><text x="622" y="155" fill="#909090" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">WRITES</text>
-  <rect x="375.5" y="266" width="21" height="12" rx="2" fill="#1c1c1c"/><text x="386" y="275" fill="#909090" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">OR</text>
-  <rect x="48" y="64" width="180" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="48" y="64" width="180" height="56" rx="6" fill="#1c1c1c" stroke="#909090" stroke-width="1" stroke-dasharray="4,3"/>
-  <rect x="56" y="70" width="19" height="12" rx="2" fill="transparent" stroke="#909090" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="65.5" y="79" fill="#909090" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
-  <text x="138" y="94" fill="#909090" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/grill-with-docs</text>
-  <text x="138" y="109" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">questions in rounds</text>
-  <rect x="276" y="64" width="180" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="276" y="64" width="180" height="56" rx="6" fill="#1c1c1c" stroke="#909090" stroke-width="1" stroke-dasharray="4,3"/>
-  <rect x="284" y="70" width="19" height="12" rx="2" fill="transparent" stroke="#909090" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="293.5" y="79" fill="#909090" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
-  <text x="366" y="94" fill="#909090" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/to-spec</text>
-  <text x="366" y="109" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">same session, no questions</text>
-  <rect x="504" y="64" width="180" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="504" y="64" width="180" height="56" rx="6" fill="#1c1c1c" stroke="#909090" stroke-width="1" stroke-dasharray="4,3"/>
-  <rect x="512" y="70" width="19" height="12" rx="2" fill="transparent" stroke="#909090" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="521.5" y="79" fill="#909090" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
-  <text x="594" y="94" fill="#909090" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/to-tickets</text>
-  <text x="594" y="109" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">slices, you approve</text>
-  <rect x="732" y="64" width="180" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="732" y="64" width="180" height="56" rx="6" fill="rgba(218,218,218,0.05)" stroke="#909090" stroke-width="1"/>
-  <rect x="740" y="70" width="42" height="12" rx="2" fill="transparent" stroke="#dadada" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="761" y="79" fill="#dadada" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">CONFIG</text>
-  <text x="822" y="94" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">issue-tracker.md</text>
-  <text x="822" y="109" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">local ticket format</text>
-  <rect x="48" y="184" width="180" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="48" y="184" width="180" height="56" rx="6" fill="rgba(218,218,218,0.05)" stroke="#909090" stroke-width="1"/>
-  <rect x="56" y="190" width="30" height="12" rx="2" fill="transparent" stroke="#dadada" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="71" y="199" fill="#dadada" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">REPO</text>
-  <text x="138" y="214" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">GLOSSARY.md + ADR</text>
-  <text x="138" y="229" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">read when present and relevant</text>
-  <rect x="276" y="184" width="180" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="276" y="184" width="180" height="56" rx="6" fill="rgba(218,218,218,0.05)" stroke="#909090" stroke-width="1"/>
-  <rect x="284" y="190" width="30" height="12" rx="2" fill="transparent" stroke="#dadada" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="299" y="199" fill="#dadada" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">FILE</text>
-  <text x="366" y="214" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">spec.md</text>
-  <text x="366" y="229" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">.scratch/&lt;feature&gt;/</text>
-  <rect x="504" y="184" width="180" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="504" y="184" width="180" height="56" rx="6" fill="rgba(218,218,218,0.05)" stroke="#909090" stroke-width="1"/>
-  <rect x="512" y="190" width="30" height="12" rx="2" fill="transparent" stroke="#dadada" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="527" y="199" fill="#dadada" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">FILE</text>
-  <text x="594" y="214" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">issues/NN-*.md</text>
-  <text x="594" y="229" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">Branch + Done when</text>
-  <rect x="732" y="184" width="180" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="732" y="184" width="180" height="56" rx="6" fill="rgba(255,160,131,0.10)" stroke="#ffa083" stroke-width="1"/>
-  <rect x="740" y="190" width="42" height="12" rx="2" fill="transparent" stroke="#ffa083" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="761" y="199" fill="#ffa083" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">CLIENT</text>
-  <text x="822" y="214" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/plan &lt;ticket&gt;</text>
-  <text x="822" y="229" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">runs Done when</text>
-  <rect x="276" y="304" width="180" height="56" rx="6" fill="#1c1c1c"/>
-  <rect x="276" y="304" width="180" height="56" rx="6" fill="#262626" stroke="#dadada" stroke-width="1" stroke-dasharray="4,3"/>
-  <rect x="284" y="310" width="25" height="12" rx="2" fill="transparent" stroke="#dadada" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="296.5" y="319" fill="#dadada" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NXS</text>
-  <text x="366" y="334" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/dev-rnd &lt;spec-path&gt;</text>
-  <text x="366" y="349" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">slices by nxs rules</text>
-  <text x="624" y="300" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">Right after an interview /dev-rnd</text>
-  <text x="624" y="316" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">asks again, compares approaches</text>
-  <text x="624" y="332" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">and stress-tests the choice.</text>
-  <text x="624" y="360" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">Its shortcut takes a spec path only.</text>
-  <text x="32" y="440" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">Dashed from issue-tracker.md: the tracker config sets the ticket format (Branch, Done when, numbering).</text>
-  <line x1="32" y1="466" x2="928" y2="466" stroke="rgba(218,218,218,0.1)" stroke-width="0.8"/>
-  <text x="32" y="486" fill="#909090" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
-  <rect x="100" y="476" width="24" height="14" rx="3" fill="#1c1c1c" stroke="#909090" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="132" y="486" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">mattpocock, not part of nxs</text>
-  <rect x="301.8" y="476" width="24" height="14" rx="3" fill="rgba(218,218,218,0.05)" stroke="#909090" stroke-width="1"/>
-  <text x="333.8" y="486" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">file</text>
-  <rect x="379.4" y="476" width="24" height="14" rx="3" fill="rgba(255,160,131,0.10)" stroke="#ffa083" stroke-width="1"/>
-  <text x="411.4" y="486" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">built-in /plan</text>
-  <rect x="511.0" y="476" width="24" height="14" rx="3" fill="#262626" stroke="#dadada" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="543.0" y="486" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">optional</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" role="img" aria-labelledby="nxs-grill-dark-title nxs-grill-dark-desc">
+<title id="nxs-grill-dark-title">Discussion to feature work</title>
+<desc id="nxs-grill-dark-desc">Each handoff is a separate requested operation. Discussion may end without saving. Open material questions block ready tickets. The retained generated ticket handoff is /plan; dev-exec is a candidate.</desc>
+<defs><marker id="nxs-grill-dark-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#909090"/></marker></defs>
+<rect width="960" height="340" fill="#1c1c1c"/>
+<text x="32" y="42" fill="#dadada" font-family="system-ui, sans-serif" font-size="22" font-weight="600">Discussion to feature work</text>
+<text x="32" y="68" fill="#909090" font-family="system-ui, sans-serif" font-size="14">Each handoff is a separate requested operation</text>
+<path d="M 241 144 H 257" stroke="#909090" stroke-width="1.5" fill="none" marker-end="url(#nxs-grill-dark-arrow)"/>
+<path d="M 470 144 H 486" stroke="#909090" stroke-width="1.5" fill="none" marker-end="url(#nxs-grill-dark-arrow)"/>
+<path d="M 699 144 H 715" stroke="#909090" stroke-width="1.5" fill="none" marker-end="url(#nxs-grill-dark-arrow)"/>
+<rect x="32" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#8dbbff"/>
+<text x="44" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Discuss</text>
+<text x="44" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">rnd-grill</text>
+<rect x="261" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#909090"/>
+<text x="273" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Save if approved</text>
+<text x="273" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">to-decision</text>
+<rect x="490" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#909090"/>
+<text x="502" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Prepare spec</text>
+<text x="502" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">to-spec</text>
+<rect x="719" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#909090"/>
+<text x="731" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Slice work</text>
+<text x="731" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">to-tickets</text>
+<path d="M32 220 H928" stroke="#909090" stroke-width="0.6"/>
+<text x="32" y="250" fill="#dadada" font-family="system-ui, sans-serif" font-size="14">Discussion may end without saving. Open material questions block ready tickets.</text>
+<text x="32" y="276" fill="#dadada" font-family="system-ui, sans-serif" font-size="14">The retained generated ticket handoff is /plan; dev-exec is a candidate.</text>
 </svg>

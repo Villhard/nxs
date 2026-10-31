@@ -19,11 +19,8 @@ jobs:
       - name: Check the skills tree
         run: bash .github/scripts/check-skills.sh
 
-      - name: Run checker regressions (Python 3 standard library)
-        run: python3 .github/scripts/test_check_skills.py
-
-      - name: Run sequential lead regressions (Python 3 standard library)
-        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Reject runtime and Python remnants
+        run: bash .github/scripts/check-no-runtime.sh
 
   discovery:
     name: Skills CLI discovery
@@ -37,10 +34,11 @@ jobs:
         with:
           node-version: '22'
 
-      - name: The skills CLI lists all seven skills
+      - name: The skills CLI lists the source catalog
         run: |
           listed=$(npx -y skills@latest add . -l)
           echo "$listed"
-          for skill in dev-rnd dev-bug dev-review dev-spec dev-setup dev-commit dev-lead; do
-            echo "$listed" | grep -q "$skill" || { echo "missing skill: $skill"; exit 1; }
+          listed=$(printf '%s\n' "$listed" | sed -E $'s/\033\\[[0-9;]*[mK]//g')
+          for skill in dev-rnd dev-bug dev-lead dev-setup rnd-grill to-decision to-spec to-tickets dev-exec rnd-debug dev-review dev-spec dev-commit rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-questionnaire to-handoff nxs-retro nxs-lead nxs-setup; do
+            echo "$listed" | grep -E -q "(^|[^[:alnum:]-])${skill}([^[:alnum:]-]|$)" || { echo "missing skill: $skill"; exit 1; }
           done

@@ -1,5 +1,7 @@
 # Explicit task orchestration within one active harness
 
+Status: partly superseded by [ADR 0008](0008-native-subagent-coordination.md) where it prescribes visible terminal sessions.
+
 The planned `dev-lead` skill lets the user delegate a development task through one explicit invocation. The user and the lead work together on questions and approve the feature plan. The lead checks and approves individual ticket plans against it. Within that plan, the lead autonomously organizes the needed investigation, ticket preparation and execution, review, project-spec, commit and integration stages. This deliberately extends the current manual handoffs: requiring a separate invocation for every stage would retain the coordination work the lead is intended to take over. How existing skill gates consume that authorization still needs an explicit integration design; this record does not change the installed contracts.
 
 Return to the user when new evidence requires changing the task scope, external contract or an approved decision. Show the reason and the proposed change to the affected part of the plan. Routine technical choices, review fixes and integration conflicts that preserve the agreed behavior are handled autonomously and recorded in the journal.

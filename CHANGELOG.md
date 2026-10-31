@@ -15,11 +15,202 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- README, CONTRIBUTING, GLOSSARY, project spec, client scenarios and diagrams describe the additive catalog, retained legacy routes and unverified cutover.
 - README "Run a ticket" says what to do when the executor stops on a missing blocker result.
 
 ### Fixed
 
+- Shell skill checker validates frontmatter scalars and release dates and rejects empty release entries.
+- README distinguishes same-name nxs and companion skills before choosing a route.
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
+
+## [0.73.1] - 2026-11-01
+
+### Changed
+
+- Project and `to-tickets` specs reconcile the additive workflow and its verification limits.
+
+### Fixed
+
+- Shell skill checks reject malformed or duplicate frontmatter, invalid invocation policy blocks and broken reference-style resource links.
+- Pre-commit hook checks the staged snapshot so partial staging cannot bypass the structural checks.
+- README places installation collision and verification guidance before install and update commands.
+
+## [0.73.0] - 2026-11-01
+
+### Changed
+
+- `nxs-setup` source catalog and upgrade guidance distinguish the 19 agreed commands from retained routes and unverified registration.
+
+## [0.72.0] - 2026-11-01
+
+### Added
+
+- `nxs-setup` adds independent global configuration and a 15-capability source map.
+
+## [0.71.0] - 2026-11-01
+
+### Added
+
+- `nxs-setup` adds scoped goal and project setup with approved changes and report-only readiness; `nxs-retro` shares its writing guidance.
+
+## [0.70.0] - 2026-11-01
+
+### Changed
+
+- Shared controlled-run references recognize explicit `nxs-lead` authorization alongside the retained lead.
+- `dev-review` and contributor guidance name native subagents for retained routes.
+
+## [0.69.0] - 2026-11-01
+
+### Added
+
+- `nxs-lead` defines explicit guarded auto and a local HTML defense.
+
+## [0.68.0] - 2026-11-01
+
+### Added
+
+- `nxs-lead` defines evidence-based continuation without a recovery engine.
+
+## [0.67.0] - 2026-11-01
+
+### Added
+
+- `nxs-lead` adds an explicit ordinary native-subagent coordinator candidate.
+
+## [0.66.0] - 2026-11-01
+
+### Added
+
+- `nxs-retro` reviews one session and proposes evidence-based improvements within authorization boundaries.
+
+## [0.65.0] - 2026-11-01
+
+### Added
+
+- `to-handoff` saves resumable context with or without a task journal.
+
+## [0.64.0] - 2026-11-01
+
+### Added
+
+- `to-questionnaire` prepares recipient-specific questions without unsolicited sending or invented answers.
+
+## [0.63.0] - 2026-11-01
+
+### Added
+
+- `rnd-map` charts and resumes local decision maps with explicit per-question permission and preserved dependencies.
+
+## [0.62.0] - 2026-11-01
+
+### Added
+
+- `rnd-audit` saves a prioritized architecture survey or evidence-limited no-change result without implementing an opportunity.
+
+## [0.61.0] - 2026-11-01
+
+### Added
+
+- `rnd-design` compares and saves an agreed design for a selected module without implementing it.
+
+## [0.60.0] - 2026-11-01
+
+### Added
+
+- `rnd-prototype` tests a hypothesis with a retained local experiment and verdict without authorizing production changes.
+
+## [0.59.0] - 2026-11-01
+
+### Added
+
+- `rnd-research` saves source-linked findings and limitations for a question as an additive candidate without deciding or starting a further stage.
+
+## [0.58.0] - 2026-11-01
+
+### Added
+
+- `dev-review` offers an additive selection handoff to `to-tickets`, which creates tickets from current selected findings; the legacy review-to-fix route remains available.
+
+## [0.57.0] - 2026-11-01
+
+### Added
+
+- `rnd-debug` records evidenced diagnosis without creating fix tickets; `to-tickets` accepts eligible confirmed causes as an additive candidate.
+
+## [0.56.0] - 2026-11-01
+
+### Fixed
+
+- `dev-exec` records and runs the full checks a ticket requires and leaves it unresolved when a required test or linter command is missing or fails; `tests/client-scenarios.md` covers the completion gate.
+
+## [0.55.0] - 2026-11-01
+
+### Added
+
+- `dev-lead` delegates bounded steps to the selected client's native subagents through `references/subagents.md`, and keeps progress and questions in ordinary local files through `references/questions.md`; missing capability stops the affected step.
+- `dev-review` launches finder and verifier roles only through native subagents, with host-enforced permissions and prompt prohibitions reported separately.
+- Shell structural checks in `.github/scripts/check-skills.sh` and a runtime guard in `.github/scripts/check-no-runtime.sh` replace the Python checker; both run in CI and the pre-commit hook.
+- [ADR 0008](docs/adr/0008-native-subagent-coordination.md) records native-subagent coordination and the removal of the custom runtime.
+- `tests/client-scenarios.md` covers native-subagent delegation, local questions, capability stops and the structural checks.
+
+### Changed
+
+- `dev-lead`, `dev-review`, `dev-setup` readiness, `README.md`, `SPEC.md` and `CONTRIBUTING.md` no longer require Python 3, a terminal session, a controller, a HUD, a nested CLI runner or the removed terminal app.
+- Task journals and controlled-run packets use plain append-only files; the shared ticket `## Done when` block and the `dev-setup` tracker copy record the journal and native-continuation rules.
+- Setup and workflow diagrams and their alternative text describe native subagents and the current readiness checks.
+
+### Removed
+
+- All repository Python: the `dev-lead` runner, approval, status, inventory, harness, outcome, mechanics and commit helpers, the `dev-review` adapter copies, every bundled `journal.py`, the Python checker and its regression suite, and `tests/test_dev_lead.py` and `tests/test_harnesses.py`.
+- Bundled `scripts/` and `__pycache__` directories, the bounded CLI review route and the terminal identity, HUD, questionnaire-waiter and owned-terminal cleanup contracts.
+
+## [0.54.0] - 2026-10-31
+
+### Added
+
+- `dev-exec` adds an explicit standalone ticket/clear-request executor candidate with plan approval, prerequisite-result checks, human-step gates and separate review/spec/commit handoffs.
+
+### Changed
+
+- Checker catalog and fixtures include `dev-exec` policies and self-contained shared resources while preserving existing ticket templates and `/plan` routes.
+- README, CONTRIBUTING and client scenarios document the additive executor, resource propagation and proportionate verification limits.
+
+## [0.53.0] - 2026-10-31
+
+### Added
+
+- `to-tickets` adds explicit independent feature-spec slicing, history-preserving reuse, dependency evidence and authorized revision gates with the retained `/plan` handoff.
+
+### Changed
+
+- `to-tickets` owns the byte-identical ticket rules/template consumed by `dev-rnd`, `dev-bug` and `dev-review`; existing routes and execution text remain available.
+- Checker catalog, shared-copy expectations, tracker Done when source and regression fixtures include the self-contained `to-tickets` candidate.
+- README, CONTRIBUTING and client scenarios document the additive ticket candidate, canonical propagation and proportionate observation limits.
+
+## [0.52.0] - 2026-10-31
+
+### Added
+
+- `to-spec` adds explicit independent feature spec preparation from decisions or clear requests, authorized drafts, source/dependency evidence and preservation gates, without ticket slicing.
+
+### Changed
+
+- Checker catalog and fixtures include `to-spec` policies and self-contained shared resources; `to-spec` owns the byte-identical feature spec template while legacy routes stay available.
+- README, CONTRIBUTING and client scenarios document the additive spec candidate, resource ownership and proportionate observation boundaries.
+
+## [0.51.0] - 2026-10-31
+
+### Added
+
+- `rnd-grill` adds an explicit discussion-only candidate with evidence-backed choice rounds, shared discussion/domain rules and resume boundaries.
+- `to-decision` adds explicit approved or unfinished decision saving, approved glossary/ADR proposals, direct domain-only requests within invoked scope and preservation on repeat saves.
+- Checker fixtures and client scenarios cover the additive candidates, explicit policies and self-contained shared resources; existing manual and coordinator routes remain available.
+
+### Changed
+
+- README documents candidate usage and separate saving approval; CONTRIBUTING records canonical resource ownership and the independent-workflow naming extension.
 
 ## [0.50.0] - 2026-10-31
 

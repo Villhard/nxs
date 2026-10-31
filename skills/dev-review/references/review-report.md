@@ -1,6 +1,6 @@
 # REVIEW REPORT
 
-Read this reference before reading, validating or writing a review report. `dev-review` alone writes it.
+Read this reference before reading, validating or writing a review report. `dev-review` writes findings and selection proposals; on the additive route `to-tickets` may update only selected ticket links.
 
 ## FORMAT
 
