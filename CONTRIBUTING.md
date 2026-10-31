@@ -132,3 +132,5 @@ Publish by pushing to `main` before updating installations; users update with `n
 `dev-review` owns the review report reference; copy it into `to-tickets` when changed. The explicit `--to-tickets` candidate keeps review selection separate from ticket creation while the legacy route remains available.
 
 `to-questionnaire` is an additive participant-document candidate. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. Preparing a document does not authorize sending or invent answers.
+
+`to-handoff` is an additive resumable-context candidate. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. It supports journal-free work and never uses a branch alone as task identity.

@@ -1,0 +1,3 @@
+# CONTEXT RULES
+
+Record source identity and path, approved scope and relevant content hashes where available. Link actual artifacts and distinguish an accepted decision from a proposal, an open question and an unverified claim. A prior result and a current verification are separate observations. Preserve exact unanswered question identifiers and wording. Explain the next authorized action and prerequisites so a fresh reader need not recover the conversation. Do not create a journal merely to make a handoff; a real existing journal is linked, not replaced. Preserve uncertainty about side effects until evidence resolves it.

@@ -27,11 +27,11 @@ fail() {
 
 SKILLS=(
   dev-rnd dev-bug dev-review dev-spec dev-setup dev-commit dev-lead
-  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire
+  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff
 )
 EXPLICIT=(
   dev-rnd dev-bug dev-review dev-spec dev-setup dev-lead
-  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire
+  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff
 )
 ROLES=(
   review-quality review-testing review-simplification review-verify
@@ -47,9 +47,9 @@ references/prototype.md|rnd-prototype,rnd-map
 references/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
 references/review-report.md|dev-review,to-tickets
 references/feature-directory.md|dev-rnd,dev-bug,rnd-debug
-references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire
-references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire
-references/controlled-run.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire
+references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff
+references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff
+references/controlled-run.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff
 assets/spec.md|to-spec,dev-rnd,dev-bug,rnd-debug
 assets/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
 assets/outcome.schema.json|dev-lead,dev-review

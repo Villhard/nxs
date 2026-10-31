@@ -26,6 +26,7 @@ Development skills for coding agents: shape features and bugs into tickets for t
 | [rnd-prototype](skills/rnd-prototype/SKILL.md) | Test a hypothesis with a retained prototype and verdict. Candidate route; live behavior is unverified. |
 | [rnd-design](skills/rnd-design/SKILL.md) | Agree and save a selected module's interface and responsibilities. Candidate route; live behavior is unverified. |
 | [rnd-audit](skills/rnd-audit/SKILL.md) | Survey a project and save ranked architecture opportunities. Candidate route; live behavior is unverified. |
+| [to-handoff](skills/to-handoff/SKILL.md) | Save resumable task context with or without a journal. Candidate route; live behavior is unverified. |
 | [to-questionnaire](skills/to-questionnaire/SKILL.md) | Prepare a participant questionnaire without sending it. Candidate route; live behavior is unverified. |
 | [rnd-map](skills/rnd-map/SKILL.md) | Map a broad goal into linked decisions and dependencies. Candidate route; live behavior is unverified. |
 | [to-tickets](skills/to-tickets/SKILL.md) | Turn an approved feature spec or confirmed eligible root cause or selected review findings into local implementation tickets while preserving existing ticket history. Candidate route alongside dev-rnd. |
@@ -33,7 +34,7 @@ Development skills for coding agents: shape features and bugs into tickets for t
 
 `dev-lead`, `dev-setup`, `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". For OpenCode, select a skill with `@dev-<name>` instead of `/dev-<name>`.
 
-`rnd-grill`, `rnd-debug`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-questionnaire`, `to-decision`, `to-spec` and `to-tickets` also require explicit invocation (OpenCode uses `@` and the skill name). They are additive candidates; existing manual and coordinator routes remain available. See client scenarios for actual verification limits before relying on a client route.
+`rnd-grill`, `rnd-debug`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-questionnaire`, `to-handoff`, `to-decision`, `to-spec` and `to-tickets` also require explicit invocation (OpenCode uses `@` and the skill name). They are additive candidates; existing manual and coordinator routes remain available. See client scenarios for actual verification limits before relying on a client route.
 
 Use `to-spec <decision-path>` or `to-spec <clear request>` to propose a feature spec without slicing tickets. Existing approval is reused within its scope; a changed existing spec needs approval of its concrete revision. An expressly requested draft keeps its open questions and cannot hand off ready work while material evidence is missing. See [to-spec](skills/to-spec/SKILL.md) for its source, preservation and handoff rules. This addition leaves the complete `dev-rnd` route and existing installations available.
 
@@ -263,3 +264,5 @@ Tickets from either route run with `/plan <ticket-path>`. In a feature that alre
 For local previews and contributions, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Use `to-questionnaire <participant and context>` to prepare a document linking unanswered questions to affected decisions. Sending requires a separate explicit instruction; client behavior is unverified.
+
+Use `to-handoff [task or destination path]` to save accepted, open and unverified context for a fresh session. A branch alone does not identify a task; client behavior is unverified.
