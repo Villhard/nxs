@@ -194,13 +194,15 @@ extract_fenced_done_when() {
 }
 
 check_done_when() {
-  local source=skills/to-tickets/assets/ticket.md copy=skills/dev-setup/assets/issue-tracker.md expected actual
+  local source=skills/to-tickets/assets/ticket.md copy expected actual
+  for copy in skills/dev-setup/assets/issue-tracker.md skills/nxs-setup/assets/issue-tracker.md; do
   expected=$(extract_done_when "$source")
   [ -n "$expected" ] || fail "$source: missing Done when section"
   actual=$(extract_fenced_done_when "$copy")
   [ -n "$actual" ] || fail "$copy: missing fenced Done when block"
   [ "$(printf '%s' "$expected" | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}')" = "$(printf '%s' "$actual" | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}')" ] ||
     fail "$copy: fenced Done when block differs from $source; copy it verbatim"
+  done
 }
 
 normalize_path() {

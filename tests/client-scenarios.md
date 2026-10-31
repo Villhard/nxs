@@ -380,3 +380,7 @@ The native subagent observations above are single cases, not candidate-route or 
 ## Targeted setup candidate
 
 These cases describe expected behavior and have not been observed live. Use disposable projects and preserve sentinel files and symlink targets. Verify a new and an existing project, a repeated current setup, a narrow instruction goal, duplicate or conflicting owned sections, a declined package and private content. Check the exact approved diff and final newline state; a readiness report makes no changes and proves no workflow compatibility.
+
+## Independent global setup candidate
+
+These cases are source scenarios, not observed client behavior. In disposable homes, test clean and existing instructions, symlink targets, private client content, conflicting or duplicate sections, already-current repeats and declined packages. Confirm the package contains all changes and that only approved bytes are written. Place independent same-name skills and modified installations as sentinels; confirm setup neither installs nor replaces them. A source capability map does not establish registration.

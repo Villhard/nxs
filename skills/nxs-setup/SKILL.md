@@ -1,7 +1,7 @@
 ---
 name: nxs-setup
 description: Prepare an approved package for a scoped agent setup goal or project configuration, or report readiness.
-argument-hint: "[project|goal] [--readiness]"
+argument-hint: "[global|project|goal] [--readiness]"
 disable-model-invocation: true
 ---
 
@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Give the user's agents and a repository the settings the other dev skills rely on: an executor reads project specs on its path, tickets name a `**Branch:**` from the project's branch rule, a ticket's `Done when` runs "the full test suite and linter", and feature records under `.scratch/` stay out of Git. Audit, show one diff, write only what the user approves, then stop.
 
-Accepted input: `project` or a concrete goal; `project --readiness` and `global --readiness` run a report-only audit.
+Accepted input: `project`, `global` or a concrete goal; `project --readiness` and `global --readiness` run a report-only audit.
 
 Example: /nxs-setup project
 
@@ -35,7 +35,7 @@ Both modes follow these rules. Each mode's STANCE names the files it writes, its
 | --- | --- |
 | `project --readiness` or `global --readiness` | Run only the bundled readiness report and stop |
 | `project` | Run the steps below |
-| `global` | Global setup is not yet available in this candidate; stop |
+| `global` | Follow [global setup](references/global.md); consult the [capability map](references/capabilities.md) |
 | Concrete goal | Follow GOAL below |
 | No argument | Ask for the intended project or concrete setup goal |
 | Unsupported input | Ask for a concrete scope and stop |
