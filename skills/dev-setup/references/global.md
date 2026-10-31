@@ -1,5 +1,7 @@
 # GLOBAL MODE
 
+For `global --readiness`, follow [readiness](readiness.md) and stop before every setup step below. It creates no setup proposal, install or configuration change.
+
 Read this when `/dev-setup` runs `global`. It wires Claude Code, Codex and OpenCode to one source of user instructions, `~/.agents/AGENTS.md`, adds the `## nxs` section the dev skills rely on, adds the rule groups the user accepts, installs the skill bundles the user chooses and writes their configuration. Audit, ask for the rule groups and bundles, show one diff, write only what the user approves, then stop.
 
 `~` is `$HOME`. Work with absolute paths built from it. SKILL.md CONTRACT applies to every step below.

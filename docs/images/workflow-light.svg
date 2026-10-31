@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-workflow-light-title nxs-workflow-light-desc" id="nxs-workflow-light-root">
-  <title id="nxs-workflow-light-title">nxs workflow</title>
-  <desc id="nxs-workflow-light-desc">dev-rnd, dev-bug or the mattpocock route write a ticket, the built-in /plan runs it, optional dev-review turns findings into new tickets, optional dev-spec records specs, and dev-commit commits.</desc>
+<svg viewBox="0 0 960 1120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-workflow-light-title nxs-workflow-light-desc" id="nxs-workflow-light-root">
+  <title id="nxs-workflow-light-title">Delegated and manual nxs workflows</title>
+  <desc id="nxs-workflow-light-desc">In agterm, dev-lead coordinates user-approved scope and lead-approved ticket plans, checkpoints accepted work before each next independent ticket and finishes with complete-feature review; the separate manual route retains standalone skills and optional companion preparation outside lead automation.</desc>
   <defs>
     <marker id="nxs-workflow-light-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#626262"/></marker>
     <marker id="nxs-workflow-light-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b73800"/></marker>
@@ -9,6 +9,47 @@
     <marker id="nxs-workflow-light-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7e7e7e"/></marker>
   </defs>
   <rect width="100%" height="100%" fill="#eeeeee"/>
+  <text x="32" y="36" fill="#262626" font-size="12" font-family="'Geist', system-ui, sans-serif" font-weight="600">DELEGATED: /dev-lead IN AGTERM</text>
+  <text x="32" y="62" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Outside agterm: open this repository there and invoke dev-lead again; no partial coordination.</text>
+  <path d="M 312 132 L 348 132" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
+  <path d="M 612 132 L 648 132" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
+  <path d="M 780 176 L 780 244" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
+  <path d="M 648 288 L 612 288" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
+  <path d="M 480 244 L 480 208 L 628 208 L 628 160 L 648 160" fill="none" stroke="#b73800" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-workflow-light-arrow-accent)"/>
+  <path d="M 780 332 L 780 384 L 180 384 L 180 332" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
+  <text x="480" y="372" fill="#626262" font-size="10" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">AFTER ALL TICKETS</text>
+  <rect x="48" y="88" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+  <text x="180" y="114" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Verified lead session</text>
+  <text x="180" y="134" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">saved window / workspace</text>
+  <text x="180" y="150" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">stable worker destination</text>
+  <rect x="348" y="88" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+  <text x="480" y="114" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">User approves feature plan</text>
+  <text x="480" y="134" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">scope / permissions / checks</text>
+  <text x="480" y="150" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">new behavior returns to user</text>
+  <rect x="648" y="88" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+  <text x="780" y="114" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Lead approves ticket plan</text>
+  <text x="780" y="134" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">visible worker implements</text>
+  <text x="780" y="150" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">lead independently accepts work</text>
+  <rect x="648" y="244" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+  <text x="780" y="270" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Per-ticket checkpoint</text>
+  <text x="780" y="290" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">full checks / review / fixes</text>
+  <text x="780" y="306" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">dev-spec / atomic dev-commit</text>
+  <text x="780" y="322" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">verify resulting HEAD</text>
+  <rect x="348" y="244" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+  <text x="480" y="270" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Next independent ticket</text>
+  <text x="480" y="290" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">only after verified checkpoint</text>
+  <text x="480" y="306" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">planning has no empty commits</text>
+  <rect x="48" y="244" width="264" height="88" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+  <text x="180" y="270" fill="#262626" font-size="13" font-family="'Geist', system-ui, sans-serif" text-anchor="middle" font-weight="600">Complete-feature review</text>
+  <text x="180" y="290" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">committed + remaining work</text>
+  <text x="180" y="306" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">final checks / specs / commits</text>
+  <text x="32" y="428" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">While lead is active: HUD/status, decision.log and run/question records; submitted answers continue the work.</text>
+  <text x="32" y="450" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Cleanup: stopped, owned, accepted idle terminals only; exact native continuation survives closure.</text>
+  <text x="32" y="472" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Unanswered, invalid or uncertain ancestry stays protected; recovery reconciles effects before retry.</text>
+  <text x="32" y="494" fill="#626262" font-size="11" font-family="'Geist', system-ui, sans-serif">Writing executors never commit. Review, specs and atomic commits remain lead-controlled stages.</text>
+  <line x1="32" y1="524" x2="928" y2="524" stroke="#626262" stroke-width="0.8"/>
+  <text x="32" y="556" fill="#262626" font-size="12" font-family="'Geist', system-ui, sans-serif" font-weight="600">MANUAL: INDEPENDENT SKILLS; MP COMPANIONS OUTSIDE LEAD AUTOMATION</text>
+  <g transform="translate(0 540)">
   <path d="M 138 96 L 138 172 Q 138 180 146 180 L 228 180" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
   <path d="M 366 96 L 366 160" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
   <path d="M 594 96 L 594 180 Q 594 188 586 188 L 504 188" fill="none" stroke="#7e7e7e" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-workflow-light-arrow-soft)"/>
@@ -18,18 +59,18 @@
   <path d="M 466 428 L 520 428" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
   <path d="M 700 428 L 744 428" fill="none" stroke="#626262" stroke-width="1.2" marker-end="url(#nxs-workflow-light-arrow)"/>
   <path d="M 266 428 L 204 428 Q 196 428 196 420 L 196 208 Q 196 200 204 200 L 228 200" fill="none" stroke="#b73800" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-workflow-light-arrow-accent)"/>
-  <rect x="828.5" y="198" width="47" height="12" rx="2" fill="#eeeeee"/><text x="852" y="207" fill="#7e7e7e" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">REQUEST</text>
-  <rect x="374.5" y="362" width="47" height="12" rx="2" fill="#eeeeee"/><text x="398" y="371" fill="#7e7e7e" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">GIT ADD</text>
-  <rect x="477.5" y="408" width="31" height="12" rx="2" fill="#eeeeee"/><text x="493" y="417" fill="#7e7e7e" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">SHIP</text>
-  <rect x="128" y="308" width="52" height="12" rx="2" fill="#eeeeee"/><text x="154" y="317" fill="#7e7e7e" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">PICKED #</text>
+  <rect x="828.5" y="198" width="47" height="12" rx="2" fill="#eeeeee"/><text x="852" y="207" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">REQUEST</text>
+  <rect x="374.5" y="362" width="47" height="12" rx="2" fill="#eeeeee"/><text x="398" y="371" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">GIT ADD</text>
+  <rect x="477.5" y="408" width="31" height="12" rx="2" fill="#eeeeee"/><text x="493" y="417" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">SHIP</text>
+  <rect x="128" y="308" width="52" height="12" rx="2" fill="#eeeeee"/><text x="154" y="317" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">PICKED #</text>
   <rect x="48" y="40" width="180" height="56" rx="6" fill="#eeeeee"/>
-  <rect x="48" y="40" width="180" height="56" rx="6" fill="#ffffff" stroke="#262626" stroke-width="1"/>
+  <rect x="48" y="40" width="180" height="56" rx="6" fill="#e4e4e4" stroke="#262626" stroke-width="1"/>
   <rect x="56" y="46" width="25" height="12" rx="2" fill="transparent" stroke="#262626" stroke-opacity="0.5" stroke-width="0.8"/>
   <text x="68.5" y="55" fill="#262626" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NXS</text>
   <text x="138" y="70" fill="#262626" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/dev-rnd</text>
   <text x="138" y="85" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">spec + tickets</text>
   <rect x="276" y="40" width="180" height="56" rx="6" fill="#eeeeee"/>
-  <rect x="276" y="40" width="180" height="56" rx="6" fill="#ffffff" stroke="#262626" stroke-width="1"/>
+  <rect x="276" y="40" width="180" height="56" rx="6" fill="#e4e4e4" stroke="#262626" stroke-width="1"/>
   <rect x="284" y="46" width="25" height="12" rx="2" fill="transparent" stroke="#262626" stroke-opacity="0.5" stroke-width="0.8"/>
   <text x="296.5" y="55" fill="#262626" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NXS</text>
   <text x="366" y="70" fill="#262626" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/dev-bug</text>
@@ -37,13 +78,13 @@
   <rect x="504" y="40" width="180" height="56" rx="6" fill="#eeeeee"/>
   <rect x="504" y="40" width="180" height="56" rx="6" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
   <rect x="512" y="46" width="19" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="521.5" y="55" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
-  <text x="594" y="70" fill="#7e7e7e" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/to-spec, /to-tickets</text>
+  <text x="521.5" y="55" fill="#626262" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">MP</text>
+  <text x="594" y="70" fill="#626262" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/to-spec, /to-tickets</text>
   <text x="594" y="85" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">after grilling, wayfinder</text>
   <rect x="732" y="40" width="180" height="56" rx="6" fill="#eeeeee"/>
   <rect x="732" y="40" width="180" height="56" rx="6" fill="rgba(98,98,98,0.1)" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
   <rect x="740" y="46" width="36" height="12" rx="2" fill="transparent" stroke="#7e7e7e" stroke-opacity="0.5" stroke-width="0.8"/>
-  <text x="758" y="55" fill="#7e7e7e" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">INPUT</text>
+  <text x="758" y="55" fill="#626262" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">INPUT</text>
   <text x="822" y="70" fill="#262626" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">clear request</text>
   <text x="822" y="85" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">no ticket</text>
   <rect x="228" y="160" width="276" height="56" rx="6" fill="#eeeeee"/>
@@ -59,27 +100,27 @@
   <text x="366" y="310" fill="#262626" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/plan &lt;ticket&gt;</text>
   <text x="366" y="325" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">plan mode, never commits</text>
   <rect x="266" y="400" width="200" height="56" rx="6" fill="#eeeeee"/>
-  <rect x="266" y="400" width="200" height="56" rx="6" fill="#ffffff" stroke="#262626" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="266" y="400" width="200" height="56" rx="6" fill="#e4e4e4" stroke="#262626" stroke-width="1" stroke-dasharray="4,3"/>
   <rect x="274" y="406" width="25" height="12" rx="2" fill="transparent" stroke="#262626" stroke-opacity="0.5" stroke-width="0.8"/>
   <text x="286.5" y="415" fill="#262626" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NXS</text>
   <text x="366" y="430" fill="#262626" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/dev-review</text>
   <text x="366" y="445" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">findings -&gt; tickets</text>
   <rect x="520" y="400" width="180" height="56" rx="6" fill="#eeeeee"/>
-  <rect x="520" y="400" width="180" height="56" rx="6" fill="#ffffff" stroke="#262626" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="520" y="400" width="180" height="56" rx="6" fill="#e4e4e4" stroke="#262626" stroke-width="1" stroke-dasharray="4,3"/>
   <rect x="528" y="406" width="25" height="12" rx="2" fill="transparent" stroke="#262626" stroke-opacity="0.5" stroke-width="0.8"/>
   <text x="540.5" y="415" fill="#262626" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NXS</text>
   <text x="610" y="430" fill="#262626" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/dev-spec</text>
   <text x="610" y="445" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">SPEC.md or .SPEC.md</text>
   <rect x="744" y="400" width="180" height="56" rx="6" fill="#eeeeee"/>
-  <rect x="744" y="400" width="180" height="56" rx="6" fill="#ffffff" stroke="#262626" stroke-width="1"/>
+  <rect x="744" y="400" width="180" height="56" rx="6" fill="#e4e4e4" stroke="#262626" stroke-width="1"/>
   <rect x="752" y="406" width="25" height="12" rx="2" fill="transparent" stroke="#262626" stroke-opacity="0.5" stroke-width="0.8"/>
   <text x="764.5" y="415" fill="#262626" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">NXS</text>
   <text x="834" y="430" fill="#262626" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">/dev-commit</text>
   <text x="834" y="445" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">atomic commits</text>
-  <text x="32" y="496" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">Run /dev-setup global once per machine and /dev-setup project once per repository first.</text>
+  <text x="32" y="496" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">Setup: global per machine, project per repository; optional explicit-mode --readiness only reports prerequisites.</text>
   <line x1="32" y1="526" x2="928" y2="526" stroke="rgba(38,38,38,0.1)" stroke-width="0.8"/>
   <text x="32" y="546" fill="#626262" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
-  <rect x="100" y="536" width="24" height="14" rx="3" fill="#ffffff" stroke="#262626" stroke-width="1"/>
+  <rect x="100" y="536" width="24" height="14" rx="3" fill="#e4e4e4" stroke="#262626" stroke-width="1"/>
   <text x="132" y="546" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">nxs skill</text>
   <rect x="204.6" y="536" width="24" height="14" rx="3" fill="#eeeeee" stroke="#7e7e7e" stroke-width="1" stroke-dasharray="4,3"/>
   <text x="236.6" y="546" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">mattpocock, not part of nxs</text>
@@ -89,8 +130,9 @@
   <text x="553.8" y="546" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">file</text>
   <rect x="599.4" y="536" width="24" height="14" rx="3" fill="rgba(183,56,0,0.08)" stroke="#b73800" stroke-width="1"/>
   <text x="631.4" y="546" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">built-in /plan</text>
-  <rect x="731.0" y="536" width="24" height="14" rx="3" fill="#ffffff" stroke="#262626" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="731.0" y="536" width="24" height="14" rx="3" fill="#e4e4e4" stroke="#262626" stroke-width="1" stroke-dasharray="4,3"/>
   <text x="763.0" y="546" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">optional</text>
   <path d="M 830.2 543 L 854.2 543" fill="none" stroke="#b73800" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#nxs-workflow-light-arrow-accent)"/>
   <text x="862.2" y="546" fill="#626262" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">review loop</text>
+  </g>
 </svg>

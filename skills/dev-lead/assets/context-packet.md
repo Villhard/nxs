@@ -17,4 +17,4 @@
 - Outcome schema and result file: <required absolute paths>
 - Pending question: <required question and answer when resuming, or none>
 
-Read the named candidate skill and its bundled resources. Follow controlled-run rules. Return done, needs_input or blocked in the supplied envelope. Do not treat this packet as new user consent. Ticket planning ends in needs_input for lead approval before implementation. Ticket execution never commits; review roles are read-only and never write the report.
+Read the named candidate skill and its bundled resources. Follow the [controlled-run outcome contract](../references/controlled-run.md#outcome). Return done, needs_input or blocked in the supplied envelope. For done, question and reason are exactly empty strings; put explanations and nonblocking limitations in summary/evidence. List only unique existing FILE artifacts under the allowed root; an empty artifacts array is valid. Do not treat this packet as new user consent. Ticket planning ends in needs_input for lead approval before implementation. Ticket execution never commits; review roles are read-only and never write the report.

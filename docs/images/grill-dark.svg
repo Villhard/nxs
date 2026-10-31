@@ -51,7 +51,7 @@
   <rect x="56" y="190" width="30" height="12" rx="2" fill="transparent" stroke="#dadada" stroke-opacity="0.5" stroke-width="0.8"/>
   <text x="71" y="199" fill="#dadada" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">REPO</text>
   <text x="138" y="214" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">GLOSSARY.md + ADR</text>
-  <text x="138" y="229" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">read by every dev skill</text>
+  <text x="138" y="229" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">read when present and relevant</text>
   <rect x="276" y="184" width="180" height="56" rx="6" fill="#1c1c1c"/>
   <rect x="276" y="184" width="180" height="56" rx="6" fill="rgba(218,218,218,0.05)" stroke="#909090" stroke-width="1"/>
   <rect x="284" y="190" width="30" height="12" rx="2" fill="transparent" stroke="#dadada" stroke-opacity="0.5" stroke-width="0.8"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-ticket-status-dark-title nxs-ticket-status-dark-desc" id="nxs-ticket-status-dark-root">
-  <title id="nxs-ticket-status-dark-title">Ticket statuses and who sets them</title>
-  <desc id="nxs-ticket-status-dark-desc">rnd, bug and review write a ticket as ready-for-agent or needs-info; an answer turns needs-info into ready-for-agent; the /plan executor sets resolved or ready-for-human; after your step you set ready-for-human back to ready-for-agent and rerun /plan; you set wontfix.</desc>
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nxs-ticket-status-dark-title nxs-ticket-status-dark-desc" id="nxs-ticket-status-dark-root">
+  <title id="nxs-ticket-status-dark-title">Ticket statuses and separate lead acceptance</title>
+  <desc id="nxs-ticket-status-dark-desc">Standalone ticket setters and human round trips remain unchanged; controlled done, needs_input and blocked outcomes are separate from ticket statuses, independent lead acceptance and verified commit checkpoints, and executors never commit.</desc>
   <defs>
     <marker id="nxs-ticket-status-dark-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#909090"/></marker>
     <marker id="nxs-ticket-status-dark-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ffa083"/></marker>
@@ -57,6 +57,11 @@
   <text x="736" y="310" fill="#dadada" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">wontfix</text>
   <text x="736" y="325" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">you; or a review ticket, no repro</text>
   <text x="32" y="368" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">The executor stops while Status is not ready-for-agent or a blocker is not resolved; it never commits.</text>
+  <text x="32" y="410" fill="#dadada" font-size="12" font-family="'Geist', system-ui, sans-serif" font-weight="600">WITH A LEAD: STATUS, OUTCOME AND CHECKPOINT ARE DISTINCT</text>
+  <text x="32" y="436" fill="#909090" font-size="12" font-family="'Geist', system-ui, sans-serif">resolved is a ticket status; independent lead acceptance and a verified commit checkpoint are separate.</text>
+  <text x="32" y="460" fill="#909090" font-size="12" font-family="'Geist', system-ui, sans-serif">done / needs_input / blocked are bounded outcomes, not ticket statuses.</text>
+  <text x="32" y="484" fill="#909090" font-size="12" font-family="'Geist', system-ui, sans-serif">Lead checks / review / fixes / dev-spec / atomic dev-commit precede the next independent ticket.</text>
+  <g transform="translate(0 140)">
   <line x1="32" y1="386" x2="928" y2="386" stroke="rgba(218,218,218,0.1)" stroke-width="0.8"/>
   <text x="32" y="406" fill="#909090" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
   <rect x="100" y="396" width="24" height="14" rx="3" fill="#262626" stroke="#dadada" stroke-width="1"/>
@@ -67,4 +72,5 @@
   <text x="352.0" y="406" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">focus</text>
   <rect x="403.0" y="396" width="24" height="14" rx="3" fill="#262626" stroke="#dadada" stroke-width="1" stroke-dasharray="4,3"/>
   <text x="435.0" y="406" fill="#909090" font-size="9" font-family="'Geist Mono', ui-monospace, monospace">optional</text>
+  </g>
 </svg>

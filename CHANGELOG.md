@@ -14,6 +14,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.49.0] - 2026-10-31
+
+### Added
+
+- `dev-lead` adds lead-only timestamped status/HUD presentation and durable bounded questionnaire transport, with recoverable ownership of updated HUDs, genuine approval/form regressions and release-controlled pending fixtures; the lead retains approval and workflow decisions.
+- `dev-setup` adds explicit global/project `--readiness` reports with bundled native discovery, actual requirement diagnoses and remedies, without setup writes or installation.
+
+### Changed
+
+- `dev-lead` checkpoints each accepted implementation and its verified review corrections through checks, scoped review, built-work specs and atomic commits before the next independent ticket, retaining conservative commit recovery and final whole-feature review. README and all eight light/dark diagram pairs show agterm-only delegation alongside manual routes, report-only readiness, local status/journal/run records and distinct ticket/checkpoint acceptance, with matching Mono surfaces and readable labels.
+- Runtime tests and client scenarios cover checkpoint composition, lost commit responses, foreign index preservation and readiness/setup boundaries, separating mechanics fixtures from consumer and live verification.
+
+### Fixed
+
+- `dev-lead` outcome packets, schema descriptions and shared controlled-run instructions clarify existing status fields and file artifacts for native emitters.
+- `dev-lead` and the bundled `dev-review` runner recheck accepted artifacts and command evidence after terminal observation, preserving journal-prefix growth; disposable regressions cover changed or missing evidence before cleanup.
+- `dev-lead` generated-form regression executes the extracted submit script with existing Node and checks decoded choice/text payloads; absent Node skips only JavaScript coverage, while controls and probe checks still run.
+
+## [0.48.0] - 2026-10-30
+
+### Fixed
+
+- `dev-lead` and the bundled `dev-review` runner (2026-10-30) require stopped recorded processes and groups before continuation or another launch, including successful CLI exits; runtime regressions cover surviving children and worker destination rejection.
+
+### Changed
+
+- `dev-lead` requires verified agterm entry before coordination side effects and pins worker destinations and normalized unique labels in run records.
+- `dev-lead` and the bundled `dev-review` runner retain terminal and primary-pane ownership separately from native sessions and close verified stopped shell/command-wait terminals, including answered and resolved blocked turns tied explicitly to accepted exact continuations, through recorded, non-replayed cleanup.
+- Runtime tests and client scenarios cover agterm identity failures, focus changes, naming collisions, owned cleanup and lost close responses, distinguishing fixtures from live verification.
+
 ## [0.47.0] - 2026-10-30
 
 ### Changed

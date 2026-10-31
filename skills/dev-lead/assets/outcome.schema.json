@@ -14,6 +14,7 @@
   "properties": {
     "status": {
       "type": "string",
+      "description": "Bounded worker outcome: done proposes completion, needs_input asks lead a question, and blocked reports a blocker. A done proposal still requires independent verification.",
       "enum": [
         "done",
         "needs_input",
@@ -22,27 +23,33 @@
     },
     "step_id": {
       "type": "string",
+      "description": "Exact nonempty step ID supplied in the controlled-run packet.",
       "minLength": 1
     },
     "summary": {
       "type": "string",
+      "description": "Conclusion containing non-whitespace text. Put explanations and nonblocking limitations here or in evidence.",
       "minLength": 1
     },
     "artifacts": {
       "type": "array",
+      "description": "Paths to existing FILES under the allowed artifact root, unique after resolution. Relative paths resolve from that root; absolute paths and symlinks are checked by their resolved targets. Directories are invalid. An empty array is valid.",
       "items": {
         "type": "string",
         "minLength": 1
       }
     },
     "question": {
-      "type": "string"
+      "type": "string",
+      "description": "For needs_input, a question containing non-whitespace text. For done or blocked, exactly the empty string."
     },
     "reason": {
-      "type": "string"
+      "type": "string",
+      "description": "For done, exactly the empty string; nonblocking explanations belong in summary/evidence. For blocked, a reason containing non-whitespace text. For needs_input, any string, including empty or explanatory text."
     },
     "evidence": {
       "type": "array",
+      "description": "Nonblank check descriptions or references. An empty array is valid; nonblocking limitations may be recorded here.",
       "items": {
         "type": "string",
         "minLength": 1

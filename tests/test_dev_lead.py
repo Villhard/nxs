@@ -1,10 +1,12 @@
 """Deterministic public-helper regressions. No live Codex, agterm or skill install."""
 import contextlib
+from html.parser import HTMLParser
 import importlib.util
 import io
 import json
 import os
 from pathlib import Path
+import shutil
 import signal
 import subprocess
 import sys
@@ -20,14 +22,19 @@ import journal
 import mechanics
 import outcome
 import runner
+import approval
+import status as lead_status
 
 spec = importlib.util.spec_from_file_location('lead_commit', SCRIPTS / 'commit.py')
 commit = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(commit)
 
 SESSION = '12345678-1234-4234-8234-123456789abc'
+WINDOW = '11111111-1111-4111-8111-111111111111'
+WORKSPACE = '22222222-2222-4222-8222-222222222222'
+LEAD = '33333333-3333-4333-8333-333333333333'
 FAKE_CODEX = r'''#!/usr/bin/env python3
-import json, pathlib, sys, time
+import json, os, pathlib, subprocess, sys, time
 root = pathlib.Path(__file__).parent
 config = json.loads((root / 'fixture.json').read_text())
 def trace(row):
@@ -84,8 +91,15 @@ else:
         time.sleep(10)
     if mode == 'slow':
         time.sleep(.4)
+    if config.get('background_child'):
+        release = root / 'release-child'
+        child_code = "import pathlib,sys,time; release=pathlib.Path(sys.argv[1]); deadline=time.monotonic()+15\nwhile not release.exists() and time.monotonic()<deadline: time.sleep(.02)"
+        child = subprocess.Popen([sys.executable, '-c', child_code, str(release)],
+                                 stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                                 stderr=subprocess.DEVNULL)
+        (root / 'background.json').write_text(json.dumps({'pid': child.pid, 'pgid': os.getpgrp()}))
     result = pathlib.Path(args[args.index('-o') + 1])
-    status = 'blocked' if mode == 'blocked' else ('needs_input' if mode == 'question' and 'resume' not in args else 'done')
+    status = 'blocked' if mode == 'blocked' else ('needs_input' if mode == 'question' and ('resume' not in args or config.get('repeat_question')) else 'done')
     value = {'status': status, 'step_id': 'step-1', 'summary': 'Fixture outcome', 'evidence': ['fixture check'], 'artifacts': [str(path)],
              'question': 'Which option?' if status == 'needs_input' else '', 'reason': 'Missing external evidence' if status == 'blocked' else ''}
     if mode != 'missing_result':
@@ -96,23 +110,113 @@ else:
     sys.exit(7 if mode == 'nonzero' else 0)
 '''
 FAKE_AGTERM = r'''#!/usr/bin/env python3
-import json, pathlib, shlex, subprocess, sys, time
+import json, os, pathlib, shlex, subprocess, sys, time, uuid
 root = pathlib.Path(__file__).parent
 config = json.loads((root / 'fixture.json').read_text())
 args = sys.argv[1:]
+state_path = root / 'agterm.json'
+state = json.loads(state_path.read_text())
+def option(name): return args[args.index(name)+1]
+def save():
+    temporary = state_path.with_name('agterm.' + str(os.getpid()) + '.tmp')
+    temporary.write_text(json.dumps(state))
+    os.replace(temporary, state_path)
+def reply(value):
+    print(json.dumps({'ok': True, 'result': value}), flush=True)
+    sys.exit(0)
+assert option('--socket') == str(root / 'agterm.sock')
+if config.get('ipc_error'):
+    print(config['ipc_error'], file=sys.stderr); sys.exit(1)
+if config.get('bad_reply'):
+    print('[]'); sys.exit(0)
+if config.get('ipc_sleep'): time.sleep(5)
+if args[:2] == ['window', 'list']: reply({'windows': state['windows']})
+window = option('--window')
+tree = state['trees'][window]
+if args[0] == 'tree': reply({'tree': tree})
+if args[:2] == ['session', 'hud'] or args[:2] == ['session', 'overlay']:
+    with (root / 'ui.jsonl').open('a') as f: f.write(json.dumps(args)+'\n')
+    if args[:3] == ['session', 'overlay', 'result']:
+        page = state.get('pages', {}).get(option('--page'))
+        if config.get('page_error') or page is None:
+            print(json.dumps({'ok': False, 'error': 'no such page'})); sys.exit(1)
+        print(json.dumps({'ok': True, 'result': {'pageOutcome': page}}))
+        sys.exit({'pending': 1, 'submitted': 0, 'dismissed': 2}[page['outcome']])
+    node = next(s for w in tree['workspaces'] for s in w['sessions'] if s['id'] == option('--target'))
+    if args[:2] == ['session', 'hud']:
+        assert not node.get('overlay') and not node.get('htmlOverlays')
+        if args[2] == 'update': assert node.get('hud')
+        node['hud'] = {'message': args[3], 'detail': option('--detail'),
+                       'position': option('--position'), 'spinner': option('--spinner-style'),
+                       'hideAfter': 0, 'markdown': False, 'sticky': False, 'frame': True}
+        save(); reply({'id': node['id']})
+    assert args[:3] == ['session', 'overlay', 'open']
+    assert '--js' in args and '--block' in args and '--follow' in args
+    if config.get('page_open_error'):
+        print(config['page_open_error'], file=sys.stderr); sys.exit(1)
+    assert not node.get('overlay') and not node.get('htmlOverlays')
+    page_id = str(uuid.uuid4())
+    page = {'pageID': page_id, 'outcome': 'pending'}
+    state.setdefault('pages', {})[page_id] = page
+    node.pop('hud', None)
+    node.update(overlay=True, htmlOverlays=[{'id': page_id, 'file': option('--html'), 'state': 'loaded'}])
+    save()
+    if config.get('page_release'):
+        while not pathlib.Path(config['page_release']).exists(): time.sleep(.02)
+    else:
+        time.sleep(config.get('page_delay', .2))
+    if config.get('page_pending'): time.sleep(10)
+    state = json.loads(state_path.read_text())
+    node = next(s for w in state['trees'][window]['workspaces'] for s in w['sessions'] if s['id'] == option('--target'))
+    page = {'pageID': page_id, 'outcome': 'dismissed' if config.get('page_dismiss') else 'submitted'}
+    if page['outcome'] == 'submitted': page['value'] = json.dumps(config.get('page_value', {'choice': 'revise'}))
+    state['pages'][page_id] = page
+    node.update(overlay=False, htmlOverlays=[])
+    save()
+    print(json.dumps({'ok': True, 'result': {'pageOutcome': page}}))
+    sys.exit(2 if page['outcome'] == 'dismissed' else 0)
+if args[:2] == ['session', 'close']:
+    sid = option('--target')
+    with (root / 'closes.jsonl').open('a') as f: f.write(json.dumps(args)+'\n')
+    if config.get('close') == 'lost-before': time.sleep(5); sys.exit(1)
+    for workspace in tree['workspaces']:
+        workspace['sessions'] = [s for s in workspace['sessions'] if s['id'] != sid]
+    save()
+    if config.get('close') == 'lost-after': time.sleep(5)
+    reply(config.get('close_reply', {'affected': 1}) if config.get('close') != 'id' else {'id': sid})
 assert args[:2] == ['session', 'new']
 assert '--wait' in args and '--cwd' in args
+if config.get('agterm') == 'no-process': sys.exit(1)
 command = shlex.split(args[args.index('--command') + 1])
+sid = str(uuid.uuid4())
+pane_id = str(uuid.uuid4())
+workspace = next(w for w in tree['workspaces'] if w['id'] == option('--workspace'))
+# Shape observed for an agterm completed --wait terminal; IDs/cwd are disposable.
+node = {'id': sid, 'name': option('--name'), 'realized': not config.get('unrealized'),
+        'foreground': command, 'commandWait': True, 'cwd': option('--cwd'),
+        'active': False, 'scratch': False, 'split': False, 'overlay': False,
+        'backedByZmx': False, 'flagged': False, 'fontSize': 13,
+        'surfaces': [{'id': 'surface:'+sid+':left', 'kind': 'left', 'paneID': pane_id,
+                      'active': True, 'visible': True, 'backedByZmx': False}]}
+workspace['sessions'].append(node)
+save()
 with (root / 'launches.jsonl').open('a') as f:
     f.write(json.dumps(command) + '\n')
+with (root / 'create-args.jsonl').open('a') as f: f.write(json.dumps(args)+'\n')
+env = dict(os.environ, AGTERM_ENABLED='1', AGTERM_SOCKET=option('--socket'),
+           AGTERM_WINDOW_ID=window, AGTERM_WORKSPACE_ID=workspace['id'], AGTERM_SESSION_ID=sid,
+           AGTERM_PANE_ID=pane_id)
 with (root / 'visible.log').open('ab') as f:
-    child = subprocess.Popen(command, stdout=f, stderr=f, start_new_session=True)
+    child = subprocess.Popen(command, stdout=f, stderr=f, start_new_session=True, env=env)
 (root / 'worker-pid').write_text(str(child.pid))
 if config.get('agterm') == 'lost':
     time.sleep(10)
 elif config.get('agterm') != 'async':
     child.wait(timeout=10)
-print(json.dumps({'ok': True, 'result': {'id': 'visible-fixture'}, 'pid': child.pid}))
+    node.pop('foreground', None)
+    if config.get('hold') != 'wait': node['foregroundShell'] = 'zsh'
+    save()
+reply({'id': sid})
 '''
 
 
@@ -141,12 +245,21 @@ class Helpers(unittest.TestCase):
         (self.bin / 'skill/SKILL.md').write_text('Fixture skill\n')
         self.config = {'artifact': str(self.artifact)}
         self.configure()
+        journal.atomic_json(self.bin / 'agterm.json', {
+            'windows': [{'id': WINDOW, 'open': True, 'active': True}],
+            'trees': {WINDOW: {'workspaces': [{'id': WORKSPACE, 'sessions': [
+                {'id': LEAD, 'name': 'lead', 'realized': True, 'foregroundShell': 'zsh'}]}]}}})
+        self.env = patch.dict(os.environ, {'AGTERM_ENABLED': '1', 'AGTERM_SOCKET': str(self.bin / 'agterm.sock'),
+                                         'AGTERM_WINDOW_ID': WINDOW, 'AGTERM_WORKSPACE_ID': WORKSPACE,
+                                         'AGTERM_SESSION_ID': LEAD})
+        self.env.start()
+        self.addCleanup(self.env.stop)
         self.catalog = inventory.discover([self.repo], str(self.codex), 3)
         self.assertEqual(self.catalog['models']['status'], 'ok')
 
     def tearDown(self):
         # Interrupted workers have independent process groups; fixtures own their cleanup.
-        for file in self.task.glob('research/dev-lead/runs/*/execution/process.json'):
+        for file in self.root.glob('*/research/dev-lead/runs/*/execution/process.json'):
             try:
                 os.killpg(mechanics.load(file)['pid'], signal.SIGKILL)
             except ProcessLookupError:
@@ -170,6 +283,7 @@ class Helpers(unittest.TestCase):
                        inventory=self.catalog, model='fixture-model', effort='high',
                        sandbox='workspace-write', prompt='Bounded fixture task',
                        artifact_root=self.repo, codex=str(self.codex), timeout=3,
+                       agtermctl=str(self.agterm),
                        skill_paths=[str(self.bin / 'skill/SKILL.md')])
         options.update(kwargs)
         return runner.prepare(**options)
@@ -396,7 +510,8 @@ class Helpers(unittest.TestCase):
 
     def test_lost_launch_without_process_is_uncertain(self):
         run = self.prepare()
-        result = runner.launch(run, str(self.bin / 'missing-agterm'))
+        self.configure(agterm='no-process')
+        result = runner.launch(run, str(self.agterm))
         self.assertTrue(result['uncertain'])
         self.assertEqual(runner.reconcile(run)['status'], 'uncertain')
         with self.assertRaises(ValueError):
@@ -490,13 +605,155 @@ class Helpers(unittest.TestCase):
 
     def test_unresolved_launch_blocks_new_worker(self):
         run = self.prepare()
-        runner.launch(run, str(self.bin / 'missing-agterm'))
+        self.configure(agterm='no-process')
+        runner.launch(run, str(self.agterm))
         next_run = self.prepare('next')
         with self.assertRaisesRegex(ValueError, 'no durable exit'):
             runner.launch(next_run, str(self.agterm))
         with self.assertRaisesRegex(ValueError, 'confirmed absent'):
             runner.acknowledge_stopped(run, 'Cannot prove a lost launch did not occur')
         self.assertFalse((next_run / 'launch.json').exists())
+
+    def background_run(self, mode):
+        self.task = self.root / ('task-' + mode)
+        (self.bin / 'release-child').unlink(missing_ok=True)
+        self.configure(worker=mode, background_child=True)
+        run = self.execute('background')
+        process = mechanics.load(run / 'execution/process.json')
+        child = mechanics.load(self.bin / 'background.json')
+        self.assertEqual(mechanics.load(run / 'execution/exit.json')['exit_code'], 0)
+        self.assertEqual(child['pgid'], process['pid'])
+        self.assertFalse(runner._pid_present(int((run / 'claim').read_text())))
+        self.assertFalse(runner._pid_present(process['owner_pid']))
+        self.assertFalse(runner._pid_present(process['pid']))
+        self.assertTrue(runner._pid_present(child['pid']))
+        self.assertTrue(runner._group_present(process['pid']))
+        self.assertFalse(runner._processes_stopped(run))
+        return run
+
+    def release_background(self, run):
+        (self.bin / 'release-child').touch()
+        process = mechanics.load(run / 'execution/process.json')
+        self.wait_for(lambda: not runner._group_present(process['pid']))
+
+    def test_successful_exit_live_group_blocks_continuation(self):
+        for mode in ('question', 'blocked'):
+            with self.subTest(mode=mode):
+                run = self.background_run(mode)
+                try:
+                    if mode == 'blocked':
+                        runner.event(self.task, 'background:resolution', 'blocker.resolved',
+                                     {'evidence': ['Fixture prerequisite checked']})
+                    with patch.object(runner.native, 'check_resume') as resume:
+                        with self.assertRaisesRegex(ValueError, 'stopped processes'):
+                            self.prepare('answer', resume_from=run)
+                        resume.assert_not_called()
+                    self.assertFalse((run.parent / 'answer').exists())
+                    self.assertNotIn('background:continuation',
+                                     [r['event_id'] for r in journal.read_events(self.task / 'decision.log')])
+                finally:
+                    self.release_background(run)
+                self.configure(worker='done', background_child=False)
+                resumed = self.execute('answer', resume_from=run)
+                self.assertEqual(mechanics.load(resumed / 'spec.json')['resume_session'], SESSION)
+
+    def test_successful_exit_live_group_blocks_next_launch(self):
+        for mode in ('question', 'done'):
+            with self.subTest(mode=mode):
+                run = self.background_run(mode)
+                next_run = self.prepare('next')
+                before = mechanics.git_snapshot(self.repo)
+                trace = (self.bin / 'trace.jsonl').read_bytes()
+                creates = (self.bin / 'create-args.jsonl').read_bytes()
+                try:
+                    with self.assertRaisesRegex(ValueError, 'stopped processes'):
+                        runner.launch(next_run, str(self.agterm))
+                    self.assertEqual(mechanics.git_snapshot(self.repo), before)
+                    self.assertEqual((self.bin / 'trace.jsonl').read_bytes(), trace)
+                    self.assertEqual((self.bin / 'create-args.jsonl').read_bytes(), creates)
+                    self.assertNotIn('next:launch',
+                                     [r['event_id'] for r in journal.read_events(self.task / 'decision.log')])
+                    self.assertFalse((next_run / 'claim').exists())
+                    self.assertFalse((self.bin / 'closes.jsonl').exists())
+                finally:
+                    self.release_background(run)
+                self.configure(worker='done', background_child=False)
+                self.assertFalse(runner.launch(next_run, str(self.agterm))['uncertain'])
+
+    def test_worker_rejects_wrong_destination_before_native_execution(self):
+        for field in ('AGTERM_WINDOW_ID', 'AGTERM_WORKSPACE_ID'):
+            with self.subTest(field=field):
+                self.task = self.root / field.lower()
+                run = self.prepare()
+                runner.event(self.task, 'one:launch', 'launch.intent', {'command': ['fixture-entry']})
+                before = mechanics.git_snapshot(self.repo)
+                trace = (self.bin / 'trace.jsonl').read_bytes()
+                env = {'AGTERM_SESSION_ID': '44444444-4444-4444-8444-444444444444',
+                       'AGTERM_PANE_ID': '55555555-5555-4555-8555-555555555555',
+                       field: '66666666-6666-4666-8666-666666666666'}
+                with patch.dict(os.environ, env), patch.object(runner, 'capture',
+                        side_effect=AssertionError('native execution reached')) as capture:
+                    with self.assertRaisesRegex(ValueError, 'worker agterm identity differs from pinned destination'):
+                        runner.worker(run, terminal=False)
+                    capture.assert_not_called()
+                self.assertTrue((run / 'claim').exists())
+                self.assertFalse((run / 'terminal.json').exists())
+                self.assertFalse((run / 'execution').exists())
+                self.assertEqual(mechanics.git_snapshot(self.repo), before)
+                self.assertEqual((self.bin / 'trace.jsonl').read_bytes(), trace)
+                self.assertEqual([r['kind'] for r in journal.read_events(self.task / 'decision.log')],
+                                 ['run.prepared', 'launch.intent'])
+                self.assertFalse((self.bin / 'closes.jsonl').exists())
+
+    def test_transition_rechecks_missing_or_live_process_evidence(self):
+        self.configure(worker='question')
+        run = self.execute()
+        queued = self.prepare('queued')
+        claim = (run / 'claim').read_bytes()
+        process = (run / 'execution/process.json').read_bytes()
+        for case in ('missing-claim', 'missing-process', 'wrapper', 'owner', 'cli', 'group-permission'):
+            with self.subTest(case=case):
+                value = json.loads(process)
+                if case == 'missing-claim':
+                    (run / 'claim').unlink()
+                elif case == 'missing-process':
+                    (run / 'execution/process.json').unlink()
+                elif case == 'wrapper':
+                    (run / 'claim').write_text(str(os.getpid()))
+                elif case in ('owner', 'cli'):
+                    value['owner_pid' if case == 'owner' else 'pid'] = os.getpid()
+                    journal.atomic_json(run / 'execution/process.json', value)
+                probe = (patch.object(runner.os, 'killpg', side_effect=PermissionError('fixture denied'))
+                         if case == 'group-permission' else contextlib.nullcontext())
+                try:
+                    with probe, patch.object(runner.native, 'check_resume') as resume:
+                        self.assertFalse(runner._processes_stopped(run))
+                        message = ('saved needs_input' if case == 'missing-process' else 'stopped processes')
+                        with self.assertRaisesRegex(ValueError, message):
+                            self.prepare('answer', resume_from=run)
+                        resume.assert_not_called()
+                        with patch.object(runner, '_ipc') as ipc:
+                            with self.assertRaisesRegex(ValueError, 'stopped processes'):
+                                runner.launch(queued, str(self.agterm))
+                            ipc.assert_not_called()
+                    self.assertFalse((queued.parent / 'answer').exists())
+                    self.assertFalse((queued / 'claim').exists())
+                finally:
+                    (run / 'claim').write_bytes(claim)
+                    (run / 'execution/process.json').write_bytes(process)
+        self.assertTrue(runner._processes_stopped(run))
+        resumed = self.execute('answer', resume_from=run)
+        self.assertEqual(mechanics.load(resumed / 'spec.json')['resume_session'], SESSION)
+        self.assertFalse(runner.launch(queued, str(self.agterm))['uncertain'])
+
+    def test_stopped_historical_exit_does_not_require_current_acceptance(self):
+        first = self.execute()
+        self.verify(first)
+        self.artifact.write_text('later accepted work\n')
+        self.assertEqual(runner.reconcile(first)['status'], 'stale')
+        self.assertTrue(runner._processes_stopped(first))
+        later = self.execute('later')
+        self.assertEqual(runner.reconcile(later)['status'], 'unverified')
 
     def test_interrupted_files_can_be_acknowledged_and_exact_session_continued(self):
         self.configure(worker='sleep', agterm='async')
@@ -649,11 +906,1429 @@ class Helpers(unittest.TestCase):
         self.assertIn('Approved answer: choose option B', (self.bin / 'last-prompt.txt').read_text())
         self.assertEqual(runner.reconcile(resumed)['status'], 'unverified')
 
+    def test_agterm_preflight_failure_has_no_task_side_effects(self):
+        for changes, message in [({'AGTERM_ENABLED': '0'}, 'requires agterm'),
+                                 ({'AGTERM_SESSION_ID': ''}, 'incomplete agterm'),
+                                 ({'AGTERM_WORKSPACE_ID': LEAD}, 'stale agterm workspace')]:
+            with self.subTest(changes=changes), patch.dict(os.environ, changes):
+                with self.assertRaisesRegex(ValueError, message):
+                    self.prepare()
+                self.assertFalse(self.task.exists())
+        with self.assertRaisesRegex(ValueError, 'CLI missing'):
+            self.prepare(agtermctl=str(self.bin / 'missing'))
+        self.configure(ipc_error='connect failed: Operation not permitted')
+        with self.assertRaisesRegex(ValueError, 'Operation not permitted'):
+            self.prepare()
+        self.assertFalse(self.task.exists())
+        self.assertFalse((self.bin / 'launches.jsonl').exists())
+
+    def test_agterm_preflight_rejects_bad_reply_timeout_and_mismatched_membership(self):
+        self.configure(bad_reply=True)
+        with self.assertRaisesRegex(ValueError, 'malformed'):
+            runner.preflight(str(self.agterm))
+        self.configure(bad_reply=False, ipc_sleep=True)
+        with self.assertRaisesRegex(ValueError, 'timed out'):
+            runner.preflight(str(self.agterm), .05)
+        self.configure(ipc_sleep=False)
+        state = mechanics.load(self.bin / 'agterm.json')
+        state['trees'][WINDOW]['workspaces'].append({'id': LEAD, 'sessions': []})
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        with patch.dict(os.environ, {'AGTERM_WORKSPACE_ID': LEAD}):
+            with self.assertRaisesRegex(ValueError, 'mismatched'):
+                self.prepare()
+        self.assertFalse(self.task.exists())
+
+    def test_worker_destination_survives_focus_and_environment_change(self):
+        identity = runner.preflight(str(self.agterm))
+        state = mechanics.load(self.bin / 'agterm.json')
+        other_window = '44444444-4444-4444-8444-444444444444'
+        state['windows'][0]['active'] = False
+        state['windows'].append({'id': other_window, 'open': True, 'active': True})
+        state['trees'][other_window] = {'workspaces': [{'id': LEAD, 'sessions': []}]}
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        with patch.dict(os.environ, {'AGTERM_WINDOW_ID': other_window, 'AGTERM_WORKSPACE_ID': LEAD}):
+            run = self.execute('pinned', agterm_identity=identity)
+        args = json.loads((self.bin / 'create-args.jsonl').read_text().splitlines()[-1])
+        self.assertEqual(args[args.index('--window') + 1], WINDOW)
+        self.assertEqual(args[args.index('--workspace') + 1], WORKSPACE)
+        self.assertIn('--no-select', args)
+        terminal = mechanics.load(run / 'terminal.json')
+        self.assertEqual(terminal['window_id'], WINDOW)
+        self.assertNotEqual(terminal['session_id'], LEAD)
+        self.assertEqual(mechanics.load(run / 'session.json')['session_id'], SESSION)
+        self.assertEqual(mechanics.load(self.bin / 'agterm.json')['windows'], state['windows'])
+
+    def test_safe_names_cover_unsafe_components_and_collisions(self):
+        occupied = set()
+        names = []
+        for step, run_id in [('A / B\n$(bad)', 'Foo-Bar'), ('A / B\n$(bad)', 'Foo.Bar'),
+                             ('', 'safe'), ('a_b', 'c'), ('a', 'b_c')]:
+            label = runner._terminal_name(self.root / 'Unsafe Feature!', step, run_id, occupied)
+            self.assertRegex(label, r'^nxs_[a-z0-9]+(?:_[a-z0-9]+)*$')
+            self.assertNotIn(label, occupied)
+            names.append(label); occupied.add(label)
+        self.assertEqual(len(names), len(set(names)))
+        original = runner._terminal_name(self.task, 'x', 'y', set())
+        suffixed = runner._terminal_name(self.task, 'x', 'y', {original})
+        self.assertEqual(suffixed, runner._terminal_name(self.task, 'x', 'y', {original}))
+        self.assertNotEqual(suffixed, runner._terminal_name(self.task, 'x', 'y', {original, suffixed}))
+        first = self.prepare('Foo-Bar')
+        second = self.prepare('Foo.Bar')
+        self.assertNotEqual(mechanics.load(first / 'spec.json')['terminal_name'], mechanics.load(second / 'spec.json')['terminal_name'])
+        self.assertEqual(mechanics.load(second / 'spec.json')['run_id'], 'Foo.Bar')
+        with self.assertRaisesRegex(ValueError, 'safe single path'):
+            self.prepare('unsafe/path')
+
+    def test_cleanup_only_closes_owned_accepted_terminal_and_retains_native_identity(self):
+        run = self.execute()
+        with self.assertRaisesRegex(ValueError, 'independent acceptance'):
+            runner.cleanup(run, 'Not independently checked yet')
+        self.verify(run)
+        before = mechanics.load(self.bin / 'agterm.json')
+        sid = mechanics.load(run / 'terminal.json')['session_id']
+        self.assertEqual(runner.cleanup(run, 'Lead inspected acceptance; terminal no longer needed')['status'], 'closed')
+        self.assertEqual(runner.reconcile(run)['status'], 'done')
+        self.assertEqual(runner.reconcile(run)['cleanup']['status'], 'closed')
+        after = mechanics.load(self.bin / 'agterm.json')
+        self.assertEqual([s for s in before['trees'][WINDOW]['workspaces'][0]['sessions'] if s['id'] != sid],
+                         after['trees'][WINDOW]['workspaces'][0]['sessions'])
+        command = runner.native.command('codex', str(self.codex), self.repo, 'fixture-model', 'high',
+                                        'workspace-write', run, mechanics.load(run / 'session.json')['session_id'])
+        self.assertEqual(command[-3:], ['resume', SESSION, '-'])
+        runner.cleanup(run, 'Repeated observation, never a second close')
+        self.assertEqual(len((self.bin / 'closes.jsonl').read_text().splitlines()), 1)
+
+    def test_cleanup_rechecks_acceptance_after_terminal_observation(self):
+        run = self.execute()
+        self.verify(run)
+        self.assertEqual(runner.reconcile(run)['status'], 'done')
+        before = mechanics.load(self.bin / 'agterm.json')
+        sid = mechanics.load(run / 'terminal.json')['session_id']
+        self.assertIn(sid, [s['id'] for s in before['trees'][WINDOW]['workspaces'][0]['sessions']])
+        native = (run / 'session.json').read_bytes()
+        observe = runner._agterm_tree
+
+        def change_evidence(*args, **kwargs):
+            observed = observe(*args, **kwargs)
+            self.artifact.write_text('changed during terminal observation\n')
+            return observed
+
+        with patch.object(runner, '_agterm_tree', side_effect=change_evidence) as observed:
+            with self.assertRaisesRegex(ValueError, '^cleanup acceptance evidence changed$'):
+                runner.cleanup(run, 'Acceptance must remain current through terminal observation')
+        observed.assert_called_once()
+        self.assertEqual(self.artifact.read_text(), 'changed during terminal observation\n')
+        rows = journal.read_events(self.task / 'decision.log')
+        self.assertFalse(any(r['kind'] == 'cleanup.intent' or r['event_id'] == 'one:cleanup' for r in rows))
+        self.assertFalse((run / 'cleanup-response.json').exists())
+        self.assertFalse((self.bin / 'closes.jsonl').exists())
+        self.assertEqual(mechanics.load(self.bin / 'agterm.json'), before)
+        self.assertEqual((run / 'session.json').read_bytes(), native)
+
+    def test_cleanup_rechecks_ignored_artifacts_and_check_outputs_after_observation(self):
+        ignored = self.repo / '.scratch' / 'accepted.txt'
+        ignored.parent.mkdir()
+        (self.repo / '.git/info/exclude').write_text('.scratch/\n')
+        for continued in (False, True):
+            for evidence in ('artifact', 'stdout', 'stderr', 'exit.json'):
+                for missing in (False, True):
+                    with self.subTest(continued=continued, evidence=evidence, missing=missing):
+                        identity = f'evidence-{continued}-{evidence}-{missing}'
+                        self.configure(worker='question' if continued else 'done')
+                        run = self.execute(identity)
+                        accepted = self.execute(identity + '-answer', resume_from=run) if continued else run
+                        ignored.write_text('independently accepted artifact\n')
+                        result = mechanics.load(accepted / 'result.json')
+                        result['artifacts'].append(str(ignored))
+                        journal.atomic_json(accepted / 'result.json', result)
+                        report = self.verify(accepted)
+                        self.assertEqual(runner.reconcile(accepted)['status'], 'done')
+                        self.assertIn(str(ignored), report['artifacts'])
+                        self.assertNotIn('.scratch/accepted.txt', report['git']['files'])
+                        target = ignored if evidence == 'artifact' else accepted / 'checks/first/0' / evidence
+                        if evidence != 'artifact':
+                            self.assertIn(str(target.relative_to(accepted)), report['checks'])
+                        before = mechanics.load(self.bin / 'agterm.json')
+                        native = {p: runner._source(p) for p in (run, accepted)}
+                        launches = {p: (p / 'launch.json').read_bytes() for p in native}
+                        events = journal.read_events(self.task / 'decision.log')
+                        observe = runner._agterm_tree
+
+                        def change_evidence(*args, **kwargs):
+                            observed = observe(*args, **kwargs)
+                            if kwargs.get('require_lead') is not False:
+                                if missing:
+                                    target.unlink()
+                                else:
+                                    target.write_text('changed during terminal observation\n')
+                            return observed
+
+                        options = {'accepted_continuation': accepted} if continued else {}
+                        error = (OSError, ValueError) if missing else ValueError
+                        pattern = None if missing else '^cleanup acceptance evidence changed$'
+                        with patch.object(runner, '_agterm_tree', side_effect=change_evidence) as observed:
+                            with self.assertRaisesRegex(error, pattern):
+                                runner.cleanup(run, 'Acceptance must remain current', **options)
+                        observed.assert_called_once()
+                        self.assertEqual(target.exists(), not missing)
+                        if not missing:
+                            self.assertEqual(target.read_text(), 'changed during terminal observation\n')
+                        self.assertEqual(mechanics.git_snapshot(self.repo), report['git'])
+                        self.assertEqual(journal.read_events(self.task / 'decision.log'), events)
+                        self.assertFalse(any(row['kind'] == 'cleanup.intent' for row in events))
+                        self.assertFalse((self.bin / 'closes.jsonl').exists())
+                        self.assertEqual(mechanics.load(self.bin / 'agterm.json'), before)
+                        for p, source in native.items():
+                            self.assertEqual(runner._source(p), source)
+                            self.assertEqual((p / 'launch.json').read_bytes(), launches[p])
+                            self.assertFalse((p / 'cleanup-response.json').exists())
+                            self.assertFalse((p / 'cleanup.json').exists())
+
+    def test_cleanup_allows_unchanged_evidence_and_journal_growth_during_observation(self):
+        for continued in (False, True):
+            for append in (False, True):
+                with self.subTest(continued=continued, append=append):
+                    identity = f'journal-{continued}-{append}'
+                    self.configure(worker='question' if continued else 'done')
+                    run = self.execute(identity, artifact_root=self.root)
+                    accepted = self.execute(identity + '-answer', resume_from=run,
+                                            artifact_root=self.root) if continued else run
+                    result = mechanics.load(accepted / 'result.json')
+                    result['artifacts'].extend([str(self.task / 'decision.log'),
+                                                str(self.task / 'research/dev-lead/journal-state.json')])
+                    journal.atomic_json(accepted / 'result.json', result)
+                    self.verify(accepted)
+                    native = {p: runner._source(p) for p in (run, accepted)}
+                    before = mechanics.load(self.bin / 'agterm.json')
+                    sid = mechanics.load(run / 'terminal.json')['session_id']
+                    observe = runner._agterm_tree
+
+                    def append_evidence(*args, **kwargs):
+                        observed = observe(*args, **kwargs)
+                        if append and kwargs.get('require_lead') is not False:
+                            journal.append_event(self.task / 'decision.log', identity + '-observed',
+                                                 'decision', {'summary': 'Valid journal growth during observation'})
+                        return observed
+
+                    options = {'accepted_continuation': accepted} if continued else {}
+                    with patch.object(runner, '_agterm_tree', side_effect=append_evidence):
+                        self.assertEqual(runner.cleanup(run, 'Current accepted evidence', **options)['status'], 'closed')
+                    after = mechanics.load(self.bin / 'agterm.json')
+                    self.assertEqual([s for s in before['trees'][WINDOW]['workspaces'][0]['sessions'] if s['id'] != sid],
+                                     after['trees'][WINDOW]['workspaces'][0]['sessions'])
+                    rows = journal.read_events(self.task / 'decision.log')
+                    self.assertEqual(sum(row['event_id'] == identity + ':cleanup' for row in rows), 1)
+                    closes = [json.loads(line) for line in (self.bin / 'closes.jsonl').read_text().splitlines()]
+                    self.assertEqual(sum(row[row.index('--target') + 1] == sid for row in closes), 1)
+                    self.assertTrue((run / 'cleanup-response.json').exists())
+                    for p, source in native.items():
+                        self.assertEqual(runner._source(p), source)
+                    self.assertEqual(runner.reconcile(accepted)['status'], 'done')
+
+    def test_cleanup_preserves_changed_or_unknown_terminal_and_ownership(self):
+        run = self.execute()
+        self.verify(run)
+        baseline = mechanics.load(self.bin / 'agterm.json')
+        for changes in ({'foreground': ['user-program']}, {'hasSplit': True}, {'scratch': True},
+                        {'overlay': True}, {'foregroundShell': '', 'commandWait': False}, {'name': 'user-renamed'}):
+            state = json.loads(json.dumps(baseline))
+            state['trees'][WINDOW]['workspaces'][0]['sessions'][-1].update(changes)
+            journal.atomic_json(self.bin / 'agterm.json', state)
+            with self.subTest(changes=changes), self.assertRaisesRegex(ValueError, 'repurposed'):
+                runner.cleanup(run, 'Inspected but repurposed')
+        journal.atomic_json(self.bin / 'agterm.json', baseline)
+        with patch.object(runner, '_processes_stopped', return_value=False):
+            with self.assertRaisesRegex(ValueError, 'stopped worker'):
+                runner.cleanup(run, 'Process evidence unavailable')
+        observed = mechanics.load(run / 'terminal.json')
+        observed['session_id'] = LEAD
+        journal.atomic_json(run / 'terminal.json', observed)
+        with self.assertRaisesRegex(ValueError, 'acceptance'):
+            runner.cleanup(run, 'Ownership was changed')
+        self.assertFalse((self.bin / 'closes.jsonl').exists())
+
+    def test_cleanup_preserves_question_blocked_invalid_and_live_runs(self):
+        for mode in ('question', 'blocked', 'malformed', 'sleep'):
+            self.configure(worker=mode, agterm='async' if mode == 'sleep' else 'normal')
+            run = self.execute(mode, timeout=.5 if mode == 'sleep' else 3)
+            with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, 'acceptance'):
+                runner.cleanup(run, 'Ineligible outcome')
+        self.assertFalse((self.bin / 'closes.jsonl').exists())
+
+    def test_observed_completed_wait_envelope_allows_owned_cleanup_without_shell_field(self):
+        self.configure(hold='wait')
+        run = self.execute()
+        self.verify(run)
+        node = mechanics.load(self.bin / 'agterm.json')['trees'][WINDOW]['workspaces'][0]['sessions'][-1]
+        self.assertTrue(node['realized'] and node['commandWait'])
+        self.assertNotIn('foreground', node)
+        self.assertNotIn('foregroundShell', node)
+        self.assertEqual(node['surfaces'][0]['paneID'], mechanics.load(run / 'terminal.json')['pane_id'])
+        self.assertEqual(runner.cleanup(run, 'Accepted stopped --wait command; original cwd and primary pane intact')['status'], 'closed')
+        self.assertEqual(runner.reconcile(run)['status'], 'done')
+
+    def test_wait_cleanup_preserves_unknown_hold_changed_cwd_and_hidden_or_replaced_panes(self):
+        self.configure(hold='wait')
+        run = self.execute()
+        self.verify(run)
+        baseline = mechanics.load(self.bin / 'agterm.json')
+        for mode in ('live-program', 'missing-hold', 'changed-cwd', 'missing-cwd',
+                     'hidden-split', 'hidden-scratch', 'replaced-primary', 'missing-surfaces', 'overlay'):
+            state = json.loads(json.dumps(baseline))
+            node = state['trees'][WINDOW]['workspaces'][0]['sessions'][-1]
+            if mode == 'live-program': node['foreground'] = ['user-program']
+            elif mode == 'missing-hold': node.pop('commandWait')
+            elif mode == 'changed-cwd': node['cwd'] = str(self.root)
+            elif mode == 'missing-cwd': node.pop('cwd')
+            elif mode in ('hidden-split', 'hidden-scratch'):
+                node['surfaces'].append({'kind': 'right' if mode == 'hidden-split' else 'scratch',
+                                         'paneID': LEAD, 'visible': False})
+            elif mode == 'replaced-primary': node['surfaces'][0]['paneID'] = LEAD
+            elif mode == 'missing-surfaces': node.pop('surfaces')
+            else: node['overlay'] = True
+            journal.atomic_json(self.bin / 'agterm.json', state)
+            with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, 'repurposed'):
+                runner.cleanup(run, 'Preserve unknown or repurposed held terminal')
+        self.assertFalse((self.bin / 'closes.jsonl').exists())
+
+    def test_command_wait_metadata_never_substitutes_for_stopped_process_evidence(self):
+        self.configure(worker='sleep', agterm='async', hold='wait')
+        run = self.execute(timeout=.5)
+        state = mechanics.load(self.bin / 'agterm.json')
+        node = state['trees'][WINDOW]['workspaces'][0]['sessions'][-1]
+        node.pop('foreground')
+        self.assertTrue(node['commandWait'])
+        self.assertNotIn('foregroundShell', node)
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        with self.assertRaisesRegex(ValueError, 'independent acceptance'):
+            runner.cleanup(run, 'Live worker remains protected despite absent foreground metadata')
+        self.assertFalse((self.bin / 'closes.jsonl').exists())
+
+    def test_resolved_blocked_terminal_retires_only_after_accepted_exact_continuation(self):
+        self.configure(worker='blocked', hold='wait')
+        blocked = self.execute('blocked')
+        with self.assertRaisesRegex(ValueError, 'resolution evidence'):
+            self.prepare('premature', resume_from=blocked)
+        runner.event(self.task, 'blocked:resolution', 'resolution', {'evidence': 'Lead checked the resolved blocker'})
+        self.configure(worker='done')
+        accepted = self.execute('accepted', resume_from=blocked)
+        with self.assertRaisesRegex(ValueError, 'accepted done continuation'):
+            runner.cleanup(blocked, 'Unaccepted exact continuation', accepted_continuation=accepted)
+        self.verify(accepted)
+        state = mechanics.load(self.bin / 'agterm.json')
+        state['trees'][WINDOW]['workspaces'][0]['sessions'][1]['status'] = 'blocked'
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        self.assertEqual(runner.cleanup(blocked, 'Blocker resolved and exact continuation independently accepted',
+                                        accepted_continuation=accepted)['status'], 'closed')
+        self.assertEqual(runner.reconcile(blocked)['status'], 'blocked')
+        self.assertEqual(runner.reconcile(accepted)['status'], 'done')
+        self.assertEqual(mechanics.load(blocked / 'session.json'), mechanics.load(accepted / 'session.json'))
+        self.assertEqual(len((self.bin / 'closes.jsonl').read_text().splitlines()), 1)
+
+    def test_answered_plan_cleanup_requires_explicit_accepted_exact_continuation(self):
+        self.configure(worker='question')
+        plan = self.execute('plan')
+        with self.assertRaisesRegex(ValueError, 'independent acceptance'):
+            runner.cleanup(plan, 'Question still pending')
+        build = self.execute('build', resume_from=plan)
+        with self.assertRaisesRegex(ValueError, 'accepted done continuation'):
+            runner.cleanup(plan, 'Continuation not independently accepted', accepted_continuation=build)
+        self.verify(build)
+        with self.assertRaisesRegex(ValueError, 'explicitly answered turn'):
+            runner.cleanup(plan, 'Accepted continuation must be named explicitly')
+        before = mechanics.load(self.bin / 'agterm.json')
+        plan_id = mechanics.load(plan / 'terminal.json')['session_id']
+        build_id = mechanics.load(build / 'terminal.json')['session_id']
+        self.assertEqual(runner.cleanup(plan, 'Lead accepted the exact build; old plan terminal no longer needed',
+                                        accepted_continuation=build)['status'], 'closed')
+        remaining = mechanics.load(self.bin / 'agterm.json')['trees'][WINDOW]['workspaces'][0]['sessions']
+        self.assertEqual(remaining, [s for s in before['trees'][WINDOW]['workspaces'][0]['sessions'] if s['id'] != plan_id])
+        self.assertIn(build_id, {s['id'] for s in remaining})
+        self.assertEqual(runner.reconcile(plan)['status'], 'needs_input')
+        self.assertEqual(runner.reconcile(plan)['cleanup']['status'], 'closed')
+        self.assertEqual(runner.reconcile(build)['status'], 'done')
+        intent = next(r for r in journal.read_events(self.task / 'decision.log') if r['event_id'] == 'plan:cleanup')
+        self.assertEqual(intent['data']['acceptance_run'], str(build))
+        self.assertEqual(intent['data']['verification_sha256'], mechanics.sha256(build / 'verification.json'))
+        self.assertEqual(set(intent['data']['source']), {str(plan), str(build)})
+        runner.cleanup(plan, 'Observe existing close without another request')
+        self.assertEqual(len((self.bin / 'closes.jsonl').read_text().splitlines()), 1)
+        self.assertEqual(mechanics.load(plan / 'session.json'), mechanics.load(build / 'session.json'))
+
+    def test_answered_turn_chain_requires_every_intermediate_turn_reconciled(self):
+        self.configure(worker='question')
+        plan = self.execute('plan')
+        self.configure(repeat_question=True)
+        waiting = self.execute('checks-pending', resume_from=plan)
+        self.assertEqual(runner.reconcile(waiting)['status'], 'needs_input')
+        with self.assertRaisesRegex(ValueError, 'accepted done continuation'):
+            runner.cleanup(plan, 'Controller evidence still pending', accepted_continuation=waiting)
+        self.configure(repeat_question=False)
+        accepted = self.execute('accepted', resume_from=waiting)
+        self.verify(accepted)
+        self.assertEqual(runner.cleanup(plan, 'All answers reconciled by accepted endpoint',
+                                        accepted_continuation=accepted)['status'], 'closed')
+        self.assertEqual(runner.cleanup(waiting, 'Controller answer consumed; old turn retired',
+                                        accepted_continuation=accepted)['status'], 'closed')
+        self.assertEqual(runner.reconcile(accepted)['status'], 'done')
+        self.assertEqual(len((self.bin / 'closes.jsonl').read_text().splitlines()), 2)
+
+    def test_answered_cleanup_rejects_unrelated_blocked_invalid_uncertain_and_stale_evidence(self):
+        self.configure(worker='question')
+        plan = self.execute('plan')
+        self.configure(worker='done')
+        unrelated = self.execute('unrelated')
+        self.verify(unrelated)
+        with self.assertRaisesRegex(ValueError, 'not an exact continuation'):
+            runner.cleanup(plan, 'Same native fixture ID does not establish continuation', accepted_continuation=unrelated)
+        prepared = self.prepare('not-launched')
+        with self.assertRaisesRegex(ValueError, 'accepted done continuation'):
+            runner.cleanup(plan, 'No durable continuation outcome', accepted_continuation=prepared)
+        self.configure(worker='blocked')
+        blocked = self.execute('blocked', resume_from=plan)
+        with self.assertRaisesRegex(ValueError, 'accepted done continuation'):
+            runner.cleanup(plan, 'Blocked answer is not accepted', accepted_continuation=blocked)
+        runner.event(self.task, 'blocked:resolution', 'resolution', {'evidence': 'Fixture cause resolved'})
+        self.configure(worker='done')
+        accepted = self.execute('after-blocked', resume_from=blocked)
+        self.verify(accepted)
+        rows = [r for r in journal.read_events(self.task / 'decision.log') if r['event_id'] != 'blocked:resolution']
+        (self.task / 'decision.log').write_text(''.join(json.dumps(r)+'\n' for r in rows))
+        with self.assertRaisesRegex(ValueError, 'recorded resolution evidence'):
+            runner.cleanup(plan, 'Unresolved blocked intermediate turn remains protected', accepted_continuation=accepted)
+        self.artifact.write_text('changed after acceptance\n')
+        with self.assertRaisesRegex(ValueError, 'accepted done continuation'):
+            runner.cleanup(blocked, 'Blocked parent remains protected', accepted_continuation=accepted)
+        (accepted / 'result.json').write_text('{bad')
+        with self.assertRaisesRegex(ValueError, 'accepted done continuation'):
+            runner.cleanup(plan, 'Invalid continuation is not accepted', accepted_continuation=accepted)
+        self.assertFalse((self.bin / 'closes.jsonl').exists())
+
+    def test_answered_cleanup_preserves_stale_acceptance_repurposed_terminal_and_ownership(self):
+        self.configure(worker='question')
+        plan = self.execute('plan')
+        accepted = self.execute('build', resume_from=plan)
+        self.verify(accepted)
+        baseline = self.artifact.read_text()
+        self.artifact.write_text('stale evidence\n')
+        with self.assertRaisesRegex(ValueError, 'accepted done continuation'):
+            runner.cleanup(plan, 'Stale endpoint', accepted_continuation=accepted)
+        self.artifact.write_text(baseline)
+        state = mechanics.load(self.bin / 'agterm.json')
+        plan_node = state['trees'][WINDOW]['workspaces'][0]['sessions'][1]
+        plan_node['foreground'] = ['user-program']
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        with self.assertRaisesRegex(ValueError, 'repurposed'):
+            runner.cleanup(plan, 'Repurposed answered plan', accepted_continuation=accepted)
+        plan_node.pop('foreground')
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        with patch.object(runner, '_processes_stopped', return_value=False):
+            with self.assertRaisesRegex(ValueError, 'stopped processes'):
+                runner.cleanup(plan, 'Process ownership unknown', accepted_continuation=accepted)
+        terminal = mechanics.load(plan / 'terminal.json')
+        terminal['session_id'] = LEAD
+        journal.atomic_json(plan / 'terminal.json', terminal)
+        with self.assertRaisesRegex(ValueError, 'ownership evidence changed'):
+            runner.cleanup(plan, 'Changed parent ownership', accepted_continuation=accepted)
+        self.assertFalse((self.bin / 'closes.jsonl').exists())
+
+    def test_answered_cleanup_requires_matching_identity_and_durable_continuation_intent(self):
+        self.configure(worker='question')
+        plan = self.execute('plan')
+        accepted = self.execute('build', resume_from=plan)
+        self.verify(accepted)
+        original = (accepted / 'spec.json').read_bytes()
+        for key in ('task', 'cwd', 'step_id', 'harness', 'artifact_root'):
+            changed = json.loads(original)
+            changed[key] = 'different'
+            journal.atomic_json(accepted / 'spec.json', changed)
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'identity mismatch'):
+                runner.cleanup(plan, 'Mismatched identity', accepted_continuation=accepted)
+            (accepted / 'spec.json').write_bytes(original)
+        native = (accepted / 'session.json').read_bytes()
+        journal.atomic_json(accepted / 'session.json', {'session_id': LEAD})
+        with self.assertRaisesRegex(ValueError, 'accepted done continuation'):
+            runner.cleanup(plan, 'Mismatched native session', accepted_continuation=accepted)
+        (accepted / 'session.json').write_bytes(native)
+        log = (self.task / 'decision.log').read_bytes()
+        rows = journal.read_events(self.task / 'decision.log')
+        for row in rows:
+            if row['event_id'] == 'plan:continuation':
+                row['data']['run'] = str(plan)
+        (self.task / 'decision.log').write_text(''.join(json.dumps(r)+'\n' for r in rows))
+        with self.assertRaisesRegex(ValueError, 'continuation intent mismatch'):
+            runner.cleanup(plan, 'Mismatched consumed question', accepted_continuation=accepted)
+        (self.task / 'decision.log').write_bytes(log)
+        journal.recover_state(self.task / 'decision.log')
+        foreign = self.root / 'foreign-task/research/dev-lead/runs/foreign'
+        foreign.mkdir(parents=True)
+        (foreign / 'spec.json').write_bytes(original)
+        with self.assertRaisesRegex(ValueError, 'identity mismatch'):
+            runner.cleanup(plan, 'Foreign task', accepted_continuation=foreign)
+        self.assertEqual(list(foreign.iterdir()), [foreign / 'spec.json'])
+        self.assertFalse((self.bin / 'closes.jsonl').exists())
+
+    def test_lost_close_reply_observed_without_replaying_and_undo_preserved(self):
+        run = self.execute()
+        self.verify(run)
+        before = mechanics.load(self.bin / 'agterm.json')
+        self.configure(close='lost-after')
+        self.assertEqual(runner.cleanup(run, 'Accepted and no longer needed', timeout=.1)['status'], 'closed')
+        self.assertFalse(mechanics.load(run / 'cleanup-response.json')['valid_reply'])
+        journal.atomic_json(self.bin / 'agterm.json', before)
+        self.assertEqual(runner.cleanup(run, 'Reconcile undo')['status'], 'reappeared')
+        self.assertEqual(len((self.bin / 'closes.jsonl').read_text().splitlines()), 1)
+
+    def test_lost_close_before_effect_and_denied_observation_stay_uncertain(self):
+        run = self.execute()
+        self.verify(run)
+        self.configure(close='lost-before')
+        self.assertEqual(runner.cleanup(run, 'Accepted', timeout=.1)['status'], 'uncertain')
+        self.configure(ipc_error='Operation not permitted')
+        state = runner.cleanup(run, 'Observation denied')
+        self.assertEqual(state['status'], 'uncertain')
+        self.assertIn('Operation not permitted', state['reason'])
+        self.assertEqual(len((self.bin / 'closes.jsonl').read_text().splitlines()), 1)
+
+    def test_close_reply_accepts_only_exact_id_or_one_affected_session(self):
+        for result in ({'id': LEAD}, {'affected': 1}):
+            runner._close_reply({'exit_code': 0, 'stdout': json.dumps({'ok': True, 'result': result})}, LEAD)
+        for result in ({'id': SESSION}, {'affected': 0}, {'affected': 2}, {'affected': True},
+                       {'count': 1}, {'id': LEAD, 'affected': 1}):
+            with self.subTest(result=result), self.assertRaises(ValueError):
+                runner._close_reply({'exit_code': 0, 'stdout': json.dumps({'ok': True, 'result': result})}, LEAD)
+        run = self.execute()
+        self.verify(run)
+        self.configure(close='id')
+        self.assertEqual(runner.cleanup(run, 'Accepted')['status'], 'closed')
+        self.assertTrue(mechanics.load(run / 'cleanup-response.json')['valid_reply'])
+
+    def test_close_event_before_state_failure_is_reconciled_once(self):
+        run = self.execute()
+        self.verify(run)
+        original = runner.atomic_json
+        def interrupt(path, value):
+            if Path(path).name == 'cleanup-response.json':
+                raise OSError('lost local response persistence')
+            return original(path, value)
+        with patch.object(runner, 'atomic_json', side_effect=interrupt):
+            with self.assertRaises(OSError):
+                runner.cleanup(run, 'Accepted')
+        self.assertEqual(runner.reconcile(run)['cleanup']['status'], 'closed')
+        self.assertEqual(len((self.bin / 'closes.jsonl').read_text().splitlines()), 1)
+
+    def test_lost_launch_can_recover_owned_terminal_without_label_guessing(self):
+        self.configure(agterm='lost', worker='slow')
+        run = self.prepare()
+        self.assertTrue(runner.launch(run, timeout=.2)['uncertain'])
+        self.wait_for(lambda: (run / 'execution/exit.json').exists())
+        (run / 'launch.json').unlink()  # Controller died before persisting its lost reply.
+        self.verify(run)
+        # The fake app lost its reply before replacing foreground with a shell.
+        state = mechanics.load(self.bin / 'agterm.json')
+        node = state['trees'][WINDOW]['workspaces'][0]['sessions'][-1]
+        node.pop('foreground'); node['foregroundShell'] = 'zsh'
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        self.assertEqual(runner.cleanup(run, 'Launch independently reconciled and accepted')['status'], 'closed')
+
+    def test_legacy_runs_reconcile_and_resume_without_fabricating_ownership(self):
+        def legacy(run):
+            value = mechanics.load(run / 'spec.json')
+            value.pop('agterm_identity'); value.pop('terminal_name')
+            journal.atomic_json(run / 'spec.json', value)
+            rows = journal.read_events(self.task / 'decision.log')
+            for row in rows:
+                if row['event_id'] == value['run_id'] + ':prepared':
+                    row['data']['spec_sha256'] = mechanics.sha256(run / 'spec.json')
+            (self.task / 'decision.log').write_text(''.join(json.dumps(r)+'\n' for r in rows))
+            journal.recover_state(self.task / 'decision.log')
+        prepared = self.prepare('legacy-prepared')
+        legacy(prepared)
+        with self.assertRaisesRegex(ValueError, 'legacy run'):
+            runner.launch(prepared)
+        self.configure(worker='question')
+        question = self.execute('legacy-question')
+        legacy(question)
+        before = (question / 'spec.json').read_bytes()
+        self.assertEqual(runner.reconcile(question)['status'], 'needs_input')
+        resumed = self.execute('legacy-answer', resume_from=question)
+        self.assertEqual(mechanics.load(resumed / 'spec.json')['resume_session'], SESSION)
+        self.assertEqual((question / 'spec.json').read_bytes(), before)
+        self.assertIn('agterm_identity', mechanics.load(resumed / 'spec.json'))
+        legacy(resumed)
+        self.verify(resumed)
+        with self.assertRaisesRegex(ValueError, 'owned terminal evidence'):
+            runner.cleanup(resumed, 'Legacy ownership is unproven')
+
+    def test_launch_rechecks_name_collision_and_realization(self):
+        run = self.prepare()
+        state = mechanics.load(self.bin / 'agterm.json')
+        node = {'id': SESSION, 'name': mechanics.load(run / 'spec.json')['terminal_name'], 'realized': True}
+        state['trees'][WINDOW]['workspaces'][0]['sessions'].append(node)
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        with self.assertRaisesRegex(ValueError, 'now occupied'):
+            runner.launch(run)
+        self.assertFalse((run / 'launch.json').exists())
+        state['trees'][WINDOW]['workspaces'][0]['sessions'].pop()
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        self.configure(unrealized=True)
+        self.assertTrue(runner.launch(run)['uncertain'])
+
+    def test_cleanup_intent_before_request_is_not_replayed_after_interruption(self):
+        run = self.execute()
+        self.verify(run)
+        ipc = runner._ipc
+        def interrupt(command, timeout):
+            if command[1:3] == ['session', 'close']:
+                raise RuntimeError('interrupted before IPC observation')
+            return ipc(command, timeout)
+        with patch.object(runner, '_ipc', side_effect=interrupt), self.assertRaises(RuntimeError):
+            runner.cleanup(run, 'Accepted')
+        self.assertEqual(runner.cleanup(run, 'Inspect existing intent')['status'], 'uncertain')
+        self.assertFalse((self.bin / 'closes.jsonl').exists())
+
     def test_public_cli_help(self):
-        for module in ('inventory', 'runner', 'outcome', 'journal', 'commit'):
+        for module in ('inventory', 'runner', 'outcome', 'journal', 'commit', 'approval'):
             result = subprocess.run([sys.executable, str(SCRIPTS / (module + '.py')), '--help'], capture_output=True, timeout=3)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertIn(b'usage:', result.stdout)
+
+
+class Visibility(unittest.TestCase):
+    """Real fixture CLI processes; no live terminal, native server or permission changes."""
+    configure = Helpers.configure
+    git = Helpers.git
+    prepare = Helpers.prepare
+    execute = Helpers.execute
+    wait_for = Helpers.wait_for
+    checks = Helpers.checks
+    verify = Helpers.verify
+
+    def setUp(self):
+        Helpers.setUp(self)
+        self.task.mkdir()
+        self.owner = runner.controller(self.task)
+        self.owner.__enter__()
+        self.identity = runner.preflight(str(self.agterm))
+        self.waiters = []
+        self.progress = {'stage': 'planning', 'step_id': 'ticket', 'action': 'Inspect evidence',
+                         'reason': '', 'current_run': None, 'accepted_tickets': [], 'last_commit': None}
+
+    def tearDown(self):
+        for process in self.waiters:
+            for path in self.task.glob('research/dev-lead/questions/*/wait/process.json'):
+                try:
+                    os.killpg(mechanics.load(path)['pid'], signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            if process.poll() is None:
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            process.wait(timeout=3)
+        self.owner.__exit__(None, None, None)
+        Helpers.tearDown(self)
+
+    def question(self, purpose='decision', artifact=None, worker_run=None):
+        return {'text': 'Choose <scope> & explain', 'step_id': 'ticket', 'purpose': purpose,
+                'scope': 'affected behavior', 'artifact': artifact, 'worker_run': worker_run,
+                'fields': [{'name': 'choice', 'label': 'Decision <required>',
+                            'options': ['revise', 'approve'], 'required': True}]}
+
+    def show(self):
+        return lead_status.publish(self.task, 'progress-first', self.progress, self.identity)
+
+    def start(self, question_id='question', wait_timeout=3, **kwargs):
+        approval.prepare(self.task, question_id, self.question(**kwargs), self.identity)
+        process = approval.open(self.task, question_id, wait_timeout)
+        self.waiters.append(process)
+        return process
+
+    def finish(self, process, question_id='question'):
+        process.wait(timeout=5)
+        result = approval.poll(self.task, question_id)
+        self.assertIn(result['status'], ('submitted', 'dismissed'), result)
+        return result
+
+    def ui(self, prefix):
+        path = self.bin / 'ui.jsonl'
+        return [a for a in (json.loads(s) for s in path.read_text().splitlines())
+                if a[:len(prefix)] == prefix] if path.exists() else []
+
+    def change_node(self, **changes):
+        state = mechanics.load(self.bin / 'agterm.json')
+        node = state['trees'][WINDOW]['workspaces'][0]['sessions'][0]
+        node.update(changes)
+        journal.atomic_json(self.bin / 'agterm.json', state)
+        return node
+
+    def decision(self, question_id='question', identity='lead-decision', kind='decision', **data):
+        return journal.append_event(self.task / 'decision.log', identity, kind,
+                                    {'question_id': question_id, 'answer_event_id': question_id + ':answer', **data})
+
+    def test_visibility_status_transition_timestamps_evidence_and_git_preservation(self):
+        before = mechanics.git_snapshot(self.repo)
+        with patch.object(lead_status.time, 'time', return_value=100), patch.object(lead_status.time, 'monotonic', return_value=1):
+            self.assertEqual(self.show()['ui'], 'visible')
+        journal.append_event(self.task / 'decision.log', 'accepted', 'ticket.implementation.accepted',
+                             {'ticket': 'issues/01.md', 'evidence': ['checked-output']})
+        self.progress.update(stage='implementation', action='Run checks', reason='waiting for check output',
+                             accepted_tickets=[{'ticket': 'issues/01.md', 'event_id': 'accepted'}])
+        with patch.object(lead_status.time, 'time', return_value=120), patch.object(lead_status.time, 'monotonic', return_value=21):
+            changed = lead_status.publish(self.task, 'progress-second', self.progress, self.identity)
+        with patch.object(lead_status.time, 'time', return_value=140), patch.object(lead_status.time, 'monotonic', return_value=41):
+            refreshed = lead_status.refresh(self.task, self.identity)
+        self.assertEqual(changed['semantic_changed'], refreshed['semantic_changed'])
+        self.assertNotEqual(changed['updated'], refreshed['updated'])
+        text = (self.task / 'research/dev-lead/status.md').read_text()
+        for value in ('implementation', 'Run checks', 'waiting for check output', 'Accepted tickets: 1', 'Current run: none', 'Last verified commit: unknown'):
+            self.assertIn(value, text)
+        self.assertNotIn('%', text)
+        self.assertEqual(len([r for r in journal.read_events(self.task / 'decision.log') if r['kind'] == 'progress.changed']), 2)
+        self.assertEqual(before, mechanics.git_snapshot(self.repo))
+        self.progress['accepted_tickets'] *= 2
+        with self.assertRaisesRegex(ValueError, 'distinct tickets'):
+            lead_status.publish(self.task, 'bad-count', self.progress, self.identity)
+
+    def test_visibility_requires_lifetime_owner_and_explicit_acceptance(self):
+        self.owner.__exit__(None, None, None)
+        with self.assertRaisesRegex(ValueError, 'lifetime controller'):
+            self.show()
+        self.owner = runner.controller(self.task)
+        self.owner.__enter__()
+        journal.append_event(self.task / 'decision.log', 'checkbox', 'decision', {'ticket': 'issues/01.md', 'resolved': True})
+        self.progress['accepted_tickets'] = [{'ticket': 'issues/01.md', 'event_id': 'checkbox'}]
+        with self.assertRaisesRegex(ValueError, 'acceptance evidence'):
+            self.show()
+
+    def test_visibility_progress_crash_then_missing_hud_restores_from_journal(self):
+        with patch.object(lead_status, '_text', side_effect=OSError('render interrupted')):
+            with self.assertRaisesRegex(OSError, 'render interrupted'):
+                self.show()
+        (self.task / 'research/dev-lead/presentation.json').unlink()
+        self.change_node(hud=None)
+        result = lead_status.reconcile(self.task, self.identity)
+        self.assertEqual(result['ui'], 'visible')
+        self.assertIn('Inspect evidence', (self.task / 'research/dev-lead/status.md').read_text())
+        changed = {**self.progress, 'action': 'Different'}
+        with self.assertRaisesRegex(ValueError, 'different content'):
+            lead_status.publish(self.task, 'progress-first', changed, self.identity)
+
+    def test_visibility_updated_present_hud_recovers_without_presentation_cache(self):
+        cache = self.task / 'research/dev-lead/presentation.json'
+        with patch.object(lead_status.time, 'time', return_value=100):
+            first = self.show()
+        for stamp in (120, 140):
+            with patch.object(lead_status.time, 'time', return_value=stamp):
+                updated = lead_status.refresh(self.task, self.identity)
+                self.assertEqual(updated['ui'], 'visible')
+                self.assertNotEqual(updated['owned_hud'], first['owned_hud'])
+                cache.unlink()
+                recovered = lead_status.reconcile(self.task, self.identity)
+                self.assertEqual(recovered['ui'], 'visible', recovered['reason'])
+                self.assertEqual(recovered['semantic_changed'], first['semantic_changed'])
+                # The questionnaire must recognize the same HUD without its cache too.
+                cache.unlink()
+                approval._check_slot(self.task, {'identity': self.identity})
+        rows = journal.read_events(self.task / 'decision.log')
+        self.assertEqual(len([r for r in rows if r['kind'] == 'progress.changed']), 1)
+        # Same-spec reconcile must not create another ownership record.
+        self.assertEqual(len([r for r in rows if r['kind'] == 'hud.owned']), 3)
+        changed = {**updated['owned_hud'], 'frame': False}
+        self.change_node(hud=changed)
+        count = len(self.ui(['session', 'hud']))
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['reason'], 'HUD ownership changed or unknown')
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        with self.assertRaisesRegex(ValueError, 'unowned HUD'):
+            approval._check_slot(self.task, {'identity': self.identity})
+        self.change_node(hud=updated['owned_hud'], overlay=True)
+        cache.unlink()
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'suppressed')
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        self.change_node(overlay=False)
+        journal.append_event(self.task / 'decision.log', 'pending:open', 'question.open.intent',
+                             {'ui_question_id': 'pending'})
+        cache.unlink()
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['reason'], 'owned questionnaire pending reconciliation')
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+
+    def test_visibility_updated_ownership_survives_cache_write_failure(self):
+        with patch.object(lead_status.time, 'time', return_value=100):
+            self.show()
+        save = lead_status.atomic_json
+        def fail_confirmed_cache(path, value):
+            if value.get('ui') == 'visible':
+                raise OSError('confirmed ownership before cache failure')
+            return save(path, value)
+        with patch.object(lead_status.time, 'time', return_value=120):
+            with patch.object(lead_status, 'atomic_json', side_effect=fail_confirmed_cache):
+                with self.assertRaisesRegex(OSError, 'confirmed ownership'):
+                    lead_status.refresh(self.task, self.identity)
+            (self.task / 'research/dev-lead/presentation.json').unlink()
+            self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'visible')
+
+    def test_visibility_foreign_ui_and_changed_hud_preserved_and_manual_adoption_explicit(self):
+        foreign = {'message': 'User panel', 'spinner': 'none', 'position': 'center'}
+        self.change_node(hud=foreign)
+        self.assertEqual(self.show()['reason'], 'HUD ownership changed or unknown')
+        with self.assertRaisesRegex(ValueError, 'exact unobstructed'):
+            lead_status.adopt_hud(self.task, 'adopt-wrong', self.identity, {'message': 'User panel'})
+        lead_status.adopt_hud(self.task, 'lead-adopts-own-manual-hud', self.identity, foreign)
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        changed_hud = {**mechanics.load(self.task / 'research/dev-lead/presentation.json')['owned_hud'], 'frame': False}
+        self.change_node(hud=changed_hud)
+        count = len(self.ui(['session', 'hud']))
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['reason'], 'HUD ownership changed or unknown')
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        lead_status.adopt_hud(self.task, 'lead-explicitly-readopts-manual-spec', self.identity, changed_hud)
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        for changes in ({'overlay': True}, {'htmlOverlays': [{'id': 'user-page'}]},
+                        {'paneOverlays': ['right']}, {'ask': {'id': 'user-ask'}}):
+            before = len(self.ui(['session', 'hud']))
+            self.change_node(**changes)
+            self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'suppressed')
+            self.assertEqual(len(self.ui(['session', 'hud'])), before)
+            self.change_node(**{k: None for k in changes})
+
+    def test_visibility_hud_stays_pinned_and_ui_errors_are_readable(self):
+        self.show()
+        with patch.dict(os.environ, AGTERM_SESSION_ID='another-session'):
+            self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        for args in self.ui(['session', 'hud']):
+            self.assertEqual(args[args.index('--target') + 1], LEAD)
+            self.assertEqual(args[args.index('--window') + 1], WINDOW)
+        self.configure(ipc_error='Permission denied connecting to socket')
+        result = lead_status.refresh(self.task, self.identity)
+        self.assertEqual(result['ui'], 'error')
+        self.assertIn('Permission denied', result['reason'])
+        self.assertIn('Permission denied', (self.task / 'research/dev-lead/status.md').read_text())
+
+    def test_visibility_lost_hud_reply_is_observed_before_refresh(self):
+        self.show()
+        ipc = runner._ipc
+        def lost(command, timeout):
+            response = ipc(command, timeout)
+            if command[1:3] == ['session', 'hud']:
+                return {'command': command, 'error': 'lost response'}
+            return response
+        with patch.object(runner, '_ipc', side_effect=lost):
+            self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'error')
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'visible')
+
+    def test_visibility_pending_page_keeps_controller_and_suppresses_heartbeats(self):
+        self.show()
+        release = self.bin / 'page-release'
+        self.configure(page_release=str(release))
+        process = self.start(wait_timeout=15)
+        self.wait_for(lambda: bool(mechanics.load(self.bin / 'agterm.json').get('pages')))
+        first = approval.poll(self.task, 'question')
+        self.assertEqual(first['status'], 'pending', first)
+        count = len(self.ui(['session', 'hud']))
+        with patch.object(lead_status.time, 'monotonic', return_value=100):
+            lead_status.refresh(self.task, self.identity)
+        with patch.object(lead_status.time, 'monotonic', return_value=161):
+            gap = lead_status.refresh(self.task, self.identity)
+        self.assertIn('exceeded 60', '; '.join(gap['stale']))
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        response = subprocess.run([sys.executable, '-c', 'import sys;sys.path.insert(0,sys.argv[1]);import runner;'
+                                   'with_owner=runner.controller(sys.argv[2]);with_owner.__enter__()', str(SCRIPTS), str(self.task)],
+                                  capture_output=True, timeout=3)
+        self.assertNotEqual(response.returncode, 0)
+        self.assertIn(b'BlockingIOError', response.stderr)
+        self.assertEqual(approval.poll(self.task, 'question')['status'], 'pending')
+        self.assertIsNone(process.poll())
+        release.touch()
+        self.finish(process)
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
+
+    def test_visibility_submitted_revision_once_then_exact_native_continuation(self):
+        self.configure(worker='question')
+        prior = self.execute('worker-question')
+        self.show()
+        process = self.start(worker_run='worker-question')
+        result = self.finish(process)
+        self.assertEqual(result['answer']['value'], {'choice': 'revise'})
+        self.decision(continuation_run='worker-answer', affected_scope=['one-section'])
+        approval.consume(self.task, 'question', 'lead-decision')
+        self.assertEqual(approval.consume(self.task, 'question', 'lead-decision')['status'], 'consumed')
+        self.configure(worker='done')
+        resumed = self.execute('worker-answer', resume_from=prior)
+        self.assertEqual(mechanics.load(resumed / 'spec.json')['command'][-3:], ['resume', SESSION, '-'])
+        with self.assertRaisesRegex(ValueError, 'continuation intent'):
+            self.prepare('duplicate-answer', resume_from=prior)
+        self.decision(identity='other-decision')
+        with self.assertRaisesRegex(ValueError, 'different content'):
+            approval.consume(self.task, 'question', 'other-decision')
+        rows = journal.read_events(self.task / 'decision.log')
+        self.assertEqual(len([r for r in rows if r['event_id'] == 'question:answer']), 1)
+        self.assertEqual(len([r for r in rows if r['event_id'] == 'question:used']), 1)
+        self.assertFalse(any(r['kind'] == 'approval' for r in rows))
+        approval.prepare(self.task, 'revision-round', self.question(), self.identity)
+        self.assertEqual(approval.poll(self.task, 'revision-round')['status'], 'prepared')
+
+    def test_visibility_nested_protocol_direct_mode_and_invalid_answers(self):
+        outcome = {'pageID': LEAD, 'outcome': 'submitted', 'value': '{"choice":"revise"}'}
+        nested = {'exit_code': 0, 'stdout': json.dumps({'ok': True, 'result': {'pageOutcome': outcome}})}
+        self.assertEqual(approval.parse_outcome(nested, LEAD), outcome)
+        direct = {'exit_code': 0, 'stdout': json.dumps(outcome)}
+        with self.assertRaises(ValueError): approval.parse_outcome(direct, LEAD)
+        self.assertEqual(approval.parse_outcome(direct, LEAD, direct=True), outcome)
+        duplicate = {**nested, 'stdout': nested['stdout'].replace('revise', 'revise\\\",\\\"choice\\\":\\\"approve')}
+        with self.assertRaisesRegex(ValueError, 'duplicate JSON key'):
+            approval.parse_outcome(duplicate, LEAD)
+        for changed in ({'pageID': WINDOW}, {'outcome': 'unknown'}, {'value': {}}, {'value': '[]'}, {'value': 'bad'}):
+            raw = {**outcome, **changed}
+            with self.assertRaises(ValueError):
+                approval.parse_outcome({'exit_code': 0, 'stdout': json.dumps({'ok': True, 'result': {'pageOutcome': raw}})}, LEAD)
+        self.show()
+        self.configure(page_value={'choice': ''})
+        process = self.start()
+        process.wait(timeout=5)
+        self.assertEqual(approval.poll(self.task, 'question')['status'], 'uncertain')
+        self.assertNotIn('question:answer', approval._events(self.task))
+
+    def test_visibility_dismissal_and_timeout_never_approve_or_reopen(self):
+        self.show()
+        self.configure(page_dismiss=True)
+        process = self.start('dismissed')
+        self.assertEqual(self.finish(process, 'dismissed')['status'], 'dismissed')
+        self.assertEqual(lead_status.refresh(self.task, self.identity)['ui'], 'visible')
+        self.configure(page_dismiss=False, page_pending=True, page_delay=.01)
+        approval.prepare(self.task, 'timeout', self.question(), self.identity)
+        process = approval.open(self.task, 'timeout', .3)
+        self.waiters.append(process)
+        self.wait_for(lambda: len(mechanics.load(self.bin / 'agterm.json').get('pages', {})) == 2)
+        first = approval.poll(self.task, 'timeout')
+        process.wait(timeout=5)
+        result = approval.reconcile(self.task, 'timeout')
+        self.assertEqual(first['status'], 'pending')
+        self.assertEqual(result['status'], 'pending', result)
+        self.assertTrue(result['wait_exit']['timed_out'])
+        with self.assertRaisesRegex(ValueError, 'open intent'):
+            approval.open(self.task, 'timeout', 3)
+        self.assertFalse(any(r['kind'] == 'approval' for r in journal.read_events(self.task / 'decision.log')))
+
+    def test_visibility_probe_cannot_consume_an_approval(self):
+        self.show()
+        process = self.start(purpose='probe')
+        self.finish(process)
+        form = (self.task / 'research/dev-lead/questions/question/form.html').read_text()
+        self.assertIn('&lt;scope&gt;', form)
+        self.assertIn('8000', form)
+        self.decision(kind='approval')
+        with self.assertRaisesRegex(ValueError, 'probe answers'):
+            approval.consume(self.task, 'question', 'lead-decision')
+        self.decision(identity='probe-result', kind='probe.observed')
+        self.assertEqual(approval.consume(self.task, 'question', 'probe-result')['status'], 'consumed')
+
+    def test_visibility_genuine_approval_consumed_once_with_current_artifact(self):
+        self.show()
+        plan = self.task / 'plan.md'
+        plan.write_text('Approved fixture scope\n')
+        artifact = {'path': 'plan.md', 'sha256': mechanics.sha256(plan)}
+        self.configure(page_value={'choice': 'approve'})
+        result = self.finish(self.start(artifact=artifact))
+        self.assertEqual(result['answer']['value'], {'choice': 'approve'})
+        self.assertEqual(result['answer']['purpose'], 'decision')
+        for field, wrong in [('artifact', 'another.md'), ('plan_sha256', '0' * 64), ('scope', 'different scope')]:
+            data = {'artifact': 'plan.md', 'plan_sha256': artifact['sha256'], 'scope': 'affected behavior'}
+            data[field] = wrong
+            event_id = 'wrong-' + field
+            self.decision(identity=event_id, kind='approval', **data)
+            with self.assertRaisesRegex(ValueError, 'exact current question artifact'):
+                approval.consume(self.task, 'question', event_id)
+        self.decision(kind='approval', artifact='plan.md', plan_sha256=artifact['sha256'], scope='affected behavior')
+        for _ in range(2):
+            self.assertEqual(approval.consume(self.task, 'question', 'lead-decision')['status'], 'consumed')
+        self.decision(identity='another-approval', kind='approval', artifact='plan.md',
+                      plan_sha256=artifact['sha256'], scope='affected behavior')
+        with self.assertRaisesRegex(ValueError, 'different content'):
+            approval.consume(self.task, 'question', 'another-approval')
+        rows = journal.read_events(self.task / 'decision.log')
+        self.assertEqual(len([r for r in rows if r['event_id'] == 'question:answer']), 1)
+        used = [r for r in rows if r['kind'] == 'answer.used']
+        self.assertEqual(len(used), 1)
+        self.assertEqual(used[0]['data']['decision_event_id'], 'lead-decision')
+
+    def test_visibility_decision_form_requires_user_submission_and_probe_is_separate(self):
+        class Form(HTMLParser):
+            def __init__(self, text):
+                super().__init__()
+                self.controls, self.script = [], ''
+                self.form_id = None
+                self.in_script = False
+                self.feed(text)
+
+            def handle_starttag(self, tag, attrs):
+                if tag == 'form': self.form_id = dict(attrs).get('id')
+                if tag in ('input', 'textarea', 'button'):
+                    self.controls.append((tag, dict(attrs)))
+                if tag == 'script': self.in_script = True
+
+            def handle_endtag(self, tag):
+                if tag == 'script': self.in_script = False
+
+            def handle_data(self, data):
+                if self.in_script: self.script += data
+
+        question = self.question()
+        question['fields'].append({'name': 'explanation', 'label': 'Explain <scope> & choice',
+                                   'options': [], 'required': True})
+        form_text = approval._form(question)
+        form = Form(form_text)
+        radios = [attrs for tag, attrs in form.controls if tag == 'input']
+        self.assertEqual([a['value'] for a in radios], ['revise', 'approve'])
+        self.assertTrue(all(a['type'] == 'radio' and a['name'] == 'choice' and 'required' in a for a in radios))
+        self.assertFalse(any('checked' in a for a in radios), 'decision starts with no selected answer')
+        self.assertIn(('textarea', {'name': 'explanation', 'required': None}), form.controls)
+        self.assertIn(('button', {'type': 'submit'}), form.controls)
+        self.assertIn('form.addEventListener("submit",', form.script)
+        self.assertIn('event.preventDefault()', form.script)
+        self.assertIn('session.overlay.submit', form.script)
+        self.assertNotIn('setTimeout', form.script, 'decision has no automatic submission timer')
+        self.assertNotIn('requestSubmit', form.script, 'decision requires user submission')
+        self.assertIn('Choose &lt;scope&gt; &amp; explain', form_text)
+        probe = Form(approval._form(self.question(purpose='probe')))
+        probe_radios = [attrs for tag, attrs in probe.controls if tag == 'input']
+        self.assertEqual(['checked' in a for a in probe_radios], [True, False])
+        self.assertIn('setTimeout(() => form.requestSubmit(), 8000);', probe.script)
+
+        with self.subTest('generated submit JavaScript'):
+            node = shutil.which('node')
+            if node is None:
+                self.skipTest('Node unavailable: generated-submit JavaScript not executed; controls/probe checked')
+            entered = {'choice': 'approve', 'explanation': 'Обоснование "A&B" <scope> \\ path\nСтрока 😀'}
+            script = r'''
+const assert = require('node:assert/strict');
+const vm = require('node:vm');
+const input = JSON.parse(require('node:fs').readFileSync(0, 'utf8'));
+(async () => {
+    const controls = input.controls.map(([tag, attrs]) => ({tag, ...attrs}));
+    const listeners = [], requests = [], timers = [];
+    let prevented = 0, automatic = 0;
+    const form = {
+        addEventListener(event, listener) {
+            assert.equal(event, 'submit');
+            listeners.push(listener);
+        },
+        requestSubmit() { automatic++; }
+    };
+    for (const control of controls) {
+        if (control.tag === 'input') control.checked = control.value === input.entered[control.name];
+        if (control.tag === 'textarea') control.value = input.entered[control.name];
+    }
+    class FormData {
+        constructor(target) { assert.equal(target, form); }
+        [Symbol.iterator]() {
+            return controls.filter(c => c.name && !('disabled' in c) &&
+                (c.tag === 'textarea' || (c.type === 'radio' && c.checked)))
+                .map(c => [c.name, c.value])[Symbol.iterator]();
+        }
+    }
+    vm.runInNewContext(input.script, {
+        document: {getElementById(id) { assert.equal(id, input.form_id); return form; }},
+        FormData,
+        setTimeout: (...args) => timers.push(args),
+        agterm: {async request(method, args) {
+            assert.equal(prevented, 1);
+            requests.push({method, ...args});
+        }}
+    }, {timeout: 1000});
+    await Promise.resolve();
+    assert.equal(listeners.length, 1);
+    assert.equal(requests.length, 0, 'no request before explicit submit');
+    assert.equal(timers.length, 0, 'no automatic decision timer');
+    assert.equal(automatic, 0, 'no automatic decision submission');
+    await listeners[0]({preventDefault() { prevented++; }});
+    console.log(JSON.stringify({prevented, requests}));
+})().catch(error => { console.error(error); process.exitCode = 1; });
+'''
+            result = subprocess.run([node, '-e', script],
+                                    input=json.dumps({'script': form.script, 'controls': form.controls,
+                                                      'form_id': form.form_id, 'entered': entered}),
+                                    text=True, capture_output=True, timeout=5)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            submitted = json.loads(result.stdout)
+            self.assertEqual(submitted['prevented'], 1)
+            self.assertEqual(len(submitted['requests']), 1)
+            request = submitted['requests'][0]
+            self.assertEqual(request['method'], 'session.overlay.submit')
+            self.assertIsInstance(request['args']['value'], str)
+            self.assertEqual(json.loads(request['args']['value']), entered, 'submitted form values')
+
+    def test_visibility_question_claim_lost_open_and_pre_submission_recovery(self):
+        self.show()
+        release = self.bin / 'page-release'
+        self.configure(page_release=str(release))
+        process = self.start(wait_timeout=15)
+        self.wait_for(lambda: bool(mechanics.load(self.bin / 'agterm.json').get('pages')))
+        directory = self.task / 'research/dev-lead/questions/question'
+        # Lose the parent spawn response/cache while the bounded waiter and page survive.
+        (directory / 'wait/launch.json').unlink()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'pending')
+        with self.assertRaisesRegex(ValueError, 'open intent'):
+            approval.open(self.task, 'question', 3)
+        release.touch()
+        self.finish(process)
+        (directory / 'state.json').unlink()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'submitted')
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
+        with self.assertRaises(FileExistsError):
+            approval._wait(directory / 'question.json', 15)
+
+    def test_visibility_answer_file_then_event_then_use_crashes_recover_once(self):
+        self.show()
+        process = self.start()
+        process.wait(timeout=5)
+        append = approval.append_event
+        def fail_answer(path, event_id, kind, data):
+            if kind == 'answer': raise OSError('crash before answer append')
+            return append(path, event_id, kind, data)
+        with patch.object(approval, 'append_event', side_effect=fail_answer):
+            self.assertEqual(approval.poll(self.task, 'question')['status'], 'uncertain')
+        directory = self.task / 'research/dev-lead/questions/question'
+        self.assertTrue((directory / 'answer.json').exists())
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'submitted')
+        (directory / 'state.json').unlink()
+        self.decision()
+        # Consumption is durable before a caller decides to prepare its next effect.
+        approval.consume(self.task, 'question', 'lead-decision')
+        (directory / 'state.json').unlink()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'consumed')
+        self.assertEqual(len([r for r in journal.read_events(self.task / 'decision.log') if r['event_id'] == 'question:answer']), 1)
+
+    def test_visibility_missing_retained_outcome_and_foreign_overlay_preserved(self):
+        self.show()
+        self.configure(page_pending=True, page_delay=.01)
+        process = self.start()
+        self.wait_for(lambda: bool(mechanics.load(self.bin / 'agterm.json').get('pages')))
+        self.assertEqual(approval.poll(self.task, 'question')['status'], 'pending')
+        self.configure(page_error=True)
+        result = approval.reconcile(self.task, 'question')
+        self.assertEqual(result['status'], 'uncertain')
+        self.assertIn('no such page', result['reason'])
+        count = len(self.ui(['session', 'hud']))
+        lead_status.refresh(self.task, self.identity)
+        self.assertEqual(len(self.ui(['session', 'hud'])), count)
+        self.assertNotIn('question:answer', approval._events(self.task))
+
+    def test_visibility_question_immutable_and_foreign_hud_cannot_be_covered(self):
+        approval.prepare(self.task, 'question', self.question(), self.identity)
+        self.change_node(hud={'message': 'unowned'})
+        with self.assertRaisesRegex(ValueError, 'unowned HUD'):
+            approval.open(self.task, 'question', 3)
+        directory = self.task / 'research/dev-lead/questions/question'
+        (directory / 'form.html').write_text('changed')
+        with self.assertRaisesRegex(ValueError, 'durable evidence'):
+            approval.poll(self.task, 'question')
+        self.assertFalse(self.ui(['session', 'overlay', 'open']))
+
+    def test_visibility_replacement_controller_recovers_pending_question_without_open(self):
+        self.show()
+        release = self.bin / 'page-release'
+        self.configure(page_release=str(release))
+        process = self.start(wait_timeout=15)
+        self.wait_for(lambda: bool(mechanics.load(self.bin / 'agterm.json').get('pages')))
+        self.owner.__exit__(None, None, None)
+        self.owner = runner.controller(self.task)
+        self.owner.__enter__()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'pending')
+        release.touch()
+        self.finish(process)
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
+
+    def test_visibility_answer_event_before_cache_failure_recovers_and_approval_pins_hash(self):
+        self.show()
+        plan = self.task / 'plan.md'
+        plan.write_text('Approved fixture scope\n')
+        artifact = {'path': 'plan.md', 'sha256': mechanics.sha256(plan)}
+        process = self.start(artifact=artifact)
+        process.wait(timeout=5)
+        cache = journal._cache
+        def failed_cache(path, rows):
+            if rows[-1]['event_id'] == 'question:answer': raise OSError('answer event durable; cache failed')
+            return cache(path, rows)
+        with patch.object(journal, '_cache', side_effect=failed_cache):
+            self.assertEqual(approval.poll(self.task, 'question')['status'], 'uncertain')
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'submitted')
+        self.decision(kind='approval', artifact='plan.md', plan_sha256=artifact['sha256'], scope='affected behavior')
+        plan.write_text('Changed after the answer\n')
+        with self.assertRaisesRegex(ValueError, 'exact current question artifact'):
+            approval.consume(self.task, 'question', 'lead-decision')
+
+    def test_visibility_prepared_continuation_survives_lost_use_cache_without_another_run(self):
+        self.configure(worker='question')
+        prior = self.execute('question-origin')
+        self.show()
+        self.finish(self.start(worker_run='question-origin'))
+        self.decision(continuation_run='reserved-continuation')
+        approval.consume(self.task, 'question', 'lead-decision')
+        prepared = self.prepare('reserved-continuation', resume_from=prior)
+        (self.task / 'research/dev-lead/questions/question/state.json').unlink()
+        self.assertEqual(approval.reconcile(self.task, 'question')['status'], 'consumed')
+        with self.assertRaisesRegex(ValueError, 'continuation intent'):
+            self.prepare('another-continuation', resume_from=prior)
+        self.assertEqual(mechanics.load(prepared / 'spec.json')['resume_session'], SESSION)
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
+
+    def test_visibility_failed_open_reports_actual_cli_cause_without_replay(self):
+        self.show()
+        self.configure(page_open_error='overlay already open: user owns the slot')
+        process = self.start()
+        process.wait(timeout=5)
+        result = approval.reconcile(self.task, 'question')
+        self.assertEqual(result['status'], 'uncertain')
+        self.assertIn('user owns the slot', result['reason'])
+        self.assertEqual(result['wait_error']['exit_code'], 1)
+        with self.assertRaisesRegex(ValueError, 'open intent'):
+            approval.open(self.task, 'question', 3)
+        self.assertEqual(len(self.ui(['session', 'overlay', 'open'])), 1)
+
+
+class Checkpoints(unittest.TestCase):
+    """Explicit fixture orchestration, not a production stage selector or consumer run."""
+    configure = Helpers.configure
+    git = Helpers.git
+    tearDown = Visibility.tearDown
+
+    def setUp(self):
+        Helpers.setUp(self)
+        self.task = self.repo / '.scratch' / 'checkpoint'
+        self.task.mkdir(parents=True)
+        (self.repo / '.git/info/exclude').write_text('.scratch/\n')
+        self.owner = runner.controller(self.task)
+        self.owner.__enter__()
+        self.identity = runner.preflight(str(self.agterm))
+        self.waiters = []
+        self.progress = {'stage': 'planning', 'step_id': 'A', 'action': 'Inspect evidence',
+                         'reason': '', 'current_run': None, 'accepted_tickets': [], 'last_commit': None}
+
+    def test_checkpoint_sequence_lost_reply_and_status_cache_recovery(self):
+        base = self.git('rev-parse', 'HEAD').decode().strip()
+        initial = mechanics.git_snapshot(self.repo)
+        journal.append_event(self.task / 'decision.log', 'research', 'decision',
+                             {'summary': 'Planning only; no commit group selected'})
+        self.assertEqual(initial, mechanics.git_snapshot(self.repo))
+        plan_a = self.task / 'A-plan.md'
+        plan_a.write_text('Add the reviewed A result in result.txt.\n')
+        journal.append_event(self.task / 'decision.log', 'A-plan', 'approval',
+                             {'scope': 'A', 'artifact': str(plan_a), 'plan_sha256': mechanics.sha256(plan_a)})
+        self.artifact.write_text('Ticket A\n')
+        initial_check = mechanics.capture([sys.executable, '-c',
+                                           "from pathlib import Path; assert Path('result.txt').read_text() == 'Ticket A\\n'"],
+                                          self.repo, self.task / 'checks-initial', 3, terminal=False)
+        self.assertEqual(initial_check['exit_code'], 0)
+        journal.append_event(self.task / 'decision.log', 'A-accepted', 'ticket.implementation.accepted',
+                             {'ticket': 'issues/A.md', 'evidence': [str(self.task / 'checks-initial/exit.json')]})
+        # The fixture lead explicitly selects a dependent review correction.
+        reviewed_hash = mechanics.sha256(self.artifact)
+        fix_plan = self.task / 'A-fix-plan.md'
+        fix_plan.write_text('Apply the selected reviewed A correction.\n')
+        journal.append_event(self.task / 'decision.log', 'A-fix-plan', 'approval',
+                             {'scope': 'A correction', 'artifact': str(fix_plan), 'plan_sha256': mechanics.sha256(fix_plan)})
+        self.artifact.write_text('Ticket A corrected\n')
+        report = self.task / 'review.md'
+        report.write_text('Correction verified against A: ' + reviewed_hash + '\n')
+        check = mechanics.capture([sys.executable, '-c',
+                                   "from pathlib import Path; assert Path('result.txt').read_text() == 'Ticket A corrected\\n'"],
+                                  self.repo, self.task / 'checks', 3, terminal=False)
+        self.assertEqual(check['exit_code'], 0)
+        journal.append_event(self.task / 'decision.log', 'A-fix-accepted', 'ticket.implementation.accepted',
+                             {'ticket': 'issues/A-fix.md', 'evidence': [str(report), str(self.task / 'checks/exit.json')]})
+        journal.append_event(self.task / 'decision.log', 'A-review', 'review.complete',
+                             {'scope': ['result.txt'], 'corrections': ['A-fix-accepted'],
+                              'evidence': [str(report), str(self.task / 'checks/exit.json')]})
+        built_spec = self.repo / 'built-intent.md'
+        built_spec.write_text('A preserves the reviewed correction.\n')
+        journal.append_event(self.task / 'decision.log', 'A-spec', 'spec.accepted',
+                             {'path': 'built-intent.md', 'sha256': mechanics.sha256(built_spec)})
+        self.git('add', 'result.txt', 'built-intent.md')
+        proposed = self.git('diff', '--cached')
+        commit.intent(self.task, 'A', self.repo)
+        before = mechanics.git_snapshot(self.repo)
+        self.git('commit', '-qm', 'Fixture A and dependent correction')  # Discard the reply.
+        observed = commit.reconcile(self.task, 'A', self.repo)
+        self.assertEqual(observed['status'], 'committed_observed')
+        self.assertFalse(observed['replay_safe'])
+        head_a = observed['head']
+        self.assertEqual(self.git('rev-parse', 'HEAD^').decode().strip(), base)
+        self.assertEqual(proposed, self.git('diff', 'HEAD^', 'HEAD'))
+        self.assertEqual(before['files'], observed['git']['files'])
+        evidence = {'head': head_a, 'tickets': ['issues/A.md', 'issues/A-fix.md'],
+                    'evidence': [str(report), str(self.task / 'checks/exit.json')],
+                    'review': 'A-review', 'spec': 'A-spec'}
+        with patch.object(journal, '_cache', side_effect=OSError('cache interrupted')):
+            with self.assertRaisesRegex(OSError, 'cache interrupted'):
+                journal.append_event(self.task / 'decision.log', 'A-checkpoint', 'ticket.checkpoint.accepted', evidence)
+        journal.recover_state(self.task / 'decision.log')
+        journal.append_event(self.task / 'decision.log', 'A-checkpoint', 'ticket.checkpoint.accepted', evidence)
+        self.progress.update(stage='checkpoint', action='Publish observed commit',
+                             accepted_tickets=[{'ticket': 'issues/A.md', 'event_id': 'A-accepted'},
+                                               {'ticket': 'issues/A-fix.md', 'event_id': 'A-fix-accepted'}],
+                             last_commit={'head': head_a, 'event_id': 'A-checkpoint'})
+        after = mechanics.git_snapshot(self.repo)
+        with patch.object(lead_status, '_text', side_effect=OSError('status interrupted')):
+            with self.assertRaisesRegex(OSError, 'status interrupted'):
+                lead_status.publish(self.task, 'A-progress', self.progress, self.identity)
+        (self.task / 'research/dev-lead/presentation.json').unlink()
+        restored = lead_status.reconcile(self.task, self.identity)
+        self.assertEqual(restored['stale'], [])
+        self.assertIn(head_a, (self.task / 'research/dev-lead/status.md').read_text())
+        self.assertEqual(after, mechanics.git_snapshot(self.repo))
+        self.assertEqual(commit.reconcile(self.task, 'A', self.repo)['head'], head_a)
+        with self.assertRaisesRegex(ValueError, 'intent exists'):
+            commit.intent(self.task, 'A', self.repo)
+        journal.append_event(self.task / 'decision.log', 'B-start', 'decision',
+                             {'summary': 'Lead selected independent B after A checkpoint', 'checkpoint': 'A-checkpoint'})
+        second = self.repo / 'second.txt'
+        plan_b = self.task / 'B-plan.md'
+        plan_b.write_text('Add second.txt with the reviewed B result.\n')
+        journal.append_event(self.task / 'decision.log', 'B-plan-approved', 'approval',
+                             {'scope': 'B', 'artifact': str(plan_b), 'plan_sha256': mechanics.sha256(plan_b)})
+        second.write_text('Ticket B\n')
+        check_b = mechanics.capture([sys.executable, '-c',
+                                     "from pathlib import Path; assert Path('second.txt').read_text() == 'Ticket B\\n'"],
+                                    self.repo, self.task / 'checks-b', 3, terminal=False)
+        self.assertEqual(check_b['exit_code'], 0)
+        journal.append_event(self.task / 'decision.log', 'B-accepted', 'ticket.implementation.accepted',
+                             {'ticket': 'issues/B.md', 'evidence': [str(self.task / 'checks-b/exit.json')]})
+        journal.append_event(self.task / 'decision.log', 'B-review-spec', 'decision',
+                             {'scope': ['second.txt'], 'review': 'Fixture lead inspected exact B bytes',
+                              'spec': 'No additional durable intent', 'evidence': [str(self.task / 'checks-b/exit.json')]})
+        self.git('add', 'second.txt')
+        commit.intent(self.task, 'B', self.repo)
+        self.git('commit', '-qm', 'Fixture B')
+        self.assertEqual(commit.reconcile(self.task, 'B', self.repo)['status'], 'committed_observed')
+        journal.append_event(self.task / 'decision.log', 'B-checkpoint', 'ticket.checkpoint.accepted',
+                             {'head': self.git('rev-parse', 'HEAD').decode().strip(), 'tickets': ['issues/B.md'],
+                              'evidence': ['B-review-spec']})
+        remaining = self.repo / 'remaining.txt'
+        remaining.write_text('Uncommitted final scope\n')
+        final_scope = set(self.git('diff', '--name-only', base, 'HEAD').decode().splitlines())
+        final_scope.update(self.git('ls-files', '--others', '--exclude-standard').decode().splitlines())
+        self.assertEqual(final_scope, {'result.txt', 'built-intent.md', 'second.txt', 'remaining.txt'})
+        rows = journal.read_events(self.task / 'decision.log')
+        ids = [r['event_id'] for r in rows]
+        self.assertLess(ids.index('A-review'), ids.index('A-spec'))
+        self.assertLess(ids.index('A-spec'), ids.index('A:commit'))
+        self.assertLess(ids.index('A-checkpoint'), ids.index('B-start'))
+        self.assertLess(ids.index('B-plan-approved'), ids.index('B-accepted'))
+        self.assertLess(ids.index('B-accepted'), ids.index('B-review-spec'))
+        self.assertLess(ids.index('B-review-spec'), ids.index('B:commit'))
+        self.assertEqual(ids.count('A-checkpoint'), 1)
+        self.assertEqual(self.git('rev-list', '--count', base + '..HEAD').strip(), b'2')
+
+    def test_checkpoint_references_reject_outcome_missing_evidence_and_wrong_head(self):
+        head = self.git('rev-parse', 'HEAD').decode().strip()
+        for name, kind, data, referred in [
+                ('done', 'worker.outcome', {'status': 'done', 'head': head, 'evidence': ['result.txt']}, head),
+                ('empty', 'ticket.checkpoint.accepted', {'head': head}, head),
+                ('mismatch', 'ticket.checkpoint.accepted', {'head': head, 'evidence': ['result.txt']}, '0' * 40)]:
+            with self.subTest(name=name):
+                journal.append_event(self.task / 'decision.log', name, kind, data)
+                self.progress['last_commit'] = {'head': referred, 'event_id': name}
+                before = mechanics.git_snapshot(self.repo)
+                with self.assertRaisesRegex(ValueError, 'checkpoint evidence'):
+                    lead_status.publish(self.task, name + '-progress', self.progress, self.identity)
+                self.assertEqual(before, mechanics.git_snapshot(self.repo))
+        self.progress['last_commit'] = {'head': head, 'event_id': 'missing'}
+        with self.assertRaisesRegex(ValueError, 'checkpoint evidence'):
+            lead_status.publish(self.task, 'missing-progress', self.progress, self.identity)
+        journal.append_event(self.task / 'decision.log', 'actual', 'ticket.checkpoint.accepted',
+                             {'head': head, 'evidence': ['result.txt']})
+        self.progress['last_commit'] = {'head': head, 'event_id': 'actual'}
+        lead_status.publish(self.task, 'actual-progress', self.progress, self.identity)
+        self.git('commit', '--allow-empty', '-qm', 'Unrelated later fixture HEAD')
+        self.assertIn('HEAD differs from last verified checkpoint',
+                      lead_status.reconcile(self.task, self.identity)['stale'])
+
+    def test_checkpoint_unknown_effects_do_not_change_git_or_authorize_retry(self):
+        self.artifact.write_text('Intended\n')
+        self.git('add', 'result.txt')
+        commit.intent(self.task, 'unknown', self.repo)
+        original_branch = self.git('branch', '--show-current').decode().strip()
+        original_head = self.git('rev-parse', 'HEAD').decode().strip()
+        for _ in range(2):
+            before = mechanics.git_snapshot(self.repo)
+            result = commit.reconcile(self.task, 'unknown', self.repo)
+            self.assertEqual(result['status'], 'uncertain')
+            self.assertFalse(result['replay_safe'])
+            self.assertEqual(before, mechanics.git_snapshot(self.repo))
+        self.git('commit', '-qm', 'Known fixture effect')
+        self.assertEqual(commit.reconcile(self.task, 'unknown', self.repo)['status'], 'committed_observed')
+        for variant in ('working', 'index', 'branch', 'prior', 'later'):
+            with self.subTest(variant=variant):
+                if variant == 'working':
+                    self.artifact.write_text('Changed after effect\n')
+                elif variant == 'index':
+                    (self.repo / 'foreign.txt').write_text('Foreign\n')
+                    self.git('add', 'foreign.txt')
+                elif variant == 'branch':
+                    self.git('switch', '-qc', 'fixture-other')
+                elif variant == 'prior':
+                    self.git('switch', '--detach', original_head)
+                else:
+                    self.git('commit', '--allow-empty', '-qm', 'Unrelated later fixture effect')
+                before = mechanics.git_snapshot(self.repo)
+                for _ in range(2):
+                    result = commit.reconcile(self.task, 'unknown', self.repo)
+                    self.assertEqual(result['status'], 'uncertain')
+                    self.assertFalse(result['replay_safe'])
+                self.assertEqual(before, mechanics.git_snapshot(self.repo))
+                if variant == 'working':
+                    self.artifact.write_text('Intended\n')
+                elif variant == 'index':
+                    self.git('restore', '--staged', 'foreign.txt')
+                    (self.repo / 'foreign.txt').unlink()
+                elif variant == 'branch':
+                    self.git('switch', '-')
+                elif variant == 'prior':
+                    self.git('switch', original_branch)
+        with self.assertRaisesRegex(ValueError, 'intent exists'):
+            commit.intent(self.task, 'unknown', self.repo)
+
+    def test_checkpoint_only_commit_preserves_foreign_index_and_stays_conservative(self):
+        foreign = self.repo / 'foreign.txt'
+        foreign.write_text('Foreign staged content\n')
+        self.git('add', 'foreign.txt')
+        self.artifact.write_text('Selected task\n')
+        original_index = self.git('diff', '--cached')
+        original_files = mechanics.git_snapshot(self.repo)['files']
+        selected = self.git('diff', 'HEAD', '--', 'result.txt')
+        commit.intent(self.task, 'selected', self.repo)
+        self.git('commit', '--only', '-qm', 'Fixture selected task', '--', 'result.txt')
+        self.assertEqual(self.git('diff', 'HEAD^', 'HEAD'), selected)
+        self.assertEqual(self.git('diff', '--cached'), original_index)
+        self.assertEqual(mechanics.git_snapshot(self.repo)['files'], original_files)
+        before = mechanics.git_snapshot(self.repo)
+        result = commit.reconcile(self.task, 'selected', self.repo)
+        self.assertEqual(result['status'], 'uncertain')
+        self.assertFalse(result['replay_safe'])
+        self.assertEqual(before, mechanics.git_snapshot(self.repo))
+        self.assertEqual(self.git('show', 'HEAD:result.txt'), b'Selected task\n')
+        self.assertNotIn(b'foreign.txt', self.git('ls-tree', '--name-only', 'HEAD'))
+
+    def test_checkpoint_separable_task_hunk_preserves_user_working_bytes(self):
+        lines = ['line ' + str(n) + '\n' for n in range(20)]
+        self.artifact.write_text(''.join(lines))
+        self.git('add', 'result.txt')
+        self.git('commit', '-qm', 'Fixture spaced hunks')
+        lines[0], lines[-1] = 'task change\n', 'user change\n'
+        self.artifact.write_text(''.join(lines))
+        working = self.artifact.read_bytes()
+        task_patch = b'diff --git a/result.txt b/result.txt\n--- a/result.txt\n+++ b/result.txt\n@@ -1 +1 @@\n-line 0\n+task change\n'
+        applied = subprocess.run(['git', '-C', str(self.repo), 'apply', '--cached', '--unidiff-zero', '-'],
+                                 input=task_patch, capture_output=True)
+        self.assertEqual(applied.returncode, 0, applied.stderr)
+        self.assertNotIn(b'user change', self.git('diff', '--cached'))
+        commit.intent(self.task, 'hunk', self.repo)
+        self.git('commit', '-qm', 'Fixture separable task hunk')
+        self.assertEqual(commit.reconcile(self.task, 'hunk', self.repo)['status'], 'committed_observed')
+        self.assertEqual(self.artifact.read_bytes(), working)
+        self.assertIn(b'user change', self.git('diff'))
+        self.assertNotIn(b'user change', self.git('show', 'HEAD:result.txt'))
 
 
 if __name__ == '__main__':
