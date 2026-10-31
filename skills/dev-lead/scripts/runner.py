@@ -774,7 +774,11 @@ def cleanup(run, reason, agtermctl=None, timeout=15, *, accepted_continuation=No
             # Recheck the pinned evidence after observing the terminal and before intent.
             if (any(_source(Path(path)) != digest for path, digest in sources.items())
                     or sha256(acceptance_run / 'verification.json') != verification_sha256
-                    or git_snapshot(spec['cwd']) != state['git']):
+                    or git_snapshot(spec['cwd']) != state['git']
+                    or any(not artifact_matches(spec, path, digest)
+                           for path, digest in state['verification']['artifacts'].items())
+                    or any(sha256(acceptance_run / name) != digest
+                           for name, digest in state['verification']['checks'].items())):
                 raise ValueError('cleanup acceptance evidence changed')
             event(spec['task'], spec['run_id'] + ':cleanup', 'cleanup.intent',
                   {'terminal_id': sid, 'terminal_sha256': sha256(run / 'terminal.json'),

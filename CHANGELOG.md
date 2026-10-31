@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Fixed
 
 - `dev-lead` outcome packets, schema descriptions and shared controlled-run instructions clarify existing status fields and file artifacts for native emitters.
+- `dev-lead` and the bundled `dev-review` runner recheck accepted artifacts and command evidence after terminal observation, preserving journal-prefix growth; disposable regressions cover changed or missing evidence before cleanup.
 
 ## [0.48.0] - 2026-10-30
 

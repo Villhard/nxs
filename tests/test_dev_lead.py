@@ -1024,6 +1024,106 @@ class Helpers(unittest.TestCase):
         self.assertEqual(mechanics.load(self.bin / 'agterm.json'), before)
         self.assertEqual((run / 'session.json').read_bytes(), native)
 
+    def test_cleanup_rechecks_ignored_artifacts_and_check_outputs_after_observation(self):
+        ignored = self.repo / '.scratch' / 'accepted.txt'
+        ignored.parent.mkdir()
+        (self.repo / '.git/info/exclude').write_text('.scratch/\n')
+        for continued in (False, True):
+            for evidence in ('artifact', 'stdout', 'stderr', 'exit.json'):
+                for missing in (False, True):
+                    with self.subTest(continued=continued, evidence=evidence, missing=missing):
+                        identity = f'evidence-{continued}-{evidence}-{missing}'
+                        self.configure(worker='question' if continued else 'done')
+                        run = self.execute(identity)
+                        accepted = self.execute(identity + '-answer', resume_from=run) if continued else run
+                        ignored.write_text('independently accepted artifact\n')
+                        result = mechanics.load(accepted / 'result.json')
+                        result['artifacts'].append(str(ignored))
+                        journal.atomic_json(accepted / 'result.json', result)
+                        report = self.verify(accepted)
+                        self.assertEqual(runner.reconcile(accepted)['status'], 'done')
+                        self.assertIn(str(ignored), report['artifacts'])
+                        self.assertNotIn('.scratch/accepted.txt', report['git']['files'])
+                        target = ignored if evidence == 'artifact' else accepted / 'checks/first/0' / evidence
+                        if evidence != 'artifact':
+                            self.assertIn(str(target.relative_to(accepted)), report['checks'])
+                        before = mechanics.load(self.bin / 'agterm.json')
+                        native = {p: runner._source(p) for p in (run, accepted)}
+                        launches = {p: (p / 'launch.json').read_bytes() for p in native}
+                        events = journal.read_events(self.task / 'decision.log')
+                        observe = runner._agterm_tree
+
+                        def change_evidence(*args, **kwargs):
+                            observed = observe(*args, **kwargs)
+                            if kwargs.get('require_lead') is not False:
+                                if missing:
+                                    target.unlink()
+                                else:
+                                    target.write_text('changed during terminal observation\n')
+                            return observed
+
+                        options = {'accepted_continuation': accepted} if continued else {}
+                        error = (OSError, ValueError) if missing else ValueError
+                        pattern = None if missing else '^cleanup acceptance evidence changed$'
+                        with patch.object(runner, '_agterm_tree', side_effect=change_evidence) as observed:
+                            with self.assertRaisesRegex(error, pattern):
+                                runner.cleanup(run, 'Acceptance must remain current', **options)
+                        observed.assert_called_once()
+                        self.assertEqual(target.exists(), not missing)
+                        if not missing:
+                            self.assertEqual(target.read_text(), 'changed during terminal observation\n')
+                        self.assertEqual(mechanics.git_snapshot(self.repo), report['git'])
+                        self.assertEqual(journal.read_events(self.task / 'decision.log'), events)
+                        self.assertFalse(any(row['kind'] == 'cleanup.intent' for row in events))
+                        self.assertFalse((self.bin / 'closes.jsonl').exists())
+                        self.assertEqual(mechanics.load(self.bin / 'agterm.json'), before)
+                        for p, source in native.items():
+                            self.assertEqual(runner._source(p), source)
+                            self.assertEqual((p / 'launch.json').read_bytes(), launches[p])
+                            self.assertFalse((p / 'cleanup-response.json').exists())
+                            self.assertFalse((p / 'cleanup.json').exists())
+
+    def test_cleanup_allows_unchanged_evidence_and_journal_growth_during_observation(self):
+        for continued in (False, True):
+            for append in (False, True):
+                with self.subTest(continued=continued, append=append):
+                    identity = f'journal-{continued}-{append}'
+                    self.configure(worker='question' if continued else 'done')
+                    run = self.execute(identity, artifact_root=self.root)
+                    accepted = self.execute(identity + '-answer', resume_from=run,
+                                            artifact_root=self.root) if continued else run
+                    result = mechanics.load(accepted / 'result.json')
+                    result['artifacts'].extend([str(self.task / 'decision.log'),
+                                                str(self.task / 'research/dev-lead/journal-state.json')])
+                    journal.atomic_json(accepted / 'result.json', result)
+                    self.verify(accepted)
+                    native = {p: runner._source(p) for p in (run, accepted)}
+                    before = mechanics.load(self.bin / 'agterm.json')
+                    sid = mechanics.load(run / 'terminal.json')['session_id']
+                    observe = runner._agterm_tree
+
+                    def append_evidence(*args, **kwargs):
+                        observed = observe(*args, **kwargs)
+                        if append and kwargs.get('require_lead') is not False:
+                            journal.append_event(self.task / 'decision.log', identity + '-observed',
+                                                 'decision', {'summary': 'Valid journal growth during observation'})
+                        return observed
+
+                    options = {'accepted_continuation': accepted} if continued else {}
+                    with patch.object(runner, '_agterm_tree', side_effect=append_evidence):
+                        self.assertEqual(runner.cleanup(run, 'Current accepted evidence', **options)['status'], 'closed')
+                    after = mechanics.load(self.bin / 'agterm.json')
+                    self.assertEqual([s for s in before['trees'][WINDOW]['workspaces'][0]['sessions'] if s['id'] != sid],
+                                     after['trees'][WINDOW]['workspaces'][0]['sessions'])
+                    rows = journal.read_events(self.task / 'decision.log')
+                    self.assertEqual(sum(row['event_id'] == identity + ':cleanup' for row in rows), 1)
+                    closes = [json.loads(line) for line in (self.bin / 'closes.jsonl').read_text().splitlines()]
+                    self.assertEqual(sum(row[row.index('--target') + 1] == sid for row in closes), 1)
+                    self.assertTrue((run / 'cleanup-response.json').exists())
+                    for p, source in native.items():
+                        self.assertEqual(runner._source(p), source)
+                    self.assertEqual(runner.reconcile(accepted)['status'], 'done')
+
     def test_cleanup_preserves_changed_or_unknown_terminal_and_ownership(self):
         run = self.execute()
         self.verify(run)
