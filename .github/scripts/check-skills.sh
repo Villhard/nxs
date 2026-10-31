@@ -26,11 +26,11 @@ fail() {
 }
 
 SKILLS=(
-  dev-rnd dev-bug dev-review dev-spec dev-setup dev-commit dev-lead
+  dev-rnd dev-bug dev-review dev-spec dev-setup nxs-setup dev-commit dev-lead
   rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro nxs-lead
 )
 EXPLICIT=(
-  dev-rnd dev-bug dev-review dev-spec dev-setup dev-lead
+  dev-rnd dev-bug dev-review dev-spec dev-setup nxs-setup dev-lead
   rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro nxs-lead
 )
 ROLES=(
@@ -44,7 +44,7 @@ references/discussion.md|rnd-grill,to-decision,to-spec,rnd-design,rnd-map
 references/domain-modeling.md|rnd-grill,to-decision,rnd-design
 references/research.md|rnd-research,rnd-map
 references/prototype.md|rnd-prototype,rnd-map
-references/writing-for-agents.md|nxs-retro
+references/writing-for-agents.md|nxs-setup,nxs-retro
 references/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
 references/review-report.md|dev-review,to-tickets
 references/feature-directory.md|dev-rnd,dev-bug,rnd-debug

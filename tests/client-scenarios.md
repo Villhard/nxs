@@ -376,3 +376,7 @@ These scenarios are source-level, not live observations. Explicitly select auto 
 ## Stage 6 transition evidence
 
 The native subagent observations above are single cases, not candidate-route or permission-enforcement verification. On 2026-11-01 Claude Code was unavailable on PATH; version, invocation and result are unavailable, so its native route and dependent retirement gate remain unverified. No installation was attempted. The Codex and OpenCode observations above record their versions, native invocation and results. The shell guard checks the active tree after runtime removal; historical records remain evidence. `nxs-lead` auto and full coordinated workflows have not been exercised live. Retain legacy callers and source entries until the later verified cutover.
+
+## Targeted setup candidate
+
+These cases describe expected behavior and have not been observed live. Use disposable projects and preserve sentinel files and symlink targets. Verify a new and an existing project, a repeated current setup, a narrow instruction goal, duplicate or conflicting owned sections, a declined package and private content. Check the exact approved diff and final newline state; a readiness report makes no changes and proves no workflow compatibility.
