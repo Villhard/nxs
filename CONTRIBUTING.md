@@ -35,7 +35,7 @@ cp skills/to-tickets/assets/ticket.md skills/dev-bug/assets/ticket.md
 cp skills/to-tickets/assets/ticket.md skills/dev-review/assets/ticket.md
 ```
 
-Journal resources (`references/task-journal.md` and `references/controlled-run.md`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-grill`, `rnd-debug`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-decision`, `to-spec`, `to-tickets` and `dev-exec`. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
+Journal resources (`references/task-journal.md` and `references/controlled-run.md`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-grill`, `rnd-debug`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-decision`, `to-spec`, `to-tickets`, `dev-exec`, `to-questionnaire`, `to-handoff` and `nxs-retro`. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
 
 The `## Done when` block of `skills/to-tickets/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
 
@@ -134,3 +134,5 @@ Publish by pushing to `main` before updating installations; users update with `n
 `to-questionnaire` is an additive participant-document candidate. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. Preparing a document does not authorize sending or invent answers.
 
 `to-handoff` is an additive resumable-context candidate. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. It supports journal-free work and never uses a branch alone as task identity.
+
+`nxs-retro` is an additive single-session candidate. It initially owns `references/writing-for-agents.md`; move canonical ownership to `nxs-setup` in ticket 30 and keep consumer copies identical. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. It creates no session index or period scan.

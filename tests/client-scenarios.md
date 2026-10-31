@@ -346,3 +346,17 @@ These are scenarios to exercise, not observed client behavior. Use disposable ta
 | Competing tasks | Branch shared by two plausible features | Ask for task identity; do not select from branch name |
 | Uncertain effect | Unknown commit or launch result | Preserve uncertainty and required evidence; never replay automatically |
 | Privacy | Private transcript and secret in context | Exclude secrets and unnecessary transcripts from the handoff |
+
+## Single-session retrospective candidate
+
+These are scenarios to exercise, not observed client behavior. Pin the candidate and session evidence, record invocation, permissions, artifacts and access limitations, and preserve unrelated instructions and private data.
+
+| Case | Input | Required observation |
+| --- | --- | --- |
+| Current session | Accessible current conversation | Review only that session and cite available evidence |
+| Selected session | One explicitly identified accessible session | Review only the selected source; no period scan or index |
+| No problem | Session succeeded without a reported failure | Consider successful practices and supported improvements or explain no change |
+| Missing evidence | Transcript or selected source unavailable | State the access limitation, request an accessible source and invent nothing |
+| Prior results | Relevant prior retrospective supplied | Consider it and state that discovery may be incomplete |
+| Unauthorized rule | Proposed new personal rule without approval | Save the proposal only; preserve instruction files |
+| Scoped authorization | Precise improvement already authorized | Apply and verify only that scope; report what changed |

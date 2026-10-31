@@ -1,0 +1,3 @@
+# WRITING FOR AGENTS
+
+This is the canonical nxs writing guidance until ownership moves to setup. Write instructions around the user's actual intent, observable outputs and ordered actions. Specify inputs, authority, stops, exceptions and completion criteria beside the step they govern. Put branch-specific details in linked local references and keep shared copies identical. Use concrete triggering descriptions and avoid duplicated rules, speculative workflows and instructions that do not change behavior. Preserve user-owned text and existing authorization boundaries. Test representative actions and misreadings; structural lint alone cannot establish instruction quality.
