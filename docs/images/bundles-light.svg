@@ -1,26 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" role="img" aria-labelledby="nxs-bundles-light-title nxs-bundles-light-desc">
-<title id="nxs-bundles-light-title">Setup capability map</title>
-<desc id="nxs-bundles-light-desc">Independent nxs setup does not offer companion bundles. No companion installation is required by nxs-setup. dev-setup retains the legacy bundle offer until verified cutover.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" role="img" aria-labelledby="nxs-bundles-light-title nxs-bundles-light-desc">
+<title id="nxs-bundles-light-title">Bundles</title>
+<desc id="nxs-bundles-light-desc">The nxs-setup capability map identifies source routes while the retained dev-setup global route offers legacy companion bundles.</desc>
 <defs><marker id="nxs-bundles-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
-<rect width="960" height="340" fill="#eeeeee"/>
-<text x="32" y="42" fill="#262626" font-family="system-ui, sans-serif" font-size="22" font-weight="600">Setup capability map</text>
-<text x="32" y="68" fill="#626262" font-family="system-ui, sans-serif" font-size="14">Independent nxs setup does not offer companion bundles</text>
-<path d="M 241 144 H 257" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-bundles-light-arrow)"/>
-<path d="M 470 144 H 486" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-bundles-light-arrow)"/>
-<path d="M 699 144 H 715" stroke="#626262" stroke-width="1.5" fill="none" marker-end="url(#nxs-bundles-light-arrow)"/>
-<rect x="32" y="104" width="209" height="80" rx="6" fill="#e4e4e4" stroke="#0061d2"/>
-<text x="44" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Choose goal</text>
-<text x="44" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">nxs-setup</text>
-<rect x="261" y="104" width="209" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="273" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Audit</text>
-<text x="273" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">existing configuration</text>
-<rect x="490" y="104" width="209" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="502" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Map capability</text>
-<text x="502" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">nxs source routes</text>
-<rect x="719" y="104" width="209" height="80" rx="6" fill="#e4e4e4" stroke="#626262"/>
-<text x="731" y="134" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Approve package</text>
-<text x="731" y="158" fill="#626262" font-family="system-ui, sans-serif" font-size="12">apply selected changes</text>
-<path d="M32 220 H928" stroke="#626262" stroke-width="0.6"/>
-<text x="32" y="250" fill="#262626" font-family="system-ui, sans-serif" font-size="14">No companion installation is required by nxs-setup.</text>
-<text x="32" y="276" fill="#262626" font-family="system-ui, sans-serif" font-size="14">dev-setup retains the legacy bundle offer until verified cutover.</text>
+<rect width="960" height="440" fill="#eeeeee"/>
+<text x="32" y="38" fill="#262626" font-family="system-ui, sans-serif" font-size="23" font-weight="600">Capabilities and bundles</text>
+<text x="32" y="62" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">Two setup routes have different installation boundaries.</text>
+<path d="M253 160 H330" fill="none" stroke="#626262" stroke-width="1.5" marker-end="url(#nxs-bundles-light-arrow)"/>
+<path d="M253 302 H355" fill="none" stroke="#626262" stroke-width="1.5" marker-end="url(#nxs-bundles-light-arrow)"/>
+<rect x="32" y="126" width="221" height="68" rx="6" fill="#e4e4e4" stroke="#0061d2" stroke-width="2"/>
+<text x="46" y="152" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">nxs-setup</text>
+<text x="46" y="175" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">capability map</text>
+<text x="355" y="134" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">discussion</text>
+<text x="512" y="134" fill="#262626" font-family="ui-monospace, monospace" font-size="14" font-weight="600">→  rnd-grill</text>
+<text x="355" y="161" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">wayfinding</text>
+<text x="512" y="161" fill="#262626" font-family="ui-monospace, monospace" font-size="14" font-weight="600">→  rnd-map</text>
+<text x="355" y="188" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">feature work</text>
+<text x="512" y="188" fill="#262626" font-family="ui-monospace, monospace" font-size="14" font-weight="600">→  to-spec / to-tickets</text>
+<text x="355" y="235" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">Map describes source coverage - not registration or automatic invocation.</text>
+<rect x="32" y="268" width="221" height="68" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+<text x="46" y="294" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">dev-setup global</text>
+<text x="46" y="317" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">retained legacy route</text>
+<rect x="355" y="262" width="573" height="80" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1"/>
+<text x="369" y="288" fill="#262626" font-family="ui-monospace, monospace" font-size="15" font-weight="600">companion bundles</text>
+<text x="369" y="311" fill="#626262" font-family="system-ui, sans-serif" font-size="13" font-weight="400">Core  /  Wayfinding  /  Architecture  /  Sessions</text>
+<path d="M32 368 H928" stroke="#626262" stroke-width="1"/>
+<text x="32" y="397" fill="#262626" font-family="system-ui, sans-serif" font-size="14" font-weight="400">Legacy bundles are offered for selection; installation requires approval and verified upstream names.</text>
+<text x="32" y="422" fill="#626262" font-family="system-ui, sans-serif" font-size="14" font-weight="400">nxs-setup does not offer, install or invoke companion skills.</text>
 </svg>

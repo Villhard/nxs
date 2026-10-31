@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- README and diagrams (2026-11-01) map skill entry points, conditional handoffs, task records and setup routes with current authorization boundaries.
 - README catalog and workflow diagrams (2026-11-01) group skills by purpose and show conditional paths between them.
 - README, CONTRIBUTING, GLOSSARY, project spec, client scenarios and diagrams describe the additive catalog, retained legacy routes and unverified cutover.
 - README "Run a ticket" says what to do when the executor stops on a missing blocker result.

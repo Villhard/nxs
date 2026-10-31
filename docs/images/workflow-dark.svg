@@ -1,23 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
-<title id="title">Possible skill connections</title>
-<desc id="desc">Examples of conditional links between independently invoked skills. Each next step needs a request and applicable approval.</desc>
-<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#8dbbff"/></marker></defs>
-<style>text{font-family:system-ui,-apple-system,sans-serif;fill:#dadada}.title{font-size:23px;font-weight:700}.node{font-family:ui-monospace,SFMono-Regular,monospace;font-size:16px;font-weight:600}.label{font-size:14px;fill:#909090}.note{font-size:15px}</style>
-<rect width="1000" height="600" fill="#1c1c1c"/>
-<text x="40" y="42" class="title">Possible connections, chosen independently</text>
-<text x="40" y="68" class="label">Each next step needs a request and applicable approval. Arrows are conditional, not automatic.</text>
-<path d="M210 156 H290" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M460 156 H530" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M680 156 H780" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/>
-<path d="M210 266 H245 V301 H290" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M210 346 H245 V301 H290" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M375 280 V186" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/>
-<path d="M700 301 H740 V210 H865 V186" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M700 421 H975 V156 H960" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/>
-<path d="M210 496 H290" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/>
-<rect x="40" y="135" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="125.0" y="161" text-anchor="middle" class="node">rnd-grill</text><rect x="290" y="135" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="375.0" y="161" text-anchor="middle" class="node">to-decision</text><rect x="530" y="135" width="150" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="605.0" y="161" text-anchor="middle" class="node">to-spec</text><rect x="780" y="135" width="180" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="870.0" y="161" text-anchor="middle" class="node">to-tickets</text>
-<rect x="40" y="245" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="125.0" y="271" text-anchor="middle" class="node">rnd-research</text><rect x="40" y="325" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="125.0" y="351" text-anchor="middle" class="node">rnd-prototype</text><rect x="290" y="280" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="375.0" y="306" text-anchor="middle" class="node">evidence</text>
-<rect x="530" y="280" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="615.0" y="306" text-anchor="middle" class="node">rnd-debug</text><rect x="530" y="400" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="615.0" y="426" text-anchor="middle" class="node">dev-review</text>
-<rect x="40" y="475" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="125.0" y="501" text-anchor="middle" class="node">rnd-audit</text><rect x="290" y="475" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="375.0" y="501" text-anchor="middle" class="node">rnd-design</text>
-<text x="394" y="232" class="label">can inform</text>
-<text x="610" y="256" text-anchor="middle" class="label">eligible confirmed cause</text>
-<text x="615" y="376" text-anchor="middle" class="label">--to-tickets: selected findings</text>
-<text x="250" y="468" text-anchor="middle" class="label">selected</text>
-<text x="40" y="558" class="note">Tickets retain /plan as handoff. dev-exec is a separate candidate.</text>
-<text x="40" y="580" class="note">dev-spec records project intent separately from a feature spec.</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="930" viewBox="0 0 1360 930" role="img" aria-labelledby="title desc">
+<title id="title">nxs capability map</title><desc id="desc">Four starting points branch into investigation, review and execution. An approved feature spec, an eligible confirmed cause and selected review findings may converge at to-tickets. The ordinary review route can create selected tickets itself. Support commands apply across the map.</desc>
+<rect width="1360" height="930" fill="#1c1c1c"/>
+<style>text{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#dadada}.title{font-size:31px;font-weight:700;letter-spacing:-.5px}.subtitle{font-size:15px;fill:#909090}.label{font-size:12px;font-weight:700;letter-spacing:1px;fill:#909090}.heading{font-size:17px;font-weight:700}.small{font-size:13px;fill:#909090}.cmd{font-family:ui-monospace,'SFMono-Regular',Consolas,monospace;font-size:16px;font-weight:700;fill:#8dbbff}.record{font-size:16px;font-weight:700;fill:#ffa083}.arrow{fill:none;stroke:#909090;stroke-width:2;stroke-dasharray:5 5;marker-end:url(#arrow)}</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#909090" stroke-width="1.5"/></marker></defs>
+<text x="32" y="49" class="title">Start with what you need</text><text x="32" y="77" class="subtitle">Independent entry points and examples of conditional handoffs.</text>
+<text x="32" y="119" class="label">YOUR STARTING POINT</text>
+<rect x="32" y="135" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="48" y="162" class="heading">Idea or goal</text><text x="48" y="182" class="small">Decide what to build</text>
+<rect x="362" y="135" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="378" y="162" class="heading">Reported failure</text><text x="378" y="182" class="small">Find the cause</text>
+<rect x="692" y="135" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="708" y="162" class="heading">Existing changes</text><text x="708" y="182" class="small">Review what changed</text>
+<rect x="1022" y="135" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="1038" y="162" class="heading">Clear request</text><text x="1038" y="182" class="small">Implement entrusted work</text>
+<rect x="32" y="245" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="48" y="272" class="cmd">/rnd-grill</text><text x="48" y="292" class="small">Discuss choices and evidence</text>
+<rect x="362" y="245" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="378" y="272" class="cmd">/rnd-debug</text><text x="378" y="292" class="small">Investigate and classify</text>
+<rect x="692" y="245" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="708" y="272" class="cmd">/dev-review</text><text x="708" y="292" class="small">Verify and present findings</text>
+<rect x="1022" y="245" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="1038" y="272" class="cmd">/dev-exec</text><text x="1038" y="292" class="small">Plan, implement and check</text>
+<rect x="32" y="355" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="48" y="382" class="cmd">/to-decision</text><text x="48" y="402" class="small">Save approved conclusions</text>
+<rect x="362" y="355" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="378" y="382" class="heading">Confirmed cause</text><text x="378" y="402" class="small">Eligible for tickets</text>
+<rect x="692" y="355" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="708" y="382" class="heading">Verified findings</text><text x="708" y="402" class="small">User selects follow-up</text>
+<rect x="1022" y="355" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="1038" y="382" class="heading">Checked changes</text><text x="1038" y="402" class="small">Review can follow</text>
+<path d="M185 199 V245" class="arrow"/>
+<path d="M185 309 V355" class="arrow"/>
+<path d="M515 199 V245" class="arrow"/>
+<path d="M515 309 V355" class="arrow"/>
+<path d="M845 199 V245" class="arrow"/>
+<path d="M845 309 V355" class="arrow"/>
+<path d="M1175 199 V245" class="arrow"/>
+<path d="M1175 309 V355" class="arrow"/>
+<rect x="32" y="465" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="48" y="492" class="cmd">/to-spec</text><text x="48" y="512" class="small">Prepare a feature spec</text>
+<path d="M185 419 V465" class="arrow"/>
+<rect x="32" y="575" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="48" y="602" class="record">Feature spec</text><text x="48" y="622" class="small">Approved input for tickets</text>
+<path d="M185 529 V575" class="arrow"/>
+<rect x="692" y="465" width="146" height="75" rx="9" fill="#262626" stroke="#303030"/><text x="708" y="492" class="heading">Ordinary</text><text x="708" y="512" class="small">Review creates</text>
+<text x="708" y="530" class="small">selected tickets</text>
+<rect x="852" y="465" width="146" height="75" rx="9" fill="#262626" stroke="#303030"/><text x="868" y="492" class="record">Selection</text><text x="868" y="512" class="small">--to-tickets</text>
+<path d="M845 419 V440 H765 V465" class="arrow"/>
+<path d="M845 440 H925 V465" class="arrow"/>
+<rect x="362" y="665" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="378" y="692" class="cmd">/to-tickets</text><text x="378" y="712" class="small">Create or revise tickets</text>
+<path d="M185 639 V697 H362" class="arrow"/>
+<path d="M515 419 V665" class="arrow"/>
+<path d="M998 502 H1010 V745 H515 V729" class="arrow"/>
+<path d="M765 540 V665" class="arrow"/>
+<rect x="692" y="665" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="708" y="692" class="record">Tickets</text><text x="708" y="712" class="small">Current handoff: /plan</text>
+<path d="M668 697 H692" class="arrow"/>
+<text x="1022" y="681" class="small">/dev-exec is a separate candidate.</text><text x="1022" y="702" class="small">Unconfirmed causes stop the ticket handoff.</text>
+<line x1="32" y1="767" x2="1328" y2="767" stroke="#303030" stroke-width="2"/><text x="32" y="798" class="label">SUPPORT ACROSS THE MAP</text>
+<rect x="32" y="815" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="48" y="842" class="cmd">/nxs-lead</text><text x="48" y="862" class="small">Coordinate bounded work</text>
+<rect x="362" y="815" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="378" y="842" class="cmd">/nxs-setup</text><text x="378" y="862" class="small">Audit and configure setup</text>
+<rect x="692" y="815" width="306" height="64" rx="9" fill="#262626" stroke="#303030"/><text x="708" y="842" class="cmd">/nxs-retro</text><text x="708" y="862" class="small">Review one session</text>
+<text x="1022" y="836" class="small">Blue: command · Orange: record</text><text x="1022" y="857" class="small">Dashed: conditional handoff</text><text x="1022" y="878" class="small">No arrow grants authorization.</text></svg>

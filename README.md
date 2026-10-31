@@ -4,8 +4,18 @@ Development skills for coding agents, from investigation and decisions through e
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
-  <img alt="Possible conditional links connect discussion, decisions, feature specs, tickets, diagnosis, review, research, prototypes, audit and design. Each next step requires its own request and applicable approval. Tickets retain the /plan handoff; dev-exec is a separate candidate, and project specs are separate from feature specs." src="docs/images/workflow-light.svg">
+  <img alt="An idea, failure, existing changes or clear request can enter different commands. An approved feature spec, eligible confirmed cause and selected review findings can feed to-tickets. Ordinary review can create selected tickets itself. The current ticket handoff is /plan; dev-exec is separate." src="docs/images/workflow-light.svg">
 </picture>
+
+Blue names are commands; orange labels are records and grey labels are conditions or results. Dashed arrows show possible conditional handoffs, not automatic actions. The example is one route, not a required sequence: a clear request can also enter execution directly, and investigation can end with evidence or a decision. A saved artifact does not authorize the next operation by itself. An existing instruction or approval can authorize several operations within its scope; otherwise the applicable request or approval is needed.
+
+Start with the result you need:
+
+- "I have a broad goal and do not know which questions to answer first" - use `rnd-map`.
+- "This behavior fails and I need evidence of the cause" - use `rnd-debug`; an eligible confirmed cause can inform tickets.
+- "I have an approved feature spec and need executable work" - use `to-tickets`.
+- "Implement this clear request" - use `dev-exec` for a plan and execution in the current session.
+- "Review these changes" - use `dev-review`; its ordinary route can create selected tickets, while `--to-tickets` saves a selection for a separate `to-tickets` step.
 
 ## Target catalog
 
@@ -58,7 +68,7 @@ Four additional source entries remain: [dev-rnd](skills/dev-rnd/SKILL.md) combin
 
 ## Using the stages
 
-A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to-tickets`; each step needs an appropriate request and its own applicable approval. A clear request can go directly to `dev-exec`, which presents a plan before implementation. Review, recording built project intent and committing are separate steps. The retained `/plan` handoff is described above.
+A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to-tickets`; continue only within the authorization already given or after obtaining any missing request or approval. A clear request can go directly to `dev-exec`, which presents a plan before implementation. Review, recording built project intent and committing are separate steps. The retained `/plan` handoff is described above.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/grill-dark.svg">
@@ -76,7 +86,7 @@ For a failure, `rnd-debug` records evidence and an eligible confirmed cause can 
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/wayfinder-dark.svg">
-  <img alt="rnd-map links questions and decisions; research and prototypes supply evidence, and a separately requested spec can lead to implementation tickets." src="docs/images/wayfinder-light.svg">
+  <img alt="rnd-map links decision questions by dependencies. Research or prototypes can supply evidence; resolving questions recomputes the frontier. Implementation requires separate scope." src="docs/images/wayfinder-light.svg">
 </picture>
 
 Ticket status and executor evidence are distinct from coordinator acceptance and commit checkpoints. See [ticket rules](skills/to-tickets/references/ticket.md) and [execution](skills/dev-exec/SKILL.md).
@@ -96,7 +106,7 @@ Ticket status and executor evidence are distinct from coordinator acceptance and
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/setup-dark.svg">
-  <img alt="nxs-setup audits a goal, project or global setup, proposes a package and applies approved changes; readiness only reports." src="docs/images/setup-light.svg">
+  <img alt="nxs-setup audits a goal, project or global setup, proposes a package and applies approved changes. Readiness requires project or global and only reports." src="docs/images/setup-light.svg">
 </picture>
 
 <picture>

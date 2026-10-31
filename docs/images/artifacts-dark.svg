@@ -1,23 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" role="img" aria-labelledby="nxs-artifacts-dark-title nxs-artifacts-dark-desc">
-<title id="nxs-artifacts-dark-title">Artifacts and ownership</title>
-<desc id="nxs-artifacts-dark-desc">Task records and durable project intent serve different purposes. dev-spec records built intent in SPEC.md or private .SPEC.md. Glossary and ADRs hold domain terms and decisions. Existing paths take precedence.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" role="img" aria-labelledby="nxs-artifacts-dark-title nxs-artifacts-dark-desc">
+<title id="nxs-artifacts-dark-title">Commands and their records</title>
+<desc id="nxs-artifacts-dark-desc">Commands create or use feature records and project records. Existing paths take precedence. Project specs record built intent and dev-spec is their only writer.</desc>
 <defs><marker id="nxs-artifacts-dark-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#909090"/></marker></defs>
-<rect width="960" height="340" fill="#1c1c1c"/>
-<text x="32" y="42" fill="#dadada" font-family="system-ui, sans-serif" font-size="22" font-weight="600">Artifacts and ownership</text>
-<text x="32" y="68" fill="#909090" font-family="system-ui, sans-serif" font-size="14">Task records and durable project intent serve different purposes</text>
-<rect x="32" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#8dbbff"/>
-<text x="44" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Discussion</text>
-<text x="44" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">decision / research</text>
-<rect x="261" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="273" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Feature</text>
-<text x="273" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">spec.md</text>
-<rect x="490" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="502" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Work</text>
-<text x="502" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">issues / tickets</text>
-<rect x="719" y="104" width="209" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="731" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Continuation</text>
-<text x="731" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">handoff / journal</text>
-<path d="M32 220 H928" stroke="#909090" stroke-width="0.6"/>
-<text x="32" y="250" fill="#dadada" font-family="system-ui, sans-serif" font-size="14">dev-spec records built intent in SPEC.md or private .SPEC.md.</text>
-<text x="32" y="276" fill="#dadada" font-family="system-ui, sans-serif" font-size="14">Glossary and ADRs hold domain terms and decisions. Existing paths take precedence.</text>
+<rect width="960" height="500" fill="#1c1c1c"/>
+<text x="32" y="39" fill="#dadada" font-family="system-ui,sans-serif" font-size="22" font-weight="650">Commands and their records</text>
+<text x="32" y="63" fill="#909090" font-family="system-ui,sans-serif" font-size="12">Records retain evidence and history; their existence does not start another command.</text>
+<path d="M222 140 H300" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-dark-arrow)"/>
+<path d="M222 265 H260 V150 H300" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-dark-arrow)"/>
+<path d="M222 285 H300" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-dark-arrow)"/>
+<path d="M630 145 H550" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-dark-arrow)"/>
+<path d="M630 300 H550" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-dark-arrow)"/>
+<path d="M778 385 V342" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-dark-arrow)"/>
+<rect x="32" y="100" width="190" height="82" rx="6" fill="#262626" stroke="#8dbbff" stroke-width="1.2"/>
+<text x="46" y="119" fill="#8dbbff" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
+<text x="46" y="142" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Investigation</text>
+<text x="46" y="161" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">rnd-grill, rnd-debug,</text>
+<text x="46" y="177" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">rnd-research, rnd-map</text>
+<rect x="32" y="235" width="190" height="82" rx="6" fill="#262626" stroke="#8dbbff" stroke-width="1.2"/>
+<text x="46" y="254" fill="#8dbbff" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
+<text x="46" y="277" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Artifact commands</text>
+<text x="46" y="296" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">to-decision, to-spec,</text>
+<text x="46" y="312" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">to-tickets, to-handoff</text>
+<rect x="300" y="100" width="250" height="92" rx="6" fill="#262626" stroke="#ffa083" stroke-width="1.2"/>
+<text x="314" y="119" fill="#ffa083" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">RECORD</text>
+<text x="314" y="142" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Feature evidence</text>
+<text x="314" y="161" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">Decisions, research, map</text>
+<text x="314" y="177" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">and root-cause records</text>
+<rect x="300" y="250" width="250" height="92" rx="6" fill="#262626" stroke="#ffa083" stroke-width="1.2"/>
+<text x="314" y="269" fill="#ffa083" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">RECORD</text>
+<text x="314" y="292" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Feature work</text>
+<text x="314" y="311" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">Feature spec, issues</text>
+<text x="314" y="327" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">and handoffs</text>
+<rect x="630" y="100" width="295" height="92" rx="6" fill="#262626" stroke="#ffa083" stroke-width="1.2"/>
+<text x="644" y="119" fill="#ffa083" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">RECORD</text>
+<text x="644" y="142" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Domain records</text>
+<text x="644" y="161" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">GLOSSARY.md and ADRs</text>
+<text x="644" y="177" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">record terms and decisions</text>
+<rect x="630" y="250" width="295" height="92" rx="6" fill="#262626" stroke="#ffa083" stroke-width="1.2"/>
+<text x="644" y="269" fill="#ffa083" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">RECORD</text>
+<text x="644" y="292" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Project specs</text>
+<text x="644" y="311" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">SPEC.md / .SPEC.md</text>
+<text x="644" y="327" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">durable intent from built work</text>
+<rect x="630" y="385" width="295" height="72" rx="6" fill="#262626" stroke="#8dbbff" stroke-width="1.2"/>
+<text x="644" y="404" fill="#8dbbff" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
+<text x="644" y="427" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/dev-spec</text>
+<text x="644" y="446" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">Only writer of project specs</text>
 </svg>
