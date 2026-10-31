@@ -257,3 +257,15 @@ Given a reproducible failure, invoke `rnd-debug` and check that its artifact rec
 ## Additive review selection candidate
 
 Run `dev-review --to-tickets` on a disposable reviewed change and select a subset with explicit grouping. Check that the report and selection pin scope and requirements and that review creates no tickets. Pass both to `to-tickets`; verify only selected findings create the agreed groups, report edits touch only selected ticket links, covered open tickets remain byte-identical, and repeat creates no duplicate. A stale report, changed requirement, unknown number or incomplete sweep stops the handoff. Plausible findings retain reproduce-first and partial reproduction handling. The legacy review-to-fix route remains available. These are scenarios to exercise, not live observations.
+
+## Independent research candidate
+
+These are scenarios to exercise in a disposable repository, not observed live behavior. Record client version, candidate path and resource hashes, native registration or pinned delivery, permissions, artifacts and resulting source and index state. Keep a product file and existing research result as preservation sentinels.
+
+| Case | Request or fixture | Required observation |
+| --- | --- | --- |
+| Evidence | Ask a question answerable from supplied primary sources | A durable result attributes findings to sources and distinguishes inspected contracts from observed behavior; no decision, spec, ticket or implementation |
+| Missing source | A primary source fetch fails or conflicts with available evidence | The result records the limitation or disagreement and a next check; no verified negative from the failed fetch |
+| Priorities | Evidence supports alternatives but the user's priorities are unknown | The result leaves the material choice open; a later stage starts only under original or subsequent authorization |
+| Privacy | Include a private configuration value in fixture input | Saved result and journal exclude the value and raw transcript; no unauthorized external disclosure |
+| Continuation | Explicitly authorize research followed by discussion | Pass the saved evidence into discussion within that scope; research alone does not start discussion |

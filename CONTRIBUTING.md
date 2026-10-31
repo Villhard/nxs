@@ -35,7 +35,7 @@ cp skills/to-tickets/assets/ticket.md skills/dev-bug/assets/ticket.md
 cp skills/to-tickets/assets/ticket.md skills/dev-review/assets/ticket.md
 ```
 
-Journal resources (`references/task-journal.md` and `references/controlled-run.md`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-grill`, `to-decision`, `to-spec`, `to-tickets` and `dev-exec`. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
+Journal resources (`references/task-journal.md` and `references/controlled-run.md`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-grill`, `rnd-debug`, `rnd-research`, `to-decision`, `to-spec`, `to-tickets` and `dev-exec`. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
 
 The `## Done when` block of `skills/to-tickets/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
 
@@ -118,5 +118,7 @@ Run the client against that `HOME`, then remove the temporary directory, keeping
 Publish by pushing to `main` before updating installations; users update with `npx skills update`. Do not modify the user's installed skills during source edits unless requested.
 
 `rnd-debug` is an additive diagnosis candidate. It bundles the feature-directory, spec-template, project-spec reader and journal resources; keep those copies and the checker catalog synchronized. `to-tickets` accepts eligible confirmed causes without switching `dev-bug` or the executor handoff.
+
+`rnd-research` is an additive, explicit research candidate. Keep its project-spec reader, journal and controlled-run copies synchronized with their canonical owners and in the checker catalog. Its result does not authorize a later stage; manual research remains available.
 
 `dev-review` owns the review report reference; copy it into `to-tickets` when changed. The explicit `--to-tickets` candidate keeps review selection separate from ticket creation while the legacy route remains available.

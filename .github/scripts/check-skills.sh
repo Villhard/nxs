@@ -27,11 +27,11 @@ fail() {
 
 SKILLS=(
   dev-rnd dev-bug dev-review dev-spec dev-setup dev-commit dev-lead
-  rnd-grill rnd-debug to-decision to-spec to-tickets dev-exec
+  rnd-grill rnd-debug rnd-research to-decision to-spec to-tickets dev-exec
 )
 EXPLICIT=(
   dev-rnd dev-bug dev-review dev-spec dev-setup dev-lead
-  rnd-grill rnd-debug to-decision to-spec to-tickets dev-exec
+  rnd-grill rnd-debug rnd-research to-decision to-spec to-tickets dev-exec
 )
 ROLES=(
   review-quality review-testing review-simplification review-verify
@@ -45,9 +45,9 @@ references/domain-modeling.md|rnd-grill,to-decision
 references/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
 references/review-report.md|dev-review,to-tickets
 references/feature-directory.md|dev-rnd,dev-bug,rnd-debug
-references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug
-references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug
-references/controlled-run.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug
+references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research
+references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research
+references/controlled-run.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research
 assets/spec.md|to-spec,dev-rnd,dev-bug,rnd-debug
 assets/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
 assets/outcome.schema.json|dev-lead,dev-review
