@@ -21,6 +21,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.52.0] - 2026-10-31
+
+### Added
+
+- `to-spec` adds explicit independent feature spec preparation from decisions or clear requests, authorized drafts, source/dependency evidence and preservation gates, without ticket slicing.
+
+### Changed
+
+- Checker catalog and fixtures include `to-spec` policies and self-contained shared resources; `to-spec` owns the byte-identical feature spec template while legacy routes stay available.
+- README, CONTRIBUTING and client scenarios document the additive spec candidate, resource ownership and proportionate observation boundaries.
+
 ## [0.51.0] - 2026-10-31
 
 ### Added

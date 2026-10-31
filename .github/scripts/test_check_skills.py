@@ -13,19 +13,19 @@ ROOT = CLI.parents[2]
 PRE_COMMIT = ROOT / '.githooks/pre-commit'
 
 SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead',
-          'rnd-grill', 'to-decision')
+          'rnd-grill', 'to-decision', 'to-spec')
 SHARED = {
-    'references/discussion.md': ('rnd-grill', 'to-decision'),
+    'references/discussion.md': ('rnd-grill', 'to-decision', 'to-spec'),
     'references/domain-modeling.md': ('rnd-grill', 'to-decision'),
     'references/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
-    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision'),
-    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
-    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
-    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
+    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision', 'to-spec'),
+    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec'),
+    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec'),
+    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec'),
     **{f'scripts/{name}.py': ('dev-lead', 'dev-review') for name in ('harness', 'inventory', 'mechanics', 'outcome', 'runner')},
     'assets/outcome.schema.json': ('dev-lead', 'dev-review'),
-    'assets/spec.md': ('dev-rnd', 'dev-bug'),
+    'assets/spec.md': ('to-spec', 'dev-rnd', 'dev-bug'),
     'assets/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
 }
 DONE_WHEN = '## Done when\n\n- Verify every criterion.\n- Do not commit.\n'
@@ -159,7 +159,7 @@ def main():
         write(repo, 'skills/dev-lead/scripts/escape-probe.py', "RESOURCE = '../../dev-rnd/SKILL.md'\n")
         check(repo, False, diagnostic='external runtime skill reference')
         (repo / 'skills/dev-lead/scripts/escape-probe.py').unlink()
-        for name in ('rnd-grill', 'to-decision'):
+        for name in ('rnd-grill', 'to-decision', 'to-spec'):
             path = 'skills/dev-lead/scripts/escape-probe.py'
             write(repo, path, f"RESOURCE = '../../{name}/SKILL.md'\n")
             check(repo, False, diagnostic='external runtime skill reference')
@@ -181,7 +181,7 @@ def main():
         git(repo, 'checkout', '--', 'skills/dev-bug/SKILL.md')
 
         # New candidate commands stay explicit in both client policy forms.
-        for name in ('rnd-grill', 'to-decision'):
+        for name in ('rnd-grill', 'to-decision', 'to-spec'):
             path = f'skills/{name}/SKILL.md'
             original = (repo / path).read_text()
             write(repo, path, original.replace('disable-model-invocation: true\n', ''))

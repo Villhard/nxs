@@ -11,23 +11,23 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead',
-          'rnd-grill', 'to-decision')
+          'rnd-grill', 'to-decision', 'to-spec')
 EXPLICIT = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-lead',
-            'rnd-grill', 'to-decision')
+            'rnd-grill', 'to-decision', 'to-spec')
 ROLES = ('review-quality', 'review-testing', 'review-simplification', 'review-verify')
 # Files copied into every consuming skill and required to stay byte-identical.
 SHARED = {
-    'references/discussion.md': ('rnd-grill', 'to-decision'),
+    'references/discussion.md': ('rnd-grill', 'to-decision', 'to-spec'),
     'references/domain-modeling.md': ('rnd-grill', 'to-decision'),
     'references/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
-    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision'),
-    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
-    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
-    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
+    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision', 'to-spec'),
+    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec'),
+    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec'),
+    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec'),
     **{f'scripts/{name}.py': ('dev-lead', 'dev-review') for name in ('harness', 'inventory', 'mechanics', 'outcome', 'runner')},
     'assets/outcome.schema.json': ('dev-lead', 'dev-review'),
-    'assets/spec.md': ('dev-rnd', 'dev-bug'),
+    'assets/spec.md': ('to-spec', 'dev-rnd', 'dev-bug'),
     'assets/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
 }
 # The tracker template carries dev-rnd's Done when block inside a Markdown fence.

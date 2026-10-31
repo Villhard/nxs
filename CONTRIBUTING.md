@@ -17,7 +17,7 @@ tests/client-scenarios.md
 README.md CONTRIBUTING.md CHANGELOG.md
 ```
 
-A skill may link only to files inside its own directory. Files shared by several skills are copied into every consuming skill and must stay byte-identical; the check enforces this. For ticket and spec resources, edit the `dev-rnd` copy, then propagate:
+A skill may link only to files inside its own directory. Files shared by several skills are copied into every consuming skill and must stay byte-identical; the check enforces this. For ticket and legacy feature resources, edit the `dev-rnd` copy; `to-spec` owns the feature spec template. Propagate shared edits:
 
 ```bash
 cp skills/dev-rnd/references/ticket.md skills/dev-bug/references/ticket.md
@@ -27,7 +27,8 @@ cp skills/dev-rnd/references/project-specs.md skills/dev-bug/references/project-
 cp skills/dev-rnd/references/project-specs.md skills/dev-review/references/project-specs.md
 cp skills/dev-rnd/references/project-specs.md skills/dev-spec/references/project-specs.md
 cp skills/dev-rnd/references/project-specs.md skills/dev-lead/references/project-specs.md
-cp skills/dev-rnd/assets/spec.md skills/dev-bug/assets/spec.md
+cp skills/to-spec/assets/spec.md skills/dev-rnd/assets/spec.md
+cp skills/to-spec/assets/spec.md skills/dev-bug/assets/spec.md
 cp skills/dev-rnd/assets/ticket.md skills/dev-bug/assets/ticket.md
 cp skills/dev-rnd/assets/ticket.md skills/dev-review/assets/ticket.md
 ```
@@ -37,6 +38,8 @@ Journal resources (`references/task-journal.md`, `references/controlled-run.md` 
 The `## Done when` block of `skills/dev-rnd/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
 
 `rnd-grill` owns `references/discussion.md` and `references/domain-modeling.md`; copy edits byte-for-byte into `to-decision`. Both new commands also consume unchanged project-spec reader copies from `dev-rnd`, and journal/controlled-run/helper copies from `dev-lead`. The checker lists every consumer. Keep both commands explicit through `disable-model-invocation: true` and `allow_implicit_invocation: false`; direct domain-document requests are supported within an expressly invoked or controlled scope, without a wrapper artifact.
+
+`to-spec` bundles unchanged discussion rules from `rnd-grill`, project-spec reader rules from `dev-rnd`, and journal/controlled-run/helper resources from `dev-lead`. Its `references/feature-source.md` owns the independent spec input/location rules; the legacy feature-directory reference keeps its consumers. All three feature spec template copies stay byte-identical. Keep the new command explicit through both invocation policies; adding it does not switch the manual or coordinator route.
 
 Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions; the exception is a setup skill, which may write rules and config into client instructions only through a diff the user approved. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
