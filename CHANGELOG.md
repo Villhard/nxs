@@ -30,7 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
-- Ticket status diagrams show the selected executor after a human step; the workflow diagram and README emphasize the current `dev-exec` handoff.
+- Ticket status diagrams show the selected executor after a human step; the workflow diagram and README emphasize the current `dev-exec` handoff and remove the legacy section.
 
 ## [0.74.0] - 2026-11-01
 
