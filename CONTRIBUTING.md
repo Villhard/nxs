@@ -118,3 +118,5 @@ Run the client against that `HOME`, then remove the temporary directory, keeping
 Publish by pushing to `main` before updating installations; users update with `npx skills update`. Do not modify the user's installed skills during source edits unless requested.
 
 `rnd-debug` is an additive diagnosis candidate. It bundles the feature-directory, spec-template, project-spec reader and journal resources; keep those copies and the checker catalog synchronized. `to-tickets` accepts eligible confirmed causes without switching `dev-bug` or the executor handoff.
+
+`dev-review` owns the review report reference; copy it into `to-tickets` when changed. The explicit `--to-tickets` candidate keeps review selection separate from ticket creation while the legacy route remains available.

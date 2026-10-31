@@ -21,6 +21,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.58.0] - 2026-11-01
+
+### Added
+
+- `dev-review` offers an additive selection handoff to `to-tickets`, which creates tickets from current selected findings; the legacy review-to-fix route remains available.
+
 ## [0.57.0] - 2026-11-01
 
 ### Added

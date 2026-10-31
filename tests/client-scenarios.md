@@ -253,3 +253,7 @@ Label each live result as an observation of its recorded case, not a guarantee. 
 ## Additive diagnosis candidate
 
 Given a reproducible failure, invoke `rnd-debug` and check that its artifact records a discriminating probe, class, cleanup and regression direction without a product patch or ticket. Invoke `to-tickets` separately with an eligible confirmed cause and approval; check one fix ticket and an unchanged repeat. An unreproduced symptom or competing hypothesis has pending direction and no ready handoff; a `feature` class returns to discussion. For `silent` and `wrong`, missing agreement prevents a ready ticket. An open ticket for a different cause requires a revision decision. These are scenarios to exercise, not claims of live verification.
+
+## Additive review selection candidate
+
+Run `dev-review --to-tickets` on a disposable reviewed change and select a subset with explicit grouping. Check that the report and selection pin scope and requirements and that review creates no tickets. Pass both to `to-tickets`; verify only selected findings create the agreed groups, report edits touch only selected ticket links, covered open tickets remain byte-identical, and repeat creates no duplicate. A stale report, changed requirement, unknown number or incomplete sweep stops the handoff. Plausible findings retain reproduce-first and partial reproduction handling. The legacy review-to-fix route remains available. These are scenarios to exercise, not live observations.

@@ -43,6 +43,7 @@ SHARED="
 references/discussion.md|rnd-grill,to-decision,to-spec
 references/domain-modeling.md|rnd-grill,to-decision
 references/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
+references/review-report.md|dev-review,to-tickets
 references/feature-directory.md|dev-rnd,dev-bug,rnd-debug
 references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug
 references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug
