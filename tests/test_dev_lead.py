@@ -6,6 +6,7 @@ import io
 import json
 import os
 from pathlib import Path
+import shutil
 import signal
 import subprocess
 import sys
@@ -1856,11 +1857,13 @@ class Visibility(unittest.TestCase):
             def __init__(self, text):
                 super().__init__()
                 self.controls, self.script = [], ''
+                self.form_id = None
                 self.in_script = False
                 self.feed(text)
 
             def handle_starttag(self, tag, attrs):
-                if tag in ('input', 'button'):
+                if tag == 'form': self.form_id = dict(attrs).get('id')
+                if tag in ('input', 'textarea', 'button'):
                     self.controls.append((tag, dict(attrs)))
                 if tag == 'script': self.in_script = True
 
@@ -1870,12 +1873,16 @@ class Visibility(unittest.TestCase):
             def handle_data(self, data):
                 if self.in_script: self.script += data
 
-        form_text = approval._form(self.question())
+        question = self.question()
+        question['fields'].append({'name': 'explanation', 'label': 'Explain <scope> & choice',
+                                   'options': [], 'required': True})
+        form_text = approval._form(question)
         form = Form(form_text)
         radios = [attrs for tag, attrs in form.controls if tag == 'input']
         self.assertEqual([a['value'] for a in radios], ['revise', 'approve'])
         self.assertTrue(all(a['type'] == 'radio' and a['name'] == 'choice' and 'required' in a for a in radios))
         self.assertFalse(any('checked' in a for a in radios), 'decision starts with no selected answer')
+        self.assertIn(('textarea', {'name': 'explanation', 'required': None}), form.controls)
         self.assertIn(('button', {'type': 'submit'}), form.controls)
         self.assertIn('form.addEventListener("submit",', form.script)
         self.assertIn('event.preventDefault()', form.script)
@@ -1887,6 +1894,69 @@ class Visibility(unittest.TestCase):
         probe_radios = [attrs for tag, attrs in probe.controls if tag == 'input']
         self.assertEqual(['checked' in a for a in probe_radios], [True, False])
         self.assertIn('setTimeout(() => form.requestSubmit(), 8000);', probe.script)
+
+        with self.subTest('generated submit JavaScript'):
+            node = shutil.which('node')
+            if node is None:
+                self.skipTest('Node unavailable: generated-submit JavaScript not executed; controls/probe checked')
+            entered = {'choice': 'approve', 'explanation': 'Обоснование "A&B" <scope> \\ path\nСтрока 😀'}
+            script = r'''
+const assert = require('node:assert/strict');
+const vm = require('node:vm');
+const input = JSON.parse(require('node:fs').readFileSync(0, 'utf8'));
+(async () => {
+    const controls = input.controls.map(([tag, attrs]) => ({tag, ...attrs}));
+    const listeners = [], requests = [], timers = [];
+    let prevented = 0, automatic = 0;
+    const form = {
+        addEventListener(event, listener) {
+            assert.equal(event, 'submit');
+            listeners.push(listener);
+        },
+        requestSubmit() { automatic++; }
+    };
+    for (const control of controls) {
+        if (control.tag === 'input') control.checked = control.value === input.entered[control.name];
+        if (control.tag === 'textarea') control.value = input.entered[control.name];
+    }
+    class FormData {
+        constructor(target) { assert.equal(target, form); }
+        [Symbol.iterator]() {
+            return controls.filter(c => c.name && !('disabled' in c) &&
+                (c.tag === 'textarea' || (c.type === 'radio' && c.checked)))
+                .map(c => [c.name, c.value])[Symbol.iterator]();
+        }
+    }
+    vm.runInNewContext(input.script, {
+        document: {getElementById(id) { assert.equal(id, input.form_id); return form; }},
+        FormData,
+        setTimeout: (...args) => timers.push(args),
+        agterm: {async request(method, args) {
+            assert.equal(prevented, 1);
+            requests.push({method, ...args});
+        }}
+    }, {timeout: 1000});
+    await Promise.resolve();
+    assert.equal(listeners.length, 1);
+    assert.equal(requests.length, 0, 'no request before explicit submit');
+    assert.equal(timers.length, 0, 'no automatic decision timer');
+    assert.equal(automatic, 0, 'no automatic decision submission');
+    await listeners[0]({preventDefault() { prevented++; }});
+    console.log(JSON.stringify({prevented, requests}));
+})().catch(error => { console.error(error); process.exitCode = 1; });
+'''
+            result = subprocess.run([node, '-e', script],
+                                    input=json.dumps({'script': form.script, 'controls': form.controls,
+                                                      'form_id': form.form_id, 'entered': entered}),
+                                    text=True, capture_output=True, timeout=5)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            submitted = json.loads(result.stdout)
+            self.assertEqual(submitted['prevented'], 1)
+            self.assertEqual(len(submitted['requests']), 1)
+            request = submitted['requests'][0]
+            self.assertEqual(request['method'], 'session.overlay.submit')
+            self.assertIsInstance(request['args']['value'], str)
+            self.assertEqual(json.loads(request['args']['value']), entered, 'submitted form values')
 
     def test_visibility_question_claim_lost_open_and_pre_submission_recovery(self):
         self.show()
