@@ -130,3 +130,5 @@ Publish by pushing to `main` before updating installations; users update with `n
 `rnd-map` keeps the local wayfinder decision model. Its discussion, research, prototype, project-spec, journal and controlled-run copies match their owners and are checked as shared resources. Decision tickets are not implementation tickets; map completion does not authorize implementation.
 
 `dev-review` owns the review report reference; copy it into `to-tickets` when changed. The explicit `--to-tickets` candidate keeps review selection separate from ticket creation while the legacy route remains available.
+
+`to-questionnaire` is an additive participant-document candidate. Keep its project-spec, journal and controlled-run copies synchronized and cataloged. Preparing a document does not authorize sending or invent answers.

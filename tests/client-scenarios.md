@@ -321,3 +321,15 @@ These graph examples are a test protocol, not observed live behavior or proof fo
 | Restart | 01 resolved with an answer, 02 claimed, 03 open | Preserve 01, its answer and index; reconcile 02 rather than reset it; offer eligible 03 |
 | Research or prototype | A question explicitly authorizes the corresponding check and local evidence | Link retained findings or experiment and verdict; no transfer or deletion without separate authorization |
 | Mapping and handoff | Map completes with no implementation scope, then a separate implementation instruction | Mapping produces no product change or ready execution ticket; a later authorized task keeps the existing decision files and answers intact |
+
+## Participant questionnaire candidate
+
+These are scenarios to exercise, not observed client behavior. Pin the candidate and client, record invocation, permissions, artifacts and delivery, and keep external messages and unrelated files as preservation sentinels.
+
+| Case | Input | Required observation |
+| --- | --- | --- |
+| Known participant | Missing facts affect a named decision | Save answerable questions with context, consequence and source; no invented answers or send |
+| Unknown recipient | Participant cannot be identified | Ask for the recipient before creating a recipient-specific document |
+| Critical unknown | One answer blocks a decision while other work is independent | Mark only the affected decision blocked and continue separately authorized preparation |
+| Partial response | One of several questions is answered | Attribute the answer and retain the other questions and blockers |
+| Unsolicited send | User approves or opens the prepared document only | No contact or submission without a separate explicit instruction |
