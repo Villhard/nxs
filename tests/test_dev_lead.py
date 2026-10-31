@@ -145,6 +145,10 @@ if args[:2] == ['session', 'hud'] or args[:2] == ['session', 'overlay']:
     node = next(s for w in tree['workspaces'] for s in w['sessions'] if s['id'] == option('--target'))
     if args[:2] == ['session', 'hud']:
         assert not node.get('overlay') and not node.get('htmlOverlays')
+        if args[2] == 'close':
+            assert node.get('hud')
+            node.pop('hud')
+            save(); reply({'id': node['id']})
         if args[2] == 'update': assert node.get('hud')
         node['hud'] = {'message': args[3], 'detail': option('--detail'),
                        'position': option('--position'), 'spinner': option('--spinner-style'),
@@ -1601,6 +1605,102 @@ class Visibility(unittest.TestCase):
         self.progress['accepted_tickets'] = [{'ticket': 'issues/01.md', 'event_id': 'checkbox'}]
         with self.assertRaisesRegex(ValueError, 'acceptance evidence'):
             self.show()
+
+    def test_visibility_finish_removes_owned_hud_keeps_status_and_survives_cache_loss(self):
+        before = mechanics.git_snapshot(self.repo)
+        self.progress.update(stage='complete', action='Work delivered')
+        self.show()
+        (self.task / 'research/dev-lead/presentation.json').unlink()
+        result = lead_status.finish(self.task, 'finished', self.identity)
+        self.assertEqual(result['ui'], 'cleared')
+        node = mechanics.load(self.bin / 'agterm.json')['trees'][WINDOW]['workspaces'][0]['sessions'][0]
+        self.assertNotIn('hud', node)
+        command = self.ui(['session', 'hud', 'close'])
+        self.assertEqual(len(command), 1)
+        for flag, value in (('--target', LEAD), ('--window', WINDOW),
+                            ('--socket', self.identity['socket'])):
+            self.assertEqual(command[0][command[0].index(flag) + 1], value)
+        for _ in range(2):
+            (self.task / 'research/dev-lead/presentation.json').unlink()
+            self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'cleared')
+            self.assertEqual(lead_status.finish(self.task, 'finished', self.identity)['ui'], 'cleared')
+        self.assertEqual(len(self.ui(['session', 'hud'])), 2)  # One open and one close.
+        text = (self.task / 'research/dev-lead/status.md').read_text()
+        self.assertIn('Stage: complete', text)
+        self.assertIn('Work delivered', text)
+        self.assertIn('Presentation: cleared', text)
+        cache = mechanics.load(self.task / 'research/dev-lead/presentation.json')
+        with patch.object(lead_status.time, 'monotonic', return_value=cache['monotonic'] + 120):
+            self.assertNotIn('active presentation polling exceeded 60 seconds',
+                             lead_status.refresh(self.task, self.identity)['stale'])
+        self.assertEqual(mechanics.git_snapshot(self.repo), before)
+        self.progress.update(stage='follow-up', action='New work')
+        self.assertEqual(lead_status.publish(self.task, 'resumed', self.progress, self.identity)['ui'], 'visible')
+
+    def test_visibility_finish_preserves_foreign_and_covering_ui(self):
+        self.show()
+        owned = mechanics.load(self.task / 'research/dev-lead/presentation.json')['owned_hud']
+        foreign = {**owned, 'message': 'User panel'}
+        self.change_node(hud=foreign)
+        self.assertEqual(lead_status.finish(self.task, 'finished', self.identity)['ui'], 'suppressed')
+        node = mechanics.load(self.bin / 'agterm.json')['trees'][WINDOW]['workspaces'][0]['sessions'][0]
+        self.assertEqual(node['hud'], foreign)
+        self.assertFalse(self.ui(['session', 'hud', 'close']))
+        self.change_node(hud=owned, htmlOverlays=[{'id': 'user-page'}])
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'suppressed')
+        self.assertFalse(self.ui(['session', 'hud', 'close']))
+        self.change_node(htmlOverlays=[])
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'cleared')
+
+    def test_visibility_finish_lost_close_reply_is_observed_without_replay(self):
+        self.show()
+        ipc = runner._ipc
+
+        def lose_reply(command, timeout):
+            response = ipc(command, timeout)
+            if command[:3] == [self.identity['cli'], 'session', 'hud'] and command[3] == 'close':
+                raise OSError('lost HUD close reply')
+            return response
+
+        with patch.object(runner, '_ipc', side_effect=lose_reply):
+            self.assertEqual(lead_status.finish(self.task, 'finished', self.identity)['ui'], 'error')
+        (self.task / 'research/dev-lead/presentation.json').unlink()
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'cleared')
+        self.assertEqual(len(self.ui(['session', 'hud', 'close'])), 1)
+        # If intent was saved but no close was observed, recovery preserves uncertainty.
+        self.progress['action'] = 'Another delivered task'
+        lead_status.publish(self.task, 'another-final', self.progress, self.identity)
+
+        def lose_before_close(command, timeout):
+            if command[:4] == [self.identity['cli'], 'session', 'hud', 'close']:
+                raise OSError('connection lost')
+            return ipc(command, timeout)
+
+        with patch.object(runner, '_ipc', side_effect=lose_before_close):
+            self.assertEqual(lead_status.finish(self.task, 'another-finish', self.identity)['ui'], 'error')
+        self.assertEqual(lead_status.reconcile(self.task, self.identity)['ui'], 'uncertain')
+        self.assertEqual(len(self.ui(['session', 'hud', 'close'])), 1)
+
+    def test_visibility_finish_requires_owner_final_progress_and_no_pending_work(self):
+        with self.assertRaisesRegex(ValueError, 'publish final progress'):
+            lead_status.finish(self.task, 'premature', self.identity)
+        self.show()
+        self.progress['current_run'] = 'worker'
+        lead_status.publish(self.task, 'working', self.progress, self.identity)
+        with self.assertRaisesRegex(ValueError, 'current run'):
+            lead_status.finish(self.task, 'premature', self.identity)
+        self.progress['current_run'] = None
+        lead_status.publish(self.task, 'waiting', self.progress, self.identity)
+        journal.append_event(self.task / 'decision.log', 'question:open', 'question.open.intent',
+                             {'ui_question_id': 'question'})
+        with self.assertRaisesRegex(ValueError, 'pending questionnaire'):
+            lead_status.finish(self.task, 'premature', self.identity)
+        self.assertFalse(self.ui(['session', 'hud', 'close']))
+        self.owner.__exit__(None, None, None)
+        with self.assertRaisesRegex(ValueError, 'lifetime controller'):
+            lead_status.finish(self.task, 'premature', self.identity)
+        self.owner = runner.controller(self.task)
+        self.owner.__enter__()
 
     def test_visibility_progress_crash_then_missing_hud_restores_from_journal(self):
         with patch.object(lead_status, '_text', side_effect=OSError('render interrupted')):

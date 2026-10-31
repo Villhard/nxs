@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Lead design records (2026-10-30) define coordinator, plan and decision-log terms, autonomy and reapproval boundaries, model policy, approved environment steps, optional companions, focused R&D, parallel worktree integration, shared task journaling and Codex-first verification.
+- Lead reliability design (2026-10-30) prioritizes a sequential full cycle and recovery, bounded structured worker outcomes and deterministic helpers, and states the limits of journaling manually invoked companion skills.
+- Companion integration decision (2026-10-30) distinguishes manual dialogue from verified lead execution contracts and records selective adoption into nxs as a future investigation.
+
 ### Changed
 
 - README "Run a ticket" says what to do when the executor stops on a missing blocker result.
@@ -13,6 +19,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Fixed
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
+
+## [0.50.0] - 2026-10-31
+
+### Changed
+
+- `dev-lead` explicitly finishes HUD presentation before releasing its controller, preserving final local status, foreign UI and non-replayed close evidence across recovery.
 
 ## [0.49.0] - 2026-10-31
 
