@@ -36,6 +36,8 @@ Journal resources (`references/task-journal.md`, `references/controlled-run.md` 
 
 The `## Done when` block of `skills/dev-rnd/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
 
+`rnd-grill` owns `references/discussion.md` and `references/domain-modeling.md`; copy edits byte-for-byte into `to-decision`. Both new commands also consume unchanged project-spec reader copies from `dev-rnd`, and journal/controlled-run/helper copies from `dev-lead`. The checker lists every consumer. Keep both commands explicit through `disable-model-invocation: true` and `allow_implicit_invocation: false`; direct domain-document requests are supported within an expressly invoked or controlled scope, without a wrapper artifact.
+
 Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions; the exception is a setup skill, which may write rules and config into client instructions only through a diff the user approved. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
 ## NAMES
@@ -48,6 +50,8 @@ A skill name is a command the user types, so it is chosen to be read at a glance
 - Add a second word only when the one-word candidate is taken or would be misread.
 
 The reasoning and the rejected alternatives are in [ADR 0007](docs/adr/0007-skill-names.md).
+
+The approved independent-workflow naming extension adds `rnd-` for investigation/discussion and `to-` for producing a named artifact. `rnd-grill` and `to-decision` are additive candidates under that extension; the existing `dev-` routes and installation behavior remain available. Naming does not activate another workflow stage.
 
 ## STYLE AND SAFETY
 

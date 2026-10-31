@@ -18,8 +18,12 @@ Development skills for coding agents: shape features and bugs into tickets for t
 | [dev-review](skills/dev-review/SKILL.md) | Review staged changes, or the branch; create only the tickets you pick. |
 | [dev-spec](skills/dev-spec/SKILL.md) | Record durable project specs from landed work. |
 | [dev-commit](skills/dev-commit/SKILL.md) | Commit existing changes in atomic groups. |
+| [rnd-grill](skills/rnd-grill/SKILL.md) | Discuss an idea, question or plan; conclude in dialogue without saving or starting development. Candidate route alongside dev-rnd. |
+| [to-decision](skills/to-decision/SKILL.md) | Show and save an approved decision or unfinished discussion; write only approved glossary/ADR proposals. Candidate route alongside existing manual saving. |
 
 `dev-lead`, `dev-setup`, `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". For OpenCode, select a skill with `@dev-<name>` instead of `/dev-<name>`.
+
+`rnd-grill` and `to-decision` also require explicit invocation (OpenCode: `@rnd-grill` or `@to-decision`). They are additive candidates; existing manual and coordinator routes remain available. See client scenarios for actual verification limits before relying on a client route.
 
 ## Install
 
@@ -83,6 +87,15 @@ Only recorded task-owned, idle worker terminals with stopped processes and curre
 The adapters require Python 3, Git, agterm and the selected Claude Code, Codex or OpenCode v2 CLI. Read-only Claude/OpenCode workers also require macOS sandbox-exec. One feature branch and nxs alone form the baseline; parallel worktrees, merges and autonomous companion integrations remain outside its scope. [dev-lead](skills/dev-lead/SKILL.md) owns runtime policy. [Client scenarios](tests/client-scenarios.md) distinguish fixtures, selected Codex live observations, consumer permission failures and unverified routes; adapter availability does not establish full multi-client workflow compatibility.
 
 ### Shape a feature
+
+To discuss and optionally save a decision through the candidate route:
+
+```text
+/rnd-grill <question or plan>
+/to-decision <discussion or saved decision path>
+```
+
+Discussion waits for material choices and can finish without files. Saving first shows the proposed conclusions and destination, then uses approval covering that exact content. You can approve saving unfinished state with open questions. Domain proposals are approved individually; a direct domain-document request within an expressly invoked scope needs no decision wrapper. New decisions default to `.scratch/<feature-slug>/research/decision.md`; existing paths and user content are preserved. HTML approval alone saves nothing. A feature spec, tickets and implementation remain separate requests. Details: [discussion](skills/rnd-grill/SKILL.md) and [saving](skills/to-decision/SKILL.md).
 
 Use `dev-rnd` when a change needs decisions before code. Give it a request, a tracker key or URL, a spec path or an open question:
 

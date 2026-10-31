@@ -12,14 +12,17 @@ CLI = Path(__file__).with_name('check-skills.sh').resolve()
 ROOT = CLI.parents[2]
 PRE_COMMIT = ROOT / '.githooks/pre-commit'
 
-SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead')
+SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead',
+          'rnd-grill', 'to-decision')
 SHARED = {
+    'references/discussion.md': ('rnd-grill', 'to-decision'),
+    'references/domain-modeling.md': ('rnd-grill', 'to-decision'),
     'references/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
-    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead'),
-    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
-    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
-    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
+    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision'),
+    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
+    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
+    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
     **{f'scripts/{name}.py': ('dev-lead', 'dev-review') for name in ('harness', 'inventory', 'mechanics', 'outcome', 'runner')},
     'assets/outcome.schema.json': ('dev-lead', 'dev-review'),
     'assets/spec.md': ('dev-rnd', 'dev-bug'),
@@ -131,7 +134,7 @@ def main():
 
         # Missing skill fails.
         shutil.rmtree(repo / 'skills/dev-commit')
-        check(repo, False, diagnostic="expected ['dev-bug', 'dev-commit', 'dev-lead', 'dev-review', 'dev-rnd', 'dev-setup', 'dev-spec']")
+        check(repo, False, diagnostic=f"expected {sorted(SKILLS)}")
         git(repo, 'checkout', '--', 'skills/dev-commit')
 
         # A link escaping its skill fails, and so does a missing destination.
@@ -156,6 +159,11 @@ def main():
         write(repo, 'skills/dev-lead/scripts/escape-probe.py', "RESOURCE = '../../dev-rnd/SKILL.md'\n")
         check(repo, False, diagnostic='external runtime skill reference')
         (repo / 'skills/dev-lead/scripts/escape-probe.py').unlink()
+        for name in ('rnd-grill', 'to-decision'):
+            path = 'skills/dev-lead/scripts/escape-probe.py'
+            write(repo, path, f"RESOURCE = '../../{name}/SKILL.md'\n")
+            check(repo, False, diagnostic='external runtime skill reference')
+            (repo / path).unlink()
         write(repo, 'skills/dev-lead/scripts/escape-probe.py', "RESOURCE = '../../shared/journal.py'\n")
         check(repo, False, diagnostic='external runtime resource path')
         (repo / 'skills/dev-lead/scripts/escape-probe.py').unlink()
@@ -171,6 +179,29 @@ def main():
               '---\nname: dev-bug\ndescription: Fixture.\n---\n')
         check(repo, False, diagnostic='incorrect invocation policy')
         git(repo, 'checkout', '--', 'skills/dev-bug/SKILL.md')
+
+        # New candidate commands stay explicit in both client policy forms.
+        for name in ('rnd-grill', 'to-decision'):
+            path = f'skills/{name}/SKILL.md'
+            original = (repo / path).read_text()
+            write(repo, path, original.replace('disable-model-invocation: true\n', ''))
+            check(repo, False, diagnostic='incorrect invocation policy')
+            write(repo, path, original)
+            policy = f'skills/{name}/agents/openai.yaml'
+            write(repo, policy, 'policy:\n  allow_implicit_invocation: true\n')
+            check(repo, False, diagnostic='incorrect invocation policy')
+            git(repo, 'checkout', '--', policy)
+
+        # A separately installed saving skill must retain its own shared rules.
+        missing = 'skills/to-decision/references/domain-modeling.md'
+        (repo / missing).unlink()
+        check(repo, False, diagnostic=f'{missing}: shared file differs')
+        git(repo, 'checkout', '--', missing)
+        path = 'skills/to-decision/SKILL.md'
+        original = (repo / path).read_text()
+        write(repo, path, original + '\n[rules](../../rnd-grill/references/discussion.md)\n')
+        check(repo, False, diagnostic='escapes its skill')
+        write(repo, path, original)
 
         # An empty release entry fails.
         write(repo, 'CHANGELOG.md', '# Changelog\n\n## [Unreleased]\n\n## [0.1.0] - 2026-09-10\n\n')

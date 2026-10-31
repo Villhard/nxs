@@ -21,6 +21,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.51.0] - 2026-10-31
+
+### Added
+
+- `rnd-grill` adds an explicit discussion-only candidate with evidence-backed choice rounds, shared discussion/domain rules and resume boundaries.
+- `to-decision` adds explicit approved or unfinished decision saving, approved glossary/ADR proposals, direct domain-only requests within invoked scope and preservation on repeat saves.
+- Checker fixtures and client scenarios cover the additive candidates, explicit policies and self-contained shared resources; existing manual and coordinator routes remain available.
+
+### Changed
+
+- README documents candidate usage and separate saving approval; CONTRIBUTING records canonical resource ownership and the independent-workflow naming extension.
+
 ## [0.50.0] - 2026-10-31
 
 ### Changed

@@ -10,17 +10,21 @@ import subprocess
 import sys
 from urllib.parse import unquote, urlsplit
 
-SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead')
-EXPLICIT = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-lead')
+SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead',
+          'rnd-grill', 'to-decision')
+EXPLICIT = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-lead',
+            'rnd-grill', 'to-decision')
 ROLES = ('review-quality', 'review-testing', 'review-simplification', 'review-verify')
 # Files copied into every consuming skill and required to stay byte-identical.
 SHARED = {
+    'references/discussion.md': ('rnd-grill', 'to-decision'),
+    'references/domain-modeling.md': ('rnd-grill', 'to-decision'),
     'references/ticket.md': ('dev-rnd', 'dev-bug', 'dev-review'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
-    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead'),
-    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
-    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
-    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit'),
+    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision'),
+    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
+    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
+    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision'),
     **{f'scripts/{name}.py': ('dev-lead', 'dev-review') for name in ('harness', 'inventory', 'mechanics', 'outcome', 'runner')},
     'assets/outcome.schema.json': ('dev-lead', 'dev-review'),
     'assets/spec.md': ('dev-rnd', 'dev-bug'),
@@ -236,7 +240,7 @@ def check_runtime_paths(files):
         if not re.match(r'^skills/[^/]+/.+\.(?:md|py|json|yaml)$', path):
             continue
         text = read(files, path)
-        if re.search(r'(?:\.\./)+(?:skills/)?dev-[a-z-]+/', text):
+        if re.search(r'(?:\.\./)+(?:skills/)?(?:dev|rnd|to|nxs)-[a-z-]+/', text):
             raise Invalid(f'{path}: external runtime skill reference')
         if path.endswith('.py'):
             skill_root = '/'.join(path.split('/')[:2]) + '/'
