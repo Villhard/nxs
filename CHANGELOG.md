@@ -21,6 +21,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.56.0] - 2026-11-01
+
+### Fixed
+
+- `dev-exec` records and runs the full checks a ticket requires and leaves it unresolved when a required test or linter command is missing or fails; `tests/client-scenarios.md` covers the completion gate.
+
 ## [0.55.0] - 2026-11-01
 
 ### Added
