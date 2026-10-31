@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Lead design records (2026-10-30) define coordinator, plan and decision-log terms, autonomy and reapproval boundaries, model policy, approved environment steps, optional companions, focused R&D, parallel worktree integration, shared task journaling and Codex-first verification.
 - Lead reliability design (2026-10-30) prioritizes a sequential full cycle and recovery, bounded structured worker outcomes and deterministic helpers, and states the limits of journaling manually invoked companion skills.
 - Companion integration decision (2026-10-30) distinguishes manual dialogue from verified lead execution contracts and records selective adoption into nxs as a future investigation.
+- `CONTRIBUTING.md` states the skill name rule - `dev-` plus one short word the user recognizes, in a namespace that stays clear of companion skills and client commands - and [ADR 0007](docs/adr/0007-skill-names.md) records why the existing names stay.
 
 ### Changed
 
