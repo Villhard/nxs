@@ -14,6 +14,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.50.0] - 2026-10-31
+
+### Changed
+
+- `dev-lead` explicitly finishes HUD presentation before releasing its controller, preserving final local status, foreign UI and non-replayed close evidence across recovery.
+
 ## [0.49.0] - 2026-10-31
 
 ### Added

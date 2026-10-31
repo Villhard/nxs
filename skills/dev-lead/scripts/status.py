@@ -115,6 +115,22 @@ def publish(task, event_id, progress, identity):
     return refresh(task, identity)
 
 
+def finish(task, event_id, identity):
+    """End presentation explicitly; keep final progress and ownership evidence."""
+    task = _owner(task)
+    rows = read_events(task / 'decision.log')
+    changes = [r for r in rows if r['kind'] == 'progress.changed']
+    if not changes or changes[-1]['data']['identity'] != identity:
+        raise ValueError('publish final progress for this lead before finishing')
+    change = changes[-1]
+    progress = _progress(change['data']['progress'], rows)
+    if progress['current_run'] is not None or _pending(rows):
+        raise ValueError('finish requires no current run or pending questionnaire')
+    append_event(task / 'decision.log', event_id, 'hud.finished',
+                 {'identity': identity, 'progress_event_id': change['event_id']})
+    return refresh(task, identity)
+
+
 def _short(text):
     return ''.join(c if c.isprintable() else ' ' for c in text)[:256]
 
@@ -134,13 +150,16 @@ def refresh(task, identity):
     if change['data']['identity'] != identity:
         raise ValueError('progress belongs to another recorded lead identity')
     progress = _progress(change['data']['progress'], rows)
+    finished = [r for r in rows if r['kind'] == 'hud.finished'
+                and r['data']['identity'] == identity
+                and r['data']['progress_event_id'] == change['event_id']]
     directory = _directory(task)
     cache = load(directory / 'presentation.json') if (directory / 'presentation.json').exists() else {}
     stamp, tick = time.time(), time.monotonic()
     report = {'event_id': change['event_id'], 'identity': identity, 'updated': stamp,
               'semantic_changed': change['data']['timestamp'], 'monotonic': tick,
               'progress': progress, 'ui': 'suppressed', 'reason': '', 'stale': []}
-    if 0 < cache.get('monotonic', tick) < tick - 60:
+    if not finished and 0 < cache.get('monotonic', tick) < tick - 60:
         report['stale'].append('active presentation polling exceeded 60 seconds')
     run = progress['current_run']
     if run is not None:
@@ -170,6 +189,25 @@ def refresh(task, identity):
             report['reason'] = 'owned questionnaire pending reconciliation'
         elif _occupied(node):
             report['reason'] = 'existing overlay or ask owns the UI'
+        elif finished:
+            intent_id = finished[-1]['event_id'] + ':close'
+            if not node.get('hud'):
+                report['ui'] = 'cleared'
+            elif node['hud'] != owned:
+                report['reason'] = 'HUD ownership changed or unknown'
+            elif any(r['event_id'] == intent_id for r in rows):
+                report.update(ui='uncertain', reason='HUD close not confirmed; observe without replay')
+            else:
+                command = [identity['cli'], 'session', 'hud', 'close',
+                           '--target', identity['session_id'], '--window', identity['window_id'],
+                           '--socket', identity['socket'], '--json']
+                append_event(task / 'decision.log', intent_id, 'hud.close.intent',
+                             {'identity': identity, 'hud': owned, 'command': command})
+                report['response'] = runner._ipc(command, 5)
+                runner._reply(report['response'])
+                if _node(identity).get('hud'):
+                    raise ValueError('HUD close not confirmed by the pinned tree')
+                report['ui'] = 'cleared'
         elif (node.get('hud') and node['hud'] != owned
               and not (cache.get('ui') != 'visible' and _intended_matches(node['hud'], cache.get('intended_hud')))):
             report['reason'] = 'HUD ownership changed or unknown'
