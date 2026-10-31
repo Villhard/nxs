@@ -4,34 +4,51 @@ Development skills for coding agents, from investigation and decisions through e
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
-  <img alt="Independent discussion, decision, spec, tickets and execution stages; review, project spec and commit are separate. Native coordination is optional. Legacy routes remain during the unverified cutover." src="docs/images/workflow-light.svg">
+  <img alt="Possible conditional links connect discussion, decisions, feature specs, tickets, diagnosis, review, research, prototypes, audit and design. Each next step requires its own request and applicable approval. Tickets retain the /plan handoff; dev-exec is a separate candidate, and project specs are separate from feature specs." src="docs/images/workflow-light.svg">
 </picture>
 
 ## Target catalog
 
 These 19 commands are in the source tree. Presence and shell checks do not prove registration or live behavior in a client. Invoke explicitly using `/` in supported clients or `@` in OpenCode; `dev-commit` also accepts a direct commit request. Read the linked contract for inputs, approvals and stops.
 
+### Investigation and decisions
+
 | Command | Purpose |
 | --- | --- |
-| [rnd-grill](skills/rnd-grill/SKILL.md) | Discuss a question or plan. |
-| [to-decision](skills/to-decision/SKILL.md) | Show and save approved decisions or unfinished discussion. |
-| [to-spec](skills/to-spec/SKILL.md) | Prepare a feature spec from a decision or clear request. |
-| [to-tickets](skills/to-tickets/SKILL.md) | Create or revise tickets from an eligible spec, cause or selected review findings. |
-| [dev-exec](skills/dev-exec/SKILL.md) | Plan and execute a ticket or clear request in the current session. |
-| [rnd-debug](skills/rnd-debug/SKILL.md) | Investigate a failure and record evidence and cause. |
+| [rnd-map](skills/rnd-map/SKILL.md) | Map an uncertain goal into linked decision questions and dependencies. |
+| [rnd-grill](skills/rnd-grill/SKILL.md) | Discuss an idea or plan through evidence-backed choices, ending in dialogue or a request to save. |
+| [rnd-research](skills/rnd-research/SKILL.md) | Investigate a question and save attributable findings and limits without making the user's decision. |
+| [rnd-prototype](skills/rnd-prototype/SKILL.md) | Test one hypothesis with a retained temporary prototype and an evidence-backed verdict. |
+| [rnd-debug](skills/rnd-debug/SKILL.md) | Investigate a failure and save a confirmed root cause or the missing evidence. |
+| [rnd-audit](skills/rnd-audit/SKILL.md) | Survey a project and rank evidence-backed architecture opportunities. |
+| [rnd-design](skills/rnd-design/SKILL.md) | Design an explicitly selected module or seam and save an agreed interface decision. |
+
+### Artifacts
+
+| Command | Purpose |
+| --- | --- |
+| [to-decision](skills/to-decision/SKILL.md) | Show and explicitly save approved conclusions or unfinished discussion. |
+| [to-spec](skills/to-spec/SKILL.md) | Turn a saved decision or clear request into a feature spec with questions and acceptance checks. |
+| [to-tickets](skills/to-tickets/SKILL.md) | Create or revise executable tickets from an approved feature spec, eligible confirmed cause or selected review findings. |
+| [to-questionnaire](skills/to-questionnaire/SKILL.md) | Prepare recipient-specific questions for missing facts or decisions without sending them. |
+| [to-handoff](skills/to-handoff/SKILL.md) | Save resumable context, separating accepted, open and unverified state. |
+
+### Development
+
+| Command | Purpose |
+| --- | --- |
+| [dev-exec](skills/dev-exec/SKILL.md) | Execute a ticket or clear request in the current session through an approved plan and checks. |
 | [dev-review](skills/dev-review/SKILL.md) | Review changes and verify findings; `--to-tickets` saves a selection for a separate ticket step. |
 | [dev-spec](skills/dev-spec/SKILL.md) | Record durable project specs from built work. |
 | [dev-commit](skills/dev-commit/SKILL.md) | Commit existing changes in atomic groups. |
-| [rnd-research](skills/rnd-research/SKILL.md) | Save source-linked research and limitations. |
-| [rnd-prototype](skills/rnd-prototype/SKILL.md) | Test a hypothesis and retain a prototype and verdict. |
-| [rnd-design](skills/rnd-design/SKILL.md) | Agree and save a selected module's design. |
-| [rnd-audit](skills/rnd-audit/SKILL.md) | Survey and rank project design opportunities. |
-| [rnd-map](skills/rnd-map/SKILL.md) | Map a broad goal into questions and dependencies. |
-| [to-questionnaire](skills/to-questionnaire/SKILL.md) | Prepare questions for a participant without sending them. |
-| [to-handoff](skills/to-handoff/SKILL.md) | Save resumable context with or without a journal. |
-| [nxs-retro](skills/nxs-retro/SKILL.md) | Review one session and propose improvements. |
-| [nxs-lead](skills/nxs-lead/SKILL.md) | Coordinate entrusted work using native subagents. |
+
+### Support and coordination
+
+| Command | Purpose |
+| --- | --- |
+| [nxs-lead](skills/nxs-lead/SKILL.md) | Coordinate entrusted work using bounded native subagents and independently checked handoffs. |
 | [nxs-setup](skills/nxs-setup/SKILL.md) | Audit a setup goal and apply an approved package, or report readiness. |
+| [nxs-retro](skills/nxs-retro/SKILL.md) | Review one session and save evidence-based improvement proposals. |
 
 ## Retained legacy routes and cutover
 

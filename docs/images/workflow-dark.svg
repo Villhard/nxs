@@ -1,30 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" role="img" aria-labelledby="nxs-workflow-dark-title nxs-workflow-dark-desc">
-<title id="nxs-workflow-dark-title">Independent and coordinated work</title>
-<desc id="nxs-workflow-dark-desc">Each stage needs its own scope and applicable approval. Optional coordination: nxs-lead uses native subagents and checks results. Generated tickets retain /plan; dev-exec is a separate candidate.</desc>
-<defs><marker id="nxs-workflow-dark-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#909090"/></marker></defs>
-<rect width="960" height="340" fill="#1c1c1c"/>
-<text x="32" y="42" fill="#dadada" font-family="system-ui, sans-serif" font-size="22" font-weight="600">Independent and coordinated work</text>
-<text x="32" y="68" fill="#909090" font-family="system-ui, sans-serif" font-size="14">Each stage needs its own scope and applicable approval</text>
-<path d="M 195.2 144 H 211.2" stroke="#909090" stroke-width="1.5" fill="none" marker-end="url(#nxs-workflow-dark-arrow)"/>
-<path d="M 378.4 144 H 394.4" stroke="#909090" stroke-width="1.5" fill="none" marker-end="url(#nxs-workflow-dark-arrow)"/>
-<path d="M 561.5999999999999 144 H 577.5999999999999" stroke="#909090" stroke-width="1.5" fill="none" marker-end="url(#nxs-workflow-dark-arrow)"/>
-<path d="M 744.8 144 H 760.8" stroke="#909090" stroke-width="1.5" fill="none" marker-end="url(#nxs-workflow-dark-arrow)"/>
-<rect x="32" y="104" width="163.2" height="80" rx="6" fill="#262626" stroke="#8dbbff"/>
-<text x="44" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Discuss</text>
-<text x="44" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">rnd-grill</text>
-<rect x="215.2" y="104" width="163.2" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="227.2" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Save decision</text>
-<text x="227.2" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">to-decision</text>
-<rect x="398.4" y="104" width="163.2" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="410.4" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Feature spec</text>
-<text x="410.4" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">to-spec</text>
-<rect x="581.5999999999999" y="104" width="163.2" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="593.5999999999999" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Tickets</text>
-<text x="593.5999999999999" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">to-tickets</text>
-<rect x="764.8" y="104" width="163.2" height="80" rx="6" fill="#262626" stroke="#909090"/>
-<text x="776.8" y="134" fill="#dadada" font-family="system-ui, sans-serif" font-size="14" font-weight="600">Execute</text>
-<text x="776.8" y="158" fill="#909090" font-family="system-ui, sans-serif" font-size="12">/plan or dev-exec</text>
-<path d="M32 220 H928" stroke="#909090" stroke-width="0.6"/>
-<text x="32" y="250" fill="#dadada" font-family="system-ui, sans-serif" font-size="14">Optional coordination: nxs-lead uses native subagents and checks results.</text>
-<text x="32" y="276" fill="#dadada" font-family="system-ui, sans-serif" font-size="14">Generated tickets retain /plan; dev-exec is a separate candidate.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">Possible skill connections</title>
+<desc id="desc">Examples of conditional links between independently invoked skills. Each next step needs a request and applicable approval.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#8dbbff"/></marker></defs>
+<style>text{font-family:system-ui,-apple-system,sans-serif;fill:#dadada}.title{font-size:23px;font-weight:700}.node{font-family:ui-monospace,SFMono-Regular,monospace;font-size:16px;font-weight:600}.label{font-size:14px;fill:#909090}.note{font-size:15px}</style>
+<rect width="1000" height="600" fill="#1c1c1c"/>
+<text x="40" y="42" class="title">Possible connections, chosen independently</text>
+<text x="40" y="68" class="label">Each next step needs a request and applicable approval. Arrows are conditional, not automatic.</text>
+<path d="M210 156 H290" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M460 156 H530" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M680 156 H780" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M210 266 H245 V301 H290" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M210 346 H245 V301 H290" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M375 280 V186" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M700 301 H740 V210 H865 V186" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/><path d="M700 421 H975 V156 H960" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M210 496 H290" fill="none" stroke="#8dbbff" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="135" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="125.0" y="161" text-anchor="middle" class="node">rnd-grill</text><rect x="290" y="135" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="375.0" y="161" text-anchor="middle" class="node">to-decision</text><rect x="530" y="135" width="150" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="605.0" y="161" text-anchor="middle" class="node">to-spec</text><rect x="780" y="135" width="180" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="870.0" y="161" text-anchor="middle" class="node">to-tickets</text>
+<rect x="40" y="245" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="125.0" y="271" text-anchor="middle" class="node">rnd-research</text><rect x="40" y="325" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="125.0" y="351" text-anchor="middle" class="node">rnd-prototype</text><rect x="290" y="280" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="375.0" y="306" text-anchor="middle" class="node">evidence</text>
+<rect x="530" y="280" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="615.0" y="306" text-anchor="middle" class="node">rnd-debug</text><rect x="530" y="400" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="615.0" y="426" text-anchor="middle" class="node">dev-review</text>
+<rect x="40" y="475" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="125.0" y="501" text-anchor="middle" class="node">rnd-audit</text><rect x="290" y="475" width="170" height="42" rx="5" fill="#262626" stroke="#909090"/><text x="375.0" y="501" text-anchor="middle" class="node">rnd-design</text>
+<text x="394" y="232" class="label">can inform</text>
+<text x="610" y="256" text-anchor="middle" class="label">eligible confirmed cause</text>
+<text x="615" y="376" text-anchor="middle" class="label">--to-tickets: selected findings</text>
+<text x="250" y="468" text-anchor="middle" class="label">selected</text>
+<text x="40" y="558" class="note">Tickets retain /plan as handoff. dev-exec is a separate candidate.</text>
+<text x="40" y="580" class="note">dev-spec records project intent separately from a feature spec.</text>
 </svg>
