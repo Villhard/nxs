@@ -21,6 +21,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.54.0] - 2026-10-31
+
+### Added
+
+- `dev-exec` adds an explicit standalone ticket/clear-request executor candidate with plan approval, prerequisite-result checks, human-step gates and separate review/spec/commit handoffs.
+
+### Changed
+
+- Checker catalog and fixtures include `dev-exec` policies and self-contained shared resources while preserving existing ticket templates and `/plan` routes.
+- README, CONTRIBUTING and client scenarios document the additive executor, resource propagation and proportionate verification limits.
+
 ## [0.53.0] - 2026-10-31
 
 ### Added

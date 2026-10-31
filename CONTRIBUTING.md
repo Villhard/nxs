@@ -45,6 +45,8 @@ The `## Done when` block of `skills/to-tickets/assets/ticket.md` is also copied 
 
 `to-tickets` owns the shared ticket rules/template; legacy producers keep identical bundled copies and their current routes. Its feature-spec entry owns `references/spec-input.md`, with unchanged project-spec reader resources from `dev-rnd` and journal/controlled-run/helper resources from `dev-lead`. Include it in the checker catalog and every applicable shared fixture, and keep both invocation policies explicit. The executor handoff remains `/plan` until the separate executor cutover; no installed copy is replaced by source edits.
 
+`dev-exec` owns its execution-context reference and bundles unchanged ticket rules/template from `to-tickets`, project-spec reader from `dev-rnd` and journal/controlled-run/helper resources from `dev-lead`. Include it in both explicit invocation policies and applicable checker/shared-copy fixtures, including all-consumer edit loops. Its additive entry does not change generated `/plan` handoffs, the setup tracker block or legacy routes. Keep approval gates in the skill and ticket semantics in their bundled references; native permissions remain independent of instructions.
+
 Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions; the exception is a setup skill, which may write rules and config into client instructions only through a diff the user approved. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
 ## NAMES

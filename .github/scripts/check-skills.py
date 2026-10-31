@@ -11,24 +11,24 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead',
-          'rnd-grill', 'to-decision', 'to-spec', 'to-tickets')
+          'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec')
 EXPLICIT = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-lead',
-            'rnd-grill', 'to-decision', 'to-spec', 'to-tickets')
+            'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec')
 ROLES = ('review-quality', 'review-testing', 'review-simplification', 'review-verify')
 # Files copied into every consuming skill and required to stay byte-identical.
 SHARED = {
     'references/discussion.md': ('rnd-grill', 'to-decision', 'to-spec'),
     'references/domain-modeling.md': ('rnd-grill', 'to-decision'),
-    'references/ticket.md': ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review'),
+    'references/ticket.md': ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-exec'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
-    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets'),
-    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets'),
-    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets'),
-    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets'),
+    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'),
+    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'),
+    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'),
+    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'),
     **{f'scripts/{name}.py': ('dev-lead', 'dev-review') for name in ('harness', 'inventory', 'mechanics', 'outcome', 'runner')},
     'assets/outcome.schema.json': ('dev-lead', 'dev-review'),
     'assets/spec.md': ('to-spec', 'dev-rnd', 'dev-bug'),
-    'assets/ticket.md': ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review'),
+    'assets/ticket.md': ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-exec'),
 }
 # The tracker template carries to-tickets' Done when block inside a Markdown fence.
 DONE_WHEN = ('skills/to-tickets/assets/ticket.md', 'skills/dev-setup/assets/issue-tracker.md')

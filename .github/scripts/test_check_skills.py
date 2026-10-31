@@ -13,20 +13,20 @@ ROOT = CLI.parents[2]
 PRE_COMMIT = ROOT / '.githooks/pre-commit'
 
 SKILLS = ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-setup', 'dev-commit', 'dev-lead',
-          'rnd-grill', 'to-decision', 'to-spec', 'to-tickets')
+          'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec')
 SHARED = {
     'references/discussion.md': ('rnd-grill', 'to-decision', 'to-spec'),
     'references/domain-modeling.md': ('rnd-grill', 'to-decision'),
-    'references/ticket.md': ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review'),
+    'references/ticket.md': ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-exec'),
     'references/feature-directory.md': ('dev-rnd', 'dev-bug'),
-    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets'),
-    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets'),
-    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets'),
-    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets'),
+    'references/project-specs.md': ('dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-lead', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'),
+    'references/task-journal.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'),
+    'references/controlled-run.md': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'),
+    'scripts/journal.py': ('dev-lead', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-spec', 'dev-commit', 'rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'),
     **{f'scripts/{name}.py': ('dev-lead', 'dev-review') for name in ('harness', 'inventory', 'mechanics', 'outcome', 'runner')},
     'assets/outcome.schema.json': ('dev-lead', 'dev-review'),
     'assets/spec.md': ('to-spec', 'dev-rnd', 'dev-bug'),
-    'assets/ticket.md': ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review'),
+    'assets/ticket.md': ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-exec'),
 }
 DONE_WHEN = '## Done when\n\n- Verify every criterion.\n- Do not commit.\n'
 TRACKER = 'skills/dev-setup/assets/issue-tracker.md'
@@ -159,7 +159,7 @@ def main():
         write(repo, 'skills/dev-lead/scripts/escape-probe.py', "RESOURCE = '../../dev-rnd/SKILL.md'\n")
         check(repo, False, diagnostic='external runtime skill reference')
         (repo / 'skills/dev-lead/scripts/escape-probe.py').unlink()
-        for name in ('rnd-grill', 'to-decision', 'to-spec', 'to-tickets'):
+        for name in ('rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'):
             path = 'skills/dev-lead/scripts/escape-probe.py'
             write(repo, path, f"RESOURCE = '../../{name}/SKILL.md'\n")
             check(repo, False, diagnostic='external runtime skill reference')
@@ -181,7 +181,7 @@ def main():
         git(repo, 'checkout', '--', 'skills/dev-bug/SKILL.md')
 
         # New candidate commands stay explicit in both client policy forms.
-        for name in ('rnd-grill', 'to-decision', 'to-spec', 'to-tickets'):
+        for name in ('rnd-grill', 'to-decision', 'to-spec', 'to-tickets', 'dev-exec'):
             path = f'skills/{name}/SKILL.md'
             original = (repo / path).read_text()
             write(repo, path, original.replace('disable-model-invocation: true\n', ''))
@@ -210,7 +210,7 @@ def main():
 
         # Two snapshots compare the selected trees, not the working files.
         base = git(repo, 'rev-parse', 'HEAD')
-        for consumer in ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review'):
+        for consumer in ('to-tickets', 'dev-rnd', 'dev-bug', 'dev-review', 'dev-exec'):
             write(repo, f'skills/{consumer}/references/ticket.md', '# TICKET\n\nEdited in all copies.\n')
         check(repo)  # the working tree stays internally consistent
         commit(repo)

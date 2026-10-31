@@ -22,6 +22,7 @@ Development skills for coding agents: shape features and bugs into tickets for t
 | [to-decision](skills/to-decision/SKILL.md) | Show and save an approved decision or unfinished discussion; write only approved glossary/ADR proposals. Candidate route alongside existing manual saving. |
 | [to-spec](skills/to-spec/SKILL.md) | Prepare a local feature spec from a saved decision or clear request; retain draft questions and stop before tickets. Candidate route alongside dev-rnd. |
 | [to-tickets](skills/to-tickets/SKILL.md) | Slice an approved feature spec into local implementation tickets while preserving existing ticket history. Candidate route alongside dev-rnd. |
+| [dev-exec](skills/dev-exec/SKILL.md) | Execute a ticket or clear request in the current session after plan approval, then check and report. Candidate route alongside `/plan`. |
 
 `dev-lead`, `dev-setup`, `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` run only on explicit invocation; `dev-commit` also accepts a direct request such as "commit this". For OpenCode, select a skill with `@dev-<name>` instead of `/dev-<name>`.
 
@@ -30,6 +31,8 @@ Development skills for coding agents: shape features and bugs into tickets for t
 Use `to-spec <decision-path>` or `to-spec <clear request>` to propose a feature spec without slicing tickets. Existing approval is reused within its scope; a changed existing spec needs approval of its concrete revision. An expressly requested draft keeps its open questions and cannot hand off ready work while material evidence is missing. See [to-spec](skills/to-spec/SKILL.md) for its source, preservation and handoff rules. This addition leaves the complete `dev-rnd` route and existing installations available.
 
 Use `to-tickets <spec-path>` to propose implementation tickets from an approved local feature spec. Covered tickets and decision histories stay unchanged; genuinely new scope appends. It retains the `/plan` executor handoff. See [to-tickets](skills/to-tickets/SKILL.md) for source, dependency and revision gates. This candidate does not replace an installed same-name skill or switch the existing manual/coordinator routes.
+
+Explicit `/dev-exec <ticket-path>` or `/dev-exec <clear request>` proposes a plan and waits for approval before implementation in the current session; OpenCode uses `@dev-exec`. Built-in Plan Mode is optional and native permissions still apply. Clear requests need no ticket. Review, project specs and commit remain separate. See [dev-exec](skills/dev-exec/SKILL.md) for approval and execution rules and client scenarios for unverified behavior. Existing `/plan` handoffs remain the default while this candidate is evaluated.
 
 ## Install
 
