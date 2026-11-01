@@ -1,6 +1,6 @@
 # DOMAIN MODELING
 
-Read when domain terms or durable decisions affect discussion, when preparing save-time domain proposals, or for a direct domain-document request inside an explicitly invoked or controlled scope. rnd-grill owns these rules; to-decision owns approved domain-record writes. Consumers use identical bundled copies.
+Read when domain terms or durable decisions affect discussion, when preparing save-time domain proposals, or for a direct domain-document request inside an explicitly authorized scope. rnd-grill owns these rules and approved domain-record writes.
 
 ## DISCOVER AND SHARPEN
 

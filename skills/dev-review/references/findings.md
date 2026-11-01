@@ -18,7 +18,7 @@ Severity measures the defect, not the cost of fixing it. Keep a confirmed or pla
 
 ## VERIFY A FINDING
 
-Read the finding's location with 20-30 lines of context in the version being checked. Trace a reachable input or state through callers and guards to the claimed consequence; cite the locations that establish or disprove it. For naming claims, compare the name with its actual role and uses; cite the ambiguity or mismatch instead of requiring a runtime failure. For coverage or documentation claims, inspect the relevant tests or contract too. A passing test alone does not disprove a runtime defect. Separate what the code proves from inferred consequences.
+Read the finding's location with 20-30 lines of context in the selected snapshot source, including pinned disk bytes for working changes. Use that same view for callers, guards, tests and searches; cite source/version and locations that establish or disprove the reachable input/state and claimed consequence. A mismatched or unavailable source leaves verification incomplete, not refuted. For naming claims, compare the name with its actual role and uses; cite the ambiguity or mismatch instead of requiring a runtime failure. For coverage or documentation claims, inspect the relevant tests or contract too. A passing test alone does not disprove a runtime defect. Separate what the code proves from inferred consequences.
 
 Give each candidate exactly one verdict:
 

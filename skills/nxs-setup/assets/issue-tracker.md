@@ -1,63 +1,44 @@
 # Issue tracker: Local Markdown
 
-Issues and specs (a spec is also called a PRD) live as Markdown files under `.scratch/`, inside whichever repository you are working in.
+Local artifacts are optional. A small clear request needs no spec, ticket, task directory or journal. When durable records are useful and authorized, reuse established project paths; the defaults below stay private under `.scratch/`.
 
 ## Conventions
 
 - One feature per directory: `.scratch/<feature-slug>/`.
-- The spec is `.scratch/<feature-slug>/spec.md`.
-- Implementation issues are one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`; never one combined tickets file. A new ticket takes `NN` one past the highest existing number in `issues/`, whichever skill wrote those tickets; it is `01` only when `issues/` is empty or missing. Never renumber existing tickets.
-- Triage state is the `**Status:**` line near the top of each issue file; `~/.agents/docs/triage-labels.md` maps the role names to its values.
-- Comments and conversation history append to the bottom of the file under a `## Comments` heading.
+- An optional feature description is `spec.md`, saved directly by `rnd-grill` after content/scope approval. It is not a project `SPEC.md` or `.SPEC.md` and is not a prerequisite for a clear request.
+- `dev-exec` owns optional implementation tickets, one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`. A new ticket takes `NN` one past the highest existing number in `issues/`, including decision files and rejected work; use `01` only when the directory is empty or missing. Never renumber or regenerate existing tickets.
+- Triage state is the `**Status:**` line near the top of each implementation ticket; `~/.agents/docs/triage-labels.md` maps role names to values.
+- Execution notes append under `## Comments`. Preserve identities, branch restrictions, source records and prior history. Existing `Do not commit` instructions remain binding unless a specific revision is separately approved.
 
 ## Local ticket format
 
-Applies to every implementation ticket written as a local file: any `.scratch/<feature-slug>/issues/NN-<slug>.md` without a `Type:` line, whichever skill writes it. It extends the writing skill's own ticket template: keep everything that template asks for and add what is missing here.
+Use the ticket rules and template bundled with `dev-exec`, not another installed skill's resources. Saving tickets requires approval covering their content and destination; it does not approve implementation.
 
-- Fields in bold, in this order: the title `# NN: <title>`, `**What to build:**`, `**Blocked by:**`, `**Branch:**`, `**Status:**`, then the acceptance criteria as `- [ ]` lines.
-- `**Blocked by:**` names ticket numbers, or `None (can start immediately)` when no dependency remains.
-- `**Branch:**` proposes `<type>/<feature-slug>`, shaped by the project's branch rule when one exists, with `<type>` from the work: `feat`, `fix`, `refactor`, `chore` or `docs`. A project without a branch rule still gets the line.
-- `**Status:**` is `ready-for-agent`, or `needs-info` while an open `[NEEDS CLARIFICATION: ...]` sits in the ticket.
-- After the criteria, end the ticket with this block, copied verbatim and in English:
+- Keep the title `# NN: <title>`, `**What to build:**`, `**Blocked by:**`, optional `**Branch:**`, `**Status:**`, then observable acceptance criteria as `- [ ]` lines.
+- `**Blocked by:**` names local ticket numbers, or `None (can start immediately)` only when no dependency remains. Unknown evidence is never `None`; a resolved status still needs the actual prerequisite result in the selected working tree.
+- Propose `**Branch:**` from the approved branch or project rule, otherwise `<type>/<feature-slug>` with `feat`, `fix`, `refactor`, `chore` or `docs`. Show it before saving; the user may change or drop it. No branch field means the current branch, not permission to override existing restrictions.
+- New `**Status:**` is `ready-for-agent`, or `needs-info` for an explicitly authorized draft with an isolated `[NEEDS CLARIFICATION: ...]` in its own body. Material open questions in the feature records stop new executable ticket production.
+- After the criteria, copy this block verbatim and in English from the `dev-exec` template:
 
 ````markdown
 ## Done when
 
 Execute this ticket directly with `/dev-exec <this file>`.
 
-- Resolve the feature directory from this ticket and use its `decision.log` in standalone and controlled execution. Append concise JSONL events for decisions, questions, answers, completion, blockers and handoff, with unique IDs and artifact/evidence paths; write one complete line at a time with the host's file-write or shell tool. The lead is the only writer in controlled work, so no helper or lock is required; if independent processes can write the same journal, serialize them through the host's own file edit or a lock command available on that system. Never log secrets or full conversations. A branch alone never selects a different journal. Read existing entries and reconcile them with artifacts and actual Git state before continuing; never replay an uncertain side effect.
-- Only an explicit controlled-run packet with step/run IDs, approved feature plan and hash, approval reference, cwd, permissions, allowed writes, acceptance checks, result schema and journal path activates lead control. In that context, save the proposed ticket plan and return `needs_input` to lead before implementation; continue that exact native subagent session only after recorded lead approval where the host documents continuation, otherwise start a new bounded run with the approved plan and saved artifacts. Return `done`, `needs_input` or `blocked` with evidence in the supplied envelope. Keep ordinary dialogue and human plan approval outside that context. A packet carries existing authorization, never new consent; scope, external-contract or agreed-decision changes return through lead to the user.
-
-- Stop and ask if **Status** is not `ready-for-agent`, a ticket in **Blocked by** is not `resolved`, or this ticket or its feature's `spec.md` / `root-cause.md` has an open `[NEEDS CLARIFICATION: ...]`.
-- If **Branch** is set, work on that branch: switch to it, or create it from the current HEAD when missing. Stop and ask if the switch fails.
-- Before the first implementation edit, read each ticket in **Blocked by** and verify, by code inspection and a focused check, that the results this ticket needs exist in the current working tree; **Status**, branch names and Git history alone do not suffice. If every result is present, record the evidence in one line under `## Comments`. If a result is absent or unverifiable, record the missing prerequisite in one line under `## Comments` and stop; never merge, cherry-pick or implement the blocker.
-- If a required migration, dependency install or external check is undone or unverifiable, set **Status** to `ready-for-human`, record under `## Comments` the action needed and the evidence you expect, and stop. The human completes it, sets **Status** back to `ready-for-agent` and reruns the selected executor on this ticket. On that rerun, verify the recorded result by checkable evidence in the current environment; a `done` line under `## Comments` alone is not evidence, and never perform the step yourself. In a controlled run only, an approved feature plan naming the action and exact target authorizes the executor to perform and verify it; an unnamed action follows this ready-for-human path. If it is still undone or unverifiable, set `ready-for-human` again and stop.
-- Close when the project's full test suite and linter pass and every criterion above is verified against the running code: check each one and set **Status** to `resolved`.
-- Add one line under `## Comments` per decision or deviation.
-- Apply each planned checkpoint only after the completed block's necessary checks pass, using `dev-commit` in the same session within the explicitly approved plan's commit scope and native permissions; verify the result before the next block. If a planned checkpoint lacks scope or permission, stop that checkpoint and report the limitation without an unauthorized commit. If commits are intentionally not selected, continue without checkpoints and hand off uncommitted changes. Existing tickets with `Do not commit` retain that prohibition unless a specific revision is separately approved; execute them without checkpoints. Journal the verified completion or pending handoff; lead independently checks evidence before accepting a controlled `done`.
+- Start only when **Status** is `ready-for-agent`, every **Blocked by** ticket is `resolved`, material questions are answered and required prerequisite results are verified in the selected working tree. Respect **Branch** and preserve unrelated changes; status or history alone proves no result.
+- Implement only within an approved concrete plan. An install, migration or external action needs approval covering the action and exact target plus native permissions; otherwise record the human step and expected evidence under `## Comments`, set **Status** to `ready-for-human` and stop the affected work. Verify the actual result when the human returns the ticket to `ready-for-agent`; never repeat an uncertain action.
+- Close only after every criterion, the project's full test suite, linter and other required checks pass: check the criteria and set **Status** to `resolved`. Record exact verification, missing checks and meaningful decisions or deviations under `## Comments`; prohibited or unavailable verification leaves the ticket unresolved.
+- Commits are optional and require explicit authorization for their scope through `dev-commit`. Preserve any existing `Do not commit` instruction. Report actual checkpoint identities, remaining work and verification limits; a commit alone does not complete this ticket.
 ````
 
-A decision ticket (a `Type:` line, written by `/rnd-map`) is not an implementation ticket: it gets no `**Branch:**`, no `## Done when` and no triage status, and its answer goes under `## Answer`.
+Existing bare or bold `Type:` decision records, including `Type: task`, are not implementation tickets. Preserve them, their answers, maps, statuses and history; do not execute, relabel or silently convert them. This template does not migrate existing artifacts.
 
-## When a skill says "publish to the issue tracker"
+## Save or read a local record
 
-Create a new file under `.scratch/<feature-slug>/`, creating the directory when needed.
+Use an explicit or established path before the defaults. A request to save locally never authorizes publishing or synchronizing remote tracker state. Read a referenced ticket at its actual path; an ambiguous issue number needs clarification. Keep private data, secrets and raw conversations out of saved records.
 
-## When a skill says "fetch the relevant ticket"
-
-Read the file at the referenced path. The user normally passes the path or the issue number.
-
-## Wayfinding operations
-
-Used by `/rnd-map`. The map is one file with one child file per ticket.
-
-- Map: `.scratch/<effort>/map.md`, holding the Notes, Decisions-so-far and Fog body.
-- Child ticket: `.scratch/<effort>/issues/NN-<slug>.md`, numbered like any new ticket under Conventions, with the question in the body. A `Type:` line records the ticket type (`research`, `prototype`, `grilling` or `task`); a `Status:` line records `claimed` or `resolved`.
-- Blocking: a `Blocked by: NN, NN` line near the top. A ticket is unblocked when every file it lists is `resolved`.
-- Frontier: the open, unblocked and unclaimed files in `.scratch/<effort>/issues/`; the lowest number wins.
-- Claim: set `Status: claimed` and save before any work.
-- Resolve: append the answer under an `## Answer` heading, set `Status: resolved`, then append a pointer (gist and path) to Decisions-so-far in `map.md`.
+Optional resumable context belongs to `dev-exec`, normally `handoff.md` in an established feature. It distinguishes accepted, open and unverified state, actual verification and the next authorized action; saving starts no subsequent skill.
 
 ## Scope
 
-This is the global default for every repository without its own `## Agent skills` block. Project instructions load after these global instructions and win.
+This is an optional global default for repositories without their own tracker conventions. Project instructions win. Setup changes only the exact approved guidance, not existing tickets, journals, prototypes or task history.

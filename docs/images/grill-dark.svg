@@ -1,46 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" role="img" aria-labelledby="nxs-grill-dark-title nxs-grill-dark-desc">
-<title id="nxs-grill-dark-title">From discussion to a feature spec</title>
-<desc id="nxs-grill-dark-desc">Discussion can end in dialogue. An approved decision or a clear request can be input to a separately authorized feature spec and eligible tickets.</desc>
-<defs><marker id="nxs-grill-dark-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#909090"/></marker></defs>
-<rect width="960" height="500" fill="#1c1c1c"/>
-<text x="32" y="39" fill="#dadada" font-family="system-ui,sans-serif" font-size="22" font-weight="650">From discussion to a feature spec</text>
-<text x="32" y="63" fill="#909090" font-family="system-ui,sans-serif" font-size="12">Dashed links show possible paths; each operation needs its own applicable authorization.</text>
-<path d="M232 140 H284" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-grill-dark-arrow)"/>
-<path d="M232 170 H255 V260 H284" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-grill-dark-arrow)"/>
-<path d="M474 260 H532" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-grill-dark-arrow)"/>
-<path d="M712 256 H738 V205 H760" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-grill-dark-arrow)"/>
-<path d="M712 144 H738 V184 H760" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-grill-dark-arrow)"/>
-<path d="M844 250 V320" fill="none" stroke="#909090" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-grill-dark-arrow)"/>
-<rect x="32" y="115" width="200" height="82" rx="6" fill="#262626" stroke="#8dbbff" stroke-width="1.2"/>
-<text x="46" y="134" fill="#8dbbff" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
-<text x="46" y="157" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/rnd-grill</text>
-<text x="46" y="176" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">Discuss choices</text>
-<text x="46" y="192" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">and evidence</text>
-<rect x="284" y="90" width="190" height="78" rx="6" fill="#262626" stroke="#909090" stroke-width="1.2"/>
-<text x="298" y="109" fill="#909090" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
-<text x="298" y="132" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Dialogue</text>
-<text x="298" y="151" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">Stop with shared understanding</text>
-<rect x="284" y="215" width="190" height="90" rx="6" fill="#262626" stroke="#8dbbff" stroke-width="1.2"/>
-<text x="298" y="234" fill="#8dbbff" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
-<text x="298" y="257" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/to-decision</text>
-<text x="298" y="276" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">Show and save</text>
-<text x="298" y="292" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">approved conclusions</text>
-<rect x="532" y="215" width="180" height="82" rx="6" fill="#262626" stroke="#ffa083" stroke-width="1.2"/>
-<text x="546" y="234" fill="#ffa083" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">RECORD</text>
-<text x="546" y="257" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Decision</text>
-<text x="546" y="276" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">Conclusions and open questions</text>
-<rect x="532" y="105" width="180" height="78" rx="6" fill="#262626" stroke="#909090" stroke-width="1.2"/>
-<text x="546" y="124" fill="#909090" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">INPUT</text>
-<text x="546" y="147" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Clear request</text>
-<text x="546" y="166" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">No forced interview</text>
-<rect x="760" y="160" width="168" height="90" rx="6" fill="#262626" stroke="#8dbbff" stroke-width="1.2"/>
-<text x="774" y="179" fill="#8dbbff" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
-<text x="774" y="202" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/to-spec</text>
-<text x="774" y="221" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">Feature spec from</text>
-<text x="774" y="237" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">decision or request</text>
-<rect x="760" y="320" width="168" height="82" rx="6" fill="#262626" stroke="#8dbbff" stroke-width="1.2"/>
-<text x="774" y="339" fill="#8dbbff" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
-<text x="774" y="362" fill="#dadada" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/to-tickets</text>
-<text x="774" y="381" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">Ready, approved spec;</text>
-<text x="774" y="397" fill="#dadada" font-family="system-ui,sans-serif" font-size="11">dev-exec for ready work</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="544" viewBox="0 0 960 544" role="img" aria-labelledby="grill-dark-title grill-dark-desc">
+<title id="grill-dark-title">Discuss, optionally save, then choose</title>
+<desc id="grill-dark-desc">rnd-grill investigates a question and may finish in dialogue, save a useful approved record directly or suggest dev-exec for sufficient agreed scope without starting implementation.</desc>
+<defs><marker id="grill-dark-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#909090"/></marker></defs>
+<style>text{font-family:'Geist',system-ui,sans-serif;fill:#dadada}.title{font-family:'Instrument Serif',Georgia,serif;font-size:28px}.name{font-size:16px;font-weight:600}.cmd{font-family:'Geist Mono',ui-monospace,monospace}.sub{font-size:13px;fill:#909090}.node{fill:#1c1c1c;stroke:#909090;stroke-width:1.2}.optional{stroke-dasharray:5 4}.edge{fill:none;stroke:#909090;stroke-width:1.5;marker-end:url(#grill-dark-arrow)}</style>
+<rect width="960" height="544" fill="#1c1c1c"/>
+<text class="title" x="40" y="48">A useful discussion needs no artifact chain</text>
+<text class="sub" x="40" y="76">Evidence methods serve the actual question; they are not stages to complete.</text>
+<path class="edge" d="M240 168 H320"/>
+<path class="edge" d="M600 160 H696"/>
+<path class="edge optional" d="M600 208 H640 Q648 208 648 216 V276 Q648 284 656 284 H696"/>
+<path class="edge optional" d="M460 240 V368"/>
+<rect class="node" x="40" y="128" width="200" height="80" rx="20"/>
+<text class="name" x="60" y="160">Question or idea</text><text class="sub" x="60" y="184">What needs a decision?</text>
+<rect class="node" x="320" y="128" width="280" height="112" rx="6"/>
+<text class="name cmd" x="340" y="160">rnd-grill</text><text class="sub" x="340" y="184">Inspect evidence; compare choices.</text><text class="sub" x="340" y="204">Agree choices; keep unknowns explicit.</text><text class="sub" x="340" y="224">Experiment only in approved scope.</text>
+<rect class="node" x="696" y="112" width="224" height="80" rx="20"/>
+<text class="name" x="716" y="144">Finish in dialogue</text><text class="sub" x="716" y="168">No implied save or next step.</text>
+<rect class="node optional" x="696" y="248" width="224" height="96" rx="6"/>
+<text class="name" x="716" y="280">Direct approved save</text><text class="sub" x="716" y="304">Only the useful record.</text><text class="sub" x="716" y="324">Approve content and path.</text>
+<rect class="node optional" x="320" y="368" width="280" height="80" rx="6"/>
+<text class="name cmd" x="340" y="400">dev-exec</text><text class="sub" x="340" y="424">Agreed scope; approve the plan.</text>
+<path d="M40 480 H920" stroke="#303030"/>
+<text class="sub" x="40" y="508">Dashed: optional save or handoff. Agreement, a saved draft or prototype success authorizes no implementation.</text>
+<text class="sub" x="40" y="532">Domain saves need their own approval; questionnaire preparation sends nothing; project specs belong to dev-spec.</text>
 </svg>

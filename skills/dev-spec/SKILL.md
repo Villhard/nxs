@@ -1,45 +1,44 @@
 ---
 name: dev-spec
-description: Record durable project specs from landed work when the user explicitly invokes /dev-spec. Writes SPEC.md, or private .SPEC.md kept out of Git, from the branch diff and an optional feature directory, then stops. Not for discussing specs; rnd-grill shapes new work and dev-review finds defects.
+description: Record material built-work contracts in project SPEC.md or private .SPEC.md from the intended changes, including relevant checkpoints and uncommitted work. Optional after implementation or review; no durable change means no edit. Not for planning new behavior or finding defects.
 argument-hint: "[feature dir]"
 disable-model-invocation: true
 ---
 
 # /dev-spec
 
-Bring the project specs in line with work that has landed in the working tree, then stop. Specs record what the code alone does not show, so the next session starts from recorded intent instead of re-deriving it.
+On explicit invocation or an instruction explicitly covering this operation, bring project specs in line with built work, then stop. This is optional: record material intent the code alone does not show, not an obligatory artifact for every task.
 
-Accepted input: an optional feature directory `.scratch/<feature-slug>/`. Without one, work from the diff alone.
+Accepted input: an optional feature directory `.scratch/<feature-slug>/`, with supplied task/review/checkpoint context when available. Without a feature directory, use the intended-work evidence and relevant code; do not invent a directory or feature spec.
 
 Before reading specs, read [project specs](references/project-specs.md): it owns the file names and the reading rules this command shares with the other commands.
 
 Example: /dev-spec .scratch/rate-limiting
 
-In standalone use, suggest the next command at a handoff; never start it automatically. A controlled run returns its outcome to lead, who selects the next stage.
-
-## TASK CONTEXT
-
-Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and journal state to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
+Suggest the next command at a handoff; never start it automatically.
 
 ## STANCE
 
-- Write only project spec files and, in hidden mode, one exclude line. Never code, a glossary, decision records, `.scratch/` artifacts other than the task journal and its state, the index or commits.
-- Write without an approval round; the user reviews the result in the diff.
-- The only question this command asks is the mode, once, before the first spec of a repository (MODE). Uncertain content is written as `(unconfirmed)` inline, never asked.
-- Record what was built, not what was planned: the diff decides, `spec.md` and `root-cause.md` are context.
+- In normal task execution, `dev-spec` is the exclusive writer of project `SPEC.md` and `.SPEC.md`. Write only those files and, in hidden mode, the one private-spec exclude line. Never code, a glossary, decision records, `.scratch/` artifacts, the index or commits. Preserve unrelated spec edits.
+- Within the authorized operation, amend settled content without a separate content-approval round; the user reviews the diff. Reuse mode/scope approval already supplied.
+- Ask about mode once when needed before the first spec (MODE). Missing or conflicting scope/baseline evidence needs clarification or an incomplete stop, not an inferred choice. Uncertain content may be marked `(unconfirmed)` inline; that mark cannot excuse uncertain input coverage.
+- Record what was built, not what was planned: the covered net work and current code decide, while `spec.md`, `root-cause.md`, tickets and review follow-ups provide context, not proof of implementation.
 
 ## INPUT
 
-Work from the repository root (`git rev-parse --show-toplevel`). Take the feature only from the argument; never match tickets by branch. A missing or unreadable feature directory stops.
+Work from the repository root (`git rev-parse --show-toplevel`). Take a supplied feature directory exactly as given; missing or unreadable explicit input stops. Resolve task identity, requirements, intended scope and baseline from supplied task/review/checkpoint evidence or an explicitly agreed boundary. Never infer task ownership or match tickets from a branch name alone. Preserve an explicitly narrower scope; label its limits rather than silently widening it.
 
-Detect the base: `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Built work is the union of:
+Absent an agreed baseline, detect `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Resolve its merge-base with HEAD and pin the resulting commit OID as the candidate baseline. Built-work evidence includes:
 
-- `git diff --no-ext-diff --no-textconv <merge-base> --`, with `<merge-base>` from `git merge-base <base> HEAD` - committed, staged and unstaged changes;
-- `git ls-files -z --others --exclude-standard` - new untracked files.
+- `git diff --no-ext-diff --no-textconv <baseline-OID> --` - committed, staged and unstaged net changes through the working tree;
+- the staged and unstaged diffs separately, so index-only work or cancellation between index and working tree is not silently omitted;
+- `git ls-files -z --others --exclude-standard` and the relevant new files' actual contents.
 
-Exclude `.scratch/`, `SPEC.md` and `.SPEC.md` from it, so a repeat never treats its own specs as work. An empty result on the base branch stops: work already committed on the base branch is not supported; run on a branch, or before committing.
+An existing nonempty index never restricts this scope to staged changes. Reconcile a selected staged version that differs materially from disk before recording it as built behavior. Exclude `.scratch/` and project spec files from built-work input so repeats do not consume their own output. A foreign `SPEC.md` is not a project spec; preserve it as context and never amend it.
 
-When task context, a journal, controlled packet or user identifies checkpointed work as the intended input, read the checkpoint handoff: repository, branch, pre-checkpoint HEAD, each commit and parent OID, task scope, changed paths and remaining task changes. Validate it against Git and the built-work input before MODE or any spec write. Verify every checkpoint's relevant task changes remain represented in the net diff, together with all intended remaining task changes, subject to the exclusions above. An ancestor check or path list alone is not proof: later edits can cancel or replace changes. A checkpoint already on the base is outside this input even when unrelated changes make the diff nonempty. If intended work is omitted, evidence is missing or coverage is uncertain, stop and identify the omitted or uncertain scope; never report "nothing durable changed" or write a partial spec as if the task were covered. Preserve Git state and let the user choose how to proceed; this does not add a range selector.
+For checkpoints, read repository, branch, pre-checkpoint HEAD, each commit and parent OID, approved scope, changed paths and remaining changes. Validate identities and requirements against actual Git and current code before MODE or any write. Verify that every relevant intended change is represented in the selected net input; ancestry or a path list alone is insufficient because later edits may cancel or replace it. A checkpoint already on the normal base is omitted even if unrelated work makes the default diff nonempty. Use an explicitly agreed earlier baseline supported by task evidence, including for work already committed on the base branch; if none is established, ask or stop incomplete rather than claiming no durable change.
+
+Pin the selected baseline, requirement sources and actual change snapshot before deriving content: repository/branch, HEAD, staged/unstaged diffs and relevant untracked bytes. Separate foreign work by evidence, not by moving it. If intended work is omitted, foreign changes cannot safely be distinguished, input evidence is missing or coverage is uncertain, stop incomplete and identify the uncertainty. Never write a partial spec or report "nothing durable changed" as if the intended task were covered. Never stage, stash, reset, switch branches or rewrite foreign work to manufacture scope. Reconcile changed source/snapshot evidence before any spec write or final no-op conclusion; retain the pinned scope in the report without requiring a new artifact.
 
 ## MODE
 
@@ -69,11 +68,11 @@ A fact already in a glossary or decision record is linked by path, not restated.
 
 ## NOTHING DURABLE
 
-When nothing in spec terms changed, make no edit, ask nothing and report "nothing durable changed". Never invent content to show activity.
+Only after intended-work coverage is established, when nothing in spec terms changed, make no edit, ask no mode question and report "nothing durable changed" for the selected scope. Never invent content to show activity or use no-op to hide omitted checkpoints, missing evidence or skipped modules.
 
 ## AMEND
 
-1. With an undecided mode, ask once: visible `SPEC.md`, committed with the project, or hidden `.SPEC.md`, private and local, with the cost from MODE. Then proceed.
+1. With an undecided mode and a material fact to record, ask once: visible `SPEC.md`, eligible for a separately authorized commit, or hidden `.SPEC.md`, private and local, with the cost from MODE. Reuse an explicit choice already covering this repository. If the user declines, change nothing and report the declined save, not "nothing durable changed".
 2. Hidden mode: when `git check-ignore -q -- .SPEC.md` exits non-zero, append `.SPEC.md` on its own line to `"$(git rev-parse --path-format=absolute --git-common-dir)/info/exclude"`, adding a newline first when the file does not end with one, and creating its directory if needed. Check again; stop if the file is still not ignored.
 3. Amend top-down: the root spec, then module specs. Create a root spec only when the work established a product or architecture fact; a module spec without a root spec is normal. Create a module spec only for a module the work touched, only with what the work established, in the directory of a genuine boundary - not one per directory. Before creating a spec, list its directory (`ls -a`): when it holds a foreign `SPEC.md` or a case variant of either name, such as `spec.md`, `Spec.md` or `.spec.md`, create nothing there and report the module as skipped with that file name.
 4. Use the headings of [project spec](assets/project-spec.md): all optional, only settled ones written, in that order; `## Goal` and `## Architecture` only in the root spec. Edit prose in place.
@@ -86,8 +85,8 @@ Content rules:
 
 ## CHECK
 
-Every amended spec matches the code as built. Touched specs do not contradict each other, the glossary or decision records, and their links resolve. Fix what fails before reporting.
+Every amended spec matches the selected built work and current code. Touched specs do not contradict each other, the glossary or decision records, and their links resolve. Preserve foreign edits; if a contradiction requires an out-of-scope decision, stop the affected write and name it. Reconcile any change to the pinned input; do not silently write against stale evidence. Respect explicit verification limits and report NOT RUN work without claiming a complete verification.
 
 ## NEXT
 
-Report in one or two lines the spec paths created or changed, or "nothing durable changed", any `(unconfirmed)` statement left, modules skipped for a foreign `SPEC.md` or a case variant, with the file name, and foreign `SPEC.md` files on the built work's paths left unchanged. In visible mode suggest `/dev-commit`.
+Report paths created/changed, the selected scope and baseline with checkpoint coverage and verification limits, or a covered "nothing durable changed" no-op. Name any `(unconfirmed)` content, skipped modules/case variants, foreign `SPEC.md` files left unchanged and unresolved coverage. A skipped material contract is incomplete, not a complete spec update. In visible mode, suggest `dev-commit` only for remaining intended changes requiring a separately authorized commit; never stage or commit. In hidden mode, keep private specs out of Git. A handoff never starts another skill automatically.

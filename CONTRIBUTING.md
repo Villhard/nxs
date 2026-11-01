@@ -12,26 +12,28 @@ skills/<name>/
   agents/openai.yaml           # optional Codex invocation policy
   references/                  # rule files read at the point of use
   assets/                      # artifact templates
-  roles/                       # agent role files (dev-review)
+  roles/                       # independent reviewer role files (dev-review)
 tests/client-scenarios.md
 README.md CONTRIBUTING.md CHANGELOG.md
 ```
 
-A skill may link only to files inside its own directory. Files shared by several skills are copied into every consuming skill and must stay byte-identical; the check enforces this. `to-tickets` owns ticket rules and template, `to-spec` owns the feature spec template, and `dev-spec` owns the project-spec reader rules. Propagate shared edits:
+A skill may link only to files inside its own directory. Copy genuinely shared resources into their actual consumers and keep the copies byte-identical. Do not depend on a developer checkout, bundled helper or another skill's installation path. The seven-skill ownership is:
 
-```bash
-cp skills/to-tickets/references/ticket.md skills/dev-review/references/ticket.md
-cp skills/to-tickets/references/ticket.md skills/dev-exec/references/ticket.md
-cp skills/to-spec/assets/spec.md skills/rnd-debug/assets/spec.md
-cp skills/to-tickets/assets/ticket.md skills/dev-review/assets/ticket.md
-cp skills/to-tickets/assets/ticket.md skills/dev-exec/assets/ticket.md
-```
+| Owner | Resources |
+| --- | --- |
+| `rnd-grill` | Discussion, domain modeling, optional evidence/experiment guidance and direct-save decision, feature-description and questionnaire templates. |
+| `rnd-debug` | Diagnosis and feature-location rules. |
+| `dev-exec` | Execution context, optional decomposition, ticket rules/template and handoff guidance/template. |
+| `dev-review` | Selected snapshot, findings, review report, native reviewer launch rules and four reviewer roles. No ticket producer. |
+| `dev-spec` | Project-spec reader rules and project-spec template. |
+| `dev-commit` | Commit safety and format. |
+| `nxs-setup` | Setup templates, readiness/capability guidance and writing guidance. |
 
-Project-spec reader and journal resources (`references/task-journal.md` and `references/controlled-run.md`, owned by `nxs-lead`) are copied to the consumers listed in the structural checker. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
+Propagate `skills/dev-spec/references/project-specs.md` to the retained readers in `rnd-grill`, `rnd-debug`, `dev-exec` and `dev-review`. The canonical ticket rules/template live only in `dev-exec`; review does not bundle them. The feature-description template belongs to `rnd-grill`, not diagnosis. Do not retain shared-copy requirements for resources with no remaining consumer.
 
-The `## Done when` block of `skills/to-tickets/assets/ticket.md` is also copied into the fenced block of `skills/nxs-setup/assets/issue-tracker.md`; update it by hand.
+When the setup tracker embeds `## Done when`, copy that block verbatim from `skills/dev-exec/assets/ticket.md` into `skills/nxs-setup/assets/issue-tracker.md`. Keep the structural checker's actual-consumer catalog synchronized with resource moves.
 
-Shared discussion and domain references are owned by `rnd-grill`; `to-decision` and `rnd-design` bundle copies. `nxs-setup` owns writing guidance, copied into `nxs-retro`. `dev-review` owns the review report reference, copied into `to-tickets`. Keep the checker catalog and every applicable shared copy synchronized.
+Existing user tickets, journals, decision records, prototypes and worktrees are not migration inputs to rewrite or delete. No mandatory task journal, controlled-run packet, approval hashes, lock orchestration or worker envelope belongs in the direct flow. Resolve conflicting historical instructions explicitly rather than emulating a removed mode.
 
 Keep process rules with their owning skill or role; a rule several skills apply goes into one shared reference instead of divergent copies. Keep personal preferences in client/project instructions; the exception is a setup skill, which may write rules and config into client instructions only through a diff the user approved. Do not add background skills, cross-skill injection or client hooks. Add a skill only for a distinct, settled intent used regularly that deserves its own entry; otherwise extend an existing skill.
 
@@ -39,10 +41,10 @@ Keep process rules with their owning skill or role; a rule several skills apply 
 
 A skill name is a command the user types, so it is chosen to be read at a glance, not to follow a naming scheme.
 
-- Choose a short name that describes the work or artifact and avoids client and installed-skill collisions. Existing namespaces include `rnd-` for investigation, `to-` for artifact production, `dev-` for development and `nxs-` for project-wide support.
+- Choose a short name that describes the work and avoids client and installed-skill collisions. The retained namespaces are `rnd-` for investigation, `dev-` for development and `nxs-` for setup support.
 - Check the installed path and provenance when names collide; naming does not activate another stage.
 
-[ADR 0007](docs/adr/0007-skill-names.md) records the earlier naming decision; the additive catalog extends it.
+[ADR 0007](docs/adr/0007-skill-names.md) records the earlier naming decision; [ADR 0009](docs/adr/0009-seven-skill-direct-flow.md) preserves the seven retained names and supersedes the old fixed-prefix/catalog scope.
 
 ## STYLE AND SAFETY
 
@@ -78,13 +80,13 @@ bash .github/scripts/lint-house-style.sh
 git diff --check
 ```
 
-The structural checker is read-only and inspects the working tree. It validates the skill set, frontmatter contracts, invocation policy, role files, identical shared copies, the tracker's Done when copy, the current ticket template and review handoff, links that stay inside their skill and resolve, external-path boundaries and the CHANGELOG entry shape. The runtime guard rejects any `.py` file, bundled `scripts/` or `__pycache__` directory, and active documentation that still names Python 3, the removed terminal app or a bundled Python helper. Historical `CHANGELOG.md` entries and `docs/adr/` records keep their original text. Link checks do not cover anchors or every Markdown form: inspect links, headings and the final diff yourself. Pass untracked Markdown paths explicitly to the style script.
+The structural checker is read-only and inspects the working tree. Its catalog must contain exactly the seven README skills, not merely find them among extra commands. Keep frontmatter, invocation policies, reviewer roles, actual shared copies, tracker Done when, ticket/review handoffs, self-contained links, external-path boundaries and dated CHANGELOG entries covered. The runtime guard rejects bundled runtime files; the structural checker's obsolete-route scan covers skill sources under `skills/`, not root guides. Historical CHANGELOG, ADR and explicitly archived scenario text is not a current execution contract. Link checks do not cover anchors or every Markdown form: inspect links and headings yourself. Pass untracked Markdown paths explicitly to the style script. A source pass proves no live behavior, permission enforcement or registration.
 
 The [pre-commit hook](.githooks/pre-commit) runs both structural checks against a temporary staged snapshot in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
-The lead and review routes use the selected client native subagent facility. Discover available skills and models without hardcoding names or effort support; readiness uses its documented native discovery probes. Preserve native permissions and enforce repository write denial for other read-only workers. For reviewers, use host-enforced restrictions where available; otherwise report prompt-only restrictions honestly and follow the review skill's mandatory before/after checks. State live verification separately from protocol fixtures; missing CLI never implies a verified live route. Tests use disposable repositories and fixture-only approvals, never the user installation.
+Only independent review requires its selected native reviewer route; ordinary discussion and execution need no subagents. Review keeps three finder roles and an independent verifier, with a direct pass only for the trivial cases its contract permits. Discover available capabilities without hardcoding models or effort support. Use host-enforced reviewer restrictions when available; otherwise report prompt-only restrictions honestly and follow mandatory before/after repository checks even with enforcement. These checks detect persistent differences, not every attempted or reverted write. No nested client is a fallback. State live observations separately from source or protocol fixtures; a missing CLI leaves that client's route unverified. Use disposable repositories and fixture-only approvals, never the user installation.
 
-For behavior changes, use disposable projects and the [client scenarios](tests/client-scenarios.md); documentation-only edits need source, command and link checks, not repeated workflows.
+For behavior changes, use the focused [client scenarios](tests/client-scenarios.md); documentation-only edits need proportionate source, command and link checks, not repeated workflows. Review and spec cases must include committed checkpoints plus intended staged, unstaged and untracked work, with no implicit staged-only narrowing. If an approved implementation-only assignment reserves verification for another worker, do not run excluded checks, renders or final diff audit; report each as NOT RUN and leave verification pending. Otherwise inspect the final diff and verify both themes of affected diagrams, including captions/accessibility and preserved history.
 
 ## LOCAL DEVELOPMENT AND RELEASE
 
@@ -99,4 +101,4 @@ Run the client against that `HOME`, then remove the temporary directory, keeping
 
 Publish by pushing to `main` before updating installations; users update with `npx skills update`. Do not modify the user's installed skills during source edits unless requested.
 
-The checked catalog contains 19 commands. `to-tickets` suggests `dev-exec` for eligible ready work. Source changes do not update installations or establish native registration. `nxs-setup` does not offer companion bundles. See [README](README.md) and [client scenarios](tests/client-scenarios.md) for the current boundary and evidence.
+The catalog contract contains seven skills. `rnd-grill`, eligible diagnosis and selected review findings can feed `dev-exec` directly; no artifact chain is mandatory. `dev-spec` remains optional and commits require explicit scope authorization. Source changes do not update installations or establish native registration. `nxs-setup` does not offer companion bundles or install the catalog. See [README](README.md) and [client scenarios](tests/client-scenarios.md) for the current boundary and evidence.

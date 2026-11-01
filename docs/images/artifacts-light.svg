@@ -1,48 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" role="img" aria-labelledby="nxs-artifacts-light-title nxs-artifacts-light-desc">
-<title id="nxs-artifacts-light-title">Commands and their records</title>
-<desc id="nxs-artifacts-light-desc">Commands create or use feature records and project records. Existing paths take precedence. Project specs record built intent and dev-spec is their only writer.</desc>
-<defs><marker id="nxs-artifacts-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
-<rect width="960" height="500" fill="#eeeeee"/>
-<text x="32" y="39" fill="#262626" font-family="system-ui,sans-serif" font-size="22" font-weight="650">Commands and their records</text>
-<text x="32" y="63" fill="#626262" font-family="system-ui,sans-serif" font-size="12">Records retain evidence and history; their existence does not start another command.</text>
-<path d="M222 140 H300" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-light-arrow)"/>
-<path d="M222 265 H260 V150 H300" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-light-arrow)"/>
-<path d="M222 285 H300" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-light-arrow)"/>
-<path d="M630 145 H550" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-light-arrow)"/>
-<path d="M630 300 H550" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-light-arrow)"/>
-<path d="M778 385 V342" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-artifacts-light-arrow)"/>
-<rect x="32" y="100" width="190" height="82" rx="6" fill="#e4e4e4" stroke="#0061d2" stroke-width="1.2"/>
-<text x="46" y="119" fill="#0061d2" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
-<text x="46" y="142" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Investigation</text>
-<text x="46" y="161" fill="#262626" font-family="system-ui,sans-serif" font-size="11">rnd-grill, rnd-debug,</text>
-<text x="46" y="177" fill="#262626" font-family="system-ui,sans-serif" font-size="11">rnd-research, rnd-map</text>
-<rect x="32" y="235" width="190" height="82" rx="6" fill="#e4e4e4" stroke="#0061d2" stroke-width="1.2"/>
-<text x="46" y="254" fill="#0061d2" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
-<text x="46" y="277" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Artifact commands</text>
-<text x="46" y="296" fill="#262626" font-family="system-ui,sans-serif" font-size="11">to-decision, to-spec,</text>
-<text x="46" y="312" fill="#262626" font-family="system-ui,sans-serif" font-size="11">to-tickets, to-handoff</text>
-<rect x="300" y="100" width="250" height="92" rx="6" fill="#e4e4e4" stroke="#b73800" stroke-width="1.2"/>
-<text x="314" y="119" fill="#b73800" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">RECORD</text>
-<text x="314" y="142" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Feature evidence</text>
-<text x="314" y="161" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Decisions, research, map</text>
-<text x="314" y="177" fill="#262626" font-family="system-ui,sans-serif" font-size="11">and root-cause records</text>
-<rect x="300" y="250" width="250" height="92" rx="6" fill="#e4e4e4" stroke="#b73800" stroke-width="1.2"/>
-<text x="314" y="269" fill="#b73800" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">RECORD</text>
-<text x="314" y="292" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Feature work</text>
-<text x="314" y="311" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Feature spec, issues</text>
-<text x="314" y="327" fill="#262626" font-family="system-ui,sans-serif" font-size="11">and handoffs</text>
-<rect x="630" y="100" width="295" height="92" rx="6" fill="#e4e4e4" stroke="#b73800" stroke-width="1.2"/>
-<text x="644" y="119" fill="#b73800" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">RECORD</text>
-<text x="644" y="142" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Domain records</text>
-<text x="644" y="161" fill="#262626" font-family="system-ui,sans-serif" font-size="11">GLOSSARY.md and ADRs</text>
-<text x="644" y="177" fill="#262626" font-family="system-ui,sans-serif" font-size="11">record terms and decisions</text>
-<rect x="630" y="250" width="295" height="92" rx="6" fill="#e4e4e4" stroke="#b73800" stroke-width="1.2"/>
-<text x="644" y="269" fill="#b73800" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">RECORD</text>
-<text x="644" y="292" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Project specs</text>
-<text x="644" y="311" fill="#262626" font-family="system-ui,sans-serif" font-size="11">SPEC.md / .SPEC.md</text>
-<text x="644" y="327" fill="#262626" font-family="system-ui,sans-serif" font-size="11">durable intent from built work</text>
-<rect x="630" y="385" width="295" height="72" rx="6" fill="#e4e4e4" stroke="#0061d2" stroke-width="1.2"/>
-<text x="644" y="404" fill="#0061d2" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
-<text x="644" y="427" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/dev-spec</text>
-<text x="644" y="446" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Only writer of project specs</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="artifacts-light-title artifacts-light-desc">
+<title id="artifacts-light-title">Useful records have distinct owners</title>
+<desc id="artifacts-light-desc">rnd-grill owns approved preparation and domain records, rnd-debug diagnosis, dev-exec optional tickets and handoffs, dev-review its report and dev-spec material built-work project specs without a universal artifact chain.</desc>
+<style>text{font-family:'Geist',system-ui,sans-serif;fill:#262626}.title{font-family:'Instrument Serif',Georgia,serif;font-size:28px}.name{font-family:'Geist Mono',ui-monospace,monospace;font-size:16px;font-weight:600}.heading{font-size:16px;font-weight:600}.sub{font-size:13px;fill:#626262}.node{fill:#eeeeee;stroke:#626262;stroke-width:1.2}.rule{stroke:#d7d7d7}</style>
+<rect width="960" height="600" fill="#eeeeee"/>
+<text class="title" x="40" y="48">Save only the record the task needs</text>
+<text class="sub" x="40" y="76">Ownership, not a pipeline. Reuse established paths; local task records default to .scratch/&lt;feature&gt;/.</text>
+<rect class="node" x="40" y="100" width="880" height="80" rx="6"/><path class="rule" d="M304 100 V180"/>
+<text class="name" x="60" y="132">rnd-grill</text><text class="sub" x="60" y="156">Optional approved saves</text>
+<text class="heading" x="328" y="132">Decisions, feature descriptions, evidence and questions</text><text class="sub" x="328" y="156">Glossary / ADR changes need separate concrete approval; questions are not sent.</text>
+<rect class="node" x="40" y="188" width="880" height="80" rx="6"/><path class="rule" d="M304 188 V268"/>
+<text class="name" x="60" y="220">rnd-debug</text><text class="sub" x="60" y="244">Diagnosis, not a patch</text>
+<text class="heading" x="328" y="220">Root-cause evidence</text><text class="sub" x="328" y="244">Confirmed cause and class, or exact missing evidence and next probe.</text>
+<rect class="node" x="40" y="276" width="880" height="80" rx="6"/><path class="rule" d="M304 276 V356"/>
+<text class="name" x="60" y="308">dev-exec</text><text class="sub" x="60" y="332">Only when useful / requested</text>
+<text class="heading" x="328" y="308">Optional tickets and handoff</text><text class="sub" x="328" y="332">Real prerequisites; preserved identities/history; actual verification and Git state.</text>
+<rect class="node" x="40" y="364" width="880" height="80" rx="6"/><path class="rule" d="M304 364 V444"/>
+<text class="name" x="60" y="396">dev-review</text><text class="sub" x="60" y="420">Report-only writes</text>
+<text class="heading" x="328" y="396">Review report</text><text class="sub" x="328" y="420">Pinned scope/sources, finding verdicts and evidence; selected fixes need no ticket.</text>
+<rect class="node" x="40" y="452" width="880" height="80" rx="6"/><path class="rule" d="M304 452 V532"/>
+<text class="name" x="60" y="484">dev-spec</text><text class="sub" x="60" y="508">Only material built-work intent</text>
+<text class="heading" x="328" y="484">Project SPEC.md / private .SPEC.md</text><text class="sub" x="328" y="508">Exclusive normal writer; a lowercase feature spec.md is preparation, not built proof.</text>
+<text class="sub" x="40" y="568">Small execution can stay artifact-free. A saved record neither starts another skill nor grants new authorization.</text>
+<text class="sub" x="40" y="592">Keep existing tickets, journals, decisions and prototypes as context/history; never migrate or delete them implicitly.</text>
 </svg>

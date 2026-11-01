@@ -36,9 +36,31 @@ jobs:
 
       - name: The skills CLI lists the source catalog
         run: |
+          set -euo pipefail
+          # This job independently rejects missing, extra and nested commands.
+          bash .github/scripts/check-skills.sh
+          expected=$(printf '%s\n' rnd-grill rnd-debug dev-exec dev-review dev-spec dev-commit nxs-setup | sort)
           listed=$(npx -y skills@latest add . -l)
-          echo "$listed"
+          printf '%s\n' "$listed"
           listed=$(printf '%s\n' "$listed" | sed -E $'s/\033\\[[0-9;]*[mK]//g')
-          for skill in rnd-grill to-decision to-spec to-tickets dev-exec rnd-debug dev-review dev-spec dev-commit rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-questionnaire to-handoff nxs-retro nxs-lead nxs-setup; do
-            echo "$listed" | grep -E -q "(^|[^[:alnum:]-])${skill}([^[:alnum:]-]|$)" || { echo "missing skill: $skill"; exit 1; }
-          done
+          # Parse only list entries, not names mentioned in descriptions or logs.
+          # The count and complete block are both required; format drift fails closed.
+          [ "$(printf '%s\n' "$listed" | grep -Ec '(^|[^[:alnum:]])Found 7 skills([^[:alnum:]]|$)')" -eq 1 ] || {
+            echo 'discovery: expected exactly seven source commands'
+            exit 1
+          }
+          actual=$(printf '%s\n' "$listed" | awk '
+            /Available Skills/ { if (started++) exit 1; inside = 1; next }
+            inside && /Use --skill .* to install specific skills/ { finished = 1; inside = 0; next }
+            inside {
+              line = $0
+              sub(/^[^[:alnum:]]*/, "", line)
+              sub(/[[:space:]]*$/, "", line)
+              if (line ~ /^[a-z][a-z0-9-]*$/) print line
+            }
+            END { if (started != 1 || !finished) exit 1 }
+          ' | sort)
+          [ "$actual" = "$expected" ] || {
+            printf 'discovery: expected catalog:\n%s\nactual catalog:\n%s\n' "$expected" "$actual"
+            exit 1
+          }

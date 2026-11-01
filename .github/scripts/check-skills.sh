@@ -6,9 +6,10 @@
 #   - the installed skill catalog and its frontmatter;
 #   - explicit-invocation policies;
 #   - review role files;
-#   - byte-identical shared resources;
+#   - resource ownership, consumers and byte-identical shared copies;
 #   - the fenced ticket Done when copy;
-#   - current ticket template and review handoff use dev-exec, not /plan;
+#   - ticket gates, checkpoint coverage and independent review structure;
+#   - removed routes and mandatory setup journal injection stay absent;
 #   - links stay inside the owning skill;
 #   - no bundled link escapes an installed skill;
 #   - CHANGELOG release headings keep their dated shape.
@@ -16,7 +17,7 @@
 # Usage:
 #   bash .github/scripts/check-skills.sh
 
-set -u
+set -uo pipefail
 
 root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd) || exit 1
 cd "$root" || exit 1
@@ -27,36 +28,43 @@ fail() {
 }
 
 SKILLS=(
-  dev-review dev-spec nxs-setup dev-commit
-  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro nxs-lead
+  rnd-grill rnd-debug dev-exec dev-review dev-spec dev-commit nxs-setup
 )
 EXPLICIT=(
-  dev-review dev-spec nxs-setup
-  rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro nxs-lead
+  rnd-grill rnd-debug dev-exec dev-review dev-spec nxs-setup
 )
-TARGET=(
-  rnd-grill to-decision to-spec to-tickets dev-exec rnd-debug dev-review dev-spec dev-commit
-  rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-questionnaire to-handoff nxs-retro nxs-lead nxs-setup
+REMOVED=(
+  rnd-map rnd-research rnd-prototype rnd-audit rnd-design
+  to-decision to-spec to-questionnaire to-tickets to-handoff nxs-lead nxs-retro
 )
 ROLES=(
   review-quality review-testing review-simplification review-verify
 )
 
-# Files copied into every consuming skill and required to stay byte-identical.
-# The canonical copy is the first consumer.
-SHARED="
-references/discussion.md|rnd-grill,to-decision,to-spec,rnd-design,rnd-map
-references/domain-modeling.md|rnd-grill,to-decision,rnd-design
-references/research.md|rnd-research,rnd-map
-references/prototype.md|rnd-prototype,rnd-map
-references/writing-for-agents.md|nxs-setup,nxs-retro
-references/ticket.md|to-tickets,dev-review,dev-exec
-references/review-report.md|dev-review,to-tickets
-references/project-specs.md|dev-spec,dev-review,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro,nxs-lead
-references/task-journal.md|nxs-lead,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro
-references/controlled-run.md|nxs-lead,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro
-assets/spec.md|to-spec,rnd-debug
-assets/ticket.md|to-tickets,dev-review,dev-exec
+# First consumer owns the resource. Single-owner rows require no duplicate
+# copies; shared rows require exactly the listed consumers, byte-identical.
+RESOURCES="
+references/discussion.md|rnd-grill
+references/domain-modeling.md|rnd-grill
+references/evidence-methods.md|rnd-grill
+references/prototype.md|rnd-grill
+references/saving.md|rnd-grill
+references/questionnaire.md|rnd-grill
+references/writing-for-agents.md|nxs-setup
+references/ticket.md|dev-exec
+references/work-preparation.md|dev-exec
+references/handoff.md|dev-exec
+references/review-report.md|dev-review
+references/selected-snapshot.md|dev-review
+references/agent-launch.md|dev-review
+references/findings.md|dev-review
+references/project-specs.md|dev-spec,dev-review,rnd-grill,dev-exec,rnd-debug
+assets/decision.md|rnd-grill
+assets/spec.md|rnd-grill
+assets/questionnaire.md|rnd-grill
+assets/ticket.md|dev-exec
+assets/handoff.md|dev-exec
+assets/project-spec.md|dev-spec
 "
 
 frontmatter_field() {
@@ -152,10 +160,20 @@ is_explicit() {
 }
 
 check_catalog() {
-  local expected actual
+  local expected actual name
+  [ "${#SKILLS[@]}" -eq 7 ] || fail "source catalog must have seven commands"
+  [ "$(printf '%s\n' "${SKILLS[@]}" | sort -u | wc -l | tr -d ' ')" -eq 7 ] || fail "duplicate source command"
+  [ "${#EXPLICIT[@]}" -eq 6 ] || fail "six commands must require explicit invocation"
+  [ "$(printf '%s\n' "${EXPLICIT[@]}" | sort)" = "$(printf '%s\n' "${SKILLS[@]}" | grep -vx dev-commit | sort)" ] ||
+    fail "only dev-commit may use direct commit-request invocation"
+  actual=$(find skills -type l -print) || fail "cannot inspect skill symlinks"
+  [ -z "$actual" ] || fail "source skills must bundle real files, not symlinks: $actual"
   expected=$(printf '%s\n' "${SKILLS[@]}" | sort)
-  actual=$(find skills -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort)
+  actual=$(find skills -mindepth 1 -maxdepth 1 -exec basename {} \; | sort) || fail "cannot read source catalog"
   [ "$expected" = "$actual" ] || fail "skills: expected [$(printf '%s ' "${SKILLS[@]}")], found [$(printf '%s ' $actual)]"
+  expected=$(for name in "${SKILLS[@]}"; do printf 'skills/%s/SKILL.md\n' "$name"; done | sort)
+  actual=$(find skills -type f -name SKILL.md | sort) || fail "cannot read command entry points"
+  [ "$expected" = "$actual" ] || fail "unexpected or missing command entry point: $actual"
 }
 
 check_skill() {
@@ -210,19 +228,26 @@ check_roles() {
     [ "$(frontmatter_field "$path" name)" = "$role" ] || fail "$path: role name must match filename"
     [ -n "$(frontmatter_field "$path" description)" ] || fail "$path: missing or empty description frontmatter field"
     tools=$(frontmatter_field "$path" tools)
-    declared=$(printf '%s' "$tools" | tr -d ' ' | tr ',' '\n' | sort -u | tr '\n' ' ')
+    declared=$(printf '%s' "$tools" | tr -d ' ' | tr ',' '\n' | sort | tr '\n' ' ')
     [ "$declared" = "Bash Glob Grep Read " ] || fail "$path: unexpected role tools"
+    require_rule "$path" 'Read-only:.*never edit' "read-only role boundary"
+    require_rule "$path" 'never write the report or any file|cannot modify repository files or Git state' "report/source write prohibition"
+    require_rule "$path" 'source manifest.*resolved history/diff/file/search reads' "selected-source context"
+    require_link skills/dev-review/references/agent-launch.md "../roles/$role.md"
   done
 }
 
 check_shared() {
-  local row relative consumers canonical consumer
+  local row relative consumers canonical consumer expected actual
   while IFS= read -r row; do
     [ -n "$row" ] || continue
     relative=${row%%|*}
     consumers=${row#*|}
     canonical="skills/${consumers%%,*}/$relative"
     [ -f "$canonical" ] || fail "$canonical: missing shared file"
+    expected=$(printf '%s' "$consumers" | tr ',' '\n' | sort)
+    actual=$(find skills -type f -path "skills/*/$relative" | awk -F/ '{ print $2 }' | sort) || fail "cannot inspect consumers of $relative"
+    [ "$expected" = "$actual" ] || fail "$relative: expected consumers [$consumers], found [$actual]"
     local rest=${consumers#*,}
     [ "$rest" = "$consumers" ] && continue
     local old_ifs=$IFS
@@ -234,14 +259,14 @@ check_shared() {
     done
     IFS=$old_ifs
   done <<EOF
-$SHARED
+$RESOURCES
 EOF
 }
 
 extract_done_when() {
   awk '
     /^## Done when$/ { inside = 1; print; next }
-    inside && /^#{1,2} / { exit }
+    inside && /^#(#)? / { exit }
     inside { print }
   ' "$1"
 }
@@ -259,7 +284,7 @@ extract_fenced_done_when() {
 }
 
 check_done_when() {
-  local source=skills/to-tickets/assets/ticket.md copy expected actual
+  local source=skills/dev-exec/assets/ticket.md copy expected actual
   for copy in skills/nxs-setup/assets/issue-tracker.md; do
   expected=$(extract_done_when "$source")
   [ -n "$expected" ] || fail "$source: missing Done when section"
@@ -270,37 +295,111 @@ check_done_when() {
   done
 }
 
-check_ticket_handoff() {
-  local template=skills/to-tickets/assets/ticket.md review=skills/dev-review/SKILL.md producer=skills/to-tickets/SKILL.md
-  if grep -Fq '/plan' "$template" "$review"; then
-    fail "current ticket template and review instructions must not recommend /plan"
-  fi
-  grep -Fq 'Execute this ticket directly with `/dev-exec <this file>`.' "$template" ||
-    fail "$template: missing dev-exec handoff"
-  grep -Fq 'suggest `/dev-exec <ticket-path>`' "$review" ||
-    fail "$review: missing dev-exec handoff"
-  grep -Fq 'Copy the template' "$producer" || fail "$producer: missing template copy instruction"
-  if grep -Eq 'both executor examples|no-commit semantics' "$producer"; then
-    fail "$producer: obsolete executor examples or no-commit template semantics"
-  fi
-  grep -Fq 'authorized checkpoint rules' "$producer" || fail "$producer: missing checkpoint contract"
+# These are source-contract assertions, not proof of agent behavior. Validate
+# template shape, actual bundled dependency edges and safety gates together.
+require_rule() {
+  grep -Eq -- "$2" "$1" || fail "$1: missing $3"
 }
 
-check_checkpoint_handoff() {
-  local executor=skills/dev-exec/SKILL.md lead=skills/nxs-lead/SKILL.md
-  local review=skills/dev-review/SKILL.md spec=skills/dev-spec/SKILL.md path
-  grep -Fq 'pre-checkpoint HEAD, each verified commit and parent OID' "$executor" ||
-    fail "$executor: missing checkpoint identity handoff"
-  grep -Fq 'Pass the complete checkpoint handoff' "$lead" ||
-    fail "$lead: missing checkpoint handoff to selected stages"
-  grep -Fq 'Staged scope excludes committed checkpoints; stop without a report' "$review" ||
-    fail "$review: missing staged checkpoint coverage stop"
-  grep -Fq 'A checkpoint already on the base is outside this input' "$spec" ||
-    fail "$spec: missing base checkpoint coverage stop"
-  for path in "$review" "$spec"; do
-    grep -Fq 'An ancestor check or path list alone is not proof' "$path" ||
-      fail "$path: missing net-change coverage check"
+require_link() {
+  grep -Fq -- "]($2)" "$1" || fail "$1: missing bundled dependency $2"
+}
+
+check_headings() {
+  local actual
+  actual=$(awk '/^## / { print }' "$1")
+  [ "$actual" = "$2" ] || fail "$1: unexpected section structure: $actual"
+}
+
+check_ticket_contract() {
+  local template=skills/dev-exec/assets/ticket.md rules=skills/dev-exec/references/ticket.md
+  local preparation=skills/dev-exec/references/work-preparation.md actual
+  actual=$(awk '/^\*\*[^*]+:\*\*/ { sub(/:.*/, ""); print }' "$template")
+  [ "$actual" = $'**What to build\n**Blocked by\n**Branch\n**Status' ] || fail "$template: incorrect ticket fields/order"
+  require_rule "$template" '^# <NN>:' "numbered ticket title"
+  require_rule "$template" '^\*\*Status:\*\* ready-for-agent$' "initial status"
+  require_rule "$template" '^- \[ \] ' "unchecked acceptance criteria"
+  check_headings "$template" '## Done when'
+  require_rule "$template" '^Execute this ticket directly with `/dev-exec <this file>`\.$' "executor handoff"
+  require_rule "$template" '^- .*ready-for-agent.*Blocked by.*resolved.*prerequisite results.*selected working tree' "status and actual prerequisite gates"
+  require_rule "$template" '^- .*approved concrete plan.*approval.*exact target.*native permissions.*ready-for-human' "plan and direct human-step approval gate"
+  require_rule "$template" 'Verify the actual result.*ready-for-agent.*never repeat an uncertain action' "human-step evidence and replay stop"
+  require_rule "$template" '^- Close only after.*every criterion.*full test suite.*linter.*required checks pass.*resolved' "verified completion gate"
+  require_rule "$template" 'prohibited or unavailable verification leaves the ticket unresolved' "missing-check stop"
+  require_rule "$template" '^- Commits are optional.*explicit authorization.*dev-commit.*Do not commit' "commit authorization and preservation"
+  if grep -Eq -- '(^|[^[:alnum:]_-])/plan([^[:alnum:]_-]|$)' "$template" skills/dev-review/SKILL.md; then
+    fail "current ticket template and review must not restore the removed /plan executor"
+  fi
+  require_link "$rules" '../assets/ticket.md'
+  require_link "$preparation" 'ticket.md'
+  require_link "$preparation" '../assets/ticket.md'
+  require_link skills/dev-exec/SKILL.md 'references/work-preparation.md'
+  require_rule "$rules" 'Copy .*Done when.*verbatim' "verbatim execution block rule"
+  require_rule "$preparation" 'Reconcile source and destination changes.*preserve concurrent edits' "concurrent ticket preservation"
+}
+
+check_workflow_contract() {
+  local executor=skills/dev-exec/SKILL.md review=skills/dev-review/SKILL.md
+  local snapshot=skills/dev-review/references/selected-snapshot.md spec=skills/dev-spec/SKILL.md
+  local launch=skills/dev-review/references/agent-launch.md report=skills/dev-review/references/review-report.md path
+  require_link "$executor" 'references/handoff.md'
+  require_link skills/dev-exec/references/handoff.md '../assets/handoff.md'
+  check_headings skills/dev-exec/assets/handoff.md $'## Accepted\n## Open\n## Unverified\n## Verification\n## Current artifacts and next action'
+  for path in "$executor" skills/dev-exec/references/handoff.md skills/dev-exec/assets/handoff.md "$spec" "$snapshot"; do
+    require_rule "$path" 'pre-checkpoint HEAD' "checkpoint starting identity"
+    require_rule "$path" 'commit.*parent OID' "checkpoint commit/parent identities"
+    require_rule "$path" 'remaining.*changes|remaining.*work|remaining changes' "remaining-work coverage"
   done
+  require_rule "$executor" 'necessary checks first' "checked checkpoint boundary"
+  require_rule "$executor" 'complete procedure.*index inspection.*preservation of foreign staged and working-tree changes' "checkpoint commit safety procedure"
+  require_rule "$executor" 'Do not commit.*binding' "existing commit prohibition"
+  require_rule "$spec" 'nonempty index never restricts.*staged changes' "full-task spec scope"
+  require_rule "$spec" 'checkpoint already on the normal base is omitted' "base-omitted checkpoint warning"
+  require_rule "$spec" 'agreed earlier baseline.*stop incomplete' "earlier-baseline coverage stop"
+  require_link "$review" 'references/selected-snapshot.md'
+  require_link "$review" 'references/agent-launch.md'
+  require_link "$review" 'references/review-report.md'
+  require_link "$review" 'references/findings.md'
+  require_rule "$snapshot" 'Ordinary scope.*committed checkpoints.*staged, unstaged and untracked' "complete intended-work scope"
+  require_rule "$snapshot" 'staged-only request.*explicit.*never inferred' "no staged-first truncation"
+  require_rule "$snapshot" 'checkpoint.*candidate base.*explicitly agreed earlier boundary' "review baseline coverage stop"
+  require_rule "$snapshot" 'ancestry test or changed-path list alone does not prove coverage' "net-change coverage evidence"
+  require_rule "$snapshot" 'Recheck untracked and unstaged inventories' "working-source currency"
+  require_rule "$launch" 'three finder roles and then one verifier.*after every finder result' "independent verifier ordering"
+  require_rule "$launch" 'Never say which role or check raised a candidate' "verifier independence"
+  require_rule "$launch" 'mandatory even with host-enforced restrictions' "mandatory state comparison"
+  require_rule "$launch" 'tracked, untracked and ignored.*directories' "whole-tree state capture"
+  require_rule "$launch" 'baseline or comparison is incomplete.*stop.*incomplete' "failed-state-check stop"
+  require_rule "$launch" 'prompt-only.*never present.*enforcement' "honest permission reporting"
+  require_rule "$review" 'never refute, confirm or drop a candidate yourself' "orchestrator verdict boundary"
+  require_rule "$review" 'no code, tickets, project specs, journal, index, Git objects or commits' "report-only review writes"
+  require_rule "$review" 'Suggest .*dev-exec.*selected finding numbers directly; no ticket is required' "direct selected-finding handoff"
+  require_rule "$review" 'fix/plan approval.*reproduce or otherwise confirm.*before changing code' "correction approval and evidence"
+  require_rule "$report" 'sweep: incomplete.*never current' "incomplete report currency stop"
+  require_rule skills/dev-commit/SKILL.md 'Other groups are staged and a selected path mixes groups.*Stop before changing the index' "foreign-index mixed-path stop"
+  require_rule skills/dev-commit/SKILL.md 'Keep working-file bytes unchanged throughout' "working-byte preservation"
+}
+
+check_removed_surfaces() {
+  local path pattern
+  pattern=$(IFS='|'; printf '%s' "${REMOVED[*]}")
+  while IFS= read -r path; do
+    if grep -Eq -- "(^|[^[:alnum:]_-])($pattern)([^[:alnum:]_-]|$)|--to-tickets|ticket: proposed" "$path"; then
+      fail "$path: removed command or review ticket-export route in active skill resource"
+    fi
+    case "$path" in
+      */controlled-run.md|*/task-journal.md|skills/dev-review/assets/outcome.schema.json)
+        fail "$path: removed coordination resource" ;;
+    esac
+  done < <(find skills -type f \( -name '*.md' -o -name '*.json' -o -name '*.yaml' \) | sort)
+  for path in skills/nxs-setup/assets/*.md; do
+    if grep -Eq -- 'Task journal:|decision\.log|JSONL|controlled-run|step_id|run_id|plan_hash' "$path"; then
+      fail "$path: obsolete setup journal or coordination injection"
+    fi
+  done
+  if grep -Eq -- 'app-server|stream-json|OPENCODE_PASSWORD|/api/(plugin|model|agent|skill)' skills/nxs-setup/references/readiness.md; then
+    fail "readiness must not restore private client discovery transports"
+  fi
 }
 
 normalize_path() {
@@ -397,19 +496,15 @@ check_changelog() {
 }
 
 check_catalog
-[ "${#TARGET[@]}" -eq 19 ] || fail "target catalog must have 19 commands"
-[ "$(printf '%s\n' "${TARGET[@]}" | sort -u | wc -l | tr -d ' ')" -eq 19 ] || fail "duplicate target command"
-for name in "${TARGET[@]}"; do
-  [ -f "skills/$name/SKILL.md" ] || fail "target command $name missing"
-done
 for name in "${SKILLS[@]}"; do
   check_skill "$name"
 done
 check_roles
 check_shared
 check_done_when
-check_ticket_handoff
-check_checkpoint_handoff
+check_ticket_contract
+check_workflow_contract
+check_removed_surfaces
 check_links
 check_runtime_paths
 check_changelog
