@@ -39,6 +39,8 @@ Detect the base: `origin/HEAD`, else the existing `main` or `master`; stop on am
 
 Exclude `.scratch/`, `SPEC.md` and `.SPEC.md` from it, so a repeat never treats its own specs as work. An empty result on the base branch stops: work already committed on the base branch is not supported; run on a branch, or before committing.
 
+When task context, a journal, controlled packet or user identifies checkpointed work as the intended input, read the checkpoint handoff: repository, branch, pre-checkpoint HEAD, each commit and parent OID, task scope, changed paths and remaining task changes. Validate it against Git and the built-work input before MODE or any spec write. Verify every checkpoint's relevant task changes remain represented in the net diff, together with all intended remaining task changes, subject to the exclusions above. An ancestor check or path list alone is not proof: later edits can cancel or replace changes. A checkpoint already on the base is outside this input even when unrelated changes make the diff nonempty. If intended work is omitted, evidence is missing or coverage is uncertain, stop and identify the omitted or uncertain scope; never report "nothing durable changed" or write a partial spec as if the task were covered. Preserve Git state and let the user choose how to proceed; this does not add a range selector.
+
 ## MODE
 
 Detect with LISTING from the reference. A foreign `SPEC.md` is not counted here and never amended. Take the first matching row:

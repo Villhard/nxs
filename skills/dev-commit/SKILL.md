@@ -57,4 +57,4 @@ With nothing to commit, report a successful no-op without a question. For other 
 
 ## NEXT
 
-Stop after the report from step 5. `git push` waits for a later explicit request.
+For a standalone commit, stop after the report from step 5. When `dev-exec` applies this procedure as an explicitly authorized checkpoint in the same session, return the result to the calling execution instead; it verifies the checkpoint before continuing. This exception does not authorize a commit, bypass any stop condition or start a nested command. `git push` waits for a later explicit request.

@@ -24,7 +24,7 @@ Artifacts are existing FILE paths under the allowed artifact root, unique after 
 
 For `needs_input`, save the question and end the subagent turn. Record the host's session identity outside the envelope when the host exposes one. Lead continues that exact session only when the host documents continuation; otherwise it starts a new bounded subagent with the approved answer and saved artifacts.
 
-`done` is a proposal, accepted only after independent artifact, acceptance, command-output and Git checks. It never replaces ticket statuses. A valid JSON shape, a zero exit code or the executor's assertion alone is insufficient. A ticket planning turn returns `needs_input` with the proposed ticket plan and waits for recorded lead approval before implementation. A source-changing ticket executor never commits.
+`done` is a proposal, accepted only after independent artifact, acceptance, command-output and Git checks. It never replaces ticket statuses. A valid JSON shape, a zero exit code or the executor's assertion alone is insufficient. A ticket planning turn returns `needs_input` with the proposed ticket plan and waits for recorded lead approval before implementation. For approved checkpoints, `dev-exec` applies `dev-commit` in its own session only within the user-approved commit scope and packet permissions; a ticket's existing `Do not commit` remains binding unless that ticket is separately revised with approval. Lead independently verifies commit identities and evidence at acceptance.
 
 ## SKILL BOUNDARIES
 

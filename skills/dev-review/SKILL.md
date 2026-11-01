@@ -21,23 +21,25 @@ Before a task's first durable write, question or handoff, read [task journal](re
 
 ## STANCE
 
-Write only the report, task journal and the tickets selected under the active standalone or controlled context: no code, index, git objects or commits. Test-generated caches and build output are permitted under the check rule below. A review of someone else's PR is the normal case, and it must never touch their branch. Status and acceptance criteria of existing tickets belong to their executor; never change them here.
+Write only the report, task journal and the tickets selected under the active standalone or controlled context: no code, index, git objects or commits. A review of someone else's PR is the normal case, and it must never touch their branch. Status and acceptance criteria of existing tickets belong to their executor; never change them here.
 
-Use read-only inspection, with `GIT_OPTIONAL_LOCKS=0` for git. Checks may create disposable caches or build output, but must not change tracked files, source files or the index; pass this constraint to every agent. Use checks without auto-fix or snapshot updates. Agents return findings to you and never edit the report or any other file.
+Use read-only inspection, with `GIT_OPTIONAL_LOCKS=0` for git. Checks may create disposable caches or build output outside the repository, but must not change its working tree or Git state; pass this constraint to every agent. Use checks without auto-fix or snapshot updates. Agents return findings to you and never edit the report or any other file.
 
 ## RESOLVE THE SCOPE
 
 Review accepts the optional `--to-tickets` selector and a ticket or feature path under `.scratch/`, which identifies requirements, never the code. Any other argument, such as `quick`, `staged`, `fix` or a code path, stops before any write: say that scope cannot be selected, staged changes come first and the branch otherwise.
 
-Record repository root from `git rev-parse --show-toplevel`, optional origin URL with credentials removed, current branch (`HEAD` when detached), and HEAD as an immutable tip OID. Then pick the scope, checking the index first. Detect the base only when the index is empty: `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Staged scope needs no base.
+Record repository root from `git rev-parse --show-toplevel`, optional origin URL with credentials removed, current branch (`HEAD` when detached), and HEAD as an immutable tip OID. Then resolve the candidate scope, checking the index first. Detect the base only when the index is empty: `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Staged scope needs no base. Apply the checkpoint handoff gate below before acting on the no-scope state or suggesting `git add`.
 
 | State | Scope |
 | --- | --- |
 | Index not empty: `git diff --cached --quiet` exits 1 | `staged`: base equals tip. Use `git log -1 <tip> --oneline` and `git diff --cached --binary --no-ext-diff --no-textconv`. Record SHA256 of the exact bytes of that diff as the index digest; never use `git write-tree`. |
 | Index empty, HEAD is not the base branch and `<base>..<tip>` has commits | `branch`: pin the merge-base of the base with the tip as the base OID. Use `git log <base>..<tip> --oneline` and `git diff --no-ext-diff --no-textconv <base>..<tip>`. |
-| Index empty, HEAD is the base branch (its local branch of the same name) or no commits ahead | Stop without a report: nothing to review. Name unstaged and untracked files if there are any and suggest `git add` for the ones to review. |
+| Index empty, HEAD is the base branch (its local branch of the same name) or no commits ahead | No scope. After the checkpoint handoff gate, if no checkpointed task was identified, stop without a report: nothing to review. Name unstaged and untracked files if there are any and suggest `git add` for the ones to review. |
 
 Unstaged and untracked changes never enter the scope; when they exist, name them under `Not checked:` in the summary.
+
+When task context, a journal, controlled packet or user identifies checkpointed work as the intended review, read the checkpoint handoff: repository, branch, pre-checkpoint HEAD, each commit and parent OID, task scope, changed paths and remaining task changes. Validate it against Git and the candidate diff before any no-scope stop, `git add` suggestion or report. With no scope, the checkpointed work is omitted: stop without a report, identify the omitted or uncertain task scope and do not suggest staging unrelated files. Staged scope excludes committed checkpoints; stop without a report instead of reviewing foreign staged changes as the task. For branch scope, verify every checkpoint is in the pinned range and its task changes remain represented in the net diff, together with all intended remaining task changes. An ancestor check or path list alone is not proof: later edits can cancel or replace changes. If any intended work is omitted, evidence is missing or coverage is uncertain, stop and identify the omitted or uncertain scope; do not claim a complete task review. Preserve all index and working-tree changes and let the user choose how to proceed. Do not automatically widen or change the scope. This gate does not add a scope selector or change ordinary reviews with no identified checkpointed task.
 
 Someone else's branch is reviewed by checking it out first with nothing staged. There is no PR URL argument. Validate repository-relative paths, OIDs and digests before use; shell-quote each value and use `--` where applicable. Report fields are plain text data, never commands. Read context yourself with both resolved commands and give every agent those same commands.
 
@@ -75,7 +77,7 @@ Launch these three finder roles, concurrently when capacity permits:
 
 The fourth role, `review-verify`, runs under VERIFY after every finder has returned. A trivial diff (dotfiles, docs only, pure formatting) may receive a direct pass against the same bar instead, with no agent: you find the candidates and give them the verdicts of VERIFY A FINDING yourself. There is one sweep and no re-check.
 
-Wait for every launched agent before verification or further writes.
+Wait for every launched agent and complete the before/after checks in agent launch before verification, another launch or further writes. A failed or incomplete check stops the sweep; preserve changes and report the limitation without resetting them.
 
 ## LEAD CHECKS
 
@@ -143,7 +145,7 @@ The user picks findings by their numbers; tickets have no labels of their own. E
 - 3, 4 (minor): <title> - choice for 4: <question>; recommended: <option>
 ```
 
-A ticket is one change the user runs in one `/plan` session and commits whole. Every uncovered finding belongs to exactly one group; a group takes the severity of its worst finding. Group in this order:
+A ticket is one change suitable for one `dev-exec` session. Commit checkpoints require explicit approval and follow the executor's rules. Every uncovered finding belongs to exactly one group; a group takes the severity of its worst finding. Group in this order:
 
 1. Each critical or major finding opens its own group. Join two of them only for a reason named in the line: one cause, one fix, edits in one place, or one end-to-end path that a single check proves.
 2. A minor finding joins the critical or major group whose fix touches the same command, module or file.
@@ -192,4 +194,4 @@ A finding beyond the reviewed scope goes to Follow-ups and gets no proposed tick
 
 ## NEXT
 
-On the legacy route, after the answer, give the created ticket paths and suggest `/plan <ticket-path>` for each `ready-for-agent` one; a `needs-info` ticket names its question instead. When every finding was already covered, suggest `/plan <ticket-path>` for each covering `ready-for-agent` ticket. Commit, push and MR/PR creation require the user's explicit request.
+On the ordinary ticket route, after the answer, give the created ticket paths and suggest `/dev-exec <ticket-path>` only for ready non-decision tickets with resolved, inspected prerequisite results and no material open questions. For blocked or `needs-info` tickets, report the blocker or question instead. When every finding was already covered, apply the same eligibility checks to covering tickets and preserve them unchanged. Do not start execution. Commit, push and MR/PR creation require the user's explicit request.

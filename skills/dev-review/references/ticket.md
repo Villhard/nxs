@@ -6,7 +6,7 @@ Read this reference before writing a ticket. `to-tickets` owns these rules and t
 
 Before writing, read the [ticket template](../assets/ticket.md) and write each ticket exactly in that shape: title, `**What to build:**`, `**Blocked by:**`, optional `**Branch:**`, `**Status:**`, acceptance criteria as `- [ ]` lines, then `## Done when`.
 
-Copy `## Done when` verbatim, in English, whatever language the rest of the ticket uses. Harness plan mode sees only the ticket text, so that block is the whole execution contract for `/plan <ticket-path>`; `dev-exec` also reads it when executing a ticket. Never edit, shorten or translate it.
+Copy `## Done when` verbatim, in English, whatever language the rest of the ticket uses. `dev-exec` reads that block when executing a ticket. Never edit, shorten or translate it. Existing tickets retain their execution text and any `Do not commit` prohibition unless a specific revision is separately approved; the new template does not migrate them.
 
 ## NUMBERING
 

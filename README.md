@@ -15,7 +15,7 @@ Start with the result you need:
 - "This behavior fails and I need evidence of the cause" - use `rnd-debug`; an eligible confirmed cause can inform tickets.
 - "I have an approved feature spec and need executable work" - use `to-tickets`.
 - "Implement this clear request" - use `dev-exec` for a plan and execution in the current session.
-- "Review these changes" - use `dev-review`; its ordinary route can create selected tickets, while `--to-tickets` saves a selection for a separate `to-tickets` step.
+- "Review these changes" - use `dev-review`; its ordinary route can create selected tickets and suggest `dev-exec` for eligible work, while `--to-tickets` saves a selection for a separate `to-tickets` step.
 
 ## Target catalog
 
@@ -62,7 +62,7 @@ These 19 commands are in the source tree. Presence and shell checks do not prove
 
 ## Using the stages
 
-A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to-tickets` -> `dev-exec`; continue only within the authorization already given or after obtaining any missing request or approval. A clear request can go directly to `dev-exec`, which presents a plan before implementation. Review, recording built project intent and committing are separate steps.
+A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to-tickets` -> `dev-exec`; continue only within the authorization already given or after obtaining any missing request or approval. A clear request can go directly to `dev-exec`, which presents a plan before implementation. `dev-exec` applies `dev-commit` in its own session for checked checkpoints within explicitly approved commit scope; existing ticket prohibitions remain binding. Review and recording built project intent are separate stages.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/grill-dark.svg">
