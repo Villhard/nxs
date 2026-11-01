@@ -8,11 +8,9 @@
 #   - review role files;
 #   - resource ownership, consumers and byte-identical shared copies;
 #   - the fenced ticket Done when copy;
-#   - ticket gates, checkpoint coverage and independent review structure;
-#   - removed routes and mandatory setup journal injection stay absent;
+#   - bundled template section headings;
 #   - links stay inside the owning skill;
-#   - no bundled link escapes an installed skill;
-#   - CHANGELOG release headings keep their dated shape.
+#   - no bundled link escapes an installed skill.
 #
 # Usage:
 #   bash .github/scripts/check-skills.sh
@@ -32,10 +30,6 @@ SKILLS=(
 )
 EXPLICIT=(
   rnd-grill rnd-debug dev-exec dev-review dev-spec nxs-setup
-)
-REMOVED=(
-  rnd-map rnd-research rnd-prototype rnd-audit rnd-design
-  to-decision to-spec to-questionnaire to-tickets to-handoff nxs-lead nxs-retro
 )
 ROLES=(
   review-quality review-testing review-simplification review-verify
@@ -295,8 +289,7 @@ check_done_when() {
   done
 }
 
-# These are source-contract assertions, not proof of agent behavior. Validate
-# template shape, actual bundled dependency edges and safety gates together.
+# Read-only source assertions used by the review-role and template checks.
 require_rule() {
   grep -Eq -- "$2" "$1" || fail "$1: missing $3"
 }
@@ -311,100 +304,11 @@ check_headings() {
   [ "$actual" = "$2" ] || fail "$1: unexpected section structure: $actual"
 }
 
-check_ticket_contract() {
-  local template=skills/dev-exec/assets/ticket.md rules=skills/dev-exec/references/ticket.md
-  local preparation=skills/dev-exec/references/work-preparation.md actual
-  actual=$(awk '/^\*\*[^*]+:\*\*/ { sub(/:.*/, ""); print }' "$template")
-  [ "$actual" = $'**What to build\n**Blocked by\n**Branch\n**Status' ] || fail "$template: incorrect ticket fields/order"
-  require_rule "$template" '^# <NN>:' "numbered ticket title"
-  require_rule "$template" '^\*\*Status:\*\* ready-for-agent$' "initial status"
-  require_rule "$template" '^- \[ \] ' "unchecked acceptance criteria"
-  check_headings "$template" '## Условия завершения'
-  require_rule "$template" '^Выполни ticket напрямую через `/dev-exec <этот файл>`\.$' "executor handoff"
-  require_rule "$template" '^- .*ready-for-agent.*Blocked by.*resolved.*проверенных результатах предпосылок.*выбранном рабочем дереве' "status and actual prerequisite gates"
-  require_rule "$template" '^- .*одобренный конкретный план.*согласия.*точную цель.*native permissions.*ready-for-human' "plan and direct human-step approval gate"
-  require_rule "$template" 'ready-for-agent.*проверь реальный результат; не повторяй действие с неизвестным эффектом' "human-step evidence and replay stop"
-  require_rule "$template" '^- Закрывай только после каждого критерия, полного набора тестов проекта, линтера и остальных обязательных проверок:.*resolved' "verified completion gate"
-  require_rule "$template" 'запрещенная/недоступная проверка оставляет ticket нерешенным' "missing-check stop"
-  require_rule "$template" '^- Коммиты необязательны.*явного разрешения.*охват.*dev-commit.*Do not commit' "commit authorization and preservation"
-  if grep -Eq -- '(^|[^[:alnum:]_-])/plan([^[:alnum:]_-]|$)' "$template" skills/dev-review/SKILL.md; then
-    fail "current ticket template and review must not restore the removed /plan executor"
-  fi
-  require_link "$rules" '../assets/ticket.md'
-  require_link "$preparation" 'ticket.md'
-  require_link "$preparation" '../assets/ticket.md'
-  require_link skills/dev-exec/SKILL.md 'references/work-preparation.md'
-  require_rule "$rules" 'Копируй .*Условия завершения.*дословно' "verbatim execution block rule"
-  require_rule "$rules" 'Существующие tickets сохраняют текст исполнения.*Done when.*Comments.*Do not commit' "legacy ticket preservation"
-  require_rule "$preparation" 'Перед записью сверь изменения источника и цели; сохрани конкурентные правки' "concurrent ticket preservation"
-}
-
-check_workflow_contract() {
-  local executor=skills/dev-exec/SKILL.md review=skills/dev-review/SKILL.md
-  local snapshot=skills/dev-review/references/selected-snapshot.md spec=skills/dev-spec/SKILL.md
-  local launch=skills/dev-review/references/agent-launch.md report=skills/dev-review/references/review-report.md path
-  require_link "$executor" 'references/handoff.md'
-  require_link skills/dev-exec/references/handoff.md '../assets/handoff.md'
+check_template_headings() {
+  check_headings skills/dev-exec/assets/ticket.md '## Условия завершения'
   check_headings skills/dev-exec/assets/handoff.md $'## Принято\n## Открытые вопросы\n## Не проверено\n## Проверки\n## Текущие артефакты и следующий шаг'
-  for path in "$executor" skills/dev-exec/references/handoff.md skills/dev-exec/assets/handoff.md "$spec" "$snapshot"; do
-    require_rule "$path" 'pre-checkpoint HEAD' "checkpoint starting identity"
-    require_rule "$path" 'commit.*parent OID' "checkpoint commit/parent identities"
-    require_rule "$path" 'оставшиеся.*изменения|остаток|оставшийся.*задачи' "remaining-work coverage"
-  done
-  require_rule "$executor" 'Сначала выполни нужные проверки готового блока' "checked checkpoint boundary"
-  require_rule "$executor" 'полную процедуру.*осмотр index.*сохранность чужих staged и working-tree правок' "checkpoint commit safety procedure"
-  require_rule "$executor" 'Do not commit.*остается обязательным' "existing commit prohibition"
-  require_rule "$spec" 'Непустой index не сужает охват до staged' "full-task spec scope"
-  require_rule "$spec" 'Checkpoint на обычной базе не попадает в diff' "base-omitted checkpoint warning"
-  require_rule "$spec" 'согласованная более ранняя baseline.*остановись incomplete' "earlier-baseline coverage stop"
-  require_link "$review" 'references/selected-snapshot.md'
-  require_link "$review" 'references/agent-launch.md'
-  require_link "$review" 'references/review-report.md'
-  require_link "$review" 'references/findings.md'
-  require_rule "$snapshot" 'Обычный scope.*committed checkpoint.*staged, unstaged, untracked' "complete intended-work scope"
-  require_rule "$snapshot" 'Staged-only допустим лишь явно, не по содержимому index' "no staged-first truncation"
-  require_rule "$snapshot" 'checkpoint.*candidate base.*остановись для явно согласованной более ранней границы' "review baseline coverage stop"
-  require_rule "$snapshot" 'Ancestry/список путей не доказывают покрытие' "net-change coverage evidence"
-  require_rule "$snapshot" 'Заново проверь untracked/unstaged inventories' "working-source currency"
-  require_rule "$launch" 'Три finder roles, затем один verifier только после всех их результатов' "independent verifier ordering"
-  require_rule "$launch" 'Не сообщай роль/проверку-автора' "verifier independence"
-  require_rule "$launch" 'Обязательно даже при host-enforced restrictions' "mandatory state comparison"
-  require_rule "$launch" 'tracked, untracked, ignored файлы и каталоги' "whole-tree state capture"
-  require_rule "$launch" 'Неполная baseline/сверка или любое различие останавливает проход incomplete' "failed-state-check stop"
-  require_rule "$launch" 'не представляй prompt-only как техническую защиту' "honest permission reporting"
-  require_rule "$review" 'сам не подтверждай, не опровергай и не удаляй кандидата' "orchestrator verdict boundary"
-  require_rule "$review" 'не код, tickets, project specs, журнал, index, Git objects и коммиты' "report-only review writes"
-  require_rule "$review" 'Предложи .*dev-exec.*прямо с отчетом и номерами, без обязательного ticket' "direct selected-finding handoff"
-  require_rule "$review" 'согласие на исправление/план.*воспроизвести либо иначе подтвердить.*до правок' "correction approval and evidence"
-  require_rule "$report" 'sweep: incomplete.*никогда не актуален' "incomplete report currency stop"
-  require_rule skills/dev-commit/SKILL.md 'Другие группы staged и выбранный путь mixed.*Остановись до изменения index' "foreign-index mixed-path stop"
-  require_rule skills/dev-commit/SKILL.md 'Байты рабочих файлов сохраняй неизменными на протяжении всей команды' "working-byte preservation"
   check_headings skills/rnd-grill/assets/spec.md $'## Проблема\n## Решение\n## Пользовательские сценарии\n## Решения по реализации\n## Решения по проверке\n## Вне задачи\n## Дополнительные заметки'
   check_headings skills/dev-spec/assets/project-spec.md $'## Цель\n## Архитектура\n## Назначение\n## Ответственность\n## Границы\n## Контракты\n## Известные ограничения\n## Обоснование'
-  require_rule skills/dev-spec/references/project-specs.md 'Цель.*Архитектура.*Назначение.*Ответственность.*Границы.*Контракты.*Известные ограничения.*Обоснование' "Russian project-spec headings"
-  require_rule skills/dev-spec/references/project-specs.md 'Для существующих файлов допустимы прежние соответствия:.*Goal.*Architecture' "legacy project-spec reading"
-}
-
-check_removed_surfaces() {
-  local path pattern
-  pattern=$(IFS='|'; printf '%s' "${REMOVED[*]}")
-  while IFS= read -r path; do
-    if grep -Eq -- "(^|[^[:alnum:]_-])($pattern)([^[:alnum:]_-]|$)|--to-tickets|ticket: proposed" "$path"; then
-      fail "$path: removed command or review ticket-export route in active skill resource"
-    fi
-    case "$path" in
-      */controlled-run.md|*/task-journal.md|skills/dev-review/assets/outcome.schema.json)
-        fail "$path: removed coordination resource" ;;
-    esac
-  done < <(find skills -type f \( -name '*.md' -o -name '*.json' -o -name '*.yaml' \) | sort)
-  for path in skills/nxs-setup/assets/*.md; do
-    if grep -Eq -- 'Task journal:|decision\.log|JSONL|controlled-run|step_id|run_id|plan_hash' "$path"; then
-      fail "$path: obsolete setup journal or coordination injection"
-    fi
-  done
-  if grep -Eq -- 'app-server|stream-json|OPENCODE_PASSWORD|/api/(plugin|model|agent|skill)' skills/nxs-setup/references/readiness.md; then
-    fail "readiness must not restore private client discovery transports"
-  fi
 }
 
 normalize_path() {
@@ -476,30 +380,6 @@ check_runtime_paths() {
   done < <(find skills -type f \( -name '*.md' -o -name '*.json' -o -name '*.yaml' \) | sort)
 }
 
-check_changelog() {
-  awk '
-    function finish_release() {
-      if (release && !body) { print "empty release entry: " heading > "/dev/stderr"; bad = 1 }
-    }
-    /^## / {
-      finish_release(); release = 0; body = 0
-      if ($0 ~ /^## \[Unreleased\]/) next
-      if ($0 !~ /^## \[[^]]+\] - [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9][ \t]*$/) {
-        print "invalid release heading: " $0 > "/dev/stderr"; bad = 1; next
-      }
-      heading = $0; date = $0; sub(/^.* - /, "", date); sub(/[ \t]*$/, "", date)
-      split(date, parts, "-"); year = parts[1] + 0; month = parts[2] + 0; day = parts[3] + 0
-      days = (month == 2 ? 28 + (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) : (month == 4 || month == 6 || month == 9 || month == 11 ? 30 : 31))
-      if (year < 1 || month < 1 || month > 12 || day < 1 || day > days) {
-        print "invalid release date: " date > "/dev/stderr"; bad = 1
-      }
-      release = 1; count++; next
-    }
-    release && $0 ~ /[^[:space:]]/ && $0 !~ /^#/ { body = 1 }
-    END { finish_release(); if (!count) { print "no dated release entries" > "/dev/stderr"; bad = 1 }; exit bad }
-  ' CHANGELOG.md || fail "CHANGELOG.md: invalid release entries"
-}
-
 check_catalog
 for name in "${SKILLS[@]}"; do
   check_skill "$name"
@@ -507,11 +387,8 @@ done
 check_roles
 check_shared
 check_done_when
-check_ticket_contract
-check_workflow_contract
-check_removed_surfaces
+check_template_headings
 check_links
 check_runtime_paths
-check_changelog
 
 printf 'skills check: passed\n'

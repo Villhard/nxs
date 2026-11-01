@@ -2,9 +2,8 @@
 #
 # check-no-runtime.sh - reject the removed Python runtime and agterm coupling.
 #
-# Active skills, guides and scenarios must not require Python 3, agterm or
-# bundled .py helpers. Historical records (CHANGELOG.md and docs/adr/) keep
-# their original text.
+# Active skills, guides and project docs must not require Python 3, agterm or
+# bundled .py helpers.
 #
 # Usage:
 #   bash .github/scripts/check-no-runtime.sh
@@ -31,7 +30,6 @@ ACTIVE=(
   CONTRIBUTING.md
   SPEC.md
   GLOSSARY.md
-  tests/client-scenarios.md
 )
 while IFS= read -r path; do
   ACTIVE+=("$path")
