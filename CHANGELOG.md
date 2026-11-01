@@ -26,6 +26,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - README distinguishes same-name nxs and companion skills before choosing a route.
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.75.0] - 2026-11-01
+
+### Removed
+
+- `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup` are removed from the source catalog; this does not change installed copies or verify cutover.
+
+### Changed
+
+- Shared project-spec, controlled-run and ticket references use retained owners and commands; historical recovery paths are preserved.
+- `rnd-debug`, `dev-review`, `dev-spec`, `dev-exec` and `to-spec` no longer describe removed commands as active routes.
+- Structural checks, CI, README, CONTRIBUTING, GLOSSARY and client scenarios reflect the source removal and outstanding verification.
+
 ## [0.74.2] - 2026-11-01
 
 ### Changed

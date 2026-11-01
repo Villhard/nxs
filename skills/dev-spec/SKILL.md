@@ -1,6 +1,6 @@
 ---
 name: dev-spec
-description: Record durable project specs from landed work when the user explicitly invokes /dev-spec. Writes SPEC.md, or private .SPEC.md kept out of Git, from the branch diff and an optional feature directory, then stops. Not for discussing specs; dev-rnd shapes new work and dev-review finds defects.
+description: Record durable project specs from landed work when the user explicitly invokes /dev-spec. Writes SPEC.md, or private .SPEC.md kept out of Git, from the branch diff and an optional feature directory, then stops. Not for discussing specs; rnd-grill shapes new work and dev-review finds defects.
 argument-hint: "[feature dir]"
 disable-model-invocation: true
 ---

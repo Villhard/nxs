@@ -6,7 +6,7 @@ Prepare an approved local feature spec from a saved decision or clear request in
 
 ## Ownership
 
-Own the feature spec format and the independent source/location contract. The feature template remains byte-identical in the legacy `dev-rnd` and `dev-bug` consumers. Bundle shared discussion, project-spec reader and journal/controlled-run resources unchanged so independent installation needs no other installed skill.
+Own the feature spec format and the independent source/location contract. The feature template remains byte-identical in the `rnd-debug` consumer. Bundle shared discussion, project-spec reader and journal/controlled-run resources unchanged so independent installation needs no other installed skill.
 
 ## Boundaries
 

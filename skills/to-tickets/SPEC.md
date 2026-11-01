@@ -6,7 +6,7 @@ Turn an approved feature spec, confirmed eligible root cause or selected current
 
 ## Ownership
 
-Own the shared ticket rules and template, including their executor contract. Legacy `dev-rnd`, `dev-bug` and `dev-review` producers bundle byte-identical copies while retaining their own entry gates. The checker enforces shared-copy agreement and the setup tracker's execution-block copy. Bundle project-spec reader and journal/controlled-run resources unchanged so independent installation needs no other installed skill.
+Own the shared ticket rules and template, including their executor contract. `dev-review` and `dev-exec` bundle byte-identical copies while retaining their own entry gates. The checker enforces shared-copy agreement and the setup tracker's execution-block copy. Bundle project-spec reader and journal/controlled-run resources unchanged so independent installation needs no other installed skill.
 
 ## Boundaries
 
@@ -25,4 +25,4 @@ Explicit invocation or an explicit controlled scope permits preparation of ticke
 
 ## Known limitations
 
-Diagnosis and selected review findings also retain their existing producers and legacy `/plan` handoffs. Separate Codex fixture observations do not establish a complete route, native registration or compatibility with other clients. Source inspection and packaging checks do not authorize installation replacement.
+Existing `/plan` tickets retain their execution contract but are not migrated by source removal. Separate Codex fixture observations do not establish a complete route, native registration or compatibility with other clients. Source inspection and packaging checks do not authorize installation replacement.

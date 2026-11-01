@@ -6,7 +6,7 @@ Read when a launch carries an explicit controlled-run packet. A feature director
 
 Require the bounded step ID and run ID, exact cwd and candidate skill/role path, approved feature plan with content hash and approval event, permission boundaries, allowed writes, acceptance criteria, artifact paths, journal path and result schema. Research before feature approval may carry `approval: pending` and read/research-only permissions; it cannot implement, commit or claim plan approval. If any required context is absent or contradictory, return `blocked` with the missing field.
 
-The user explicitly invoking `dev-lead` or `nxs-lead` delegates internal use of the task skills within the approved scope. This packet conveys that authorization; it does not manufacture new consent. Independent calls retain their own invocation and dialogue gates. Changes to scope, external contracts or agreed decisions require the user's answer through lead. Technical ticket plans and in-scope review fixes are approved by lead and journaled. Existing concrete user approval is reused within its scope.
+The user explicitly invoking `nxs-lead` delegates internal use of the task skills within the approved scope. This packet conveys that authorization; it does not manufacture new consent. Independent calls retain their own invocation and dialogue gates. Changes to scope, external contracts or agreed decisions require the user's answer through lead. Technical ticket plans and in-scope review fixes are approved by lead and journaled. Existing concrete user approval is reused within its scope.
 
 ## OUTCOME
 

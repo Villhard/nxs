@@ -26,11 +26,11 @@ fail() {
 }
 
 SKILLS=(
-  dev-rnd dev-bug dev-review dev-spec dev-setup nxs-setup dev-commit dev-lead
+  dev-review dev-spec nxs-setup dev-commit
   rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro nxs-lead
 )
 EXPLICIT=(
-  dev-rnd dev-bug dev-review dev-spec dev-setup nxs-setup dev-lead
+  dev-review dev-spec nxs-setup
   rnd-grill rnd-debug rnd-research rnd-prototype rnd-design rnd-audit rnd-map to-decision to-spec to-tickets dev-exec to-questionnaire to-handoff nxs-retro nxs-lead
 )
 TARGET=(
@@ -49,15 +49,13 @@ references/domain-modeling.md|rnd-grill,to-decision,rnd-design
 references/research.md|rnd-research,rnd-map
 references/prototype.md|rnd-prototype,rnd-map
 references/writing-for-agents.md|nxs-setup,nxs-retro
-references/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
+references/ticket.md|to-tickets,dev-review,dev-exec
 references/review-report.md|dev-review,to-tickets
-references/feature-directory.md|dev-rnd,dev-bug,rnd-debug
-references/project-specs.md|dev-rnd,dev-bug,dev-review,dev-spec,dev-lead,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro,nxs-lead
-references/task-journal.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro,nxs-lead
-references/controlled-run.md|dev-lead,dev-rnd,dev-bug,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro,nxs-lead
-assets/spec.md|to-spec,dev-rnd,dev-bug,rnd-debug
-assets/ticket.md|to-tickets,dev-rnd,dev-bug,dev-review,dev-exec
-assets/outcome.schema.json|dev-lead,dev-review
+references/project-specs.md|dev-spec,dev-review,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro,nxs-lead
+references/task-journal.md|nxs-lead,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro
+references/controlled-run.md|nxs-lead,dev-review,dev-spec,dev-commit,rnd-grill,to-decision,to-spec,to-tickets,dev-exec,rnd-debug,rnd-research,rnd-prototype,rnd-design,rnd-audit,rnd-map,to-questionnaire,to-handoff,nxs-retro
+assets/spec.md|to-spec,rnd-debug
+assets/ticket.md|to-tickets,dev-review,dev-exec
 "
 
 frontmatter_field() {
@@ -261,7 +259,7 @@ extract_fenced_done_when() {
 
 check_done_when() {
   local source=skills/to-tickets/assets/ticket.md copy expected actual
-  for copy in skills/dev-setup/assets/issue-tracker.md skills/nxs-setup/assets/issue-tracker.md; do
+  for copy in skills/nxs-setup/assets/issue-tracker.md; do
   expected=$(extract_done_when "$source")
   [ -n "$expected" ] || fail "$source: missing Done when section"
   actual=$(extract_fenced_done_when "$copy")

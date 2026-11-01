@@ -1,6 +1,6 @@
 # FEATURE DIRECTORY
 
-Read this reference before reading feature input or writing a feature artifact. `dev-rnd` and `dev-bug` apply the sections that fit their input; each command keeps its own gates and outputs.
+Read this reference before reading feature input or writing a feature artifact. Apply the sections that fit the input; `rnd-debug` keeps its own gates and outputs.
 
 ## LOCATION
 

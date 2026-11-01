@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # /dev-exec
 
-Execute the entrusted task in this session. `to-tickets` can hand eligible work to this executor; existing `/plan` tickets and legacy routes remain available. Live observations are limited to the cases recorded for the selected client, and source presence does not establish registration.
+Execute the entrusted task in this session. `to-tickets` can hand eligible work to this executor; existing `/plan` tickets retain their execution contract. Live observations are limited to the cases recorded for the selected client, and source presence does not establish registration.
 
 ## INSPECT
 
