@@ -22,6 +22,8 @@ jobs:
       - name: Reject runtime and Python remnants
         run: bash .github/scripts/check-no-runtime.sh
 
+  # Required by main branch protection under this exact name: a job reports
+  # exactly one check, so this name has to stay.
   discovery:
     name: Skills CLI discovery
     runs-on: ubuntu-latest
@@ -34,33 +36,21 @@ jobs:
         with:
           node-version: '22'
 
-      - name: The skills CLI lists the source catalog
+      - name: The skills CLI lists every source command
         run: |
           set -euo pipefail
-          # This job independently rejects missing, extra and nested commands.
-          bash .github/scripts/check-skills.sh
-          expected=$(printf '%s\n' rnd-grill rnd-debug dev-exec dev-review dev-spec dev-commit nxs-setup | sort)
+          # Each name is matched as a whole decorated line, so the listing may
+          # be reformatted without failing the job. A missing, renamed or
+          # nested command still fails; extra directories are already rejected
+          # by the catalog check in check-skills.sh.
           listed=$(npx -y skills@latest add . -l)
           printf '%s\n' "$listed"
-          listed=$(printf '%s\n' "$listed" | sed -E $'s/\033\\[[0-9;]*[mK]//g')
-          # Parse only list entries, not names mentioned in descriptions or logs.
-          # The count and complete block are both required; format drift fails closed.
-          [ "$(printf '%s\n' "$listed" | grep -Ec '(^|[^[:alnum:]])Found 7 skills([^[:alnum:]]|$)')" -eq 1 ] || {
-            echo 'discovery: expected exactly seven source commands'
-            exit 1
-          }
-          actual=$(printf '%s\n' "$listed" | awk '
-            /Available Skills/ { if (started++) exit 1; inside = 1; next }
-            inside && /Use --skill .* to install specific skills/ { finished = 1; inside = 0; next }
-            inside {
-              line = $0
-              sub(/^[^[:alnum:]]*/, "", line)
-              sub(/[[:space:]]*$/, "", line)
-              if (line ~ /^[a-z][a-z0-9-]*$/) print line
-            }
-            END { if (started != 1 || !finished) exit 1 }
-          ' | sort)
-          [ "$actual" = "$expected" ] || {
-            printf 'discovery: expected catalog:\n%s\nactual catalog:\n%s\n' "$expected" "$actual"
+          listed=$(printf '%s\n' "$listed" | sed -E $'s/\033\\[[0-9;]*[mK]//g' | sed -E 's/^[^[:alnum:]]*//')
+          missing=
+          for name in rnd-grill rnd-debug dev-exec dev-review dev-spec dev-commit nxs-setup; do
+            printf '%s\n' "$listed" | grep -qx -- "$name" || missing="$missing $name"
+          done
+          [ -z "$missing" ] || {
+            printf 'discovery: not listed by the CLI:%s\n' "$missing"
             exit 1
           }

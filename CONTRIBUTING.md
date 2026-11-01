@@ -13,8 +13,8 @@ skills/<name>/
   references/                  # правила, читаемые по необходимости
   assets/                      # шаблоны документов
   roles/                       # независимые reviewer roles dev-review
-tests/client-scenarios.md
-README.md CONTRIBUTING.md CHANGELOG.md
+README.md CONTRIBUTING.md SPEC.md GLOSSARY.md
+docs/images/                   # диаграммы README в двух темах
 ```
 
 Ссылки скилла ведут только внутрь его каталога. Общие ресурсы копируй реальным потребителям побайтово, без зависимости от developer checkout, helper или другой установки.
@@ -37,11 +37,11 @@ README.md CONTRIBUTING.md CHANGELOG.md
 
 ## Имена
 
-Имя - команда пользователя: короткое, понятное с первого взгляда, без конфликтов с клиентом/установленными скиллами. Пространства: `rnd-` для исследования, `dev-` для разработки, `nxs-` для настройки. При совпадении проверь путь/provenance; имя не запускает следующую стадию. [ADR 0007](docs/adr/0007-skill-names.md) - прежнее решение, [ADR 0009](docs/adr/0009-seven-skill-direct-flow.md) - семь сохраненных имен вместо прежнего фиксированного префикса/каталога.
+Имя - команда пользователя: короткое, понятное с первого взгляда, без конфликтов с клиентом/установленными скиллами. Пространства: `rnd-` для исследования, `dev-` для разработки, `nxs-` для настройки. При совпадении проверь путь/provenance; имя не запускает следующую стадию. Семь имен сохранены вместо прежнего фиксированного префикса и каталога.
 
 ## Язык и безопасность
 
-Пиши кратко и по-русски, с ASCII-дефисом и прямыми кавычками. Заголовки инструкций - ПРОПИСНЫМИ, README и CHANGELOG - обычным регистром. Заголовки артефактов тоже русские; служебные ключи, статусы, пути и технические термины сохраняются. Старые артефакты читаются с прежними заголовками без автоматической миграции.
+Пиши кратко и по-русски, с ASCII-дефисом и прямыми кавычками. Заголовки инструкций - ПРОПИСНЫМИ, README и остальные руководства - обычным регистром. Заголовки артефактов тоже русские; служебные ключи, статусы, пути и технические термины сохраняются. Старые артефакты читаются с прежними заголовками без автоматической миграции.
 
 Не публикуй частные пути/remotes, tracker IDs, секреты, environment values, личные контакты и raw sessions. Примеры нейтральные.
 
@@ -56,12 +56,6 @@ README объясняет использование, CONTRIBUTING - измен�
 - Используй согласие в его пределах, недостающие доказательства называй.
 - Проверяй обычное и неверное прочтение по действиям/артефактам: строки и structural lint не доказывают качество.
 
-## Версии
-
-Только корневой CHANGELOG хранит версии, manifests у скиллов нет. Любая bundled правка, включая docs/modes, требует датированной записи под русскими категориями Keep a Changelog: "Добавлено", "Изменено", "Исправлено", "Удалено", "Устарело". Один пункт на строку с именем скилла/роли/артефакта. Все старые версии/даты сохраняй от новых к старым; записи можно сокращать, не удалять.
-
-Неизменный контракт - patch. В `0.x` смена контракта требует minor; после `1.0.0` breaking change - major. Контракт: имена, аргументы, invocation policy, роли/launch/context packets, пути/форматы/передача артефактов, write/Git boundaries.
-
 <a id="checks"></a>
 
 ## Проверки
@@ -75,13 +69,13 @@ bash .github/scripts/lint-house-style.sh
 git diff --check
 ```
 
-Structural checker только читает рабочее дерево. Его каталог содержит ровно семь README skills, не допускает лишних. Покрывай frontmatter/invocation, роли, реальные shared copies, tracker execution block, ticket/review handoffs, self-contained links, external-path boundaries и dated CHANGELOG. Runtime guard запрещает bundled runtime; obsolete-route scan смотрит `skills/`, не root guides. Исторические CHANGELOG/ADR/архивные сценарии не текущий контракт. Link checker не проверяет anchors/весь Markdown: просмотри вручную. Untracked Markdown явно передай style script. Source pass не доказывает live behavior/permissions/registration.
+Structural checker только читает рабочее дерево. Его каталог содержит ровно семь README skills, не допускает лишних. Покрывай frontmatter/invocation, роли, реальные shared copies, tracker execution block, заголовки шаблонов, self-contained links и external-path boundaries. Runtime guard запрещает bundled runtime и упоминания удаленной Python-связки в активных документах. Link checker не проверяет anchors/весь Markdown: просмотри вручную. Untracked Markdown явно передай style script. Source pass не доказывает live behavior/permissions/registration.
 
 [Pre-commit hook](.githooks/pre-commit) запускает обе structural checks на временном staged snapshot во всех клиентах. Включение на клон: `git config core.hooksPath .githooks`.
 
 Только независимому review нужен выбранный native reviewer route; обсуждению/исполнению subagents не нужны. Сохрани три finder и независимый verifier; direct pass лишь для разрешенного trivial case. Возможности узнавай без hardcoded model/effort. Доступные host-enforced restrictions используй, иначе честно prompt-only. Before/after state checks обязательны в обоих случаях: видят persistent differences, не все попытки/отмененные записи. Нет nested-client fallback. Live observations отделяй от source/protocol fixtures, missing CLI оставляет клиент непроверенным. Только disposable repos/fixture approvals, не установка пользователя.
 
-Для поведения используй [сценарии](tests/client-scenarios.md), для docs - соразмерные source/command/link checks, без повторных workflows. Review/spec cases включают checkpoint и нужные staged/unstaged/untracked без staged-only default. При явно одобренной implementation-only работе с отдельным проверяющим не запускай исключенные checks/renders/diff audit: укажи NOT RUN, оставь verification pending. Иначе просмотри diff и обе темы измененных диаграмм, captions/accessibility, сохранность истории.
+Для поведения используй соразмерные наблюдения выбранного клиента, для docs - соразмерные source/command/link checks, без повторных workflows. Review/spec cases включают checkpoint и нужные staged/unstaged/untracked без staged-only default. При явно одобренной implementation-only работе с отдельным проверяющим не запускай исключенные checks/renders/diff audit: укажи NOT RUN, оставь verification pending. Иначе просмотри diff и обе темы измененных диаграмм, captions/accessibility, сохранность истории.
 
 <a id="local-development-and-release"></a>
 
@@ -98,4 +92,4 @@ HOME="$home" npx skills@latest add "$PWD" -g -y -s '*' -a claude-code
 
 Публикация: push в `main` до обновления установок; пользователь обновляет `npx skills update`. Не меняй установленные скиллы при source edits без запроса.
 
-Каталог - семь скиллов. `rnd-grill`, подходящий диагноз и выбранные замечания прямо передаются `dev-exec`, без обязательной цепочки документов. `dev-spec` необязателен, коммиты требуют явного охвата. Source edits не обновляют установки/регистрацию; setup не предлагает companions/установку каталога. Текущие границы/доказательства - в [README](README.md) и [сценариях](tests/client-scenarios.md).
+Каталог - семь скиллов. `rnd-grill`, подходящий диагноз и выбранные замечания прямо передаются `dev-exec`, без обязательной цепочки документов. `dev-spec` необязателен, коммиты требуют явного охвата. Source edits не обновляют установки/регистрацию; setup не предлагает companions/установку каталога. Текущие границы/доказательства - в [README](README.md) и [SPEC](SPEC.md).
