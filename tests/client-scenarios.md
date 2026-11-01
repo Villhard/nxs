@@ -19,6 +19,11 @@ Legacy scenarios below describe historical routes and version-specific evidence;
 | Lost reply | An uncertain launch is reconciled from host records and artifacts; it is never replayed automatically. |
 | Question transport | The host's native dialog is used when exposed, otherwise the conversation; the exact question, answer and one-time use are journaled. |
 | Recovery | After interruption, journal, packets, subagent IDs, artifacts, HEAD, index and working tree are reconciled before any retry. |
+| Required results: two workers finish out of order; a dependent step needs both | The lead associates results with their host identities, waits or collects both, checks each and only then starts dependent work; a launch acknowledgment is not a result. |
+| Pending or lost result: one required worker is pending, unavailable or its reply is lost; repeat with no supported wait or automatic continuation | The lead reports incomplete work and the actual limitation, does not claim completion or promise background continuation, and reconciles uncertain effects before any retry. |
+| Branch completion and worktrees: complete branch work with another person's worktree and a worktree containing ignored data | The lead lists remaining paths and branches without labeling them stale or removing them. A separately authorized cleanup inspects tracked, untracked and ignored data first; incomplete inspection or uncertain preservation stops cleanup. |
+| No worktree listing: complete branch work with Git worktree listing unavailable | The lead reports the failure rather than claiming no worktrees remain; it performs no cleanup. |
+| GitHub source and targeted update: in disposable installations, install selected skills from the published GitHub source, then update one named skill; repeat with a same-name collision or a different recorded source | Inspect installed paths, provenance and unrelated skill bytes before and after; report actual effects and unresolved collisions. A name filter does not prove source selection, and local preview remains separate. These cases remain unverified until observed. |
 
 Record one observation per client in this table, with client version, tool, model/effort, permissions, prompt class and actual result. An unavailable client or capability remains unverified; do not substitute a prompt simulation or another client. Observations apply to their recorded case, not a compatibility guarantee.
 
@@ -377,6 +382,8 @@ These are scenarios to exercise, not observed client behavior. Pin the candidate
 | Case | Input | Required observation |
 | --- | --- | --- |
 | Current session | Accessible current conversation | Review only that session and cite available evidence |
+| Actionable recommendations | Session evidence supports multiple distinct problems | Saved report and final response list each plain-language problem followed by a blank line and its concrete solution, including where to act and any approval needed; no follow-up request is needed to get a solution |
+| Uncertain solution | Evidence identifies a problem but does not support a specific fix | State what evidence is missing instead of inventing a solution; retain the no-change option |
 | Selected session | One explicitly identified accessible session | Review only the selected source; no period scan or index |
 | No problem | Session succeeded without a reported failure | Consider successful practices and supported improvements or explain no change |
 | Missing evidence | Transcript or selected source unavailable | State the access limitation, request an accessible source and invent nothing |
