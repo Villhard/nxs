@@ -377,6 +377,8 @@ These are scenarios to exercise, not observed client behavior. Pin the candidate
 | Case | Input | Required observation |
 | --- | --- | --- |
 | Current session | Accessible current conversation | Review only that session and cite available evidence |
+| Actionable recommendations | Session evidence supports multiple distinct problems | Saved report and final response list each plain-language problem followed by a blank line and its concrete solution, including where to act and any approval needed; no follow-up request is needed to get a solution |
+| Uncertain solution | Evidence identifies a problem but does not support a specific fix | State what evidence is missing instead of inventing a solution; retain the no-change option |
 | Selected session | One explicitly identified accessible session | Review only the selected source; no period scan or index |
 | No problem | Session succeeded without a reported failure | Consider successful practices and supported improvements or explain no change |
 | Missing evidence | Transcript or selected source unavailable | State the access limitation, request an accessible source and invent nothing |

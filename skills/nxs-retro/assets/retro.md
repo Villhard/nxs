@@ -10,7 +10,11 @@
 
 ## Proposals
 
-<Concrete improvement, location, expected benefit, cost, evidence and required authorization; or a reasoned no-change result.>
+1. **Problem:** <plain-language problem and evidence>
+
+   **Solution:** <concrete action and location, expected benefit, cost and required authorization>
+
+<Repeat for each supported problem. If a solution is not supported, state the missing evidence. A reasoned no-change result is valid.>
 
 ## Applied and next actions
 
