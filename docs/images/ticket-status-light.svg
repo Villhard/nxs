@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="576" viewBox="0 0 960 576" role="img" aria-labelledby="ticket-status-light-title ticket-status-light-desc">
-<title id="ticket-status-light-title">Optional tickets require result evidence</title>
-<desc id="ticket-status-light-desc">dev-exec owns optional tickets; answered questions permit ready-for-agent, a human step may require ready-for-human and return verification, resolution requires criteria and checks, and wontfix needs a user decision or existing ticket exception.</desc>
+<title id="ticket-status-light-title">Статус не доказывает результат</title>
+<desc id="ticket-status-light-desc">Необязательные tickets принадлежат dev-exec: ответы разрешают ready-for-agent, человеческий шаг требует ready-for-human и проверки после возврата, resolved требует приемки и проверок, wontfix - решения пользователя или старого явного исключения.</desc>
 <defs><marker id="ticket-status-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
 <style>text{font-family:'Geist',system-ui,sans-serif;fill:#262626}.title{font-family:'Instrument Serif',Georgia,serif;font-size:28px}.name{font-family:'Geist Mono',ui-monospace,monospace;font-size:16px;font-weight:600}.heading{font-size:16px;font-weight:600}.sub{font-size:13px;fill:#626262}.label{font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;fill:#626262}.node{fill:#eeeeee;stroke:#626262;stroke-width:1.2}.edge{fill:none;stroke:#626262;stroke-width:1.5;marker-end:url(#ticket-status-light-arrow)}.return{stroke-dasharray:5 4}.mask{fill:#eeeeee}</style>
 <rect width="960" height="576" fill="#eeeeee"/>
-<text class="title" x="40" y="48">Status gates work; it never proves a result</text>
-<text class="sub" x="40" y="76">dev-exec owns optional tickets and verifies prerequisites in the selected working tree and environment.</text>
+<text class="title" x="40" y="48">Статус разрешает шаг, но не доказывает результат</text>
+<text class="sub" x="40" y="76">dev-exec ведет необязательные tickets и проверяет предпосылки в выбранном дереве и среде.</text>
 <path class="edge" d="M256 184 H368"/>
 <path class="edge" d="M592 184 H704"/>
 <path class="edge return" d="M816 224 V272 Q816 280 808 280 H536 Q528 280 528 272 V224"/>
 <path class="edge" d="M432 224 V384"/>
-<rect class="mask" x="272" y="148" width="80" height="28"/><text class="label" x="276" y="166">ANSWERED</text>
-<rect class="mask" x="608" y="148" width="80" height="28"/><text class="label" x="612" y="166">HUMAN STEP</text>
-<rect class="mask" x="584" y="288" width="200" height="28"/><text class="label" x="592" y="306">HUMAN RETURNS</text>
-<rect class="mask" x="248" y="324" width="176" height="28"/><text class="label" x="256" y="342">CHECKS PASS</text>
+<rect class="mask" x="272" y="148" width="80" height="28"/><text class="label" x="276" y="166">ОТВЕТ ДАН</text>
+<rect class="mask" x="608" y="148" width="80" height="28"/><text class="label" x="612" y="166">ШАГ ЧЕЛОВЕКА</text>
+<rect class="mask" x="584" y="288" width="200" height="28"/><text class="label" x="592" y="306">ВОЗВРАТ ЧЕЛОВЕКА</text>
+<rect class="mask" x="248" y="324" width="176" height="28"/><text class="label" x="256" y="342">ПРОВЕРЕНО</text>
 <rect class="node" x="40" y="144" width="216" height="80" rx="8"/>
-<text class="name" x="60" y="176">needs-info</text><text class="sub" x="60" y="200">Draft with an open question.</text>
+<text class="name" x="60" y="176">needs-info</text><text class="sub" x="60" y="200">Черновик, есть вопрос.</text>
 <rect class="node" x="368" y="144" width="224" height="80" rx="8"/>
-<text class="name" x="388" y="176">ready-for-agent</text><text class="sub" x="388" y="200">Approved plan still required.</text>
+<text class="name" x="388" y="176">ready-for-agent</text><text class="sub" x="388" y="200">Еще нужно одобрение плана.</text>
 <rect class="node" x="704" y="144" width="216" height="80" rx="8"/>
-<text class="name" x="724" y="176">ready-for-human</text><text class="sub" x="724" y="200">Action and expected result.</text>
-<text class="heading" x="40" y="272">Before implementation</text><text class="sub" x="40" y="296">Check blocker status and actual results.</text><text class="sub" x="40" y="316">Missing evidence stops affected work.</text>
+<text class="name" x="724" y="176">ready-for-human</text><text class="sub" x="724" y="200">Шаг и ожидаемый результат.</text>
+<text class="heading" x="40" y="272">До реализации</text><text class="sub" x="40" y="296">Проверь статусы и результаты блокеров.</text><text class="sub" x="40" y="316">Нет доказательств - останови затронутое.</text>
 <rect class="node" x="368" y="384" width="224" height="80" rx="8"/>
-<text class="name" x="388" y="416">resolved</text><text class="sub" x="388" y="440">Criteria and checks pass.</text>
+<text class="name" x="388" y="416">resolved</text><text class="sub" x="388" y="440">Приемка и проверки прошли.</text>
 <rect class="node" x="704" y="384" width="216" height="80" rx="8"/>
-<text class="name" x="724" y="416">wontfix</text><text class="sub" x="724" y="440">User decision or explicit</text><text class="sub" x="724" y="456">existing ticket exception.</text>
+<text class="name" x="724" y="416">wontfix</text><text class="sub" x="724" y="440">Решение пользователя либо</text><text class="sub" x="724" y="456">прежнее явное исключение.</text>
 <path d="M40 496 H920" stroke="#d7d7d7"/>
-<text class="sub" x="40" y="524">Dashed return: human resets ready-for-agent; rerun dev-exec and verify the actual result before continuing.</text>
-<text class="sub" x="40" y="548">New nonreproduced findings are not silently rejected. Missing or prohibited checks leave tickets unresolved.</text>
-<text class="sub" x="40" y="572">Commits are optional and explicitly authorized; a commit alone does not complete the ticket.</text>
+<text class="sub" x="40" y="524">Возврат: человек ставит ready-for-agent; снова вызови dev-exec и проверь результат до продолжения.</text>
+<text class="sub" x="40" y="548">Невоспроизведенное не отклоняй молча. Недоступные/запрещенные проверки оставляют ticket открытым.</text>
+<text class="sub" x="40" y="572">Коммиты необязательны и явно разрешаются; коммит сам не завершает ticket.</text>
 </svg>

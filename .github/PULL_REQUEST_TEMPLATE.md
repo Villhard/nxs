@@ -1,10 +1,10 @@
-# Summary
+# Кратко
 
-<!-- What changed and why. -->
+<!-- Что изменилось и зачем. -->
 
-## Checks
+## Проверки
 
-- [ ] Public-safe diff; no private data or raw sessions
-- [ ] House-style, frontmatter, link, and shared-copy checks pass
-- [ ] Bundled changes have a dated CHANGELOG entry
-- [ ] Behavior checks or documentation-only scope recorded
+- [ ] В diff нет частных данных и сырых сессий
+- [ ] Стиль, frontmatter, ссылки и общие копии проверены
+- [ ] Для bundled правок есть датированная запись CHANGELOG
+- [ ] Указаны проверки поведения либо границы правки только документации

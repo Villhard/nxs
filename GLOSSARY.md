@@ -1,44 +1,44 @@
 # nxs
 
-The language of the direct development flow. [ADR 0009](docs/adr/0009-seven-skill-direct-flow.md) records the current decision; earlier ADR terminology remains historical.
+Термины прямого процесса разработки. Текущее решение - [ADR 0009](docs/adr/0009-seven-skill-direct-flow.md), прежние определения ADR остаются историей.
 
-## Language
+## Термины
 
-**Skill catalog**:
-The seven independently installable source skills: `rnd-grill`, `rnd-debug`, `dev-exec`, `dev-review`, `dev-spec`, `dev-commit` and `nxs-setup`. Presence establishes neither client registration nor live compatibility.
+**Каталог скиллов (skill catalog)**:
+Семь независимо устанавливаемых исходников: `rnd-grill`, `rnd-debug`, `dev-exec`, `dev-review`, `dev-spec`, `dev-commit`, `nxs-setup`. Наличие не доказывает регистрацию/совместимость клиента.
 
-**Approved plan**:
-The concrete implementation approach, acceptance criteria, paths, checks and write boundaries approved for execution. Ticket readiness or a saved feature record alone does not approve it. Commit scopes require explicit authorization.
+**Одобренный план (approved plan)**:
+Согласованные подход, приемка, пути, проверки и границы реализации. Готовый ticket/описание функции сами его не одобряют; охват коммитов требует явного разрешения.
 
-**Feature description**:
-An optional preparation record, usually local lowercase `spec.md`, describing behavior, scope and acceptance checks. It is not a project spec or proof of built work.
+**Описание функции (feature description)**:
+Необязательная подготовительная запись, обычно local lowercase `spec.md`: поведение, охват, приемка. Не project spec и не доказательство реализации.
 
-**Implementation ticket**:
-An optional independently checkable unit owned by `dev-exec`, with observable criteria and real prerequisites. Existing identities, branches, execution prohibitions and history are retained. A historical typed decision record is not an implementation ticket.
+**Задача реализации (implementation ticket)**:
+Необязательная независимо проверяемая часть `dev-exec` с наблюдаемыми критериями/реальными предпосылками. Старые идентичности, ветки, запреты и история сохраняются. Типизированное решение - не implementation ticket.
 
-**Intended net work**:
-The final task changes established by requirements and actual source evidence: relevant committed checkpoints plus remaining intended staged, unstaged and untracked work. A branch name, changed-path list or nonempty index alone cannot establish ownership or coverage.
+**Итоговая работа задачи (intended net work)**:
+Финальные изменения по требованиям и реальным исходникам: нужные committed checkpoint и остаточные staged, unstaged, untracked задачи. Ветка, список путей и index сами не доказывают владение/покрытие.
 
-**Selected snapshot**:
-The pinned logical review view, baseline, requirements and source manifest described in the report. It is not a new checkout or artifact database; explicit narrower scopes keep their exclusions.
+**Выбранный снимок (selected snapshot)**:
+Закрепленные представление, baseline, требования и source manifest отчета review. Не новый checkout/база артефактов; явное сужение сохраняет исключения.
 
-**Selected corrections**:
-Finding numbers from a current complete review, returned with report identity, scope/source evidence, verdicts and open choices directly to `dev-exec`. Selection is not fix approval and creates no mandatory ticket.
+**Выбранные исправления (selected corrections)**:
+Номера замечаний актуального полного review с идентичностью отчета, scope/source evidence, verdicts и вопросами, прямо переданные `dev-exec`. Выбор не разрешает fix и не требует ticket.
 
 **Checkpoint**:
-An optional explicitly authorized commit of a checked execution block through `dev-commit`. Its commit and parent identities, scope and remaining changes travel with the task; a commit alone does not complete or accept it.
+Необязательный явно разрешенный коммит проверенного блока через `dev-commit`. Commit/parent, охват и остаток передаются с задачей; сам коммит ее не завершает/не принимает.
 
 **Native reviewer**:
-A fresh-context worker started through the selected client's native subagent facility with a complete role/scope packet. Finders propose and the independent verifier decides verdicts. Host-enforced permissions and prompt-only restrictions are different protections and must be reported honestly.
+Новый контекст через native subagent tool клиента с полным пакетом роли/охвата. Finders предлагают, независимый verifier решает. Host-enforced и prompt-only - разные защиты; сообщай честно.
 
-**Project spec**:
-Project `SPEC.md` or private `.SPEC.md` recording material built-work intent. `dev-spec` is its exclusive writer in normal task execution.
+**Проектная спецификация (project spec)**:
+`SPEC.md` или частный `.SPEC.md` с существенным намерением построенной работы. В обычной задаче пишет только `dev-spec`.
 
-**Handoff**:
-A result in dialogue or an optional saved record carrying approved scope, decisions, open questions, relevant paths, actual verification/Git state and next authorized action. It neither starts another skill nor guarantees session recovery.
+**Передача контекста (handoff)**:
+Ответ или необязательная запись с одобренным охватом, решениями/вопросами, путями, реальными проверками/Git и следующим разрешенным шагом. Не запускает скилл и не обещает session recovery между клиентами.
 
-**Historical coordination record**:
-An existing lead/auto packet, task journal or typed decision map from an earlier workflow. Preserve it as context and history, not a required live protocol or independent authorization. A conflict needs clarification, not emulation of a removed mode.
+**Историческая координационная запись**:
+Прежний lead/auto packet, task journal или typed decision map. Сохраняется как контекст/история, не обязательный протокол и не новое разрешение. Конфликт уточняется без эмуляции удаленного процесса.
 
 **Cutover**:
-A separately authorized switch of installations or callers supported by route-specific evidence. Source removal and shell checks alone do not update installed copies or complete cutover.
+Отдельно разрешенный переход установок/потребителей с доказательствами конкретного маршрута. Удаление исходников и shell checks не обновляют установленные копии и не завершают переход.

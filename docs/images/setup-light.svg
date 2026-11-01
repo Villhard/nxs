@@ -1,29 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="setup-light-title setup-light-desc">
-<title id="setup-light-title">Setup is independent, scoped and approved</title>
-<desc id="setup-light-desc">nxs-setup audits a goal, project or global target, proposes an exact package and applies only approved changes; project or global readiness reports relevant prerequisites without writes.</desc>
+<title id="setup-light-title">Настройка отдельно и по согласованию</title>
+<desc id="setup-light-desc">nxs-setup проверяет конкретную цель, project или global, предлагает точный пакет и применяет лишь одобренное; readiness сообщает нужные предпосылки без записи.</desc>
 <defs><marker id="setup-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
 <style>text{font-family:'Geist',system-ui,sans-serif;fill:#262626}.title{font-family:'Instrument Serif',Georgia,serif;font-size:28px}.name{font-size:16px;font-weight:600}.cmd{font-family:'Geist Mono',ui-monospace,monospace}.sub{font-size:13px;fill:#626262}.node{fill:#eeeeee;stroke:#626262;stroke-width:1.2}.edge{fill:none;stroke:#626262;stroke-width:1.5;marker-end:url(#setup-light-arrow)}</style>
 <rect width="960" height="520" fill="#eeeeee"/>
-<text class="title" x="40" y="48">Setup supports work; it does not start the workflow</text>
-<text class="sub" x="40" y="76">A narrow goal never implies a project/global change or an installation.</text>
+<text class="title" x="40" y="48">Настройка помогает работе, но не запускает ее</text>
+<text class="sub" x="40" y="76">Узкая цель не подразумевает project/global изменений и установки.</text>
 <path class="edge" d="M264 216 H328"/>
 <path class="edge" d="M488 216 H552"/>
 <path class="edge" d="M728 216 H792"/>
 <path class="edge" d="M488 392 H632"/>
 <rect class="node" x="40" y="176" width="224" height="80" rx="6"/>
-<text class="name cmd" x="60" y="208">nxs-setup</text><text class="sub" x="60" y="232">goal / project / global</text>
+<text class="name cmd" x="60" y="208">nxs-setup</text><text class="sub" x="60" y="232">цель / project / global</text>
 <rect class="node" x="328" y="176" width="160" height="80" rx="6"/>
-<text class="name" x="348" y="208">Audit</text><text class="sub" x="348" y="232">Scope and sources.</text>
+<text class="name" x="348" y="208">Изучить</text><text class="sub" x="348" y="232">Охват и источники.</text>
 <rect class="node" x="552" y="176" width="176" height="80" rx="6"/>
-<text class="name" x="572" y="208">Show package</text><text class="sub" x="572" y="232">Exact proposed diff.</text>
+<text class="name" x="572" y="208">Показать пакет</text><text class="sub" x="572" y="232">Точный diff правок.</text>
 <rect class="node" x="792" y="176" width="128" height="80" rx="6"/>
-<text class="name" x="808" y="208">Apply</text><text class="sub" x="808" y="232">Approved only.</text>
-<text class="sub" x="40" y="296">Decline: no writes. Already current: report and stop. Preserve custom bytes, symlinks and settings.</text>
+<text class="name" x="808" y="208">Применить</text><text class="sub" x="808" y="232">Одобренное.</text>
+<text class="sub" x="40" y="296">Отказ - без записи. Уже актуально - отчет и стоп. Сохраняй личный текст, ссылки и настройки.</text>
 <rect class="node" x="40" y="352" width="448" height="80" rx="6"/>
-<text class="name cmd" x="60" y="384">project --readiness / global --readiness</text><text class="sub" x="60" y="408">Separate report-only entry; no setup proposal or remediation.</text>
+<text class="name cmd" x="60" y="384">project --readiness / global --readiness</text><text class="sub" x="60" y="408">Отдельный отчет без предложения и применения настроек.</text>
 <rect class="node" x="632" y="352" width="288" height="80" rx="20"/>
-<text class="name" x="652" y="384">Report and stop</text><text class="sub" x="652" y="408">Relevant prerequisites and evidence limits.</text>
+<text class="name" x="652" y="384">Отчет и остановка</text><text class="sub" x="652" y="408">Предпосылки и пределы проверки.</text>
 <path d="M40 464 H920" stroke="#d7d7d7"/>
-<text class="sub" x="40" y="492">No catalog installation or companion bundles. No worker/server launch just to report readiness.</text>
-<text class="sub" x="40" y="512">Ordinary discussion and execution need no native-reviewer prerequisite.</text>
+<text class="sub" x="40" y="492">Не устанавливает каталог и companions; для отчета готовности не запускает workers/servers.</text>
+<text class="sub" x="40" y="512">Обычному обсуждению и исполнению native reviewers не нужны.</text>
 </svg>

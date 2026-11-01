@@ -1,30 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="584" viewBox="0 0 960 584" role="img" aria-labelledby="bug-light-title bug-light-desc">
-<title id="bug-light-title">Diagnosis feeds execution directly</title>
-<desc id="bug-light-desc">rnd-debug saves evidence; a confirmed right cause or agreed silent or wrong cause may feed dev-exec directly, feature returns to rnd-grill and unconfirmed causes stop with missing evidence.</desc>
+<title id="bug-light-title">От диагноза к исправлению</title>
+<desc id="bug-light-desc">rnd-debug сохраняет доказательства; подтвержденный right или согласованный silent/wrong передается прямо в dev-exec, feature возвращается в rnd-grill, неподтвержденная причина останавливается с недостающими данными.</desc>
 <defs><marker id="bug-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
 <style>text{font-family:'Geist',system-ui,sans-serif;fill:#262626}.title{font-family:'Instrument Serif',Georgia,serif;font-size:28px}.name{font-size:16px;font-weight:600}.cmd{font-family:'Geist Mono',ui-monospace,monospace}.sub{font-size:13px;fill:#626262}.node{fill:#eeeeee;stroke:#626262;stroke-width:1.2}.optional{stroke-dasharray:5 4}.edge{fill:none;stroke:#626262;stroke-width:1.5;marker-end:url(#bug-light-arrow)}</style>
 <rect width="960" height="584" fill="#eeeeee"/>
-<text class="title" x="40" y="48">Confirm the cause before choosing a fix</text>
-<text class="sub" x="40" y="76">Diagnosis records evidence and intended behavior; it creates no patch or ticket.</text>
+<text class="title" x="40" y="48">Сначала подтверди причину</text>
+<text class="sub" x="40" y="76">Диагноз хранит доказательства и намерение, не создает исправление или ticket.</text>
 <path class="edge" d="M140 256 V192"/>
 <path class="edge" d="M240 304 H336"/>
 <path class="edge" d="M544 304 H624"/>
 <path class="edge optional" d="M496 256 V168 Q496 160 504 160 H624"/>
 <path class="edge optional" d="M772 352 V416"/>
 <rect class="node" x="40" y="112" width="240" height="80" rx="20"/>
-<text class="name" x="60" y="144">Unconfirmed</text><text class="sub" x="60" y="168">Missing evidence; next probe.</text>
+<text class="name" x="60" y="144">Не подтверждено</text><text class="sub" x="60" y="168">Нет данных; следующая проба.</text>
 <rect class="node" x="40" y="256" width="200" height="96" rx="6"/>
-<text class="name cmd" x="60" y="288">rnd-debug</text><text class="sub" x="60" y="312">Reproduce and probe.</text><text class="sub cmd" x="60" y="332">Save root-cause.md.</text>
+<text class="name cmd" x="60" y="288">rnd-debug</text><text class="sub" x="60" y="312">Воспроизвести и проверить.</text><text class="sub cmd" x="60" y="332">Записать root-cause.md.</text>
 <rect class="node" x="336" y="256" width="208" height="80" rx="6"/>
-<text class="name" x="356" y="288">Confirmed cause</text><text class="sub" x="356" y="312">Classify against intent.</text>
+<text class="name" x="356" y="288">Причина доказана</text><text class="sub" x="356" y="312">Класс по намерению.</text>
 <rect class="node" x="624" y="112" width="296" height="80" rx="6"/>
-<text class="name cmd" x="644" y="144">feature: rnd-grill</text><text class="sub" x="644" y="168">Decided behavior: discuss the change.</text>
+<text class="name cmd" x="644" y="144">feature: rnd-grill</text><text class="sub" x="644" y="168">Обсудить смену принятого поведения.</text>
 <rect class="node" x="624" y="256" width="296" height="96" rx="6"/>
-<text class="name cmd" x="644" y="288">right / silent / wrong</text><text class="sub" x="644" y="312">right: code differs from recorded intent.</text><text class="sub" x="644" y="332">silent / wrong: agree intent first.</text>
+<text class="name cmd" x="644" y="288">right / silent / wrong</text><text class="sub" x="644" y="312">right: код противоречит записи намерения.</text><text class="sub" x="644" y="332">silent / wrong: согласовать намерение.</text>
 <rect class="node optional" x="624" y="416" width="296" height="80" rx="6"/>
-<text class="name cmd" x="644" y="448">dev-exec</text><text class="sub" x="644" y="472">Eligible evidence, then plan approval.</text>
-<text class="name" x="40" y="424">No ready fix from uncertainty</text><text class="sub" x="40" y="452">Cause confirmation is not implementation approval</text><text class="sub" x="40" y="476">or proof that prerequisites are satisfied.</text>
+<text class="name cmd" x="644" y="448">dev-exec</text><text class="sub" x="644" y="472">Доказательства, затем одобрение плана.</text>
+<text class="name" x="40" y="424">Неизвестная причина - не готовое исправление</text><text class="sub" x="40" y="452">Подтверждение причины не разрешает реализацию</text><text class="sub" x="40" y="476">и не доказывает выполнение предпосылок.</text>
 <path d="M40 520 H920" stroke="#d7d7d7"/>
-<text class="sub" x="40" y="548">Dashed: conditional handoff, never an automatic launch. Preserve existing diagnoses, tickets and history.</text>
-<text class="sub" x="40" y="572">Only dev-spec corrects project specs after a material built-work change.</text>
+<text class="sub" x="40" y="548">Пунктир - условная передача, не запуск. Прежние диагнозы, tickets и история сохраняются.</text>
+<text class="sub" x="40" y="572">Проектные спецификации после существенного изменения результата правит только dev-spec.</text>
 </svg>

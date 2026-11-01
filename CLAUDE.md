@@ -1,5 +1,5 @@
-# CLAUDE
+# Инструкции Claude
 
-Before editing, read the [shared rules](CONTRIBUTING.md).
+До правок прочитай [общие правила](CONTRIBUTING.md).
 
-Document shared operations across coding agents. State compatibility only at the level verified.
+Документируй общие операции разных coding agents. Заявляй совместимость только в проверенных пределах.

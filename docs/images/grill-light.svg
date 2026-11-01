@@ -1,26 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="544" viewBox="0 0 960 544" role="img" aria-labelledby="grill-light-title grill-light-desc">
-<title id="grill-light-title">Discuss, optionally save, then choose</title>
-<desc id="grill-light-desc">rnd-grill investigates a question and may finish in dialogue, save a useful approved record directly or suggest dev-exec for sufficient agreed scope without starting implementation.</desc>
+<title id="grill-light-title">Обсудить, при нужде сохранить, выбрать дальше</title>
+<desc id="grill-light-desc">rnd-grill исследует вопрос, завершает диалогом, сохраняет нужную одобренную запись или предлагает dev-exec при достаточном согласованном охвате, не начиная реализацию.</desc>
 <defs><marker id="grill-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
 <style>text{font-family:'Geist',system-ui,sans-serif;fill:#262626}.title{font-family:'Instrument Serif',Georgia,serif;font-size:28px}.name{font-size:16px;font-weight:600}.cmd{font-family:'Geist Mono',ui-monospace,monospace}.sub{font-size:13px;fill:#626262}.node{fill:#eeeeee;stroke:#626262;stroke-width:1.2}.optional{stroke-dasharray:5 4}.edge{fill:none;stroke:#626262;stroke-width:1.5;marker-end:url(#grill-light-arrow)}</style>
 <rect width="960" height="544" fill="#eeeeee"/>
-<text class="title" x="40" y="48">A useful discussion needs no artifact chain</text>
-<text class="sub" x="40" y="76">Evidence methods serve the actual question; they are not stages to complete.</text>
+<text class="title" x="40" y="48">Обсуждению не нужна цепочка документов</text>
+<text class="sub" x="40" y="76">Методы исследования выбираются под вопрос, а не как обязательные стадии.</text>
 <path class="edge" d="M240 168 H320"/>
 <path class="edge" d="M600 160 H696"/>
 <path class="edge optional" d="M600 208 H640 Q648 208 648 216 V276 Q648 284 656 284 H696"/>
 <path class="edge optional" d="M460 240 V368"/>
 <rect class="node" x="40" y="128" width="200" height="80" rx="20"/>
-<text class="name" x="60" y="160">Question or idea</text><text class="sub" x="60" y="184">What needs a decision?</text>
+<text class="name" x="60" y="160">Вопрос или идея</text><text class="sub" x="60" y="184">Что нужно решить?</text>
 <rect class="node" x="320" y="128" width="280" height="112" rx="6"/>
-<text class="name cmd" x="340" y="160">rnd-grill</text><text class="sub" x="340" y="184">Inspect evidence; compare choices.</text><text class="sub" x="340" y="204">Agree choices; keep unknowns explicit.</text><text class="sub" x="340" y="224">Experiment only in approved scope.</text>
+<text class="name cmd" x="340" y="160">rnd-grill</text><text class="sub" x="340" y="184">Изучить факты, сравнить варианты.</text><text class="sub" x="340" y="204">Согласовать, назвать неизвестное.</text><text class="sub" x="340" y="224">Опыт - лишь в разрешенных пределах.</text>
 <rect class="node" x="696" y="112" width="224" height="80" rx="20"/>
-<text class="name" x="716" y="144">Finish in dialogue</text><text class="sub" x="716" y="168">No implied save or next step.</text>
+<text class="name" x="716" y="144">Завершить диалогом</text><text class="sub" x="716" y="168">Без сохранения и нового шага.</text>
 <rect class="node optional" x="696" y="248" width="224" height="96" rx="6"/>
-<text class="name" x="716" y="280">Direct approved save</text><text class="sub" x="716" y="304">Only the useful record.</text><text class="sub" x="716" y="324">Approve content and path.</text>
+<text class="name" x="716" y="280">Сохранить одобренное</text><text class="sub" x="716" y="304">Только нужную запись.</text><text class="sub" x="716" y="324">Согласовать текст и путь.</text>
 <rect class="node optional" x="320" y="368" width="280" height="80" rx="6"/>
-<text class="name cmd" x="340" y="400">dev-exec</text><text class="sub" x="340" y="424">Agreed scope; approve the plan.</text>
+<text class="name cmd" x="340" y="400">dev-exec</text><text class="sub" x="340" y="424">Охват согласован; нужен план.</text>
 <path d="M40 480 H920" stroke="#d7d7d7"/>
-<text class="sub" x="40" y="508">Dashed: optional save or handoff. Agreement, a saved draft or prototype success authorizes no implementation.</text>
-<text class="sub" x="40" y="532">Domain saves need their own approval; questionnaire preparation sends nothing; project specs belong to dev-spec.</text>
+<text class="sub" x="40" y="508">Пунктир - необязательное сохранение/передача. Согласие, черновик и успех опыта не разрешают реализацию.</text>
+<text class="sub" x="40" y="532">Доменные записи согласуются отдельно; опросник не отправляется; проектные спецификации - dev-spec.</text>
 </svg>

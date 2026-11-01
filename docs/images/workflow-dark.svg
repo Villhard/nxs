@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="960" viewBox="0 0 960 960" role="img" aria-labelledby="workflow-dark-title workflow-dark-desc">
-<title id="workflow-dark-title">Seven skills, direct development flow</title>
-<desc id="workflow-dark-desc">rnd-grill, rnd-debug or a clear request feed dev-exec, followed by dev-review, optional dev-spec and authorized dev-commit; selected corrections return to execution and nxs-setup is separate support.</desc>
+<title id="workflow-dark-title">Семь скиллов для разработки</title>
+<desc id="workflow-dark-desc">rnd-grill, rnd-debug или ясный запрос ведут в dev-exec, затем возможны dev-review, необязательный dev-spec и разрешенный dev-commit; выбранные замечания возвращаются в исполнение, nxs-setup работает отдельно.</desc>
 <defs><marker id="workflow-dark-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#909090"/></marker></defs>
 <style>text{font-family:'Geist',system-ui,sans-serif;fill:#dadada}.title{font-family:'Instrument Serif',Georgia,serif;font-size:28px}.name{font-family:'Geist Mono',ui-monospace,monospace;font-size:16px;font-weight:600}.sub{font-size:13px;fill:#909090}.label{font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;fill:#909090}.node{fill:#1c1c1c;stroke:#909090;stroke-width:1.2}.focal{fill:#262626;stroke:#8dbbff;stroke-width:2}.optional{stroke-dasharray:5 4}.edge{fill:none;stroke:#909090;stroke-width:1.5;marker-end:url(#workflow-dark-arrow)}.mask{fill:#1c1c1c}</style>
 <rect width="960" height="960" fill="#1c1c1c"/>
-<text x="40" y="48" class="title">Start with the work you need</text>
-<text x="40" y="76" class="sub">Six development skills and one independent setup skill. No mandatory artifact chain.</text>
+<text x="40" y="48" class="title">Начни с нужной задачи</text>
+<text x="40" y="76" class="sub">Шесть скиллов разработки и отдельная настройка. Цепочка документов не обязательна.</text>
 <path class="edge" d="M180 188 V216 Q180 224 188 224 H392 Q400 224 400 232 V284"/>
 <path class="edge" d="M780 188 V216 Q780 224 772 224 H568 Q560 224 560 232 V284"/>
 <path class="edge" d="M480 252 V284"/>
@@ -14,27 +14,27 @@
 <path class="edge" d="M480 680 V752"/>
 <path class="edge optional" d="M320 476 H288 Q280 476 280 468 V336 Q280 328 288 328 H320"/>
 <path class="edge optional" d="M640 488 H680 Q688 488 688 496 V776 Q688 784 680 784 H640"/>
-<rect class="mask" x="88" y="392" width="184" height="28"/><text class="label" x="104" y="410">SELECTED FIXES</text>
-<rect class="mask" x="512" y="544" width="160" height="28"/><text class="label" x="520" y="562">IF MATERIAL</text>
-<rect class="mask" x="696" y="616" width="192" height="28"/><text class="label" x="704" y="634">NO SPEC NEEDED</text>
-<rect class="mask" x="512" y="704" width="160" height="28"/><text class="label" x="520" y="722">IF AUTHORIZED</text>
+<rect class="mask" x="88" y="392" width="184" height="28"/><text class="label" x="104" y="410">ВЫБРАННЫЕ ПРАВКИ</text>
+<rect class="mask" x="512" y="544" width="160" height="28"/><text class="label" x="520" y="562">ЕСЛИ СУЩЕСТВЕННО</text>
+<rect class="mask" x="696" y="616" width="192" height="28"/><text class="label" x="704" y="634">БЕЗ SPEC</text>
+<rect class="mask" x="512" y="704" width="160" height="28"/><text class="label" x="520" y="722">С РАЗРЕШЕНИЯ</text>
 <rect class="node" x="40" y="100" width="280" height="88" rx="6"/>
-<text class="name" x="60" y="132">rnd-grill</text><text class="sub" x="60" y="156">Investigate, compare and agree.</text><text class="sub" x="60" y="176">Save useful approved results directly.</text>
+<text class="name" x="60" y="132">rnd-grill</text><text class="sub" x="60" y="156">Исследовать, сравнить, согласовать.</text><text class="sub" x="60" y="176">Сохранить одобренное по запросу.</text>
 <rect class="node" x="640" y="100" width="280" height="88" rx="6"/>
-<text class="name" x="660" y="132">rnd-debug</text><text class="sub" x="660" y="156">Reproduce and confirm the cause.</text><text class="sub" x="660" y="176">Agree intended behavior when needed.</text>
-<text class="sub" x="480" y="244" text-anchor="middle">Clear request</text>
+<text class="name" x="660" y="132">rnd-debug</text><text class="sub" x="660" y="156">Воспроизвести и подтвердить причину.</text><text class="sub" x="660" y="176">При нужде согласовать намерение.</text>
+<text class="sub" x="480" y="244" text-anchor="middle">Ясный запрос</text>
 <rect class="node focal" x="320" y="284" width="320" height="88" rx="6"/>
-<text class="name" x="340" y="316">dev-exec</text><text class="sub" x="340" y="340">Criteria, approved plan, code and checks.</text><text class="sub" x="340" y="360">Decomposition and tickets only when useful.</text>
+<text class="name" x="340" y="316">dev-exec</text><text class="sub" x="340" y="340">Приемка, одобренный план, код и проверки.</text><text class="sub" x="340" y="360">Деление и tickets - по необходимости.</text>
 <rect class="node" x="320" y="432" width="320" height="88" rx="6"/>
-<text class="name" x="340" y="464">dev-review</text><text class="sub" x="340" y="488">Independent review of intended net work.</text><text class="sub" x="340" y="508">Selected corrections need no new ticket.</text>
+<text class="name" x="340" y="464">dev-review</text><text class="sub" x="340" y="488">Независимая проверка всей итоговой задачи.</text><text class="sub" x="340" y="508">Выбранным правкам новый ticket не нужен.</text>
 <rect class="node optional" x="320" y="600" width="320" height="80" rx="6"/>
-<text class="name" x="340" y="632">dev-spec</text><text class="sub" x="340" y="656">Record material built-work contracts.</text>
+<text class="name" x="340" y="632">dev-spec</text><text class="sub" x="340" y="656">Существенные контракты результата.</text>
 <rect class="node" x="320" y="752" width="320" height="80" rx="6"/>
-<text class="name" x="340" y="784">dev-commit</text><text class="sub" x="340" y="808">Atomic commits within authorized scope.</text>
+<text class="name" x="340" y="784">dev-commit</text><text class="sub" x="340" y="808">Атомарные коммиты разрешенных правок.</text>
 <rect class="node" x="40" y="640" width="224" height="88" rx="6"/>
-<text class="name" x="60" y="672">nxs-setup</text><text class="sub" x="60" y="696">Separate approved setup.</text><text class="sub" x="60" y="716">Outside the development chain.</text>
+<text class="name" x="60" y="672">nxs-setup</text><text class="sub" x="60" y="696">Настройка по согласованию.</text><text class="sub" x="60" y="716">Не стадия разработки.</text>
 <path d="M40 872 H920" stroke="#303030"/>
-<path class="edge" d="M40 900 H80"/><text class="sub" x="96" y="904">Possible handoff, never an automatic launch</text>
-<path class="edge optional" d="M520 900 H560"/><text class="sub" x="576" y="904">Conditional route or return</text>
-<text class="sub" x="40" y="936">Commits are optional; explicitly approved execution checkpoints may also occur before review.</text>
+<path class="edge" d="M40 900 H80"/><text class="sub" x="96" y="904">Возможный переход, не автоматический запуск</text>
+<path class="edge optional" d="M520 900 H560"/><text class="sub" x="576" y="904">Условный переход или возврат</text>
+<text class="sub" x="40" y="936">Коммиты необязательны; явно одобренные checkpoint возможны и до review.</text>
 </svg>
