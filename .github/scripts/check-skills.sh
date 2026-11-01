@@ -38,7 +38,6 @@ ROLES=(
 # First consumer owns the resource. Single-owner rows require no duplicate
 # copies; shared rows require exactly the listed consumers, byte-identical.
 RESOURCES="
-references/discussion.md|rnd-grill
 references/domain-modeling.md|rnd-grill
 references/evidence-methods.md|rnd-grill
 references/prototype.md|rnd-grill
