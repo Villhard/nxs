@@ -1,35 +1,35 @@
 ---
 name: rnd-grill
-description: Investigate an uncertain idea or plan through evidence-backed choices; optionally use an isolated experiment and directly save approved decisions, feature descriptions, domain records or participant questions without implementing.
-argument-hint: "[question | plan | source path | save request]"
+description: Разобрать неопределенность, сравнить варианты и согласовать решение без реализации. По запросу сохранить согласованные выводы, описание функции или вопросы участникам.
+argument-hint: "[идея | вопрос | план | путь]"
 disable-model-invocation: true
 ---
 
 # /rnd-grill
 
-Investigate uncertainty, compare meaningful alternatives and stop at the agreed conclusion or exact open question. Accept an idea, question, plan, saved discussion, selected boundary, source document or direct artifact request. A clear request may need no interview or saved artifact.
+Разбери неопределенность и остановись на согласованном выводе или точном открытом вопросе. Вход: идея, вопрос, план, сохраненное обсуждение, выбранная граница, исходный документ или запрос на документ. Ясный запрос не требует интервью или сохранения.
 
-## ENTRY
+## ВХОД
 
-Run only on explicit invocation or an instruction explicitly covering this skill's work. Read [discussion](references/discussion.md), [domain modeling](references/domain-modeling.md) when domain terms or records matter, and [project specs](references/project-specs.md) for affected paths. Read explicit input before proceeding; a missing or unreadable file is a stop, not a fresh request. For tracker input, use the source rules in [saving](references/saving.md).
+Запускай только по явному вызову или инструкции, прямо разрешающей эту работу. Прочитай [правила обсуждения](references/discussion.md), [предметной области](references/domain-modeling.md), если важны термины или записи, и [проектных спецификаций](references/project-specs.md) для затронутых путей. Сначала прочитай явно переданный источник; отсутствующий или нечитаемый файл - причина остановиться, а не начать новую задачу. Для трекера применяй [правила источников](references/saving.md).
 
-Reuse existing task context and approval only within their actual scope. A feature path, saved record or status is context, not permission. No task directory, typed decision tickets, journal, run packet or orchestration is required. Preserve existing records and clarify conflicting legacy instructions rather than activating a removed coordination procedure.
+Используй контекст и согласования только в их пределах. Путь, запись или статус не дают разрешения. Каталог задачи, типизированные решения, журнал, пакет запуска и координация не обязательны. Сохраняй старые записи; противоречащие прежние инструкции уточняй, не возрождая удаленный процесс.
 
-## DISCUSS
+## ОБСУЖДЕНИЕ
 
-1. Inspect relevant code, callers, tests, documents and current behavior. Report facts affecting the choice with source paths or primary-source links; distinguish observations, recorded intent, inferences, assumptions and unavailable evidence.
-2. Work the discussion frontier in independent rounds. Give real alternatives, consequences and a recommendation for each material choice. Wait for the user's choices before deriving dependent questions. Resolve routine technical details from evidence instead of inventing an interview.
-3. Use only the evidence methods needed for the actual question. Read [evidence methods](references/evidence-methods.md) for dependent questions, deeper research, a requested opportunity survey or design of a selected boundary. Read [prototype](references/prototype.md) only when a small isolated experiment is justified and explicitly authorized. These are optional techniques, not stages to complete in order.
-4. Pressure-test significant conclusions against concrete edge cases, assumptions and failure signals. Contradictory evidence reopens only the affected conclusion. Stop when no material choice remains silently assumed, or name the precise pending choice and wait.
+1. Изучи связанный код, вызовы, тесты, документы и текущее поведение. Приводи влияющие на выбор факты с путями или первоисточниками. Разделяй наблюдения, записанное намерение, выводы, предположения и недоступные сведения.
+2. Обсуждай независимые вопросы одним раундом. Для существенного выбора дай реальные варианты, последствия и рекомендацию. Дождись ответа перед зависимыми вопросами. Обычные технические детали выясняй по источникам, не превращай их в интервью.
+3. Выбирай только нужные [методы исследования](references/evidence-methods.md): зависимые вопросы, углубленное исследование, запрошенный обзор возможностей или проектирование выбранной границы. [Прототипирование](references/prototype.md) читай лишь для оправданного и явно разрешенного изолированного опыта. Это приемы, не обязательные стадии.
+4. Проверь важные выводы на конкретных крайних случаях, предположениях, сбоях и сигналах пересмотра. Новое противоречие открывает только затронутый вывод. Заверши, когда существенных молчаливых допущений нет, либо назови точный нерешенный выбор и жди.
 
-For a requested participant questionnaire, read [questionnaire](references/questionnaire.md), establish the recipient and their role, reuse known answers and prepare focused answerable questions. Preparing or approving the document never authorizes sending it or inventing responses.
+Для опросника прочитай [правила вопросов](references/questionnaire.md), установи адресата и роль, используй известные ответы и подготовь конкретные посильные вопросы. Подготовка и согласование не разрешают отправку или выдумывание ответов.
 
-## FINISH OR SAVE
+## РЕЗУЛЬТАТ И СОХРАНЕНИЕ
 
-Summarize agreed conclusions, proposals and open questions in dialogue. Agreement alone creates no files and authorizes no implementation. If saving is requested, use [saving](references/saving.md) directly: show the destination and concrete content or revision, reuse exact applicable approval or obtain it, and write only approved content. No separate saving command or prerequisite decision file is required. A direct approved domain request needs no decision wrapper; a clear request can become an approved feature description without prior research artifacts.
+В диалоге раздели согласованное, предложения и открытые вопросы. Согласие не создает файлов и не разрешает реализацию. По запросу на сохранение применяй [правила сохранения](references/saving.md): покажи путь и точное содержимое или правку, используй подходящее согласование либо получи его. Пиши только одобренное. Отдельная команда сохранения или предварительный файл решения не нужны. Прямому согласованному запросу на доменный документ не нужна обертка решения; ясному описанию функции не нужны исследовательские артефакты.
 
-Report written or reused paths, declined proposals, evidence limitations and unresolved questions. Suggest `dev-exec` directly when agreed scope is sufficient; it owns acceptance criteria, plan approval, optional decomposition, implementation and verification. Material unresolved intent blocks the affected work, not unrelated authorized preparation. A saved draft or successful prototype is not a ready implementation plan. Never start a subsequent skill implicitly.
+Сообщи записанные или повторно использованные пути, отклоненные предложения, пределы доказательств и открытые вопросы. Если согласованного объема достаточно, предложи `dev-exec`: он определяет критерии приемки, согласует план, при необходимости делит работу, реализует и проверяет. Неясное намерение блокирует затронутую работу, не независимую разрешенную подготовку. Черновик или удачный прототип - не готовый план реализации. Следующий скилл сам не запускай.
 
-## BOUNDARIES
+## ГРАНИЦЫ
 
-Permitted writes are approved preparation artifacts and glossary/ADR records, plus explicitly scoped isolated prototype files and evidence. Never edit product code or tests, implementation tickets, project `SPEC.md` or `.SPEC.md`, Git/index, settings or installations. Project specs remain `dev-spec`-owned. Prototype success permits no production transfer, reuse or deletion; each needs separate authorization for that action. An install, migration or external action needs approval covering the concrete action and target, plus native permissions; otherwise stop that affected work and state the expected result and missing evidence. Never automatically repeat an uncertain effect after interruption; reconcile observable state first. HTML approval alone requests no save and approves no unseen content.
+Пиши только согласованные подготовительные документы, глоссарий/ADR и явно разрешенные изолированные прототипы с доказательствами. Не меняй продуктовый код и тесты, implementation tickets, проектные `SPEC.md`/`.SPEC.md`, Git/index, настройки и установки. Проектные спецификации пишет `dev-spec`. Перенос прототипа в продукт, повторное использование и удаление требуют отдельного разрешения каждое. Установка, миграция или внешнее действие требуют согласия на конкретное действие и цель плюс native permissions; иначе останови затронутую работу, назови ожидаемый результат и недостающие доказательства. После прерывания сначала выясни фактическое состояние, не повторяй действие с неизвестным эффектом. Одобрение HTML не означает просьбу сохранить или согласие на непоказанное содержимое.

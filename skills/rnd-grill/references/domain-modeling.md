@@ -1,39 +1,39 @@
-# DOMAIN MODELING
+# ПРЕДМЕТНАЯ ОБЛАСТЬ
 
-Read when domain terms or durable decisions affect discussion, when preparing save-time domain proposals, or for a direct domain-document request inside an explicitly authorized scope. rnd-grill owns these rules and approved domain-record writes.
+Читай, когда важны термины и долгосрочные решения, при подготовке доменных записей к сохранению или прямом разрешенном запросе на них. Правила и согласованные записи принадлежат `rnd-grill`.
 
-## DISCOVER AND SHARPEN
+## ИЗУЧЕНИЕ
 
-Read project instructions and existing GLOSSARY.md, GLOSSARY-MAP.md and relevant ADRs. A glossary map selects the affected context; ask when the context is materially ambiguous. Missing domain documents are normal and do not block unrelated work.
+Прочитай инструкции проекта, существующие `GLOSSARY.md`, `GLOSSARY-MAP.md` и относящиеся ADR. Карта глоссария выбирает контекст; существенную неоднозначность уточни. Отсутствие документов нормально и не блокирует независимую работу.
 
-Use the project's canonical terms. Surface conflicting definitions and sharpen vague terms before decisions that depend on them. Check claimed behavior against code and probe relationships with concrete edge-case scenarios. Show contradictions with their sources; the user decides changed intent.
+Используй канонические термины проекта. До зависимых решений покажи конфликт определений и уточни расплывчатые понятия. Проверь заявления о поведении по коду и связи понятий на крайних случаях. Противоречия приводи с источниками; изменение намерения решает пользователь.
 
-## PROPOSE AT SAVE TIME
+## ПРЕДЛОЖЕНИЯ ПРИ СОХРАНЕНИИ
 
-Present concrete glossary additions/revisions and worthwhile ADRs with the proposed saved result. Agreement on a term alone does not authorize an unshown document edit. Reuse an existing approval covering the exact entry/diff; otherwise wait. Apply only approved entries. Declining one proposal does not approve another. A direct approved domain-document request may produce only the requested records, without a decision wrapper or a new feature directory.
+Вместе с результатом покажи точные правки глоссария и полезные ADR. Согласованный термин не разрешает непоказанную правку. Используй согласие на точную запись/diff либо дождись его. Одобренная запись не разрешает остальные. Прямому доменному запросу не нужны файл решения и каталог функции.
 
-Create records lazily after approval. Follow the project's format and context locations; preserve unrelated entries, user edits and existing ADR history. A repeated identical proposal is a no-op. Different existing content requires a concrete revision decision, not replacement from a broad save request. Never write project SPEC.md or .SPEC.md; those remain dev-spec-owned.
+Создавай записи лишь после одобрения, в формате и месте проекта. Сохраняй другие записи, ручные правки и историю ADR. Идентичный повтор ничего не меняет; иное существующее содержание требует согласования конкретной правки, не широкой просьбы сохранить. Проектные `SPEC.md`/`.SPEC.md` не пиши: это `dev-spec`.
 
-## GLOSSARY
+## ГЛОССАРИЙ
 
-Record only terms specific to the domain, with concise definitions of the concepts, not implementation details, plans or generic programming vocabulary. With no established format, use:
+Записывай только термины предметной области: короткие определения понятий, не детали реализации, планы и общие слова программирования. Если формата нет:
 
 ```markdown
-# <Context>
+# <Контекст>
 
-<Purpose of this context.>
+<Назначение контекста.>
 
-## Language
+## Термины
 
-**<Canonical term>**:
-<One or two sentence definition.>
-_Avoid_: <Confusing synonyms, when relevant.>
+**<Канонический термин>**:
+<Определение в одном-двух предложениях.>
+_Избегать_: <Путающие синонимы, если нужны.>
 ```
 
-Use an existing glossary map rather than creating competing root definitions. If no context structure exists, a root GLOSSARY.md is the lazy default for the first approved term.
+Используй существующую карту, не создавай конкурирующие корневые определения. Без структуры контекстов первый одобренный термин по умолчанию идет в корневой `GLOSSARY.md`.
 
-## ADR
+## ЗАПИСИ РЕШЕНИЙ (ADR)
 
-Offer an ADR only when all three hold: reversing the decision has meaningful cost; a future reader would find the choice surprising without context; and real alternatives were weighed. Routine obvious or easily reversible choices need no ADR.
+Предлагай ADR, только если отмена решения существенно затратна, без контекста выбор удивит будущего читателя и действительно сравнивались варианты. Очевидные, обычные и легко обратимые решения не нуждаются в ADR.
 
-Use existing ADR conventions. Otherwise use docs/adr/NNNN-<slug>.md, after inspecting the highest existing number, with a short title and a paragraph stating context, decision and reasons. Add alternatives or consequences only when useful. Record changed decisions through an approved revision/superseding record that preserves the earlier rationale. Create the directory only for an approved entry.
+Следуй формату проекта. Иначе после проверки максимального номера используй `docs/adr/NNNN-<slug>.md`: короткий заголовок и абзац с контекстом, решением и причинами; варианты и последствия добавляй по пользе. Каталог создавай только для одобренной записи. Меняй решение согласованной правкой или заменяющим ADR, сохраняя прежние причины.

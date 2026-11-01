@@ -1,18 +1,18 @@
-# Questionnaire: <purpose>
+# Опросник: <цель>
 
-- Recipient and role: <name and role>
-- Context and sources: <links>
-- Known facts and permitted assumptions: <with sources>
+- Адресат и роль: <имя и роль>
+- Контекст и источники: <ссылки>
+- Известные факты и допустимые допущения: <с источниками>
 
-## Questions
+## Вопросы
 
-### <question identifier and exact question>
+### <Идентификатор и точный текст вопроса>
 
-- Context: <what the participant needs to know>
-- Affected decision: <decision and link>
-- Consequence or blocker: <effect of answer or continued uncertainty>
-- Response: <unanswered or attributed response and evidence>
+- Контекст: <что нужно знать участнику>
+- Зависимое решение: <решение и ссылка>
+- Последствие или блокер: <что меняет ответ или сохраняющаяся неизвестность>
+- Ответ: <не получен либо ответ с авторством и доказательствами>
 
-## Remaining work
+## Оставшаяся работа
 
-<Open questions, affected decisions and independent authorized work.>
+<Открытые вопросы, затронутые решения и независимая разрешенная работа.>

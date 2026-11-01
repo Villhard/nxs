@@ -1,31 +1,29 @@
-# FINDINGS
+# ЗАМЕЧАНИЯ
 
-Read this reference before a review sweep. `dev-review` rates and verifies findings with it, passes its SEVERITY BAR to every reviewer verbatim and passes VERIFY A FINDING to the verifier verbatim.
+Читай до прохода review. `dev-review` оценивает и проверяет по этим правилам. "Уровни серьезности" передает каждому reviewer дословно, "Проверка замечания" - verifier дословно.
 
-## SEVERITY BAR
+## УРОВНИ СЕРЬЕЗНОСТИ
 
-Rate the demonstrated consequence under reachable conditions:
+Оцени доказанное последствие в достижимых условиях:
 
-- **critical** - data loss or corruption, a security breach, or a crash on an ordinary user path.
-- **major** - wrong behavior or a broken contract, beyond contained minor impact.
-- **minor** - a real defect with contained impact.
+- **critical** - потеря/порча данных, нарушение безопасности или crash обычного пользовательского пути;
+- **major** - неверное поведение/нарушение контракта, выходящее за ограниченный minor;
+- **minor** - реальный дефект с ограниченным влиянием.
 
-For a test finding, name the concrete defect it would miss or the way the test fails incorrectly. A coverage gap over currently correct behavior is minor unless evidence shows a broader present failure in the test process; do not rate a hypothetical production defect as though it already existed. For documentation, name the reader's wrong action or misunderstanding. Rate instructions a machine or agent executes by what their consumer does wrong. Unclear, misleading or misspelled identifiers and test names are minor: explain the ambiguity or mismatch with their actual role and propose a clearer name. A runtime failure or written naming rule is not required. A synonym preference or prose taste alone is not a finding; a prose typo with no changed meaning is not a finding.
+Для теста назови пропускаемый дефект или ложный сбой. Непокрытое корректное поведение - minor, если нет доказанной текущей более широкой поломки процесса тестирования; не оцени гипотетический production defect как существующий. Для документации назови ошибочное действие/понимание читателя. Инструкции машине/агенту оцени по ошибке их потребителя. Неясное, вводящее в заблуждение имя/опечатка в identifier или test name - minor: объясни неоднозначность/несоответствие роли, предложи ясное имя. Runtime failure/письменное правило имен не обязательны. Предпочтение синонима/стиля и опечатка прозы без смены смысла не замечания.
 
-A plausible finding is at most **major**: critical requires a confirmed trigger.
+Plausible не выше **major**; critical требует подтвержденного trigger. Серьезность - свойство дефекта, не цена исправления. In-scope confirmed/plausible оставь в замечаниях даже при дорогом/рискованном исправлении; масштаб и риск назови в исправлении. Вне охвата - в дальнейшие действия.
 
-Severity measures the defect, not the cost of fixing it. Keep a confirmed or plausible in-scope defect in Findings even when its fix is expensive or risky; describe that reach and risk under Fix. Out-of-scope defects belong in Follow-ups.
+## ПРОВЕРКА ЗАМЕЧАНИЯ
 
-## VERIFY A FINDING
+Прочитай место с 20-30 строками контекста из выбранного источника снимка, включая закрепленные disk bytes для working changes. Тем же представлением проследи callers, guards, тесты и поиск; цитируй версию/источник и места, доказывающие/опровергающие достижимое состояние и последствие. Несовпадающий/недоступный источник делает проверку incomplete, не refuted. Имена сравнивай с ролью/использованием, не требуй runtime failure. Для покрытия/docs читай тесты/контракт. Успешный тест сам не опровергает runtime defect. Отделяй доказанное кодом от выведенных последствий.
 
-Read the finding's location with 20-30 lines of context in the selected snapshot source, including pinned disk bytes for working changes. Use that same view for callers, guards, tests and searches; cite source/version and locations that establish or disprove the reachable input/state and claimed consequence. A mismatched or unavailable source leaves verification incomplete, not refuted. For naming claims, compare the name with its actual role and uses; cite the ambiguity or mismatch instead of requiring a runtime failure. For coverage or documentation claims, inspect the relevant tests or contract too. A passing test alone does not disprove a runtime defect. Separate what the code proves from inferred consequences.
+Каждому кандидату один verdict:
 
-Give each candidate exactly one verdict:
+- **confirmed** - назван достижимый вход/состояние и неверный результат; процитируй строку;
+- **plausible** - механизм реален, trigger неясен (timing, среда, настройка); укажи подтверждение;
+- **refuted** - код говорит иное, случай невозможен по типу/константе/инварианту, diff его уже обрабатывает либо это стиль без наблюдаемого эффекта; процитируй доказательство.
 
-- **confirmed** - you can name the input or state that triggers it and the wrong result. Quote the line.
-- **plausible** - the mechanism is real, the trigger is uncertain (timing, environment, configuration). State what would confirm it.
-- **refuted** - the code does not say that, the case is impossible by type, constant or invariant, this diff already handles it, or it is style with no observable effect. Quote the line that proves it.
+Plausible - исходный verdict для реалистичных состояний: race, nil/undefined на редком достижимом пути (error handler, cold cache, optional field), falsy zero, off-by-one на неограниченной кодом границе, retry/partial failure, regex/allowlist без anchor. Не опровергай только из-за "предположительности" или реалистичной runtime-зависимости.
 
-Plausible is the default for realistic states: a race, nil or undefined on a rare but reachable path (an error handler, a cold cache, a missing optional field), falsy zero treated as missing, off-by-one on a boundary the code does not exclude, a retry or partial failure, a regex or allowlist that lost its anchor. Never refute a candidate only for being speculative or depending on runtime state when that state is realistic.
-
-Same place and same problem is one finding, whichever agent raised it; retain each dismissal reason. Apply SEVERITY BAR; change a proposed severity only when the evidence warrants it, recording the old and new levels and why.
+Одинаковые место/проблема - одно замечание независимо от автора; сохрани каждую причину отклонения. Меняй предложенную серьезность лишь по доказательствам, записывая старый/новый уровень и причину.

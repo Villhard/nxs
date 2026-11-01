@@ -1,25 +1,25 @@
-# Handoff: <task>
+# Передача контекста: <задача>
 
-- Goal and approved scope: <entrusted work, exclusions and constraints>
-- Task identity and sources: <requirements, paths, source identities and relevant pins>
-- Intended consumer and authorization: <next operation, approved scope, permissions and limits>
+- Цель и одобренный охват: <работа, исключения и ограничения>
+- Задача и источники: <требования, пути, идентичности и нужные pins>
+- Адресат и полномочия: <следующая операция, разрешенные охват/действия и пределы>
 
-## Accepted
+## Принято
 
-<Settled decisions and outcomes with evidence; distinguish recorded claims from independently checked state.>
+<Принятые решения/результаты с доказательствами; заявления записей отдельно от независимо проверенного.>
 
-## Open
+## Открытые вопросы
 
-<Unanswered question identifiers and exact wording where present, dependencies, blockers and remaining acceptance criteria.>
+<Точные IDs и формулировки вопросов, зависимости, блокеры и остаток приемки.>
 
-## Unverified
+## Не проверено
 
-<Missing evidence and uncertain effects, with the observation required before any retry.>
+<Недостающие доказательства и сомнительные эффекты; что наблюдать до повтора.>
 
-## Verification
+## Проверки
 
-<Exact commands and results, NOT RUN checks and reasons, and source versus live observations.>
+<Точные команды/результаты, NOT RUN и причины; источники отдельно от live observations.>
 
-## Current artifacts and next action
+## Текущие артефакты и следующий шаг
 
-<Relevant paths and history links; actual repository, branch and Git state; intended-work baseline; checkpoint commits and parent OIDs, pre-checkpoint HEAD, approved scopes and paths when applicable; remaining staged, unstaged and untracked task changes, foreign changes separately; next authorized action and prerequisites. Mark unobserved state explicitly.>
+<Пути/история; реальные репозиторий, ветка, Git; baseline задачи; при checkpoint - commits и parent OIDs, pre-checkpoint HEAD, одобренные охваты/пути; оставшиеся staged, unstaged, untracked изменения задачи, чужие отдельно; следующий разрешенный шаг/предпосылки. Ненаблюдавшееся пометь явно.>

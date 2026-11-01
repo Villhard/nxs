@@ -1,20 +1,16 @@
-# Triage labels
+# Метки разбора
 
-The skills speak in canonical triage roles. This file maps each role to the value used in the tracker.
+Сопоставление канонических ролей скиллов со значениями трекера.
 
-| Role | Value in this tracker | Meaning |
+| Роль | Значение трекера | Смысл |
 | --- | --- | --- |
-| `needs-triage` | `needs-triage` | A maintainer needs to evaluate the issue |
-| `needs-info` | `needs-info` | Waiting for more information; an open `[NEEDS CLARIFICATION: ...]` sits in the ticket |
-| `ready-for-agent` | `ready-for-agent` | Fully specified, ready for an agent |
-| `ready-for-human` | `ready-for-human` | A required install, migration or external action lacks concrete action/target approval, native permission or checkable results. Record the action and expected evidence; after the human step, return to `ready-for-agent` and have the executor verify the actual environment before continuing. |
-| `wontfix` | `wontfix` | Will not be actioned |
-| `resolved` | `resolved` | Done: set by the executor only after all criteria and required checks pass under `## Done when` |
+| `needs-triage` | `needs-triage` | Нужна оценка maintainer. |
+| `needs-info` | `needs-info` | Нужны сведения; открыт `[NEEDS CLARIFICATION: ...]`. |
+| `ready-for-agent` | `ready-for-agent` | Задача определена, готова агенту. |
+| `ready-for-human` | `ready-for-human` | Установке/миграции/внешнему действию не хватает согласия на действие/цель, native permission или проверяемого результата. Запиши шаг/доказательство; после человеческого шага верни `ready-for-agent`, исполнитель проверяет реальную среду до продолжения. |
+| `wontfix` | `wontfix` | Выполняться не будет. |
+| `resolved` | `resolved` | Готово: исполнитель ставит только после всей приемки и обязательных проверок по секции "Условия завершения". |
 
-When a skill names a role, such as "apply the AFK-ready triage label", use the matching value from this table.
+Когда скилл называет роль (например AFK-ready), используй значение таблицы. У local Markdown нет настоящих labels: значение записывается в `**Status:**`. Среднюю колонку настрой под свой трекер.
 
-The local Markdown tracker has no real labels: the value goes on the `**Status:**` line of the issue file.
-
-Edit the middle column to match the vocabulary you use.
-
-Existing typed decision records and their statuses remain read-only context, not implementation tickets. Do not convert, relabel or clean up their history as part of setup.
+Старые типизированные решения/статусы - read-only контекст, не implementation tickets. Setup не конвертирует, не меняет метки и не чистит историю.

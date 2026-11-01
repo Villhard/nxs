@@ -1,19 +1,19 @@
-# ISOLATED PROTOTYPE
+# ИЗОЛИРОВАННЫЙ ПРОТОТИП
 
-Read only when evidence warrants a small experiment. An experiment is optional; discussion or source inspection may be enough.
+Читай только для обоснованного небольшого опыта. Он необязателен: обсуждения или чтения исходников может хватить.
 
-## AUTHORIZE AND ISOLATE
+## РАЗРЕШЕНИЕ И ИЗОЛЯЦИЯ
 
-Name one question, a falsifiable hypothesis, representative bounded input and an observable expected outcome before running anything. Propose the smallest useful experiment, exact local boundary, data, checks and possible side effects. Obtain authorization covering those writes and execution, reusing existing approval only within its scope. Ambiguous hypotheses, costly or irreversible actions and visual/personal choices require the user's answer before dependent work. A demonstration cannot answer a preference question on the user's behalf.
+До запуска назови один вопрос, опровержимую гипотезу, ограниченные типичные данные и наблюдаемый ожидаемый результат. Предложи минимальный полезный опыт: точные локальные границы, данные, проверки и побочные эффекты. Получи разрешение на эти записи и запуск либо используй уже подходящее. Неясная гипотеза, дорогие/необратимые действия и визуальные/личные предпочтения требуют ответа до зависимой работы. Демонстрация не выбирает предпочтение за пользователя.
 
-Use an explicit or established feature directory, otherwise `.scratch/<topic-slug>/`. Inspect the destination and use a distinct `research/prototypes/<experiment-slug>/` directory, with a linked `research/<experiment-slug>-verdict.md`. Preserve existing work and source bytes; a map's presence is context, not automatic permission to modify its records. Ask if ownership is ambiguous. Create only the bounded prototype and evidence, using disposable isolated data, never product edits or production scaffolding.
+Используй переданный/установленный каталог функции, иначе `.scratch/<topic-slug>/`. Осмотри место и выбери отдельный `research/prototypes/<experiment-slug>/` со связанным `research/<experiment-slug>-verdict.md`. Сохраняй существующую работу и исходные байты. Карта не разрешает менять ее записи; неясное владение уточни. Создавай только ограниченный прототип и доказательства на одноразовых изолированных данных, не продуктовые правки или заготовки для продукта.
 
-An install, migration, network/external effect or action against a shared target needs approval covering that concrete action and target, plus native permissions. Without it, stop the affected experiment and state the expected result and missing evidence. Never use production credentials or send private input externally without authorization.
+Установка, миграция, сетевой/внешний эффект и действие над общей целью требуют разрешения на действие и цель плюс native permissions. Без них останови опыт, назови ожидаемый результат и недостающие доказательства. Не используй production credentials и не отправляй частные данные наружу без разрешения.
 
-## OBSERVE AND RETAIN
+## НАБЛЮДЕНИЕ И СОХРАННОСТЬ
 
-Make the temporary experiment easy to run. Record setup, exact steps, inputs, observed outputs and cleanup actually performed within the authorized boundary. Separate expectations, observations and interpretation. If a check cannot run, preserve the experiment and report the blocker rather than inventing a result. Apply [saving](saving.md) to the proposed verdict; authorization to build the experiment does not approve unseen conclusions.
+Сделай опыт легко воспроизводимым. Запиши подготовку, точные шаги, данные, наблюдаемые результаты и реально выполненную разрешенную очистку. Отделяй ожидания, наблюдения и толкование. Если проверка недоступна, сохрани опыт и назови блокер, не выдумывай результат. Вывод сохраняй по [правилам сохранения](saving.md): разрешение на опыт не одобряет непоказанные выводы.
 
-The verdict names the question, hypothesis, why the check matters, retained files, setup and steps, evidence, status (`supported`, `rejected` or `inconclusive`), assumptions and limits. A failed hypothesis is useful evidence. Inconclusive results name the next discriminating check. Exclude secrets, private configuration and raw session transcripts.
+Вывод содержит вопрос, гипотезу, смысл проверки, оставленные файлы, подготовку и шаги, доказательства, статус (`supported`, `rejected`, `inconclusive`), допущения и пределы. Опровергнутая гипотеза полезна; неопределенный итог требует следующей различающей проверки. Не включай секреты, частные настройки и сырые диалоги.
 
-Retain prototype files and verdict locally and uncommitted by default. Do not stage, commit or change Git state. A successful result authorizes neither production transfer nor reuse of prototype parts nor deletion; each requires separate authorization for that action. Preserve source and prototype bytes until it is given. Interruption is not evidence of no effect: reconcile actual state before repeating any uncertain action.
+По умолчанию оставь прототип и вывод локально без коммита. Не меняй staging и Git. Успех не разрешает перенос в продукт, повторное использование частей или удаление: каждое действие требует отдельного разрешения. До него сохраняй исходные файлы и прототип. Прерывание не доказывает отсутствие эффекта: проверь состояние перед повтором сомнительного действия.

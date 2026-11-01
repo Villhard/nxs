@@ -1,19 +1,18 @@
-# Domain docs
+# Документы предметной области
 
-How the engineering skills consume a repository's domain documentation while exploring the code. Paths are relative to the root of the repository you are working in.
+Как скиллы читают доменные документы при изучении кода. Пути от корня рабочего репозитория.
 
-## Before exploring, read these
+## Что прочитать сначала
 
-- `GLOSSARY.md` at the repository root, or
-- `GLOSSARY-MAP.md` at the root when it exists: it points at one `GLOSSARY.md` per context. Read each one relevant to the topic.
-- `docs/adr/`: read the ADRs that touch the area you are about to work in. In a multi-context repository, also check `src/<context>/docs/adr/` for context-scoped decisions.
-- `SPEC.md` and `.SPEC.md` project specs on the path of the files you touch, found by exact name in a directory listing.
+- Корневой `GLOSSARY.md` либо, если есть, `GLOSSARY-MAP.md` со ссылками на глоссарии контекстов: прочитай относящиеся к теме.
+- Нужные ADR из `docs/adr/`; при нескольких контекстах также `src/<context>/docs/adr/`.
+- Проектные `SPEC.md`/`.SPEC.md` на пути затронутых файлов, найденные точным именем в списке каталога.
 
-When these files are absent, proceed silently: do not flag their absence or suggest creating them upfront. `rnd-grill` can propose and directly save separately approved glossary entries and worthwhile ADRs. Agreement alone authorizes no save; project specs remain `dev-spec`-owned.
+Отсутствие не отмечай и не предлагай создание заранее. `rnd-grill` может предложить/сохранить отдельно одобренные термины и полезные ADR; согласие само не разрешает сохранение. Проектные specs пишет `dev-spec`.
 
-## File structure
+## Структура
 
-Single-context repository (the default):
+Один контекст (по умолчанию):
 
 ```text
 /
@@ -24,31 +23,29 @@ Single-context repository (the default):
   src/
 ```
 
-Multi-context repository (a `GLOSSARY-MAP.md` at the root):
+Несколько контекстов (корневой `GLOSSARY-MAP.md`):
 
 ```text
 /
   GLOSSARY-MAP.md
-  docs/adr/                 system-wide decisions
+  docs/adr/                 общие решения
   src/
     ordering/
       GLOSSARY.md
-      docs/adr/             context-specific decisions
+      docs/adr/             решения контекста
     billing/
       GLOSSARY.md
       docs/adr/
 ```
 
-Treat a repository as single-context unless a root `GLOSSARY-MAP.md` says otherwise.
+Без иного указания корневого `GLOSSARY-MAP.md` считай контекст одним.
 
-## Use the glossary's vocabulary
+## Термины
 
-When your output names a domain concept (an issue title, a refactor proposal, a hypothesis, a test name), use the term `GLOSSARY.md` defines, not a synonym it avoids.
+В названиях issues, предложениях refactor, гипотезах и именах тестов используй термин из `GLOSSARY.md`, не нежелательный синоним. Отсутствующее понятие - сигнал: либо язык выдуман (пересмотри), либо реальный пробел (отметь для конкретного предложения `rnd-grill`).
 
-A concept missing from the glossary is a signal: either the language is invented (reconsider it) or there is a real gap (note it for a concrete domain proposal in `rnd-grill`).
+## Противоречия ADR
 
-## Flag ADR conflicts
+Не обходи молча, назови явно:
 
-When your output contradicts an existing ADR, say so explicitly instead of overriding it:
-
-> _Contradicts ADR-0007 (event-sourced orders), but worth reopening because..._
+> _Противоречит ADR-0007 (event-sourced orders), но стоит пересмотреть, потому что..._

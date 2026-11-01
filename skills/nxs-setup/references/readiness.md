@@ -1,29 +1,29 @@
-# READINESS REPORT
+# ОТЧЕТ ГОТОВНОСТИ
 
-Read only for `project --readiness` or `global --readiness`. Report prerequisites relevant to the requested setup or workflow in the conversation, then stop. Skip normal setup, questions for a change package, proposals, writes and checks after writes. Create no report file, task directory or journal. Do not install dependencies, change instructions/settings/skills/hooks/ignore rules or Git state, launch workers or UI, or start a client/server process for discovery.
+Только для `project --readiness`/`global --readiness`: сообщи в диалоге нужные предпосылки и остановись. Пропусти обычную настройку, вопросы пакета, предложения, записи и проверки после них. Не создавай отчет, каталог и журнал; не устанавливай зависимости, не меняй instructions/settings/skills/hooks/ignore/Git, не запускай workers/UI/client/server для discovery.
 
-## SCOPE AND EVIDENCE
+## ОХВАТ И ДОКАЗАТЕЛЬСТВА
 
-Use the explicitly selected client, otherwise the identifiable active client. If selection or the desired workflow is unclear, report `unknown` and the missing input; never substitute another client or assume a coordinated workflow. Project mode inspects the current repository. Global mode inspects only relevant shared/client configuration and needs no repository unless the requested operation does.
+Клиент - явно выбранный, иначе определимый активный. Неясный клиент/процесс - `unknown` с недостающим входом; не подменяй клиент и не предполагай координацию. Project смотрит текущий repo; global - лишь нужные shared/client настройки, repo нужен только операции.
 
-Prefer exposed read-only tools, current client metadata and readable local sources. An optional bounded version or Git identity probe may run only when relevant and permitted. Do not send a task prompt, start a nested CLI, change permissions, scan unrelated private storage or emulate missing discovery. A filesystem candidate or lock entry proves neither enabled native registration nor execution. If exact registered source paths are exposed, identify the relevant candidate and its provenance; otherwise separate observed registration from unconfirmed source identity. Hash a selected candidate only when needed to distinguish it, without exposing private content.
+Предпочитай read-only tools, текущие client metadata и читаемые local sources. Короткая version/Git identity проба допустима только по необходимости/разрешению. Не отправляй task prompt, не запускай nested CLI, не меняй permissions, не сканируй постороннее private storage и не эмулируй discovery. Кандидат ФС/lock entry не доказывает enabled registration/исполнение. Если доступны точные registered source paths, назови кандидат/provenance; иначе наблюдаемую регистрацию отдели от неизвестного источника. Hash кандидата лишь для различения при нужде, без раскрытия частного.
 
-## RELEVANT PREREQUISITES
+## НУЖНЫЕ ПРЕДПОСЫЛКИ
 
-Inspect independent requirements separately. Do not require every row, every skill or every client for all operations.
+Проверяй независимое отдельно; не требуй все строки/скиллы/клиенты для каждой операции.
 
-| Requested operation | Relevant evidence | Incomplete result |
+| Операция | Доказательства | Неполный результат |
 | --- | --- | --- |
-| Project setup | Current cwd/repository identity; readable project instructions and their real paths; owned-section conflicts; branch/check-command sources; current local-artifact ignore state. | Name missing access, ambiguous ownership or conflicting sections. Do not initialize/configure Git or invent commands. |
-| Global or narrow setup | Named targets and authority; existing content, symlink targets and applicable shared source; privacy boundary; observed client wiring support. | Name the conflict or unobserved wiring capability. Do not merge private content, replace links or rewrite configuration. |
-| A selected development skill | Only that route's enabled registration and readable candidate/resources when exposed by the client; applicable permission constraints. | Separate missing, disabled, unreadable, ambiguous and undiscoverable evidence. Do not require all seven skills for one operation. |
-| Independent review requiring workers | Exposed native fresh-context launch and completion mechanisms, required role resources, capacity, context delivery and applicable restrictions. A permitted trivial direct pass needs no worker. | Report the missing capability and stop only the affected review route. Distinguish host-enforced restrictions from prompt-only rules; launch no workers here. |
-| A specifically requested model or variant | Actual selected-client catalog identifier and advertised variant/effort metadata, if exposed. | Missing metadata is unknown support, not an invented default. Do not select a model or require model discovery for ordinary setup. |
+| Project setup | cwd/repo, читаемые instructions и realpaths, конфликты секций, источники веток/проверок, ignore локальных артефактов. | Назови доступ/неясного владельца/конфликт. Не init/configure Git и не выдумывай команды. |
+| Global/узкая настройка | Цели/полномочия, текст, symlink targets/shared source, приватность, наблюдаемая поддержка wiring. | Назови конфликт/непроверенную возможность; не merge частное, не меняй links/config. |
+| Выбранный dev skill | Только его enabled registration и читаемые candidate/resources, если exposed; нужные permission limits. | Раздели missing, disabled, unreadable, ambiguous, undiscoverable. Не требуй все семь ради одной операции. |
+| Независимое review с workers | Native fresh-context launch/completion, все роли, capacity, доставка контекста, ограничения. Допустимый trivial direct pass без worker. | Назови пробел, останови лишь этот маршрут. Host-enforced отдельно от prompt-only; здесь никого не запускай. |
+| Явно выбранная модель/вариант | Реальный ID каталога клиента и объявленные variant/effort metadata, если exposed. | Нет metadata - unknown support, не выдуманный default. Не выбирай модель и не требуй discovery для обычного setup. |
 
-Discussion and ordinary execution do not require native subagents. No CLI, model catalog or unrelated installation is a universal setup prerequisite. A tool's familiar name is not evidence of its schema, completion semantics or enforced permissions.
+Обсуждение/обычное исполнение не требуют native subagents. CLI, каталог моделей и посторонние установки не универсальные условия. Знакомое имя tool не доказывает schema, completion semantics и enforced permissions.
 
-## REPORT AND STOP
+## ОТЧЕТ И ОСТАНОВКА
 
-Show scope, timestamp, cwd when relevant, selected client and one row per applicable prerequisite: observed status, safe evidence command/source, exact missing fact or error and suggested remedy. Use `verified`, `missing`, `disabled`, `discovery_failed`, `unknown` or `not applicable`; mark unexecuted probes and why. Claim absence only after successful complete discovery for that inventory. A partial or failed reply is not a missing member. Keep credentials, private file contents and raw session output out of the report.
+Покажи охват, timestamp, нужный cwd, клиент и по строке на применимую предпосылку: наблюдаемый статус, безопасная команда/источник, точный пробел/ошибка, рекомендуемый шаг. Статусы: `verified`, `missing`, `disabled`, `discovery_failed`, `unknown`, `not applicable`. Невыполненные пробы назови с причиной. Отсутствие заявляй только после успешного полного discovery нужного списка; частичный/неуспешный ответ не доказывает missing member. Credentials, частные файлы и raw session output исключи.
 
-Say ready only for the audited prerequisites whose required observations succeeded. Name incomplete evidence separately from observed failures. Readiness establishes neither worker execution, write protection, native registration from disk alone, full workflow compatibility nor another client's route. Suggest remedies without performing them and stop without a setup proposal or automatic handoff.
+Готовность заявляй лишь для успешно проверенных предпосылок. Пробелы отделяй от наблюденных ошибок. Readiness не доказывает worker execution, write protection, регистрацию лишь по disk, весь workflow и маршрут другого клиента. Средства исправления предлагай без выполнения; остановись без setup proposal/автоматической передачи.

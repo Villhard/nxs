@@ -1,5 +1,5 @@
-# QUESTIONNAIRE RULES
+# ПРАВИЛА ОПРОСНИКА
 
-A question requests a fact or choice the participant can reasonably provide. Give context and explain what decision depends on it; avoid leading questions that smuggle in an answer. Mark a question critical only for the decision it blocks. List permissible assumptions with their evidence and distinguish them from participant responses. Attribute partial responses and retain unresolved questions with their identity and exact wording. When context or a recipient is insufficient, ask the user before producing a misleading recipient-specific document.
+Спрашивай факт или выбор, который участник способен дать. Объясни контекст и зависимое решение; не подсказывай ответ вопросом. Критичность указывай только для блокируемого решения. Разделяй допустимые допущения с доказательствами и ответы участника. Сохраняй авторство частичных ответов, идентификаторы и точный текст открытых вопросов. Если контекста или сведений об адресате мало, уточни у пользователя до создания вводящего в заблуждение персонального документа.
 
-Use the existing artifact and history when repeating the request. State the intended recipient and purpose, and include only information needed for that purpose. Saving the document is not authorization to contact anyone or send the contents. Record source links and evidence without secrets or full conversations.
+При повторе используй существующий документ и историю. Укажи адресата и цель, включи лишь нужную ему информацию. Сохранение не разрешает связаться с кем-либо или отправить документ. Запиши источники и доказательства без секретов и полных разговоров.

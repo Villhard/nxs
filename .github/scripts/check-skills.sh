@@ -230,9 +230,9 @@ check_roles() {
     tools=$(frontmatter_field "$path" tools)
     declared=$(printf '%s' "$tools" | tr -d ' ' | tr ',' '\n' | sort | tr '\n' ' ')
     [ "$declared" = "Bash Glob Grep Read " ] || fail "$path: unexpected role tools"
-    require_rule "$path" 'Read-only:.*never edit' "read-only role boundary"
-    require_rule "$path" 'never write the report or any file|cannot modify repository files or Git state' "report/source write prohibition"
-    require_rule "$path" 'source manifest.*resolved history/diff/file/search reads' "selected-source context"
+    require_rule "$path" 'Только чтение:.*не меняй код' "read-only role boundary"
+    require_rule "$path" 'Не пиши отчет и любые файлы, не меняй Git' "report/source write prohibition"
+    require_rule "$path" 'source manifest.*точные history/diff/file/search reads' "selected-source context"
     require_link skills/dev-review/references/agent-launch.md "../roles/$role.md"
   done
 }
@@ -265,7 +265,7 @@ EOF
 
 extract_done_when() {
   awk '
-    /^## Done when$/ { inside = 1; print; next }
+    /^## Условия завершения$/ { inside = 1; print; next }
     inside && /^#(#)? / { exit }
     inside { print }
   ' "$1"
@@ -276,7 +276,7 @@ extract_fenced_done_when() {
     /^(`{3,}|~{3,})/ {
       if (!inside) { inside = 1; body = ""; next }
       inside = 0
-      if (body ~ /^## Done when\n/) { printf "%s", body; exit }
+      if (body ~ /^## Условия завершения\n/) { printf "%s", body; exit }
       next
     }
     inside { body = body $0 "\n" }
@@ -319,14 +319,14 @@ check_ticket_contract() {
   require_rule "$template" '^# <NN>:' "numbered ticket title"
   require_rule "$template" '^\*\*Status:\*\* ready-for-agent$' "initial status"
   require_rule "$template" '^- \[ \] ' "unchecked acceptance criteria"
-  check_headings "$template" '## Done when'
-  require_rule "$template" '^Execute this ticket directly with `/dev-exec <this file>`\.$' "executor handoff"
-  require_rule "$template" '^- .*ready-for-agent.*Blocked by.*resolved.*prerequisite results.*selected working tree' "status and actual prerequisite gates"
-  require_rule "$template" '^- .*approved concrete plan.*approval.*exact target.*native permissions.*ready-for-human' "plan and direct human-step approval gate"
-  require_rule "$template" 'Verify the actual result.*ready-for-agent.*never repeat an uncertain action' "human-step evidence and replay stop"
-  require_rule "$template" '^- Close only after.*every criterion.*full test suite.*linter.*required checks pass.*resolved' "verified completion gate"
-  require_rule "$template" 'prohibited or unavailable verification leaves the ticket unresolved' "missing-check stop"
-  require_rule "$template" '^- Commits are optional.*explicit authorization.*dev-commit.*Do not commit' "commit authorization and preservation"
+  check_headings "$template" '## Условия завершения'
+  require_rule "$template" '^Выполни ticket напрямую через `/dev-exec <этот файл>`\.$' "executor handoff"
+  require_rule "$template" '^- .*ready-for-agent.*Blocked by.*resolved.*проверенных результатах предпосылок.*выбранном рабочем дереве' "status and actual prerequisite gates"
+  require_rule "$template" '^- .*одобренный конкретный план.*согласия.*точную цель.*native permissions.*ready-for-human' "plan and direct human-step approval gate"
+  require_rule "$template" 'ready-for-agent.*проверь реальный результат; не повторяй действие с неизвестным эффектом' "human-step evidence and replay stop"
+  require_rule "$template" '^- Закрывай только после каждого критерия, полного набора тестов проекта, линтера и остальных обязательных проверок:.*resolved' "verified completion gate"
+  require_rule "$template" 'запрещенная/недоступная проверка оставляет ticket нерешенным' "missing-check stop"
+  require_rule "$template" '^- Коммиты необязательны.*явного разрешения.*охват.*dev-commit.*Do not commit' "commit authorization and preservation"
   if grep -Eq -- '(^|[^[:alnum:]_-])/plan([^[:alnum:]_-]|$)' "$template" skills/dev-review/SKILL.md; then
     fail "current ticket template and review must not restore the removed /plan executor"
   fi
@@ -334,8 +334,9 @@ check_ticket_contract() {
   require_link "$preparation" 'ticket.md'
   require_link "$preparation" '../assets/ticket.md'
   require_link skills/dev-exec/SKILL.md 'references/work-preparation.md'
-  require_rule "$rules" 'Copy .*Done when.*verbatim' "verbatim execution block rule"
-  require_rule "$preparation" 'Reconcile source and destination changes.*preserve concurrent edits' "concurrent ticket preservation"
+  require_rule "$rules" 'Копируй .*Условия завершения.*дословно' "verbatim execution block rule"
+  require_rule "$rules" 'Существующие tickets сохраняют текст исполнения.*Done when.*Comments.*Do not commit' "legacy ticket preservation"
+  require_rule "$preparation" 'Перед записью сверь изменения источника и цели; сохрани конкурентные правки' "concurrent ticket preservation"
 }
 
 check_workflow_contract() {
@@ -344,40 +345,44 @@ check_workflow_contract() {
   local launch=skills/dev-review/references/agent-launch.md report=skills/dev-review/references/review-report.md path
   require_link "$executor" 'references/handoff.md'
   require_link skills/dev-exec/references/handoff.md '../assets/handoff.md'
-  check_headings skills/dev-exec/assets/handoff.md $'## Accepted\n## Open\n## Unverified\n## Verification\n## Current artifacts and next action'
+  check_headings skills/dev-exec/assets/handoff.md $'## Принято\n## Открытые вопросы\n## Не проверено\n## Проверки\n## Текущие артефакты и следующий шаг'
   for path in "$executor" skills/dev-exec/references/handoff.md skills/dev-exec/assets/handoff.md "$spec" "$snapshot"; do
     require_rule "$path" 'pre-checkpoint HEAD' "checkpoint starting identity"
     require_rule "$path" 'commit.*parent OID' "checkpoint commit/parent identities"
-    require_rule "$path" 'remaining.*changes|remaining.*work|remaining changes' "remaining-work coverage"
+    require_rule "$path" 'оставшиеся.*изменения|остаток|оставшийся.*задачи' "remaining-work coverage"
   done
-  require_rule "$executor" 'necessary checks first' "checked checkpoint boundary"
-  require_rule "$executor" 'complete procedure.*index inspection.*preservation of foreign staged and working-tree changes' "checkpoint commit safety procedure"
-  require_rule "$executor" 'Do not commit.*binding' "existing commit prohibition"
-  require_rule "$spec" 'nonempty index never restricts.*staged changes' "full-task spec scope"
-  require_rule "$spec" 'checkpoint already on the normal base is omitted' "base-omitted checkpoint warning"
-  require_rule "$spec" 'agreed earlier baseline.*stop incomplete' "earlier-baseline coverage stop"
+  require_rule "$executor" 'Сначала выполни нужные проверки готового блока' "checked checkpoint boundary"
+  require_rule "$executor" 'полную процедуру.*осмотр index.*сохранность чужих staged и working-tree правок' "checkpoint commit safety procedure"
+  require_rule "$executor" 'Do not commit.*остается обязательным' "existing commit prohibition"
+  require_rule "$spec" 'Непустой index не сужает охват до staged' "full-task spec scope"
+  require_rule "$spec" 'Checkpoint на обычной базе не попадает в diff' "base-omitted checkpoint warning"
+  require_rule "$spec" 'согласованная более ранняя baseline.*остановись incomplete' "earlier-baseline coverage stop"
   require_link "$review" 'references/selected-snapshot.md'
   require_link "$review" 'references/agent-launch.md'
   require_link "$review" 'references/review-report.md'
   require_link "$review" 'references/findings.md'
-  require_rule "$snapshot" 'Ordinary scope.*committed checkpoints.*staged, unstaged and untracked' "complete intended-work scope"
-  require_rule "$snapshot" 'staged-only request.*explicit.*never inferred' "no staged-first truncation"
-  require_rule "$snapshot" 'checkpoint.*candidate base.*explicitly agreed earlier boundary' "review baseline coverage stop"
-  require_rule "$snapshot" 'ancestry test or changed-path list alone does not prove coverage' "net-change coverage evidence"
-  require_rule "$snapshot" 'Recheck untracked and unstaged inventories' "working-source currency"
-  require_rule "$launch" 'three finder roles and then one verifier.*after every finder result' "independent verifier ordering"
-  require_rule "$launch" 'Never say which role or check raised a candidate' "verifier independence"
-  require_rule "$launch" 'mandatory even with host-enforced restrictions' "mandatory state comparison"
-  require_rule "$launch" 'tracked, untracked and ignored.*directories' "whole-tree state capture"
-  require_rule "$launch" 'baseline or comparison is incomplete.*stop.*incomplete' "failed-state-check stop"
-  require_rule "$launch" 'prompt-only.*never present.*enforcement' "honest permission reporting"
-  require_rule "$review" 'never refute, confirm or drop a candidate yourself' "orchestrator verdict boundary"
-  require_rule "$review" 'no code, tickets, project specs, journal, index, Git objects or commits' "report-only review writes"
-  require_rule "$review" 'Suggest .*dev-exec.*selected finding numbers directly; no ticket is required' "direct selected-finding handoff"
-  require_rule "$review" 'fix/plan approval.*reproduce or otherwise confirm.*before changing code' "correction approval and evidence"
-  require_rule "$report" 'sweep: incomplete.*never current' "incomplete report currency stop"
-  require_rule skills/dev-commit/SKILL.md 'Other groups are staged and a selected path mixes groups.*Stop before changing the index' "foreign-index mixed-path stop"
-  require_rule skills/dev-commit/SKILL.md 'Keep working-file bytes unchanged throughout' "working-byte preservation"
+  require_rule "$snapshot" 'Обычный scope.*committed checkpoint.*staged, unstaged, untracked' "complete intended-work scope"
+  require_rule "$snapshot" 'Staged-only допустим лишь явно, не по содержимому index' "no staged-first truncation"
+  require_rule "$snapshot" 'checkpoint.*candidate base.*остановись для явно согласованной более ранней границы' "review baseline coverage stop"
+  require_rule "$snapshot" 'Ancestry/список путей не доказывают покрытие' "net-change coverage evidence"
+  require_rule "$snapshot" 'Заново проверь untracked/unstaged inventories' "working-source currency"
+  require_rule "$launch" 'Три finder roles, затем один verifier только после всех их результатов' "independent verifier ordering"
+  require_rule "$launch" 'Не сообщай роль/проверку-автора' "verifier independence"
+  require_rule "$launch" 'Обязательно даже при host-enforced restrictions' "mandatory state comparison"
+  require_rule "$launch" 'tracked, untracked, ignored файлы и каталоги' "whole-tree state capture"
+  require_rule "$launch" 'Неполная baseline/сверка или любое различие останавливает проход incomplete' "failed-state-check stop"
+  require_rule "$launch" 'не представляй prompt-only как техническую защиту' "honest permission reporting"
+  require_rule "$review" 'сам не подтверждай, не опровергай и не удаляй кандидата' "orchestrator verdict boundary"
+  require_rule "$review" 'не код, tickets, project specs, журнал, index, Git objects и коммиты' "report-only review writes"
+  require_rule "$review" 'Предложи .*dev-exec.*прямо с отчетом и номерами, без обязательного ticket' "direct selected-finding handoff"
+  require_rule "$review" 'согласие на исправление/план.*воспроизвести либо иначе подтвердить.*до правок' "correction approval and evidence"
+  require_rule "$report" 'sweep: incomplete.*никогда не актуален' "incomplete report currency stop"
+  require_rule skills/dev-commit/SKILL.md 'Другие группы staged и выбранный путь mixed.*Остановись до изменения index' "foreign-index mixed-path stop"
+  require_rule skills/dev-commit/SKILL.md 'Байты рабочих файлов сохраняй неизменными на протяжении всей команды' "working-byte preservation"
+  check_headings skills/rnd-grill/assets/spec.md $'## Проблема\n## Решение\n## Пользовательские сценарии\n## Решения по реализации\n## Решения по проверке\n## Вне задачи\n## Дополнительные заметки'
+  check_headings skills/dev-spec/assets/project-spec.md $'## Цель\n## Архитектура\n## Назначение\n## Ответственность\n## Границы\n## Контракты\n## Известные ограничения\n## Обоснование'
+  require_rule skills/dev-spec/references/project-specs.md 'Цель.*Архитектура.*Назначение.*Ответственность.*Границы.*Контракты.*Известные ограничения.*Обоснование' "Russian project-spec headings"
+  require_rule skills/dev-spec/references/project-specs.md 'Для существующих файлов допустимы прежние соответствия:.*Goal.*Architecture' "legacy project-spec reading"
 }
 
 check_removed_surfaces() {

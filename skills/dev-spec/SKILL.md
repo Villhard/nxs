@@ -1,92 +1,82 @@
 ---
 name: dev-spec
-description: Record material built-work contracts in project SPEC.md or private .SPEC.md from the intended changes, including relevant checkpoints and uncommitted work. Optional after implementation or review; no durable change means no edit. Not for planning new behavior or finding defects.
-argument-hint: "[feature dir]"
+description: Записать существенные контракты реализованной работы в проектные SPEC.md или частные .SPEC.md, учитывая checkpoint и незакоммиченное. Необязателен после реализации/review; без постоянного изменения ничего не пишет. Не планирует новое и не ищет дефекты.
+argument-hint: "[каталог функции]"
 disable-model-invocation: true
 ---
 
 # /dev-spec
 
-On explicit invocation or an instruction explicitly covering this operation, bring project specs in line with built work, then stop. This is optional: record material intent the code alone does not show, not an obligatory artifact for every task.
+По явному вызову/прямо разрешающей инструкции согласуй проектные specs с реализованным и остановись. Это необязательно: записывай существенное намерение, не видимое из кода, не документ ради каждой задачи.
 
-Accepted input: an optional feature directory `.scratch/<feature-slug>/`, with supplied task/review/checkpoint context when available. Without a feature directory, use the intended-work evidence and relevant code; do not invent a directory or feature spec.
+Вход: необязательный `.scratch/<feature-slug>/` и переданный контекст задачи/review/checkpoint. Без каталога используй доказательства работы и код; не выдумывай каталог/feature spec. До specs прочитай [общие правила](references/project-specs.md): имена и порядок чтения. Пример: `/dev-spec .scratch/rate-limiting`. Следующую команду предлагай, не запускай.
 
-Before reading specs, read [project specs](references/project-specs.md): it owns the file names and the reading rules this command shares with the other commands.
+## ГРАНИЦЫ
 
-Example: /dev-spec .scratch/rate-limiting
+- В обычной работе проектные `SPEC.md`/`.SPEC.md` пишет только `dev-spec`. Только они и одна private-spec exclude line в hidden mode; не код, глоссарий, ADR, `.scratch/`, index и коммиты. Сохрани чужие spec-правки.
+- В разрешенной операции settled-содержание меняй без отдельного согласования текста: пользователь смотрит diff. Уже данное согласие на режим/охват используй.
+- Режим при необходимости спроси один раз до первого spec (секция "Режим"). Неясные охват/baseline уточни или остановись incomplete, не угадывай. Неуверенный вывод можно пометить `(unconfirmed)`, но не оправдать этим неизвестное покрытие входа.
+- Записывай построенное, не план: решают покрытая итоговая работа и текущий код; `spec.md`, `root-cause.md`, tickets и review follow-ups - контекст, не доказательство.
 
-Suggest the next command at a handoff; never start it automatically.
+## ВХОД
 
-## STANCE
+Работай из корня (`git rev-parse --show-toplevel`). Переданный каталог бери точно; отсутствующий/нечитаемый вход останавливает. Установи задачу, требования, охват и baseline по контексту/явно согласованной границе, не по имени ветки. Явное сужение сохрани и отметь пределы.
 
-- In normal task execution, `dev-spec` is the exclusive writer of project `SPEC.md` and `.SPEC.md`. Write only those files and, in hidden mode, the one private-spec exclude line. Never code, a glossary, decision records, `.scratch/` artifacts, the index or commits. Preserve unrelated spec edits.
-- Within the authorized operation, amend settled content without a separate content-approval round; the user reviews the diff. Reuse mode/scope approval already supplied.
-- Ask about mode once when needed before the first spec (MODE). Missing or conflicting scope/baseline evidence needs clarification or an incomplete stop, not an inferred choice. Uncertain content may be marked `(unconfirmed)` inline; that mark cannot excuse uncertain input coverage.
-- Record what was built, not what was planned: the covered net work and current code decide, while `spec.md`, `root-cause.md`, tickets and review follow-ups provide context, not proof of implementation.
+Без согласованной baseline определи `origin/HEAD`, иначе существующую `main`/`master`; неоднозначность останавливает. Найди merge-base с HEAD и закрепи OID как кандидата baseline. Доказательства работы:
 
-## INPUT
+- `git diff --no-ext-diff --no-textconv <baseline-OID> --` - итог committed/staged/unstaged до рабочего дерева;
+- отдельные staged/unstaged diff, чтобы не потерять index-only и взаимную отмену;
+- `git ls-files -z --others --exclude-standard` и реальное содержимое относящихся новых файлов.
 
-Work from the repository root (`git rev-parse --show-toplevel`). Take a supplied feature directory exactly as given; missing or unreadable explicit input stops. Resolve task identity, requirements, intended scope and baseline from supplied task/review/checkpoint evidence or an explicitly agreed boundary. Never infer task ownership or match tickets from a branch name alone. Preserve an explicitly narrower scope; label its limits rather than silently widening it.
+Непустой index не сужает охват до staged. Существенно отличающуюся от disk выбранную staged-версию согласуй до записи поведения как построенного. Исключи `.scratch/` и project spec из входа, чтобы повтор не поглощал свой результат. Посторонний `SPEC.md` сохрани как контекст, не меняй.
 
-Absent an agreed baseline, detect `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Resolve its merge-base with HEAD and pin the resulting commit OID as the candidate baseline. Built-work evidence includes:
+Для checkpoint прочитай репозиторий, ветку, pre-checkpoint HEAD, каждый commit и parent OID, одобренный охват, пути и остаток. До выбора режима/записи проверь идентичности/требования по Git и коду, наличие всей итоговой работы: ancestry/списка путей мало, последующие правки могли отменить прежнее. Checkpoint на обычной базе не попадает в diff даже при другом непустом diff. Для такой работы, в том числе уже закоммиченной на базе, нужна явно согласованная более ранняя baseline с доказательствами задачи; иначе спроси/остановись incomplete, не заявляй отсутствие постоянного изменения.
 
-- `git diff --no-ext-diff --no-textconv <baseline-OID> --` - committed, staged and unstaged net changes through the working tree;
-- the staged and unstaged diffs separately, so index-only work or cancellation between index and working tree is not silently omitted;
-- `git ls-files -z --others --exclude-standard` and the relevant new files' actual contents.
+До вывода закрепи baseline, источники требований и снимок: репозиторий/ветку, HEAD, staged/unstaged diff и нужные untracked bytes. Чужое отделяй доказательствами, не перемещением. Пропущенная работа, неразделимое владение, недостающие доказательства/неясное покрытие - incomplete с объяснением. Не пиши частичный spec и не говори "постоянных изменений нет" как о полной задаче. Не stage/stash/reset/switch и не переписывай чужое ради охвата. До записи/финального no-op сверь изменившиеся источники; охват оставь в отчете без обязательного файла.
 
-An existing nonempty index never restricts this scope to staged changes. Reconcile a selected staged version that differs materially from disk before recording it as built behavior. Exclude `.scratch/` and project spec files from built-work input so repeats do not consume their own output. A foreign `SPEC.md` is not a project spec; preserve it as context and never amend it.
+## РЕЖИМ
 
-For checkpoints, read repository, branch, pre-checkpoint HEAD, each commit and parent OID, approved scope, changed paths and remaining changes. Validate identities and requirements against actual Git and current code before MODE or any write. Verify that every relevant intended change is represented in the selected net input; ancestry or a path list alone is insufficient because later edits may cancel or replace it. A checkpoint already on the normal base is omitted even if unrelated work makes the default diff nonempty. Use an explicitly agreed earlier baseline supported by task evidence, including for work already committed on the base branch; if none is established, ask or stop incomplete rather than claiming no durable change.
+Используй перечисление из reference; посторонний `SPEC.md` не считай/не меняй. Возьми первую подходящую строку:
 
-Pin the selected baseline, requirement sources and actual change snapshot before deriving content: repository/branch, HEAD, staged/unstaged diffs and relevant untracked bytes. Separate foreign work by evidence, not by moving it. If intended work is omitted, foreign changes cannot safely be distinguished, input evidence is missing or coverage is uncertain, stop incomplete and identify the uncertainty. Never write a partial spec or report "nothing durable changed" as if the intended task were covered. Never stage, stash, reset, switch branches or rewrite foreign work to manufacture scope. Reconcile changed source/snapshot evidence before any spec write or final no-op conclusion; retain the pinned scope in the report without requiring a new artifact.
-
-## MODE
-
-Detect with LISTING from the reference. A foreign `SPEC.md` is not counted here and never amended. Take the first matching row:
-
-| Found | Mode |
+| Найдено | Режим |
 | --- | --- |
-| A tracked `.SPEC.md`: `git ls-files -z --cached -- ':(glob)**/.SPEC.md'` is not empty | Stop: name it; it is already committed, so the user decides how to remove it from Git |
-| Both kinds | Stop: name the files of each kind and tell the user to rename or remove one kind by hand |
-| `SPEC.md` files only | visible |
-| `.SPEC.md` files only | hidden; an untracked one not yet ignored gets the exclude line under AMEND |
-| Neither, and `git check-ignore -q -- .SPEC.md` exits 0 | hidden |
-| Neither, otherwise | undecided: ask under AMEND, before the first write |
+| Tracked `.SPEC.md`: `git ls-files -z --cached -- ':(glob)**/.SPEC.md'` непуст | Остановись, назови файл: он уже в Git, способ удаления выбирает пользователь. |
+| Оба вида | Остановись, назови файлы обоих видов; пользователь вручную переименует/удалит один. |
+| Только `SPEC.md` | visible |
+| Только `.SPEC.md` | hidden; untracked без ignore получает exclude line по секции "Изменение". |
+| Ни одного, `git check-ignore -q -- .SPEC.md` = 0 | hidden |
+| Иначе | undecided: спроси по секции "Изменение" до записи. |
 
-Hidden mode is the user's private documentation for a project where specs may not be committed. Its cost, stated to the user when the mode is chosen: the files exist only in this working tree, a fresh clone or `git clean -x` loses them, and only the exclude line keeps them out of commits.
+При выборе hidden объясни цену: частные файлы только в этом рабочем дереве, теряются при fresh clone/`git clean -x`, от коммита защищены лишь exclude line.
 
-## FIND WHAT CHANGED
+## СУЩЕСТВЕННОЕ ИЗМЕНЕНИЕ
 
-Read the specs that govern the built work per the reference, then name what changed in spec terms:
+Прочитай применимые specs и определи изменение их уровня:
 
-- the product goal or architecture: a capability added or removed, a principle or a cross-module decision moved;
-- a module: its purpose, ownership, boundary, contract, decision or known limitation;
-- a genuinely new module boundary;
-- for a bug in the feature's `root-cause.md`: the intended behavior of a `silent` one in the spec that governs the affected path - the nearest existing spec on the path, or a module spec created under AMEND; of a `wrong` one in the record the root cause names, when that record is a spec; the fix ticket leaves that spec unchanged for dev-spec to correct.
+- цель/архитектура: способность добавлена/убрана, принцип или межмодульное решение изменены;
+- назначение, владение, граница, контракт, решение или ограничение модуля;
+- новая реальная граница модуля;
+- для сбоя из `root-cause.md`: намерение `silent` в ближайшем применимом spec либо созданном по секции "Изменение"; для `wrong` - названная запись, если это spec. Fix ticket оставляет spec для `dev-spec`.
 
-A fact already in a glossary or decision record is linked by path, not restated.
+Факт из глоссария/ADR связывай путем, не повторяй.
 
-## NOTHING DURABLE
+## НЕТ ПОСТОЯННОГО ИЗМЕНЕНИЯ
 
-Only after intended-work coverage is established, when nothing in spec terms changed, make no edit, ask no mode question and report "nothing durable changed" for the selected scope. Never invent content to show activity or use no-op to hide omitted checkpoints, missing evidence or skipped modules.
+Только после установления полного покрытия, если существенного изменения нет, ничего не пиши, режим не спрашивай и сообщи "постоянных изменений нет" для выбранного охвата. Не выдумывай записи ради активности и не скрывай no-op пропущенные checkpoint, доказательства и модули.
 
-## AMEND
+## ИЗМЕНЕНИЕ
 
-1. With an undecided mode and a material fact to record, ask once: visible `SPEC.md`, eligible for a separately authorized commit, or hidden `.SPEC.md`, private and local, with the cost from MODE. Reuse an explicit choice already covering this repository. If the user declines, change nothing and report the declined save, not "nothing durable changed".
-2. Hidden mode: when `git check-ignore -q -- .SPEC.md` exits non-zero, append `.SPEC.md` on its own line to `"$(git rev-parse --path-format=absolute --git-common-dir)/info/exclude"`, adding a newline first when the file does not end with one, and creating its directory if needed. Check again; stop if the file is still not ignored.
-3. Amend top-down: the root spec, then module specs. Create a root spec only when the work established a product or architecture fact; a module spec without a root spec is normal. Create a module spec only for a module the work touched, only with what the work established, in the directory of a genuine boundary - not one per directory. Before creating a spec, list its directory (`ls -a`): when it holds a foreign `SPEC.md` or a case variant of either name, such as `spec.md`, `Spec.md` or `.spec.md`, create nothing there and report the module as skipped with that file name.
-4. Use the headings of [project spec](assets/project-spec.md): all optional, only settled ones written, in that order; `## Goal` and `## Architecture` only in the root spec. Edit prose in place.
+1. При undecided и существенном факте спроси один раз: visible `SPEC.md` с отдельно разрешаемым коммитом либо private/local `.SPEC.md` с ценой из секции "Режим". Используй прежний явный выбор этого репозитория. При отказе ничего не меняй, сообщи отказ от сохранения, не отсутствие изменений.
+2. Hidden: если `git check-ignore -q -- .SPEC.md` != 0, добавь `.SPEC.md` отдельной строкой в `"$(git rev-parse --path-format=absolute --git-common-dir)/info/exclude"`, создав каталог и предварительный newline при необходимости. Перепроверь ignore, при неуспехе остановись.
+3. Меняй сверху вниз: корень, затем модули. Корневой spec создавай лишь для установленного факта продукта/архитектуры; модульный без корневого нормален. Новый модульный spec - только для затронутой настоящей границы, не каждого каталога, и только по установленному. До создания перечисли каталог (`ls -a`): посторонний `SPEC.md` или вариант регистра (`spec.md`, `Spec.md`, `.spec.md`) запрещает создание там; сообщи пропуск и имя.
+4. Заголовки [шаблона](assets/project-spec.md) необязательны, только установленные, в заданном порядке; `## Цель`/`## Архитектура` - лишь в корне. Прежние английские заголовки читай по соответствиям из reference; не мигрируй незатронутое только ради языка. Меняй прозу на месте.
 
-Content rules:
+Пиши намерение, не инвентарь: без пересказа кода, списков файлов, планов, версий и "потом". Только установленные факты, без заглушек; вывод помечай `(unconfirmed)` на месте. Факт один раз у владельца, остальные ссылаются на его spec.
 
-- State intent, not inventory: no restated code, no file listings, no plans, versions or "later" lists.
-- Settled content only, no placeholders. Mark an inference `(unconfirmed)` where it stands.
-- Each fact once: the spec that owns it states it, others name that spec's path.
+## ПРОВЕРКА
 
-## CHECK
+Каждый измененный spec соответствует выбранной работе/коду, не противоречит другим specs, глоссарию/ADR; ссылки работают. Чужое сохрани; требующее внешнего решения противоречие останавливает затронутую запись. Сверь изменения закрепленного входа, не пиши по устаревшему. Соблюдай пределы проверки, NOT RUN сообщай без заявления полной проверки.
 
-Every amended spec matches the selected built work and current code. Touched specs do not contradict each other, the glossary or decision records, and their links resolve. Preserve foreign edits; if a contradiction requires an out-of-scope decision, stop the affected write and name it. Reconcile any change to the pinned input; do not silently write against stale evidence. Respect explicit verification limits and report NOT RUN work without claiming a complete verification.
+## РЕЗУЛЬТАТ
 
-## NEXT
-
-Report paths created/changed, the selected scope and baseline with checkpoint coverage and verification limits, or a covered "nothing durable changed" no-op. Name any `(unconfirmed)` content, skipped modules/case variants, foreign `SPEC.md` files left unchanged and unresolved coverage. A skipped material contract is incomplete, not a complete spec update. In visible mode, suggest `dev-commit` only for remaining intended changes requiring a separately authorized commit; never stage or commit. In hidden mode, keep private specs out of Git. A handoff never starts another skill automatically.
+Верни пути, охват/baseline с покрытием checkpoint и пределами либо доказанный no-op. Назови `(unconfirmed)`, пропущенные модули/варианты регистра, оставленные посторонние specs и неизвестное покрытие. Пропущенный существенный контракт означает incomplete. Visible: предложи `dev-commit` лишь для остатка, нуждающегося в отдельно разрешенном коммите, не stage/commit. Hidden: частные specs вне Git. Передача не запускает следующий скилл.

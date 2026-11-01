@@ -1,17 +1,17 @@
-# <Product or module name>
+# <Название продукта или модуля>
 
-## Goal
+## Цель
 
-## Architecture
+## Архитектура
 
-## Purpose
+## Назначение
 
-## Ownership
+## Ответственность
 
-## Boundaries
+## Границы
 
-## Contracts
+## Контракты
 
-## Known limitations
+## Известные ограничения
 
-## Rationale
+## Обоснование

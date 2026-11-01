@@ -1,31 +1,31 @@
-# FEATURE DIRECTORY
+# КАТАЛОГ ФУНКЦИИ
 
-Read this reference before reading feature input or writing a feature artifact. Apply the sections that fit the input; `rnd-debug` keeps its own gates and outputs.
+Читай до входных документов и записи артефактов функции. Применяй подходящие секции; условия и результат `rnd-debug` остаются его собственными.
 
-## LOCATION
+## МЕСТО
 
-Reuse an explicit or established feature directory before choosing a new one. For new diagnostic artifacts, use `.scratch/<feature-slug>/`, with two to four lowercase English words from the request or report, hyphenated; a tracker key prefixes the slug - `.scratch/<KEY>-<slug>/`. A source under a feature's `research/` belongs to that feature, not a new nested directory. Ask when several tasks, destinations or owners fit; a branch alone does not establish task identity.
+Предпочитай явный/установленный каталог. Для новой диагностики используй `.scratch/<feature-slug>/`: два-четыре английских lowercase слова из запроса через дефис; ключ трекера ставь впереди: `.scratch/<KEY>-<slug>/`. Источник в `research/` функции относится к ней, не к вложенному новому каталогу. Несколько задач, мест или владельцев требуют вопроса; ветка не устанавливает задачу.
 
-Inspect the destination before writing. A `map.md` or typed decision record is existing context, not permission to alter it and not a reason to force a separate workflow. Save diagnosis in the selected feature only when ownership and scope are clear. Preserve map/decision files, identities, answers and history; do not claim, renumber, convert or reset decision tickets. Ask or choose a distinct destination if another worker's ownership conflicts.
+Осмотри место до записи. `map.md` и типизированное решение - контекст, не разрешение правок или обязательный процесс. Сохраняй диагноз в выбранной функции только при ясных охвате и владении. Сохрани карты/решения, идентичности, ответы и историю; не захватывай, не перенумеровывай, не конвертируй и не сбрасывай decision tickets. При конфликте владения спроси или выбери отдельное место.
 
-## LOCAL STORAGE
+## ЛОКАЛЬНОЕ ХРАНЕНИЕ
 
-Save new diagnostic Markdown under `.scratch/` by default; reuse an explicitly supplied existing diagnostic artifact in place. Create only the diagnosis and useful probe evidence, not prerequisite feature specs, tickets or journals. Do not look up repository/global tracker preferences or ask for a storage backend or separate local-storage consent. An unrelated tracker preference does not redirect this workflow. The skill's own approval and preservation gates still apply. Do not change settings, run setup or publish/synchronize remote issues. Keep secrets, private configuration and raw session transcripts out of saved evidence.
+Новый диагностический Markdown по умолчанию идет в `.scratch/`; явно переданный существующий документ обновляй на месте. Создавай лишь диагноз и полезные доказательства проб, без предварительных feature specs, tickets и журналов. Не ищи настройки трекера в проекте/глобально, не спрашивай backend или отдельное согласие на локальное хранение. Посторонняя настройка трекера не меняет этот процесс. Соблюдай согласование и сохранность скилла. Не меняй настройки, не запускай setup, не публикуй/синхронизируй remote issues. Исключи секреты, частные настройки и сырые диалоги.
 
-## TRACKER INPUT
+## ВХОД ИЗ ТРЕКЕРА
 
-A tracker key or URL is read before anything else through an available read interface; otherwise ask the user to paste the ticket. Never infer its content from the key.
+Ключ/URL сначала прочитай доступным интерфейсом, иначе попроси текст. Не угадывай по ключу.
 
-For remote input, establish the source identity, applicable parent decisions/comments (or that no parent applies) and relevant blocker state through an available read interface or supplied content. Ask for missing facts; a key, a ready label or an omitted blocker field is not evidence of no blockers. Preserve known prerequisites and their required results; if local tickets already represent them, retain their identities and verified mapping. Do not manufacture a local ticket to diagnose the failure. Never interpret a remote issue number as a local ticket number or resolve a local ticket from a remote label. Unknown or unsatisfied prerequisites prevent claiming affected work ready; verify the actual needed result rather than relying on status alone. Independent safe diagnosis can continue within its authorization. Record verified closed blockers with their supporting evidence.
+Установи источник, применимые родительские решения/комментарии или их отсутствие и блокеры по интерфейсу/переданному тексту. Недостающее спроси: ключ, метка готовности и отсутствие поля блокеров не доказывают отсутствие препятствий. Сохрани известные предпосылки и нужные результаты; существующие локальные tickets - с их идентичностями и проверенным соответствием. Не создавай ticket ради диагноза. Remote issue number - не локальный номер; remote label не разрешает закрыть local ticket. Неизвестная/невыполненная предпосылка блокирует заявление о готовности: проверяй реальный результат, не статус. Независимая безопасная диагностика может продолжаться в разрешенных пределах. Закрытые проверенные блокеры запиши с доказательствами.
 
-## SOURCE PRESERVATION
+## СОХРАННОСТЬ ИСТОЧНИКА
 
-Read an existing feature `spec.md`, decision or external source as evidence without copying or rewriting it. Carry applicable intent, conditions, answers, exclusions, testing requirements and source links into the diagnosis where relevant. Saving `root-cause.md` requires no intermediate feature spec. A separately requested feature-description or domain-record save belongs to `rnd-grill`; project specs remain `dev-spec`-owned.
+Существующие `spec.md`, решение и внешний источник читай как доказательства, не копируй и не переписывай. Перенеси в диагноз применимые намерение, условия, ответы, исключения, требования проверок и ссылки. Для `root-cause.md` не нужен промежуточный spec. Отдельное сохранение описания функции/доменных записей - `rnd-grill`, проектных спецификаций - `dev-spec`.
 
-Check unresolved questions in the source as well as local documents. Approval of a spec does not clear an open question, and only new contradictory evidence reopens a settled decision.
+Проверь открытые вопросы и в источнике, и локально. Одобрение spec не закрывает вопрос; согласованное решение открывают только новые противоречащие доказательства.
 
-## DOMAIN DOCUMENTS
+## ДОМЕННЫЕ ДОКУМЕНТЫ
 
-A project may keep a domain glossary and decision records - typically `GLOSSARY.md` or `GLOSSARY-MAP.md` at the root and `docs/adr/`, or wherever project instructions point. When they exist, read the entries for the affected area and use the glossary's terms, not a synonym it avoids. Their absence is normal: do not ask about it. Never create or edit these files.
+Прочитай относящиеся к задаче записи глоссария/решений, если они есть: обычно корневые `GLOSSARY.md`/`GLOSSARY-MAP.md`, `docs/adr/` или пути из инструкций. Используй канонические термины, не запрещенные синонимы. Отсутствие нормально, не спрашивай. Не создавай и не меняй эти файлы.
 
-Project specs are domain documents too: read them per [project specs](project-specs.md).
+Проектные спецификации тоже доменные документы; читай по [правилам](project-specs.md).

@@ -1,74 +1,75 @@
-# CLIENT SCENARIOS
+# СЦЕНАРИИ КЛИЕНТОВ
 
-Focused verification protocol for the seven-skill contract in [ADR 0009](../docs/adr/0009-seven-skill-direct-flow.md). These are expected observations, not passed results. **Verification NOT RUN for the simplified contracts.** Historical version/client observations and earlier scenario text are preserved in the [pre-0.77 archive](../docs/history/client-scenarios-before-0.77.md); they are not evidence for changed resources.
+Протокол проверки семи скиллов из [ADR 0009](../docs/adr/0009-seven-skill-direct-flow.md). Здесь ожидаемые наблюдения, не пройденные проверки. **Поведение упрощенных скиллов не проверено: NOT RUN.** Прежние сценарии и наблюдения клиентов/версий сохранены в [архиве до 0.77](../docs/history/client-scenarios-before-0.77.md), не доказывают измененные инструкции.
 
-## EVIDENCE AND BOUNDARIES
+## ДОКАЗАТЕЛЬСТВА И ГРАНИЦЫ
 
-Use a tiny disposable project with existing checks and fixture-only approvals. Keep foreign staged/working files, existing task records and custom instructions as preservation sentinels. Never install into the user's normal agents directory, change personal settings, write a live tracker or clean user data to exercise a scenario. A test instruction authorizes only its identified fixture. Native reviewer launches and any installation/environment action need explicit authorization for that observation.
+Используй маленький одноразовый проект с готовыми проверками и согласиями только на fixture. Сохраняй чужие staged/working файлы, старые задачи и личные инструкции как контрольные образцы. Не устанавливай в обычный agents directory пользователя, не меняй личное, live tracker и данные ради сценария. Тестовая инструкция разрешает лишь названную fixture. Native reviewers и installation/environment action требуют явного разрешения на наблюдение.
 
-Record client/version, exact candidate path and relevant resource hashes, invocation/delivery, native registration versus pinned-text input, actual permissions, input/approval scope, actions, artifacts, command results and limitations. Compare relevant bytes, modes, symlinks, HEAD and index before/after where permitted. A candidate/template change invalidates only affected earlier evidence; preserve the earlier result with its original pins. Structural checks and packaging discovery are not behavioral passes. Unavailable clients/capabilities remain unverified; avoid a matrix of repeated model runs that merely mirrors prose.
+Записывай client/version, точный candidate path/resource hashes, invocation/delivery, native registration отдельно от pinned-text input, реальные permissions, вход/согласие, действия, артефакты, команды и пределы. При разрешении сравни bytes, modes, symlinks, HEAD/index до/после. Смена template/candidate отменяет лишь затронутые доказательства; старый результат оставь с его pins. Source checks/discovery не доказывают поведение. Недоступное остается непроверенным; не делай матрицу model runs, лишь повторяющую текст.
 
-## CATALOG AND INVOCATION
+## КАТАЛОГ И ВЫЗОВ
 
-| Case | Required observation |
+| Случай | Нужное наблюдение |
 | --- | --- |
-| Exact source catalog | Exactly `rnd-grill`, `rnd-debug`, `dev-exec`, `dev-review`, `dev-spec`, `dev-commit`, `nxs-setup`; missing or extra entries fail discovery expectations. Each skill resolves its own resources without another installation/checkout. |
-| Explicit operations | Explicitly select each of the six non-commit skills with suitable synthetic input; entry gates apply. A quoted command, discussion about a workflow or artifact recommendation invokes nothing. |
-| Commit selection | A direct commit request can select `dev-commit`; asking what a commit is cannot. No automatic next skill after a result. |
-| Scoped multi-operation approval | Reuse an instruction actually covering the next operation; do not ask for the same approval again, widen it or infer authority from a saved record. |
+| Точный каталог | Только `rnd-grill`, `rnd-debug`, `dev-exec`, `dev-review`, `dev-spec`, `dev-commit`, `nxs-setup`; missing/extra нарушают discovery. Каждый читает свои resources без другой установки/checkout. |
+| Явные операции | Каждый из шести non-commit вызывается явно с synthetic input и своими условиями. Цитата команды, обсуждение процесса и рекомендация артефакта ничего не запускают. |
+| Коммиты | Прямая просьба выбирает `dev-commit`, вопрос о смысле коммита - нет. Результат не запускает следующий скилл. |
+| Несколько операций | Уже покрывающее следующую операцию согласие используй без повтора, расширения и новых полномочий из записи. |
 
-## PREPARATION AND EXECUTION
+## ПОДГОТОВКА И ИСПОЛНЕНИЕ
 
-| Case | Required observation |
+| Случай | Нужное наблюдение |
 | --- | --- |
-| Clear small request | `dev-exec` inspects context, states observable criteria and a concrete plan, waits for applicable approval, implements and checks. No invented feature spec, ticket, directory, journal or unauthorized commit. |
-| Uncertain idea | `rnd-grill` resolves facts, compares meaningful alternatives, groups independent questions and waits before dependent choices. Discussion can end with no files; it neither implements nor forces artifact stages. |
-| Direct save, decline and repeat | Show useful content/destination, reuse exact approval or wait; decline preserves files. Approved unfinished state keeps open choices. Identical repeat is a no-op; manual feedback/history and concurrent edits survive. Glossary/ADR proposals have separate approval and project specs remain unchanged. |
-| Optional evidence methods | Requested primary-source research, opportunity survey and selected-boundary design attribute evidence and limits without mandatory subflows. An authorized isolated experiment retains runnable evidence/verdict; success authorizes no production transfer, reuse or deletion. Missing source/tool evidence is not a negative finding. |
-| Participant questions | Recipient/role is established; partial answers retain attribution, exact unanswered questions and affected blockers. Saving/approving the questionnaire sends nothing. |
-| Confirmed diagnosis | `rnd-debug` saves repro and discriminating evidence. Confirmed `right` can feed `dev-exec` directly; `silent`/`wrong` first need intent/correction agreement. No ticket or patch from diagnosis; project-spec correction is deferred to `dev-spec`. |
-| Unconfirmed or decided behavior | Competing causes/unreproduced symptom saves missing evidence and next probe with pending fix direction, not a ready fix. `feature` goes to `rnd-grill`. Existing diagnoses and covered open tickets are preserved; a different cause needs a concrete revision/destination decision. |
-| Large work and optional tickets | `dev-exec` proposes checkable units with real prerequisites, then saves only approved useful tickets using its template. Preserve numbering, branches, execution text, open/resolved/wontfix history and bare/bold typed decision files. New scope appends; no silent conversion or regeneration. A preparation-only request stops before execution. |
-| Source/dependency uncertainty | Missing explicit input, material clarification or unknown/unmapped remote blocker stops affected readiness. Source identity and parent decisions are preserved; remote identifiers do not become implicit local dependencies. An approved draft stays a draft. |
-| Working-tree prerequisite | A resolved blocker with absent or reverted result stops before implementation and records missing evidence; carried, squashed or cherry-picked results can satisfy the prerequisite by actual evidence. The executor does not implement, merge or cherry-pick the blocker. |
-| Environment and human step | Without concrete action/target approval and native permission, no install/migration/external effect occurs; record expected evidence and `ready-for-human` when applicable. Human reset to `ready-for-agent` requires actual verification; a claim/status alone does not unblock it. Direct applicable approval needs no coordinator packet. |
-| Required checks | Ticket resolution requires every criterion, full suite, linter and other required checks. A missing/failing/prohibited command stays explicit and leaves the ticket unresolved; a focused pass cannot replace it. An implementation-only clear request reports NOT RUN without inventing status or a verification pass. |
+| Малый ясный запрос | `dev-exec` изучает, задает критерии/конкретный план, ждет согласия, реализует/проверяет без выдуманных spec/ticket/каталога/журнала и неразрешенного коммита. |
+| Неясная идея | `rnd-grill` выясняет факты, сравнивает варианты, объединяет независимые вопросы, ждет перед зависимыми. Можно закончить без файлов, реализации и обязательных артефактов. |
+| Сохранение/отказ/повтор | Показаны содержание/место; точное согласие использовано или получено. Отказ сохраняет файлы, незавершенное - вопросы, идентичный повтор - no-op. Замечания/история/конкурентные правки сохранены; доменные записи отдельно одобрены, project specs не меняются. |
+| Методы исследования | Запрошенные первоисточники, обзор/дизайн дают источники и пределы без обязательных подэтапов. Разрешенный опыт сохраняет воспроизводимые файлы/вывод; успех не разрешает перенос/reuse/удаление. Недоступность не отрицательный факт. |
+| Опросник | Установлены адресат/роль; частичные ответы с авторством, открытые вопросы точно и с блокерами. Одобрение/сохранение ничего не отправляют. |
+| Подтвержденный диагноз | `rnd-debug` сохраняет repro/различающие доказательства. `right` прямо в `dev-exec`, `silent`/`wrong` сначала согласуют намерение/запись. Нет ticket/patch, specs потом у `dev-spec`. |
+| Неясная причина/решенное поведение | Конкурирующие причины/невоспроизведение сохраняют пробел/следующую пробу, pending fix direction, не готовый fix. `feature` в `rnd-grill`. Диагноз/покрытые открытые tickets сохранены; другая причина требует решения о правке/месте. |
+| Крупная работа/tickets | Проверяемые части с предпосылками, только одобренные полезные tickets по шаблону. Сохранены номера, ветки, исполнение, open/resolved/wontfix и ordinary/bold Type files. Новое добавляется без конвертации/перегенерации. Подготовка останавливается до исполнения. |
+| Неясные источники/зависимости | Missing explicit input, существенный вопрос и unknown/unmapped remote blocker блокируют затронутую готовность. Источник/родительские решения сохранены; remote IDs не становятся local dependencies, черновик не становится готовым. |
+| Предпосылка в дереве | Resolved без результата/с reverted блокирует до правок с записью пробела. Carried/squashed/cherry-picked может пройти по фактам текущего дерева. Исполнитель не реализует/merge/cherry-pick блокер. |
+| Среда/человеческий шаг | Нет конкретного action/target approval и native permission - нет эффекта, есть ожидаемое доказательство/ready-for-human. Возврат ready-for-agent требует реальной проверки, не статуса/заявления. Прямому согласию coordinator packet не нужен. |
+| Обязательные проверки | Все критерии, полный suite/linter/остальное до resolved. Missing/failing/prohibited явно оставляет unresolved, focused pass не замена. Implementation-only запрос дает NOT RUN без выдуманного статуса/успеха. |
+| Русские заголовки | Новые шаблоны/отчеты используют русские секции; ключи/статусы прежние. Читатели понимают старые английские секции без миграции/снятия запретов, в том числе Goal/Architecture и Done when/Comments. |
 
-## REVIEW, SELECTED FIXES AND SPECS
+## REVIEW, ИСПРАВЛЕНИЯ И СПЕЦИФИКАЦИИ
 
-Supply a task boundary/requirements and a small reachable defect plus stale documentation/SVG text. Preserve foreign changes and report every excluded scope. Use the same pinned logical source view for reviewers, surrounding context and documentation; current disk bytes cannot silently replace a historical or index version.
+Дай границу/требования задачи, маленький достижимый дефект и устаревшие docs/SVG. Чужое сохрани, исключения назови. Reviewers, контекст и docs читают один pinned logical source; disk не заменяет historical/index молча.
 
-| Case | Required observation |
+| Случай | Нужное наблюдение |
 | --- | --- |
-| Uncommitted task | Empty index with intended unstaged and new untracked files can be reviewed without `git add`. Full task scope includes actual selected file contents; no staging, stash or branch switch. |
-| Checkpoints plus foreign index | Relevant committed A/B and remaining intended working changes are covered despite foreign staged content. Pin baseline, requirements, snapshot and checkpoint identities; index-only changes overwritten on disk are reconciled, not silently treated as another final implementation. |
-| Base-omitted or ambiguous task | A required checkpoint already on the normal base needs an agreed earlier baseline. Missing parent/evidence, ambiguous foreign ownership or omitted final behavior stops incomplete before a false complete result. Ancestry or path lists alone prove no coverage. |
-| Explicit narrow view | A one-commit, index-only or selected-path/hunk request stays narrow. Historical/index file reads and searches use their pinned versions, not newer disk content. The verdict names exclusions and cannot approve the whole task. |
-| Reviewer protection and interruption | Three finder roles receive complete identical scope/source context; the independent verifier receives all merged candidates without source-role bias. Check capabilities before report mutation; preserve native permissions and state prompt-only limits honestly. Mandatory whole-repository comparisons run around groups and verifier even with enforcement. Persistent HEAD/index/tracked/untracked/ignored/nested-state change or incomplete capture stops incomplete without reset or cleanup. Missing/reverted-in-between effects are not claimed detectable. A permitted trivial direct pass remains distinct. |
-| Findings and stale diagrams | Confirmed, plausible and refuted findings retain evidence/severity distinctions; plausible includes what confirms it. Check active prose, both SVG themes, captions and accessibility, distinguishing accurate historical records. Interrupted verification or missing verdicts cannot yield `ship`. |
-| Selected corrections | A current complete report and chosen finding numbers hand directly to `dev-exec` with report identity/hash and scope/source evidence; no tickets, selection files or report copies. Unknown numbers, stale pins and open material choices stop affected handoff. Selection/verdict alone starts no fix; obtain applicable plan/fix approval and reproduce/confirm first. Non-reproduction stays documented and unconfirmed; regressions are used where practical. |
-| Material spec or covered no-op | `dev-spec` alone writes material built-work contracts, using the same intended-work coverage. No durable change after full coverage is a no-op without mode questions. Declined save, skipped material module or uncertain coverage is not a successful no-op. |
-| Spec preservation | Visible/private mode, private exclude newline safety, mixed-name/tracked-private stops and foreign/case-variant preservation remain. Private specs stay local and uncommitted. Spec files/task artifacts do not become their own built-work input. Readers retain exact-name behavior and treat `(unconfirmed)` statements accordingly. |
+| Незакоммиченное | Пустой index с выбранными unstaged/untracked проверяется без git add/stash/switch; полный scope включает реальные выбранные bytes. |
+| Checkpoint и чужой index | A/B и оставшиеся изменения покрыты при чужом staged. Закреплены baseline, requirements, snapshot, checkpoint IDs. Index-only, перезаписанное disk, согласовано, не объявлено второй итоговой реализацией. |
+| База пропускает задачу | Checkpoint на обычной базе требует более раннего согласованного baseline. Missing parent/evidence, неясное чужое и отсутствующий итог дают incomplete до ложного complete. Ancestry/пути не доказательство покрытия. |
+| Узкий scope | Commit/index/paths/hunks остаются узкими; чтение/поиск правильной версии, не нового disk. Verdict с исключениями, не одобрением всей задачи. |
+| Reviewers/прерывание | Три finder получают одинаковый полный контекст, независимый verifier - всех кандидатов без автора. Capabilities до правки отчета, native permissions сохранены, prompt-only честно. Whole-repository comparison вокруг групп/verifier обязателен и с enforcement. Измененный HEAD/index/tracked/untracked/ignored/nested или неполный capture дает incomplete без reset/cleanup. Отмененные между capture эффекты не объявляются обнаружимыми. Trivial direct pass остается отдельным. |
+| Замечания/диаграммы | Confirmed/plausible/refuted сохраняют доказательства/серьезность; plausible с подтверждением. Проверяются активные docs, обе SVG темы, подписи/accessibility; история отличается от устаревшего. Missing verdict/прерванная проверка не дают разрешения выпуска. |
+| Выбранное исправление | Актуальный complete report/номера прямо в dev-exec с identity/hash/scope/source, без tickets/selection files/copies. Неясные номера, stale pins/choices блокируют передачу. Выбор/verdict не разрешают fix: согласие и repro/confirmation сначала. Невоспроизведение остается unconfirmed; по возможности регрессии. |
+| Spec/no-op | Только dev-spec пишет существенное построенное после полного покрытия. Нет постоянного изменения - no-op без вопроса режима. Отказ, пропуск существенного модуля, неясное покрытие не успешный no-op. |
+| Сохранность spec | Visible/private, newline exclude, mixed/tracked-private stops, foreign/case variants сохраняются. Private local/uncommitted. Specs/артефакты не поглощают свой результат. Точное имя и unconfirmed учитываются. |
 
-## COMMIT, CONTINUATION AND SETUP
+## КОММИТЫ, ПРОДОЛЖЕНИЕ И НАСТРОЙКА
 
-| Case | Required observation |
+| Случай | Нужное наблюдение |
 | --- | --- |
-| Optional checkpoints | The plan proposes explicit scopes for committable checked blocks; commits happen only with scope authorization, necessary checks and `dev-commit` available in the same session. Verify actual parent/commit identities and preservation before the next block. A combined inseparable change stays one block. |
-| No commits | With no commits selected, or an existing `Do not commit`, implementation/checks continue without checkpoints, including when `dev-commit` is unavailable. No new template or source change rewrites the old prohibition. |
-| Foreign index and mixed paths | Wholly task-owned selected paths can use the permitted `--only` case while preserving foreign staged content; a mixed selected path plus foreign index stops before mutation. With an empty index, stage only separable authorized hunks. No alternate-index, stash or file-rewrite bypass; working-file bytes never change during commit. |
-| Empty or uncertain commit | Empty input is a successful no-op. A lost reply is reconciled against actual Git effects; never replay automatically or claim uncertain success. A successful hook alone proves neither scope nor preservation. No push or PR is inferred. |
-| Optional handoff | `dev-exec` saves only on request/agreed stop and within content/destination approval. Carry goal, scope, decisions, sources, open questions, verification, Git/checkpoints, remaining/foreign work and next authorized action. Legacy records remain context; no required journal or session-recovery promise. |
-| Setup approve/decline/repeat | In an explicitly authorized isolated target, `nxs-setup` audits the requested goal/project/global scope, shows the whole exact package and applies only approval-covered bytes. Preserve custom content, symlink targets and newline state. Decline writes nothing; current repeat is no-op; conflicting/duplicate sections stop safely. No installation or unrelated setting change. |
-| Readiness | `project --readiness` / `global --readiness` only report relevant prerequisites with actual evidence/limits. No proposal, write, remediation, worker or client-server launch. Ordinary discussion/execution need no native-reviewer prerequisite. A failed discovery remains unknown, not verified absence. |
-| Installation boundary | Source listing, package self-containment and live registration are separate evidence. Setup neither installs the catalog nor offers companion bundles. Any separately authorized disposable install/update observation pins provenance and preservation; it cannot authorize a personal cutover or unplanned removal. |
+| Checkpoints | План предлагает явные охваты проверяемых блоков; коммиты только с разрешением, проверками и dev-commit в той же сессии. Commit/parent/safety проверены до следующего. Неразделимое - один блок. |
+| Без коммитов | Невыбранные коммиты/Do not commit не останавливают реализацию и проверки, даже без dev-commit. Шаблон не переписывает запрет. |
+| Чужой index/mixed | Целиком свои пути допускают --only с сохранением чужого staged; mixed плюс чужой index останавливает до mutation. Пустой index - лишь разделимые разрешенные hunks. Без alternate index/stash/перезаписи; рабочие bytes не меняются во время коммита. |
+| Пустой/неясный коммит | Пустое - no-op. Потерянный ответ сверяется с Git, не повторяется автоматически и не считается успехом. Hook не доказывает scope/safety; push/PR не подразумеваются. |
+| Handoff | Только запрос/согласованная остановка и одобрение содержания/места. Цель, охват, решения, источники, вопросы, проверки, Git/checkpoint, остаток/чужое и следующий шаг. Старое - контекст без обязательного журнала/обещания session recovery. |
+| Setup | В разрешенной изолированной цели audit goal/project/global, целый пакет, только одобренные bytes. Сохранены custom text, symlink targets/newline. Отказ ничего не пишет, актуальный повтор no-op, дубли секций блокируют. Без установок/чужих настроек. |
+| Readiness | Только нужные предпосылки с доказательствами/пределами, без proposal/write/remediation/worker/client-server. Обычному обсуждению/исполнению reviewers не нужны. Failed discovery - unknown, не absence. |
+| Установка | Source list, self-containment, registration - разные доказательства. Setup не устанавливает каталог/companions. Отдельный disposable install/update требует provenance/preservation, не разрешает личный cutover/удаление. |
 
-## SOURCE AND DIAGRAM VERIFICATION
+## ПРОВЕРКА ИСХОДНИКОВ И ДИАГРАММ
 
-When verification is authorized, use the project commands in [CONTRIBUTING](../CONTRIBUTING.md#checks). In disposable checker fixtures, extra/missing skill, broken bundled link, mismatched actual shared copy, invalid frontmatter/invocation policy and obsolete active route must fail wherever that guarantee is claimed. Preserve historical CHANGELOG, ADR and explicitly archived scenarios rather than deleting them to obtain a zero-match search. Their old instructions are not active routes.
+При разрешенной проверке используй команды [CONTRIBUTING](../CONTRIBUTING.md#проверки). Disposable fixtures должны отвергать extra/missing skill, битую внутреннюю ссылку, разные shared copies, неверный frontmatter/invocation и obsolete active route в заявленном охвате. Не удаляй историю CHANGELOG/ADR/архивных сценариев ради нулевого поиска; это не текущие инструкции.
 
-For diagrams, render and visually inspect both themes separately: topology and optional/return routes, readable labels, distinct attach points, no line transit through unrelated nodes, captions and `title`/`desc`/alt agreement, palette/contrast and absence of obsolete active names. This implementation-only documentation assignment runs no checks, packaging discovery, renders or final diff audit; the separate verifier owns that evidence.
+Обе темы рендери/смотри отдельно: topology, optional/return, читаемость, разные attach points, нет транзита через чужие узлы, подписи/title/desc/alt согласованы, палитра/контраст, нет obsolete active names. Утверждение прошлой implementation-only задачи о незапущенных checks/discovery/renders/diff audit остается историей; для текущей работы сообщай только реально выполненное.
 
-## CURRENT OBSERVATIONS
+## ТЕКУЩИЕ НАБЛЮДЕНИЯ
 
-None recorded for the simplified final resources. Old Claude Code, Codex and OpenCode cases remain in the historical archive with their original versions, hashes, outcomes and failures. No source edit, archived pass or unavailable-client substitution establishes the direct end-to-end request -> review -> optional spec -> authorized commit route. Report each new observation's actual case and limitations, leaving unexecuted clients/routes unverified.
+Поведенческих наблюдений финальных упрощенных ресурсов нет. Старые Claude Code/Codex/OpenCode остаются в архиве с версиями, hashes, успехами/сбоями. Source edit/архивный pass/замена недоступного клиента не доказывают путь запрос -> review -> необязательный spec -> разрешенный коммит. Новые наблюдения записывай с реальным случаем/пределами, невыполненное оставляй непроверенным.

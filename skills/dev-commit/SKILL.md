@@ -1,56 +1,50 @@
 ---
 name: dev-commit
-description: Commit existing changes in atomic groups when the user invokes /dev-commit or asks to commit work, including requests with limits such as "commit only X" or "leave Y staged". Use this skill for every commit instead of a direct git commit. Do not activate for commit discussions.
-argument-hint: "[optional scope hint]"
+description: Делать атомарные коммиты существующих правок по /dev-commit или прямой просьбе закоммитить, в том числе только выбранное или с сохранением чужого staged. Применять для каждого коммита вместо прямого git commit. Не запускать для обсуждения коммитов.
+argument-hint: "[необязательный охват]"
 ---
 
 # /dev-commit
 
-Commit existing changes in atomic groups within explicit authorization. An approved `dev-exec` checkpoint may apply this procedure in the same session; it does not start a nested client or bypass any boundary.
+Коммить существующие правки атомарными группами в явно разрешенных пределах. Одобренный checkpoint `dev-exec` применяет эту процедуру в той же сессии, без вложенного клиента и обхода границ.
 
-Accepted input: an optional scope hint or explicitly approved checkpoint scope. Without one, consider all existing changes for grouping, not as permission to include foreign work. Stop on foreign or unclear ownership; "all changes" does not override the exclusions below. A ready ticket, implementation approval without commits or a saved handoff alone does not authorize a commit. An existing `Do not commit` instruction remains binding unless a specific revision is separately approved.
+Вход: необязательное указание охвата или явно одобренный checkpoint. Без него рассмотри все изменения для группировки, но не как разрешение включить чужое. При чужом/неясном владении остановись; "все изменения" не отменяет исключений ниже. Ready ticket, реализация без разрешенных коммитов и handoff не дают разрешения. `Do not commit` обязателен до отдельно одобренной правки.
 
-Example: /dev-commit
+Пример: `/dev-commit`.
 
-## STANCE
+## ГРАНИЦЫ
 
-Commit what is there. Keep working-file bytes unchanged throughout the command, not only at the end. Never temporarily remove unrelated edits, commit the file and restore them; never repair an overbroad commit by rewriting files and amending it. Writing code, running the build, and changing behavior belong elsewhere. `git push`, `--force`, and MR / PR creation stay out of this command - push only on a later explicit request. Reconcile an interrupted or uncertain commit against actual Git state before proceeding; never repeat it automatically.
+Коммить то, что есть. Байты рабочих файлов сохраняй неизменными на протяжении всей команды, не только в конце. Не убирай временно постороннее ради коммита с последующим восстановлением; не исправляй слишком широкий коммит перезаписью файлов и amend. Код, build и поведение меняют другие операции. `git push`, `--force`, MR/PR не входят: push требует последующего явного запроса. После прерванного/сомнительного коммита сверь Git, не повторяй автоматически.
 
-## PROCEDURE
+## ПРОЦЕДУРА
 
-1. Read `git status`, unstaged and staged diffs, and untracked files. Establish the requested scope and applicable commit authorization before any index write. Record pre-commit HEAD and the original staged content; distinguish intended task changes from foreign work and retain any supplied checkpoint/baseline context. Missing authority stops the affected commit, not permission to widen it.
-2. Classify the current state using the table below and name the selected case with its paths before any write. A selected path is **mixed** when its working-tree diff against HEAD contains another logical change. It stays mixed even if a patch could stage only the requested hunk: `commit --only` takes working-tree bytes, not that partial staged version.
-3. If another group is staged and any selected path is mixed, stop now under the third row of the table below: report both the staged foreign paths and the mixed path and ask the user to separate the changes. This case has no automatic isolation procedure.
-4. For the remaining cases, group by logical change - one group per `feat` / `fix` / `refactor` / `chore` / `docs` unit. Separate a refactor from a feat or a fix even inside one file. For each group, in dependency order:
-   - read both diffs for every selected path: a path may contain intended staged content and unrelated unstaged edits;
-   - choose the index case below before staging. Never silently unstage, overwrite or include another group's content;
-   - inspect the exact proposed commit diff, then commit with the specified command.
-5. Verify resulting commit and parent OIDs, actual changed paths and approved scope, and that out-of-scope working and staged content was preserved. Report commits made and remaining staged, unstaged and untracked task work, identifying foreign content separately and giving reasons for anything left uncommitted. A successful hook or ancestry check alone proves neither scope nor preservation. If a commit's existence or effects are uncertain, reconcile actual HEAD, history and index before any retry; report uncertainty instead of replaying it.
+1. Прочитай `git status`, unstaged/staged diff и untracked файлы. До записи index установи охват/разрешение. Запиши исходный HEAD и staged-содержимое; отдели задачу от чужого, сохрани checkpoint/baseline-контекст. Нехватка полномочий останавливает коммит, не расширяет его.
+2. До записи назови случай таблицы и пути. Выбранный путь **mixed**, если его working-tree diff с HEAD содержит другую логическую правку. Возможность частичного staging этого не меняет: `commit --only` берет рабочие байты, не частично staged-версию.
+3. При чужом staged и любом mixed-пути остановись по третьей строке до правок index: назови оба набора путей, попроси разделить. Автоматической изоляции этого случая нет.
+4. Остальное сгруппируй по одной логической единице `feat`/`fix`/`refactor`/`chore`/`docs`; refactor отдели от feat/fix даже внутри файла. Для каждой группы по зависимостям прочитай оба diff каждого пути (staged и unstaged могут различаться), выбери случай таблицы до staging, просмотри точный будущий commit diff и используй указанную команду. Не снимай staging, не перезаписывай и не включай чужое молча.
+5. Проверь commit и parent OIDs, реальные пути/охват и сохранность чужих working/staged правок. Верни коммиты и оставшиеся staged, unstaged, untracked задачи; чужое отдельно, причины незакоммиченного явно. Успешный hook/ancestry не доказывает охват/сохранность. Неясный эффект сверяй с HEAD, историей и index до повтора; сообщи неизвестное вместо повторения.
 
-| Index and selected paths | Action |
+| Index и выбранные пути | Действие |
 | --- | --- |
-| Index is empty or contains only this group | Stage explicit intended paths or separable hunks. Verify the entire staged diff, then `git commit -m "<type>(<scope>): <subject>"`. Leave unrelated unstaged hunks untouched. |
-| Other groups are staged; every changed hunk in each selected path belongs to this group | For a new untracked file, read its complete content and stage only that new path first; `--only` requires known paths. Inspect `git diff HEAD -- <selected paths>` as the proposed commit. Use `git commit --only -m "<type>(<scope>): <subject>" -- <selected paths>`; it commits those working-tree paths and retains other staged paths. Already tracked paths need no staging first. |
-| Other groups are staged and a selected path mixes groups, or ownership is uncertain | Stop before changing the index; name the mixed paths and request separation or clarification. Do not use an alternate index, stash or whole-file commit to bypass this boundary. |
+| Index пуст или содержит лишь эту группу | Stage явные нужные пути/разделимые hunks. Проверь весь staged diff, затем `git commit -m "<type>(<scope>): <subject>"`. Постороннее unstaged не трогай. |
+| Другие группы staged; каждый измененный hunk выбранных путей относится к этой группе | Новый untracked файл прочитай целиком и сначала stage только его: `--only` требует известного пути. Просмотри `git diff HEAD -- <selected paths>` как будущий коммит. Используй `git commit --only -m "<type>(<scope>): <subject>" -- <selected paths>`: он берет эти рабочие пути, сохраняя чужой staged. Tracked-пути предварительно stage не нужно. |
+| Другие группы staged и выбранный путь mixed либо владение неясно | Остановись до изменения index, назови mixed-пути и запроси разделение/уточнение. Не обходи через alternate index, stash или коммит целого файла. |
 
-Example: a requested fix entirely in `limits.py` can use `--only` while an unrelated `README.md` remains staged. An intended fix sharing `limits.py` with unrelated unstaged edits cannot use a whole-file `git add` or `commit --only`.
+Например, отдельный fix в `limits.py` допускает `--only` при чужом staged `README.md`. Fix в `limits.py` с посторонним unstaged в том же файле не допускает whole-file `git add`/`commit --only`.
 
-## RULES
+## ПРАВИЛА
 
-Before the first commit, read [commit format](references/commit-format.md); every message and staging step follows its MESSAGE and GIT RULES.
+До первого коммита прочитай [формат](references/commit-format.md); все сообщения и staging следуют его правилам сообщения и Git. Один коммит - одна логическая правка; посторонние файлы не включай. Большие generated, foreign-branch и merge artifacts останавливают команду.
 
-- one commit is one logical change;
-- unrelated files stay out of every commit; large generated, foreign-branch and merge artifacts stop the command under STOP CONDITIONS.
+## ОСТАНОВКА
 
-## STOP CONDITIONS
+- Нечего коммитить: успешный no-op без вопроса.
+- В diff секрет/credential, большой generated artifact, чужой branch file или merge artifact.
+- Hunk объединяет две неразделимые логические правки.
+- Тип группы неясен.
 
-- nothing to commit;
-- a secret, a credential, a large generated artifact, a foreign-branch file, or a merge artifact in the diff;
-- a hunk spanning two logical changes that will not split cleanly;
-- a group whose type is unclear.
+Кроме no-op, назови конкретный блокер и запроси недостающий выбор/действие.
 
-With nothing to commit, report a successful no-op without a question. For other stops, name the concrete blocker and request the missing choice or action.
+## РЕЗУЛЬТАТ
 
-## NEXT
-
-For a standalone commit, stop after the report from step 5. When `dev-exec` applies this procedure as an explicitly authorized checkpoint in the same session, return the result to the calling execution instead; it verifies the checkpoint before continuing. This exception does not authorize a commit, bypass any stop condition or start a nested command. `git push` waits for a later explicit request.
+Самостоятельная команда завершается отчетом шага 5. При явно разрешенном checkpoint `dev-exec` в той же сессии верни результат исполнению для проверки и продолжения. Это не дает разрешения на коммит, обход остановок или вложенную команду. Push ждет последующего явного запроса.

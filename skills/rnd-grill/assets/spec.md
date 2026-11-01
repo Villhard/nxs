@@ -1,15 +1,15 @@
-# <Feature title>
+# <Название функции>
 
-## Problem Statement
+## Проблема
 
-## Solution
+## Решение
 
-## User Stories
+## Пользовательские сценарии
 
-## Implementation Decisions
+## Решения по реализации
 
-## Testing Decisions
+## Решения по проверке
 
-## Out of Scope
+## Вне задачи
 
-## Further Notes
+## Дополнительные заметки

@@ -1,29 +1,29 @@
-# PROJECT SPECS
+# ПРОЕКТНЫЕ СПЕЦИФИКАЦИИ
 
-Read this reference before using project specs. It is the reader contract for skills using project specs; only `dev-spec` writes them.
+Прочитай до работы с проектными спецификациями. Это общие правила чтения; пишет их только `dev-spec`.
 
-## FILES
+## ФАЙЛЫ
 
-A project spec is a durable Markdown file that records the intent behind the product or one module: purpose, boundaries, contracts, known limitations and rationale the code does not show. It is named `SPEC.md` when the project commits specs, or `.SPEC.md` when the specs are the user's private local notes kept out of Git. The root spec sits at the repository root; a module spec sits in the module's directory.
+Проектная спецификация - постоянный Markdown с намерением продукта/модуля: назначение, границы, контракты, ограничения и причины, не видимые из кода. Имя - `SPEC.md`, если файлы коммитятся, или `.SPEC.md` для частных локальных заметок вне Git. Корневая лежит в корне репозитория, модульная - в каталоге модуля.
 
-A `SPEC.md` is a project spec only when every `##` heading in it is one of `Goal`, `Architecture`, `Purpose`, `Ownership`, `Boundaries`, `Contracts`, `Known limitations` and `Rationale`. Any other `SPEC.md`, for example a protocol spec, is a foreign document.
+`SPEC.md` считается проектной спецификацией, только если все его `##` заголовки входят в список: `Цель`, `Архитектура`, `Назначение`, `Ответственность`, `Границы`, `Контракты`, `Известные ограничения`, `Обоснование`. Для существующих файлов допустимы прежние соответствия: `Goal`, `Architecture`, `Purpose`, `Ownership`, `Boundaries`, `Contracts`, `Known limitations`, `Rationale`. Любой другой `SPEC.md`, например спецификация протокола, - посторонний документ.
 
-## LISTING
+## ПЕРЕЧИСЛЕНИЕ
 
-List the specs of the repository from its root:
+Из корня перечисли спецификации:
 
 ```bash
 git ls-files -z --cached --others --exclude-standard -- ':(glob)**/SPEC.md' ':(glob)**/.SPEC.md'
-git ls-files -z --others --ignored --exclude-standard --directory   # keep entries whose basename is .SPEC.md
+git ls-files -z --others --ignored --exclude-standard --directory   # оставь записи с basename .SPEC.md
 ```
 
-Count foreign `SPEC.md` files out. The repository mixes both kinds when the rest holds a `SPEC.md` and a `.SPEC.md`, in one directory or in different ones.
+Посторонние `SPEC.md` не учитывай. Если среди остальных есть оба имени, в одном или разных каталогах, виды смешаны.
 
-## READING
+## ЧТЕНИЕ
 
-- For each affected path, list the repository root and every ancestor directory of the path (`ls -a <dir>`), and take a spec only when the listing holds the exact basename `SPEC.md` or `.SPEC.md`. Never open `<dir>/SPEC.md` directly: a case-insensitive filesystem returns `spec.md` for it. Content search misses `.SPEC.md` excluded from Git, and a file-name search may list copies inside ignored directories, so never locate specs by search.
-- Read the root spec first and the nearest spec last. Treat their statements like recorded decisions in a glossary or decision record: use their terms, and surface a contradiction with the spec path instead of diverging silently.
-- A statement marked `(unconfirmed)` is not a recorded decision.
-- A foreign `SPEC.md` on the path is context, not recorded decisions.
-- Run LISTING once. When the repository mixes both kinds, read the specs on the path as usual and tell the user that the repository mixes `SPEC.md` and `.SPEC.md` and that one kind must be renamed or removed by hand; continue.
-- Never create or edit a spec. Their absence is normal: do not ask about it.
+- Для затронутого пути перечисли корень и каждый родительский каталог (`ls -a <dir>`). Бери spec только при точном basename `SPEC.md`/`.SPEC.md` в списке. Не открывай `<dir>/SPEC.md` напрямую: регистронезависимая ФС может вернуть `spec.md`. Поиск содержимого пропускает исключенный из Git `.SPEC.md`, поиск имен может найти копии в игнорируемых каталогах: не ищи specs поиском.
+- Читай от корневой к ближайшей. Используй записанное как решения глоссария/ADR: соблюдай термины, противоречие покажи с путем, не обходи молча.
+- Пометка `(unconfirmed)` означает, что утверждение не принято как решение.
+- Посторонний `SPEC.md` на пути - контекст, не записанное решение.
+- Выполни перечисление один раз. При смешении сообщи пути и необходимость вручную переименовать/удалить один вид; продолжай обычное чтение.
+- Не создавай и не меняй specs. Их отсутствие нормально, не спрашивай.

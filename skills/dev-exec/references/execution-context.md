@@ -1,31 +1,31 @@
-# EXECUTION CONTEXT
+# КОНТЕКСТ ИСПОЛНЕНИЯ
 
-Read before inspecting input. Execute an implementation ticket or clear text request; optionally prepare tickets when useful or requested.
+Читай до входных данных. Выполняй implementation ticket или ясный запрос; при пользе/запросе готовь tickets.
 
-## INPUT AND LOCATION
+## ВХОД И МЕСТО
 
-- For a supplied ticket path, read that exact file. Missing or unreadable input stops; never reinterpret it as a clear request. Resolve its established feature directory and read applicable `spec.md` and `root-cause.md` when present. Read [ticket rules](ticket.md) and the linked template for field/status meaning; preserve the supplied ticket's existing execution text and prohibitions. Existing records provide context, not independent authorization.
-- A bare or Markdown-bold `Type:` field marks decision work, including `Type: task`; preserve it and the map/history and stop before implementation. An explicit distinct implementation ticket or request may coexist in an established map directory without converting its decision files.
-- For clear text, use the supplied request and relevant session decisions; create no ticket, spec or task directory solely to execute it. If durable artifacts are useful and authorized, reuse an explicit feature path or unambiguous established task, or choose a descriptive directory under `.scratch/`. Inspect the destination first and preserve existing content. A branch alone never selects the feature. For source evidence, optional decomposition or ticket production, read [work preparation](work-preparation.md); do not require a feature spec for a clear request.
-- Read remote input through an available read interface or supplied content before using it. Establish source identity, applicable decisions and dependencies rather than guessing from a key, URL or ready label. Known open remote blockers require verified local mappings; unknown/unmapped evidence stops affected execution. Never treat remote issue numbers as local ticket IDs or change remote state as a side effect of local execution.
+- Прочитай переданный ticket по точному пути. Отсутствие/ошибка чтения останавливает, не заменяет его новым запросом. Установи каталог функции и прочитай имеющиеся `spec.md`/`root-cause.md`. Прочитай [правила ticket](ticket.md) и шаблон для полей/статусов; сохрани текст исполнения и запреты. Записи дают контекст, не новые полномочия.
+- Поле `Type:` (обычное или Markdown bold), включая `Type: task`, означает работу над решением. Сохрани файл, карту/историю и остановись до реализации. Отдельный явный implementation ticket/запрос может сосуществовать в каталоге карты без конвертации решений.
+- Для ясного текста используй запрос и решения сессии, без ticket/spec/каталога только ради исполнения. Для полезных разрешенных постоянных артефактов используй явный или однозначный установленный путь задачи, иначе понятный каталог `.scratch/`. Осмотри место, сохрани существующее. Ветка сама не выбирает функцию. Для исходных доказательств, деления и tickets прочитай [подготовку](work-preparation.md); ясному запросу feature spec не нужен.
+- Remote input сначала прочитай доступным интерфейсом или из переданного текста. Установи источник, применимые решения и зависимости, не гадай по ключу/URL/метке. Известным открытым remote blockers нужно проверенное локальное соответствие; неизвестность/нет соответствия останавливает затронутую работу. Remote issue numbers - не локальные IDs; локальная работа не меняет remote state.
 
-## TICKET GATES
+## УСЛОВИЯ TICKETS
 
-Read the actual ticket, each named local blocker and applicable feature records. An open `[NEEDS CLARIFICATION: ...]` in the ticket, feature `spec.md` or `root-cause.md` stops implementation for an answer; quoted marker syntax in instructions is not an open question.
+Прочитай сам ticket, каждого названного локального блокера и относящиеся записи функции. Открытый `[NEEDS CLARIFICATION: ...]` в ticket, `spec.md` или `root-cause.md` блокирует реализацию до ответа; цитата синтаксиса маркера в инструкциях - не открытый вопрос.
 
-| State | Action |
+| Состояние | Действие |
 | --- | --- |
-| Ticket status is not `ready-for-agent` | Stop and ask; do not reopen resolved/rejected work or override ready-for-human. |
-| A named blocker is not `resolved` | Stop and ask; do not resolve or execute the blocker here. |
-| Ticket has `**Branch:**` | Switch to it, or create it from current HEAD when absent. Stop and ask if switching fails. Preserve unrelated working/index changes; no forced switch, stash or reset. |
-| Ticket has no branch | Stay on the current branch. A clear request also stays there unless its approved scope specifies another branch. |
-| Required blocker result exists after branch selection | Inspect its actual code/artifacts and run a focused relevant check within the authorized testing scope; append one Comments line naming the evidence before the first implementation edit. A prohibited or unavailable required check leaves the prerequisite unverified. |
-| Required result is absent, reverted or unverifiable | Write one Comments line naming the missing prerequisite, then stop. Never merge, cherry-pick or implement it. |
+| Статус не `ready-for-agent` | Остановись и спроси; не открывай resolved/rejected заново и не обходи ready-for-human. |
+| Названный блокер не `resolved` | Остановись и спроси; здесь не решай и не исполняй блокер. |
+| Есть `**Branch:**` | Переключись или создай от текущего HEAD, если ветки нет. При ошибке спроси. Сохрани чужие working/index правки; без forced switch, stash, reset. |
+| Ветки нет | Останься на текущей. Ясный запрос тоже, если одобренный охват не задает другую. |
+| Нужный результат блокера есть после выбора ветки | Изучи код/артефакты, проведи разрешенную точечную проверку и до первой правки реализации добавь одну строку Comments с доказательством. Запрещенная/недоступная обязательная проверка оставляет предпосылку непроверенной. |
+| Результат отсутствует, отменен или непроверяем | Добавь одну строку Comments с пробелом и остановись. Не делай merge/cherry-pick и не реализуй блокер. |
 
-Branch names, status and ancestry do not prove that a result exists. A carried or squashed result may pass by working-tree evidence; a reverted result fails even when its original commit is an ancestor. A branch switch requires repeating the result inspection on the selected tree.
+Имя ветки, статус и ancestry не доказывают результат. Перенесенное/squashed изменение может пройти по текущему дереву, отмененное - нет даже при коммите-предке. После смены ветки повтори осмотр результата на выбранном дереве.
 
-## HUMAN STEPS
+## ШАГИ ЧЕЛОВЕКА
 
-An install, migration or external action requires approval covering the concrete action and target, and native permissions; direct scoped authorization needs no coordination packet. Inspect observable effects first if the action may already have occurred. When approval or permission is missing, set an applicable ticket to `ready-for-human`, append the action and expected checkable evidence under Comments, and stop the affected work. For a clear request, report the same in dialogue without inventing a ticket. An authorized but unavailable or unverifiable result remains a blocker; record the expected evidence and pending human step rather than claiming success.
+Установка, миграция и внешнее действие требуют согласия на конкретное действие/цель и native permissions; координационный пакет не нужен. Если эффект мог уже возникнуть, сначала изучи его. При нехватке согласия/разрешения поставь применимый ticket в `ready-for-human`, запиши действие и ожидаемое доказательство в Comments, останови затронутую работу. Для ясного запроса сообщи то же в диалоге без ticket. Разрешенный, но недоступный/непроверяемый результат остается блокером: укажи ожидаемое доказательство и человеческий шаг, не заявляй успех.
 
-After the human completes the step, resets a ticket to `ready-for-agent` and resumes, verify the actual result in the current environment. A Comments claim alone is not evidence. Do not repeat the human action. If the result is still absent or unverifiable, return the ticket to ready-for-human with the remaining evidence and stop again.
+Когда человек выполнит шаг, вернет `ready-for-agent` и продолжит работу, проверь реальный результат в текущей среде. Заявления в Comments недостаточно. Не повторяй действие. Нет результата/проверки - верни `ready-for-human`, назови оставшиеся доказательства и снова остановись.

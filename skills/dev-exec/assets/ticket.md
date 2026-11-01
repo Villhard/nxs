@@ -1,21 +1,21 @@
-# <NN>: <Ticket title>
+# <NN>: <Название задачи>
 
-**What to build:** <the end-to-end behavior this ticket makes work, from the user's perspective, not a layer-by-layer implementation list>
+**What to build:** <Сквозное поведение с точки зрения пользователя, не список слоев реализации.>
 
-**Blocked by:** <the numbers and titles of the tickets that gate this one, or "None (can start immediately)">
+**Blocked by:** <Номера и названия блокирующих tickets либо "None (can start immediately)".>
 
-**Branch:** <optional: the branch this work goes on; drop the line when there is none>
+**Branch:** <Необязательно: рабочая ветка; без нее удали строку.>
 
 **Status:** ready-for-agent
 
-- [ ] <acceptance criterion>
-- [ ] <acceptance criterion>
+- [ ] <Критерий приемки>
+- [ ] <Критерий приемки>
 
-## Done when
+## Условия завершения
 
-Execute this ticket directly with `/dev-exec <this file>`.
+Выполни ticket напрямую через `/dev-exec <этот файл>`.
 
-- Start only when **Status** is `ready-for-agent`, every **Blocked by** ticket is `resolved`, material questions are answered and required prerequisite results are verified in the selected working tree. Respect **Branch** and preserve unrelated changes; status or history alone proves no result.
-- Implement only within an approved concrete plan. An install, migration or external action needs approval covering the action and exact target plus native permissions; otherwise record the human step and expected evidence under `## Comments`, set **Status** to `ready-for-human` and stop the affected work. Verify the actual result when the human returns the ticket to `ready-for-agent`; never repeat an uncertain action.
-- Close only after every criterion, the project's full test suite, linter and other required checks pass: check the criteria and set **Status** to `resolved`. Record exact verification, missing checks and meaningful decisions or deviations under `## Comments`; prohibited or unavailable verification leaves the ticket unresolved.
-- Commits are optional and require explicit authorization for their scope through `dev-commit`. Preserve any existing `Do not commit` instruction. Report actual checkpoint identities, remaining work and verification limits; a commit alone does not complete this ticket.
+- Начинай только при **Status** `ready-for-agent`, всех **Blocked by** в `resolved`, отвеченных существенных вопросах и проверенных результатах предпосылок в выбранном рабочем дереве. Соблюдай **Branch**, сохрани чужие правки; статус/история не доказывают результат.
+- Реализуй только одобренный конкретный план. Установка, миграция и внешнее действие требуют согласия на действие и точную цель плюс native permissions; иначе запиши человеческий шаг и ожидаемое доказательство в `## Комментарии`, поставь **Status** `ready-for-human`, останови затронутое. После возврата человеком в `ready-for-agent` проверь реальный результат; не повторяй действие с неизвестным эффектом.
+- Закрывай только после каждого критерия, полного набора тестов проекта, линтера и остальных обязательных проверок: отметь критерии, поставь **Status** `resolved`. Точные проверки, недостающее, значимые решения/отклонения запиши в `## Комментарии`; запрещенная/недоступная проверка оставляет ticket нерешенным.
+- Коммиты необязательны и требуют явного разрешения на охват через `dev-commit`. Сохрани `Do not commit`. Сообщи фактические идентичности checkpoint, остаток и пределы проверок; коммит не завершает ticket.

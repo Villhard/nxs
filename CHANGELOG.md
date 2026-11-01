@@ -45,6 +45,14 @@ The entries in this section preserve earlier pending work and design history. Th
 - README distinguishes same-name nxs and companion skills before choosing a route.
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
 
+## [0.78.0] - 2026-11-01
+
+### Changed
+
+- Семь скиллов, reviewer roles, references и шаблоны переведены на русский и сокращены без удаления условий работы; пользовательские артефакты и установки не меняются.
+- Заголовки новых артефактов стали русскими; читатели принимают прежние английские заголовки. Служебные поля и статусы сохранены; изменение формата требует minor release.
+- `CONTRIBUTING.md` задает русский язык инструкций; `check-skills.sh` проверяет русские формы с прежними гарантиями безопасности и структуры.
+
 ## [0.77.0] - 2026-11-01
 
 ### Added

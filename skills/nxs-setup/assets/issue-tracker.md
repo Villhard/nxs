@@ -1,44 +1,44 @@
-# Issue tracker: Local Markdown
+# Трекер: локальный Markdown
 
-Local artifacts are optional. A small clear request needs no spec, ticket, task directory or journal. When durable records are useful and authorized, reuse established project paths; the defaults below stay private under `.scratch/`.
+Артефакты необязательны. Малому ясному запросу не нужны spec, ticket, каталог и журнал. Для полезных разрешенных записей предпочитай установленные пути; defaults ниже частные в `.scratch/`.
 
-## Conventions
+## Соглашения
 
-- One feature per directory: `.scratch/<feature-slug>/`.
-- An optional feature description is `spec.md`, saved directly by `rnd-grill` after content/scope approval. It is not a project `SPEC.md` or `.SPEC.md` and is not a prerequisite for a clear request.
-- `dev-exec` owns optional implementation tickets, one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`. A new ticket takes `NN` one past the highest existing number in `issues/`, including decision files and rejected work; use `01` only when the directory is empty or missing. Never renumber or regenerate existing tickets.
-- Triage state is the `**Status:**` line near the top of each implementation ticket; `~/.agents/docs/triage-labels.md` maps role names to values.
-- Execution notes append under `## Comments`. Preserve identities, branch restrictions, source records and prior history. Existing `Do not commit` instructions remain binding unless a specific revision is separately approved.
+- Функция - каталог `.scratch/<feature-slug>/`.
+- Необязательный `spec.md` сохраняет `rnd-grill` после одобрения содержания/охвата. Это не project `SPEC.md`/`.SPEC.md` и не условие ясного запроса.
+- Implementation tickets принадлежат `dev-exec`: `.scratch/<feature-slug>/issues/<NN>-<slug>.md`. Номер после максимального существующего, включая решения/отклоненное; `01` лишь для пустого/отсутствующего каталога. Старое не перенумеровывай/не пересоздавай.
+- Статус - `**Status:**` в начале; `~/.agents/docs/triage-labels.md` сопоставляет роли/значения.
+- Заметки добавляй в `## Комментарии` (старый `## Comments` сохрани). Идентичности, ограничения ветки, источники и историю сохрани. `Do not commit` обязателен до отдельно одобренной правки.
 
-## Local ticket format
+## Формат ticket
 
-Use the ticket rules and template bundled with `dev-exec`, not another installed skill's resources. Saving tickets requires approval covering their content and destination; it does not approve implementation.
+Используй правила/шаблон самого `dev-exec`, не другого установленного скилла. Сохранение требует одобрения содержания/места, не разрешает реализацию.
 
-- Keep the title `# NN: <title>`, `**What to build:**`, `**Blocked by:**`, optional `**Branch:**`, `**Status:**`, then observable acceptance criteria as `- [ ]` lines.
-- `**Blocked by:**` names local ticket numbers, or `None (can start immediately)` only when no dependency remains. Unknown evidence is never `None`; a resolved status still needs the actual prerequisite result in the selected working tree.
-- Propose `**Branch:**` from the approved branch or project rule, otherwise `<type>/<feature-slug>` with `feat`, `fix`, `refactor`, `chore` or `docs`. Show it before saving; the user may change or drop it. No branch field means the current branch, not permission to override existing restrictions.
-- New `**Status:**` is `ready-for-agent`, or `needs-info` for an explicitly authorized draft with an isolated `[NEEDS CLARIFICATION: ...]` in its own body. Material open questions in the feature records stop new executable ticket production.
-- After the criteria, copy this block verbatim and in English from the `dev-exec` template:
+- Заголовок `# NN: <название>`, `**What to build:**`, `**Blocked by:**`, необязательный `**Branch:**`, `**Status:**`, затем наблюдаемая приемка строками `- [ ]`.
+- `Blocked by`: local numbers либо `None (can start immediately)` только без зависимостей. Неизвестное не `None`; resolved еще требует результата в выбранном дереве.
+- `Branch`: одобренная ветка/правило проекта, иначе `<type>/<feature-slug>`, type = `feat`, `fix`, `refactor`, `chore`, `docs`. Покажи до записи; пользователь может изменить/убрать. Без поля - текущая ветка, не обход старых ограничений.
+- Новый `Status`: `ready-for-agent`; `needs-info` лишь для явно разрешенного черновика с отдельным `[NEEDS CLARIFICATION: ...]` в теле. Существенные вопросы в feature records блокируют новые executable tickets.
+- После критериев дословно скопируй блок из шаблона `dev-exec`:
 
 ````markdown
-## Done when
+## Условия завершения
 
-Execute this ticket directly with `/dev-exec <this file>`.
+Выполни ticket напрямую через `/dev-exec <этот файл>`.
 
-- Start only when **Status** is `ready-for-agent`, every **Blocked by** ticket is `resolved`, material questions are answered and required prerequisite results are verified in the selected working tree. Respect **Branch** and preserve unrelated changes; status or history alone proves no result.
-- Implement only within an approved concrete plan. An install, migration or external action needs approval covering the action and exact target plus native permissions; otherwise record the human step and expected evidence under `## Comments`, set **Status** to `ready-for-human` and stop the affected work. Verify the actual result when the human returns the ticket to `ready-for-agent`; never repeat an uncertain action.
-- Close only after every criterion, the project's full test suite, linter and other required checks pass: check the criteria and set **Status** to `resolved`. Record exact verification, missing checks and meaningful decisions or deviations under `## Comments`; prohibited or unavailable verification leaves the ticket unresolved.
-- Commits are optional and require explicit authorization for their scope through `dev-commit`. Preserve any existing `Do not commit` instruction. Report actual checkpoint identities, remaining work and verification limits; a commit alone does not complete this ticket.
+- Начинай только при **Status** `ready-for-agent`, всех **Blocked by** в `resolved`, отвеченных существенных вопросах и проверенных результатах предпосылок в выбранном рабочем дереве. Соблюдай **Branch**, сохрани чужие правки; статус/история не доказывают результат.
+- Реализуй только одобренный конкретный план. Установка, миграция и внешнее действие требуют согласия на действие и точную цель плюс native permissions; иначе запиши человеческий шаг и ожидаемое доказательство в `## Комментарии`, поставь **Status** `ready-for-human`, останови затронутое. После возврата человеком в `ready-for-agent` проверь реальный результат; не повторяй действие с неизвестным эффектом.
+- Закрывай только после каждого критерия, полного набора тестов проекта, линтера и остальных обязательных проверок: отметь критерии, поставь **Status** `resolved`. Точные проверки, недостающее, значимые решения/отклонения запиши в `## Комментарии`; запрещенная/недоступная проверка оставляет ticket нерешенным.
+- Коммиты необязательны и требуют явного разрешения на охват через `dev-commit`. Сохрани `Do not commit`. Сообщи фактические идентичности checkpoint, остаток и пределы проверок; коммит не завершает ticket.
 ````
 
-Existing bare or bold `Type:` decision records, including `Type: task`, are not implementation tickets. Preserve them, their answers, maps, statuses and history; do not execute, relabel or silently convert them. This template does not migrate existing artifacts.
+Обычный/bold `Type:`, включая `Type: task`, - не implementation ticket. Сохрани решения, ответы, карты, статусы и историю; не выполняй, не меняй тип и не конвертируй. Шаблон не мигрирует старые артефакты.
 
-## Save or read a local record
+## Запись и чтение
 
-Use an explicit or established path before the defaults. A request to save locally never authorizes publishing or synchronizing remote tracker state. Read a referenced ticket at its actual path; an ambiguous issue number needs clarification. Keep private data, secrets and raw conversations out of saved records.
+Явный/установленный путь важнее default. Локальное сохранение не разрешает публикацию/синхронизацию remote tracker. Ticket читай по реальному пути, неясный номер уточни. Частные данные, секреты и сырые разговоры не сохраняй.
 
-Optional resumable context belongs to `dev-exec`, normally `handoff.md` in an established feature. It distinguishes accepted, open and unverified state, actual verification and the next authorized action; saving starts no subsequent skill.
+Необязательный контекст продолжения - `dev-exec`, обычно `handoff.md` установленной функции: принятые/открытые/непроверенные сведения, реальные проверки, следующий разрешенный шаг. Сохранение не запускает скилл.
 
-## Scope
+## Область действия
 
-This is an optional global default for repositories without their own tracker conventions. Project instructions win. Setup changes only the exact approved guidance, not existing tickets, journals, prototypes or task history.
+Необязательный global default для проектов без своего трекера; project instructions важнее. Setup меняет только точное одобренное руководство, не старые tickets, журналы, прототипы и историю.

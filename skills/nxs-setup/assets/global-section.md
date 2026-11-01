@@ -1,4 +1,4 @@
 ## nxs
 
-- Project specs: before changing a file, list the repository root and every ancestor directory of that file (`ls -a <dir>`) for `SPEC.md` and `.SPEC.md` by exact name, and read each one found, root first. Find them only through these listings: content search misses a `.SPEC.md` kept out of Git, and a case-insensitive filesystem opens `spec.md` for `SPEC.md`. Only `/dev-spec` edits project specs in normal task execution.
-- Branches: `<type>/<short-description>`, with `<type>` one of `feat`, `fix`, `refactor`, `chore`, `docs`. A branch rule in the project's instructions wins.
+- Проектные спецификации: до правки перечисли корень и каждый родительский каталог файла (`ls -a <dir>`), найди точные `SPEC.md`/`.SPEC.md` и прочитай от корня. Ищи только списками: content search пропускает исключенный из Git `.SPEC.md`, а регистронезависимая ФС открывает `spec.md` вместо `SPEC.md`. В обычной задаче меняет их только `/dev-spec`.
+- Ветки: `<type>/<short-description>`, type - `feat`, `fix`, `refactor`, `chore`, `docs`. Правило project instructions важнее.

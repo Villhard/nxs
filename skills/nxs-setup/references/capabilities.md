@@ -1,20 +1,20 @@
-# CAPABILITY MAP
+# КАРТА ВОЗМОЖНОСТЕЙ
 
-These are source routes, not claims of native registration or verified client behavior. Setup invokes none. Reuse authorization only within its actual scope; a handoff never starts another skill implicitly.
+Это маршруты исходников, не доказательство регистрации/поведения клиентов. Setup их не запускает. Разрешение используй лишь в его пределах; передача не включает следующий скилл.
 
-| User intent | Retained owner |
+| Намерение | Владелец |
 | --- | --- |
-| Investigate uncertainty, dependent questions or alternatives | `rnd-grill` |
-| Research, survey opportunities or design a selected boundary | Optional evidence methods in `rnd-grill` |
-| Test one hypothesis | Explicitly scoped isolated experiment in `rnd-grill`; no implied production transfer, reuse or deletion |
-| Save an agreed decision, feature description or participant questions | Direct approved saving in `rnd-grill`; preparing questions authorizes no sending |
-| Clarify domain terms or record a durable decision | `rnd-grill` with separately approved glossary/ADR content |
-| Reproduce a failure and confirm its intended cause | `rnd-debug`; confirmed eligible evidence can go directly to `dev-exec` |
-| Plan, obtain approval, implement and verify a clear request or selected correction | `dev-exec` |
-| Decompose large work into optional tickets or save resumable context | `dev-exec` |
-| Independently review intended work and return selected findings | `dev-review`; no ticket production or implicit fixes |
-| Record material built-work contracts in project specs | Optional `dev-spec`; exclusive project-spec writer in normal task execution |
-| Make authorized atomic commits or execution checkpoints | `dev-commit`; direct commit requests apply, mere discussion does not |
-| Audit and apply an approved goal/project/global setup package | `nxs-setup`, using its bundled writing guidance |
+| Разобрать неопределенность, зависимые вопросы, варианты | `rnd-grill` |
+| Исследовать, найти возможности, спроектировать границу | Необязательные методы `rnd-grill` |
+| Проверить гипотезу | Явно ограниченный изолированный опыт `rnd-grill`; успех не разрешает перенос, reuse, удаление. |
+| Сохранить решение, описание функции, вопросы | Прямое согласованное сохранение `rnd-grill`; вопросы не разрешают отправку. |
+| Уточнить термины/записать постоянное решение | `rnd-grill`, отдельно одобренные глоссарий/ADR. |
+| Воспроизвести сбой/подтвердить намерение и причину | `rnd-debug`; подходящие доказательства прямо в `dev-exec`. |
+| Согласовать план, выполнить/проверить запрос или замечания | `dev-exec` |
+| Разбить крупную работу на tickets/сохранить контекст | `dev-exec` |
+| Независимо проверить итог/вернуть выбранные замечания | `dev-review`, без tickets и автоматических fixes. |
+| Записать существенные контракты построенного | Необязательный `dev-spec`, единственный обычный writer project specs. |
+| Атомарно закоммитить/сделать checkpoint | `dev-commit`; прямая просьба коммитить подходит, обсуждение нет. |
+| Проверить/применить одобренные goal/project/global настройки | `nxs-setup` со своими правилами написания. |
 
-A small clear request needs no feature spec, ticket, task directory or journal. Discussion and ordinary execution need no native subagents; independent review checks its own worker prerequisites when requested. Existing task records remain context and history, not an alternate coordination mode. Setup neither installs the seven skills nor registers compatibility aliases or hidden routing commands.
+Малому запросу не нужны feature spec, ticket, каталог и журнал. Обсуждение/обычное исполнение без native subagents; review проверяет свои предпосылки при запросе. Старые записи - контекст/история, не иной режим координации. Setup не устанавливает семь скиллов и не регистрирует aliases/скрытые команды.

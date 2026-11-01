@@ -1,27 +1,27 @@
-# <Decision title>
+# <Название решения>
 
-State: <Required: agreed | unfinished.>
-Scope: <Required: what this decision covers and excludes.>
+State: <Обязательно: agreed | unfinished.>
+Scope: <Обязательно: охват и исключения.>
 
-## Agreed conclusions
+## Согласованные выводы
 
-<Required: approved conclusions and their reasons, or explicitly none.>
+<Обязательно: одобренные выводы и причины либо явное отсутствие.>
 
-## Proposals and alternatives
+## Предложения и варианты
 
-<Required: unapproved proposals distinguished from agreed conclusions; real alternatives and rejection reasons, or none.>
+<Обязательно: несогласованные предложения отдельно от согласованных выводов; реальные варианты и причины отказа либо их отсутствие.>
 
-## Evidence
+## Доказательства
 
-<Required: source links/paths and observed facts, with assumptions and unavailable evidence distinguished.>
+<Обязательно: пути/ссылки и наблюдаемые факты отдельно от допущений и недоступных доказательств.>
 
-## Feedback and open questions
+## Замечания и открытые вопросы
 
-<Required: user feedback and its disposition; unanswered questions and their impact, or none.>
+<Обязательно: замечания пользователя и их судьба; открытые вопросы и влияние либо их отсутствие.>
 
-## Next step
+## Следующий шаг
 
-<Required: suggested action within the authorized scope; saving authorizes no implementation or subsequent skill.>
+<Обязательно: следующий шаг в разрешенных пределах; сохранение не разрешает реализацию и следующий скилл.>
 
-<Optional: link to a relevant supplied local demonstration; its approval alone authorizes no save.>
-<Optional on revision: approved changes and earlier rationale preserved as history.>
+<Необязательно: ссылка на переданную локальную демонстрацию; ее одобрение само не разрешает сохранение.>
+<При правке, необязательно: согласованные изменения и прежние причины, сохраненные как история.>

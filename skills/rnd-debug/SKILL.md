@@ -1,39 +1,39 @@
 ---
 name: rnd-debug
-description: Investigate a reported failure and save a confirmed root cause or the precise missing evidence, without implementing a fix or creating tickets.
-argument-hint: "[tracker key | bug description | path]"
+description: Воспроизвести сбой и сохранить подтвержденную причину или точные недостающие доказательства. Не исправляет код и не создает tickets.
+argument-hint: "[ключ трекера | описание сбоя | путь]"
 disable-model-invocation: true
 ---
 
 # /rnd-debug
 
-Investigate a failure and save its evidence. Run only on explicit invocation or an instruction explicitly covering this skill's work. Read [feature directory](references/feature-directory.md) before input and [project specs](references/project-specs.md) for applicable domain evidence. Read supplied input before probing; a missing or unreadable file stops the affected work. Reuse existing approval only within its actual scope. No feature spec, ticket, journal or run packet is required; existing records are context, not independent authorization. Clarify conflicting legacy instructions rather than activating a removed coordination procedure.
+Исследуй сбой и сохрани доказательства. Запускай только по явному вызову или прямо разрешающей инструкции. До входа прочитай [правила каталога](references/feature-directory.md), для доменных доказательств - [проектных спецификаций](references/project-specs.md). Сначала прочитай переданный источник; отсутствие/ошибка чтения останавливает затронутую работу. Используй согласования лишь в их пределах. Feature spec, ticket, журнал и пакет запуска не нужны; существующие записи не дают нового разрешения. Конфликт прежних инструкций уточни, не возрождай удаленную координацию.
 
-## INVESTIGATE
+## ИССЛЕДОВАНИЕ
 
-Build the cheapest feedback loop for the reported symptom, reproduce it and minimize its steps and data. Rank checkable hypotheses with distinct predictions. Change one parameter or probe at a time; trace the supported explanation through evidence-backed why steps to a fixable cause. Confirm the symptom and a discriminating probe before naming a cause. Record the smallest supported fix direction and a cheap, stable regression check at the nearest practical public seam. Distinguish observed results from source contracts, expectations and assumptions.
+Построй самый дешевый цикл проверки симптома, воспроизведи и сократи шаги/данные. Ранжируй проверяемые гипотезы с разными предсказаниями. Меняй один параметр/пробу за раз; проследи подтверждаемое объяснение через обоснованные "почему" до устранимой причины. До объявления причины подтверди симптом и различающую гипотезы пробу. Запиши минимальное обоснованное направление исправления и дешевую устойчивую регрессионную проверку на ближайшей практичной публичной границе. Разделяй наблюдения, правила источников, ожидания и допущения.
 
-Use read-only inspection or bounded disposable probes; do not instrument or edit product code/tests. Keep necessary temporary probe files and outputs under the feature's `research/`, away from production data. Clean up only disposable probe files whose deletion is covered by the diagnostic scope; preserve existing work and useful evidence and report cleanup actually performed. An install, migration or external action requires approval covering the concrete action and target, plus native permissions. Without it, stop that affected probe and state the expected result and missing evidence. After interruption, reconcile observable effects before repeating an uncertain action.
+Используй чтение и ограниченные одноразовые пробы, без инструментирования и правок продуктового кода/тестов. Нужные временные файлы и результаты держи в `research/` функции вдали от production data. Удаляй лишь одноразовые файлы проб, чья очистка разрешена диагностикой; сохраняй чужую работу и полезные доказательства, сообщай реальную очистку. Установка, миграция и внешнее действие требуют согласия на действие/цель плюс native permissions; иначе останови эту пробу, назови ожидаемый результат и недостающие доказательства. После прерывания проверь эффекты перед повтором сомнительного действия.
 
-If reproduction fails, evidence is unavailable or multiple causes still fit, save the attempts, ranked hypotheses, exact missing evidence and next discriminating probe. Mark cause unconfirmed and fix direction and regression test pending. Do not offer a ready fix or execution handoff.
+Если сбой не воспроизводится, доказательства недоступны или подходят несколько причин, сохрани попытки, ранжированные гипотезы, точный пробел и следующую различающую пробу. Причина - unconfirmed, направление исправления и регрессионный тест - pending. Не предлагай готовое исправление или передачу на реализацию.
 
-Classify a confirmed cause against the glossary, decisions and project specs:
+Подтвержденную причину сопоставь с глоссарием, решениями и проектными спецификациями:
 
-| Class | Evidence | Handoff |
+| Класс | Доказательство | Дальше |
 | --- | --- | --- |
-| `right` | Records establish the intended behavior and code differs | Eligible for `dev-exec`. |
-| `silent` | Records do not establish intended behavior | Obtain the user's agreement on intent before `dev-exec`. |
-| `wrong` | A record describes outdated or buggy behavior | Obtain agreement on its correction; project specs are corrected only by `dev-spec` after the fix. |
-| `feature` | The current behavior was decided and the request changes that decision | Suggest `rnd-grill`; no ready fix handoff. |
+| `right` | Намерение записано, код ему противоречит | Можно предложить `dev-exec`. |
+| `silent` | Намерение не установлено записями | До `dev-exec` согласуй намерение. |
+| `wrong` | Запись описывает устаревшее/ошибочное поведение | Согласуй ее исправление; проектный spec меняет только `dev-spec` после исправления кода. |
+| `feature` | Текущее поведение было выбрано, запрос меняет решение | Предложи `rnd-grill`, не готовое исправление. |
 
-Ask about the class only when evidence supports multiple classes. Record the relevant path for `wrong` and `feature` and evidence of agreement for `silent` and `wrong`.
+Спрашивай класс лишь при нескольких обоснованных вариантах. Для `wrong`/`feature` укажи путь записи, для `silent`/`wrong` - доказательство согласия.
 
-## ARTIFACT AND REPEAT
+## ДОКУМЕНТ И ПОВТОР
 
-Save `.scratch/<feature-slug>/root-cause.md` using the location rules. Include `## Symptom`, `## Repro`, `## Evidence`, `## Hypotheses`, `## 5-Why`, `## Root cause`, `## Fix direction` and `## Regression test`; state confirmed or unconfirmed and the class explicitly. Name exact repro steps, predictions, probe results, evidence paths, cleanup and any assumptions. For `feature`, state that a decision change is needed and regression is pending that decision.
+Сохрани `.scratch/<feature-slug>/root-cause.md` по правилам места. Секции: `## Симптом`, `## Воспроизведение`, `## Доказательства`, `## Гипотезы`, `## Пять почему`, `## Причина`, `## Направление исправления`, `## Регрессионная проверка`. В старом диагнозе принимай прежние соответствия: Symptom, Repro, Evidence, Hypotheses, 5-Why, Root cause, Fix direction, Regression test; не переписывай его лишь ради языка. Явно укажи confirmed/unconfirmed и класс, точные шаги, предсказания, результаты проб, пути доказательств, очистку и допущения. Для `feature` - необходимость смены решения и ожидание регрессии до него.
 
-Inspect the existing diagnosis and local issues naming the root cause before writing. For an open ticket covering the same confirmed cause, preserve both files unchanged and report reuse plus any new evidence in dialogue. For a different confirmed cause against an open ticket, show the proposed diagnosis revision and the conflict; obtain a decision on that revision or a distinct destination before writing. Any ticket revision or closure belongs to separately authorized `dev-exec`, not diagnosis. Preserve ticket identity, branch restrictions, `Do not commit`, status and history; resolved or wontfix history stays unchanged. Preserve manual additions and prior evidence in an approved diagnosis revision; an identical result is a no-op. Never edit implementation tickets, domain/project specs, product code/tests, Git/index, settings or installations; diagnosis creates no ticket or fix.
+До записи прочитай диагноз и локальные issues с этой причиной. Если открытый ticket уже покрывает ту же подтвержденную причину, оба файла оставь и сообщи повторное использование/новые доказательства в диалоге. Для другой причины при открытом ticket покажи правку диагноза и конфликт, получи выбор этой правки или другого места. Ticket меняет/закрывает только отдельно разрешенный `dev-exec`. Сохрани идентичность, ограничения ветки, `Do not commit`, статус и историю; resolved/wontfix не меняй. В одобренной правке сохрани ручные дополнения и прежние доказательства; идентичный результат ничего не меняет. Не меняй implementation tickets, доменные/проектные спецификации, продуктовый код/тесты, Git/index, настройки и установки. Диагностика не создает ticket и исправление.
 
-## NEXT
+## РЕЗУЛЬТАТ
 
-Return the artifact, confirmation status, intended-behavior class, source evidence, agreements, actual probe results and remaining prerequisites. Suggest `dev-exec` directly with the root-cause path only for a confirmed `right` cause or a confirmed `silent`/`wrong` cause with the required intent agreement. No intermediate decision, feature spec or ticket is required; `dev-exec` owns acceptance criteria, plan approval, optional decomposition, implementation and verification. Cause confirmation does not prove prerequisites satisfied or authorize a fix. An unconfirmed cause names missing evidence; `feature` suggests `rnd-grill`. A later `dev-spec` records material project-spec corrections after the fix. Never start the next skill implicitly.
+Верни документ, подтвержденность, класс намерения, источники, согласования, реальные пробы и оставшиеся предпосылки. Предложи `dev-exec` прямо с путем root-cause только для подтвержденного `right` или `silent`/`wrong` с нужным согласием. Промежуточные решение, feature spec и ticket не нужны; критерии, план, деление работы, реализация и проверка - у `dev-exec`. Подтверждение причины не доказывает предпосылки и не разрешает исправление. Для unconfirmed назови недостающие доказательства, для `feature` предложи `rnd-grill`. Последующий `dev-spec` записывает существенные исправления проектных спецификаций после исправления кода. Следующий скилл сам не запускай.
