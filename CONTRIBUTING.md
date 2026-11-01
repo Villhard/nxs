@@ -31,7 +31,7 @@ docs/images/                   # диаграммы README в двух тема�
 
 `skills/dev-spec/references/project-specs.md` копируй в `rnd-grill`, `rnd-debug`, `dev-exec`, `dev-review`. Ticket rules/template только у `dev-exec`, feature-description template - у `rnd-grill`, не диагностики. Не требуй общих копий без потребителей. Блок "Условия завершения" для setup tracker копируй дословно из `skills/dev-exec/assets/ticket.md` в `skills/nxs-setup/assets/issue-tracker.md`. Каталог потребителей checker обновляй при переносе ресурсов.
 
-Старые пользовательские tickets, журналы, решения, прототипы и worktrees не мигрируй/не удаляй. В прямом процессе нет обязательных journal, controlled-run packet, approval hashes, locks и worker envelope. Конфликт старых инструкций разрешай явно, не эмулируй удаленное.
+Сохраняй пользовательские данные и чужие правки. Изменение исходников скиллов не разрешает миграцию или удаление пользовательских записей.
 
 Правила процесса держи у владельца/роли, общие - в одной shared reference с одинаковыми копиями. Личные предпочтения - в client/project instructions. Исключение setup: он пишет правила/config туда только точным одобренным diff. Не добавляй background skills, cross-skill injection и hooks. Новый скилл нужен лишь для отдельного устоявшегося частого намерения; иначе расширяй имеющийся.
 
