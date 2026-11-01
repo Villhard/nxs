@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- `nxs-lead` (2026-11-01) selects research from material uncertainty and checkpoints accepted logical blocks through authorized atomic commits.
 - README and diagrams (2026-11-01) map skill entry points, conditional handoffs, task records and setup routes with current authorization boundaries.
 - README catalog and workflow diagrams (2026-11-01) group skills by purpose and show conditional paths between them.
 - README, CONTRIBUTING, GLOSSARY, project spec, client scenarios and diagrams describe the additive catalog, retained legacy routes and unverified cutover.

@@ -395,6 +395,17 @@ These are scenarios to exercise, not observed client behavior. Pin the candidate
 
 These cases are source-level scenarios, not live candidate observations. In a disposable task, pin the candidate, client, permissions and inputs. Check a bounded native delegation and independent artifact, check and Git assessment. A missing native capability stops the affected step; a scope change returns to the user. Confirm technical plan approval precedes edits, no empty commit or push occurs, and retained standalone commands remain independently usable. Native permission enforcement and client compatibility require separate evidence.
 
+| Case | Required observation |
+| --- | --- |
+| Clear request | Lead checks the goal, facts and decisions, records its conclusion and explains why no questions are needed without inventing an interview. |
+| Material choice | Lead selects `rnd-grill`, relays the question and waits for the user's answer before dependent planning or work. |
+| Broad goal | Lead selects `rnd-map` for dependent decisions and respects permission for each question; the map does not authorize implementation. |
+| Missing stage or permission | Lead reports the limitation and stops the affected action without claiming the stage completed. |
+| Multiple blocks | With commits authorized, each accepted and checked block receives necessary checks, applicable review, `dev-spec` when needed and a verified `dev-commit` checkpoint before the next block; no empty commit or unapproved push or PR occurs. |
+| Indivisible changes | Related changes that cannot be safely separated form one block; a later block may depend on an earlier checkpoint. |
+| Foreign changes | Foreign staged and working-tree changes remain intact and `dev-commit` stop conditions are observed. |
+| Uncertain commit | Lead reconciles available evidence, reports uncertainty and never automatically replays the commit. |
+
 ## Coordinator continuation candidate
 
 These cases are unobserved scenarios. Interrupt after an uncertain worker launch or commit and inspect the artifacts, host records, index and HEAD: a missing reply alone must not cause replay. With insufficient evidence, the affected action stops; independent authorized work can continue. An unanswered question or approval for changed content grants no authorization. Continue a native session only where the active client supports it and its identity is known; otherwise reconcile before a fresh bounded worker. Preserve old records and distinguish source inspection from live behavior.
