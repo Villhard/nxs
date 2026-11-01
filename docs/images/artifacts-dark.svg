@@ -7,7 +7,7 @@
 <text class="sub" x="40" y="76">Это владельцы, не цепочка. Предпочитай установленные пути; по умолчанию .scratch/&lt;feature&gt;/.</text>
 <rect class="node" x="40" y="100" width="880" height="80" rx="6"/><path class="rule" d="M304 100 V180"/>
 <text class="name" x="60" y="132">rnd-grill</text><text class="sub" x="60" y="156">Сохранение по согласованию</text>
-<text class="heading" x="328" y="132">Решения, описания функций, факты и вопросы</text><text class="sub" x="328" y="156">Глоссарий / ADR согласуются отдельно; вопросы не отправляются.</text>
+<text class="heading" x="328" y="132">Решения, описания функций, факты и вопросы</text><text class="sub" x="328" y="156">Глоссарий согласуется отдельно; вопросы не отправляются.</text>
 <rect class="node" x="40" y="188" width="880" height="80" rx="6"/><path class="rule" d="M304 188 V268"/>
 <text class="name" x="60" y="220">rnd-debug</text><text class="sub" x="60" y="244">Диагноз, не исправление</text>
 <text class="heading" x="328" y="220">Доказательства причины</text><text class="sub" x="328" y="244">Подтвержденные причина/класс либо точный пробел и следующая проба.</text>
