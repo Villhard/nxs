@@ -21,3 +21,36 @@ jobs:
 
       - name: Reject runtime and Python remnants
         run: bash .github/scripts/check-no-runtime.sh
+
+  # Required by main branch protection under this exact name: a job reports
+  # exactly one check, so this name has to stay.
+  discovery:
+    name: Skills CLI discovery
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: The skills CLI lists every source command
+        run: |
+          set -euo pipefail
+          # Each name is matched as a whole decorated line, so the listing may
+          # be reformatted without failing the job. A missing, renamed or
+          # nested command still fails; extra directories are already rejected
+          # by the catalog check in check-skills.sh.
+          listed=$(npx -y skills@latest add . -l)
+          printf '%s\n' "$listed"
+          listed=$(printf '%s\n' "$listed" | sed -E $'s/\033\\[[0-9;]*[mK]//g' | sed -E 's/^[^[:alnum:]]*//')
+          missing=
+          for name in rnd-grill rnd-debug dev-exec dev-review dev-spec dev-commit nxs-setup; do
+            printf '%s\n' "$listed" | grep -qx -- "$name" || missing="$missing $name"
+          done
+          [ -z "$missing" ] || {
+            printf 'discovery: not listed by the CLI:%s\n' "$missing"
+            exit 1
+          }
