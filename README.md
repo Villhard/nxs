@@ -63,6 +63,6 @@ npx skills@latest add -g Villhard/nxs
 
 `nxs-setup` не устанавливает каталог и companion bundles. Он отдельно работает с целью, `project` или `global`; отказ и уже актуальная настройка ничего не меняют. `project --readiness`/`global --readiness` только сообщают нужные предпосылки. Обычное обсуждение и исполнение не требуют native reviewers. Правки исходников не обновляют установленные копии и личные настройки.
 
-Чистая установка, обновление, регистрация и полный процесс измененных скиллов пока не проверены. [Карта возможностей](skills/nxs-setup/references/capabilities.md) описывает исходники, не live compatibility; [сценарии](tests/client-scenarios.md) отделяют протокол от наблюдений. Исторические результаты не доказывают новый контракт.
+Чистая установка, обновление, регистрация и полный процесс измененных скиллов пока не проверены. [Карта возможностей](skills/nxs-setup/references/capabilities.md) описывает исходники, не live compatibility. Поведение скиллов не проверено; пределы доказательств - в [SPEC](SPEC.md).
 
-[CONTRIBUTING](CONTRIBUTING.md) - изменение и проверки. [CHANGELOG](CHANGELOG.md) - версии. [ADR 0009](docs/adr/0009-seven-skill-direct-flow.md) - текущий каталог вместо прежней координации и обязательных журналов. Стадий lead/auto и ретроспективы нет; независимые finder/verifier review сохранены.
+[CONTRIBUTING](CONTRIBUTING.md) - изменение и проверки. [SPEC](SPEC.md) - намерение, границы и обоснование. [GLOSSARY](GLOSSARY.md) - термины. Стадий lead/auto и ретроспективы нет; независимые finder/verifier review сохранены.
