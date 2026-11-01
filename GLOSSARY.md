@@ -23,7 +23,7 @@ The steps for completing one ticket, reviewed by the lead against the feature pl
 The 19 source commands that separate independent workflow operations; their presence does not establish client registration or a completed cutover.
 
 **Legacy route**:
-A retained `dev-rnd`, `dev-bug`, `dev-lead` or `dev-setup` entry and its existing callers, kept until the applicable replacement is verified.
+A historical `dev-rnd`, `dev-bug`, `dev-lead` or `dev-setup` entry and its callers. These entries are removed from source; existing installations are not changed by that removal.
 
 **Cutover**:
 A route-specific switch of callers or installations after the required evidence and authorization; source additions and shell checks alone do not complete it.

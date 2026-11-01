@@ -1,6 +1,6 @@
 # FEATURE SOURCE
 
-Read before consuming input or choosing a feature spec destination. These rules belong to to-spec; the legacy feature-directory reference keeps its existing consumers and gates.
+Read before consuming input or choosing a feature spec destination. These rules belong to to-spec; `rnd-debug` applies its own feature-directory reference and gates.
 
 ## SOURCE AND LOCATION
 

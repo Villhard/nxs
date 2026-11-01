@@ -17,27 +17,19 @@ tests/client-scenarios.md
 README.md CONTRIBUTING.md CHANGELOG.md
 ```
 
-A skill may link only to files inside its own directory. Files shared by several skills are copied into every consuming skill and must stay byte-identical; the check enforces this. For ticket rules and the ticket template, edit the `to-tickets` copy; `dev-rnd` owns legacy feature resources and `to-spec` owns the feature spec template. Propagate shared edits:
+A skill may link only to files inside its own directory. Files shared by several skills are copied into every consuming skill and must stay byte-identical; the check enforces this. `to-tickets` owns ticket rules and template, `to-spec` owns the feature spec template, and `dev-spec` owns the project-spec reader rules. Propagate shared edits:
 
 ```bash
-cp skills/to-tickets/references/ticket.md skills/dev-rnd/references/ticket.md
-cp skills/to-tickets/references/ticket.md skills/dev-bug/references/ticket.md
 cp skills/to-tickets/references/ticket.md skills/dev-review/references/ticket.md
-cp skills/dev-rnd/references/feature-directory.md skills/dev-bug/references/feature-directory.md
-cp skills/dev-rnd/references/project-specs.md skills/dev-bug/references/project-specs.md
-cp skills/dev-rnd/references/project-specs.md skills/dev-review/references/project-specs.md
-cp skills/dev-rnd/references/project-specs.md skills/dev-spec/references/project-specs.md
-cp skills/dev-rnd/references/project-specs.md skills/dev-lead/references/project-specs.md
-cp skills/to-spec/assets/spec.md skills/dev-rnd/assets/spec.md
-cp skills/to-spec/assets/spec.md skills/dev-bug/assets/spec.md
-cp skills/to-tickets/assets/ticket.md skills/dev-rnd/assets/ticket.md
-cp skills/to-tickets/assets/ticket.md skills/dev-bug/assets/ticket.md
+cp skills/to-tickets/references/ticket.md skills/dev-exec/references/ticket.md
+cp skills/to-spec/assets/spec.md skills/rnd-debug/assets/spec.md
 cp skills/to-tickets/assets/ticket.md skills/dev-review/assets/ticket.md
+cp skills/to-tickets/assets/ticket.md skills/dev-exec/assets/ticket.md
 ```
 
-Journal resources (`references/task-journal.md` and `references/controlled-run.md`) are copied from `dev-lead` into `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec`, `dev-commit`, `rnd-grill`, `rnd-debug`, `rnd-research`, `rnd-prototype`, `rnd-design`, `rnd-audit`, `rnd-map`, `to-decision`, `to-spec`, `to-tickets`, `dev-exec`, `to-questionnaire`, `to-handoff`, `nxs-retro` and `nxs-lead`. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
+Project-spec reader and journal resources (`references/task-journal.md` and `references/controlled-run.md`, owned by `nxs-lead`) are copied to the consumers listed in the structural checker. Propagate canonical edits byte-for-byte. No installed skill may depend on a developer checkout, a bundled helper or another skill's installation path.
 
-The `## Done when` block of `skills/to-tickets/assets/ticket.md` is also copied into the fenced block of `skills/dev-setup/assets/issue-tracker.md`; update it by hand.
+The `## Done when` block of `skills/to-tickets/assets/ticket.md` is also copied into the fenced block of `skills/nxs-setup/assets/issue-tracker.md`; update it by hand.
 
 Shared discussion and domain references are owned by `rnd-grill`; `to-decision` and `rnd-design` bundle copies. `nxs-setup` owns writing guidance, copied into `nxs-retro`. `dev-review` owns the review report reference, copied into `to-tickets`. Keep the checker catalog and every applicable shared copy synchronized.
 
@@ -90,7 +82,7 @@ The structural checker is read-only and inspects the working tree. It validates 
 
 The [pre-commit hook](.githooks/pre-commit) runs both structural checks against a temporary staged snapshot in every client. Enable it once per clone with `git config core.hooksPath .githooks`.
 
-The retained lead and review routes use the selected client native subagent facility. Discover available skills and models without hardcoding names or effort support; readiness uses its documented native discovery probes. Preserve native permissions and enforce repository write denial for read-only workers. State live verification separately from protocol fixtures; missing CLI never implies a verified live route. Tests use disposable repositories and fixture-only approvals, never the user installation.
+The lead and review routes use the selected client native subagent facility. Discover available skills and models without hardcoding names or effort support; readiness uses its documented native discovery probes. Preserve native permissions and enforce repository write denial for read-only workers. State live verification separately from protocol fixtures; missing CLI never implies a verified live route. Tests use disposable repositories and fixture-only approvals, never the user installation.
 
 For behavior changes, use disposable projects and the [client scenarios](tests/client-scenarios.md); documentation-only edits need source, command and link checks, not repeated workflows.
 
@@ -107,4 +99,4 @@ Run the client against that `HOME`, then remove the temporary directory, keeping
 
 Publish by pushing to `main` before updating installations; users update with `npx skills update`. Do not modify the user's installed skills during source edits unless requested.
 
-The checked catalog contains 19 target commands and four retained legacy routes: `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup`. Preserve legacy callers and their `/plan` handoffs until their route-specific cutover gates pass. The separate `to-tickets` route suggests `dev-exec` for eligible ready work. Source changes do not update installations or establish native registration. `nxs-setup` does not offer companion bundles; the legacy `dev-setup` contract still does. See [README](README.md) and [client scenarios](tests/client-scenarios.md) for the current boundary and evidence.
+The checked catalog contains 19 commands. `to-tickets` suggests `dev-exec` for eligible ready work. Source changes do not update installations or establish native registration. `nxs-setup` does not offer companion bundles. See [README](README.md) and [client scenarios](tests/client-scenarios.md) for the current boundary and evidence.

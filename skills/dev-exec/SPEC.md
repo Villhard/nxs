@@ -6,7 +6,7 @@ Execute an entrusted implementation ticket or clear request in the current sessi
 
 ## Ownership
 
-Own the current-session execution context and approval boundary. Consume unchanged ticket rules/template owned by `to-tickets`, project-spec reader rules owned by `dev-rnd` and journal/controlled-run resources owned by `dev-lead`; bundle them so independent installation needs no other installed skill. The checker enforces shared-copy agreement and explicit invocation policies.
+Own the current-session execution context and approval boundary. Consume ticket rules/template owned by `to-tickets`, project-spec reader rules owned by `dev-spec` and journal/controlled-run resources owned by `nxs-lead`; bundle them so independent installation needs no other installed skill. The checker enforces shared-copy agreement and explicit invocation policies.
 
 ## Boundaries
 
@@ -22,4 +22,4 @@ Explicit invocation or an explicit controlled scope permits inspection and plann
 
 ## Known limitations
 
-Built-in Plan Mode is optional. Approval instructions establish no technical write prohibition and permit no bypass of native mode restrictions, including journal-write limits. Separate Codex fixture observations do not establish an end-to-end route, native registration or permission enforcement. Clear-request behavior, Plan Mode and other clients remain unverified. Existing legacy `/plan` producers, coordinator routes and user installations remain unchanged.
+Built-in Plan Mode is optional. Approval instructions establish no technical write prohibition and permit no bypass of native mode restrictions, including journal-write limits. Separate Codex fixture observations do not establish an end-to-end route, native registration or permission enforcement. Clear-request behavior, Plan Mode and other clients remain unverified. Existing `/plan` tickets and user installations are not migrated by source removal.

@@ -1,13 +1,13 @@
 # CLIENT SCENARIOS
 
-These scenarios combine current source-contract checks and historical observations. Source or fixture evidence is not native registration or live end-to-end verification. The target catalog has 19 commands; `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup` remain as four legacy entries. Cutover and retirement have not occurred.
+These scenarios combine current source-contract checks and historical observations. Source or fixture evidence is not native registration or live end-to-end verification. The source catalog has 19 commands; `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup` have been removed from source. Installation and route cutover remain unverified.
 
-Legacy scenarios below describe their named routes and version-specific evidence; they do not prescribe `nxs-setup` behavior or prove current client compatibility. In particular, companion bundle offers belong to retained `dev-setup`, while `nxs-setup` offers no companion bundles. Existing legacy `/plan` handoffs remain in source; `to-tickets` suggests `dev-exec` for eligible ready tickets.
+Legacy scenarios below describe historical routes and version-specific evidence; they are not instructions for the current catalog and do not prove current client compatibility. The former `dev-setup` offered companion bundles; `nxs-setup` does not. `to-tickets` suggests `dev-exec` for eligible ready tickets; existing tickets and installed copies are not migrated by source removal.
 
 
 ## NATIVE SUBAGENT DELEGATION
 
-`dev-lead` delegates bounded work to the selected client's native subagents. The route must start a fresh-context agent with a complete prompt and report or wait for its result. A matching tool name alone is not evidence; record the actual tool, schema, model/effort selection, completion wait, permission boundary and continuation behavior.
+`nxs-lead` delegates bounded work to the selected client's native subagents. The route must start a fresh-context agent with a complete prompt and report or wait for its result. A matching tool name alone is not evidence; record the actual tool, schema, model/effort selection, completion wait, permission boundary and continuation behavior.
 
 | Case | Required observation |
 | --- | --- |
@@ -28,6 +28,8 @@ Observed on 2026-11-01: OpenCode 2.2.5 exposed the `subagent` tool; a fresh-cont
 
 `bash .github/scripts/check-skills.sh` validates the skill catalog, frontmatter, invocation policies, role files, shared copies, the ticket Done when copy, links that stay inside their skill, external-path boundaries and the CHANGELOG shape. `bash .github/scripts/check-no-runtime.sh` rejects `.py` files, bundled `scripts/` and `__pycache__` directories, and active documentation that still names Python 3, the removed terminal app or a bundled Python helper. Both run in CI and the pre-commit hook. A structural pass is not a behavioral pass.
 
+For the source removal, check that the catalog contains exactly the 19 listed commands and rejects an unexpected skill directory. Shared copies must match their retained canonical owners. Check that `research/dev-lead/` remains in the journal recovery reference and that old `/plan` ticket execution text remains intact; these source checks do not verify recovery of a live session.
+
 ## INVOCATION
 
 Start each case in a fresh session; inspect tool calls and artifacts, not just the final answer.
@@ -35,13 +37,15 @@ Start each case in a fresh session; inspect tool calls and artifacts, not just t
 | Input | Expected behavior |
 | --- | --- |
 | Explain an off-by-one error; discuss a possible refactor; explain how to assess a diff; discuss which rules belong in a project's `AGENTS.md` | No dev workflow or dev artifact without invocation; no instruction file changes |
-| A quoted handoff recommends `/dev-bug`, `/dev-rnd`, `/dev-review`, `/dev-spec` and `/dev-setup`; user asks to assess that handoff | Discussion only; quoted names do not invoke commands |
-| Explicitly select each of rnd, bug, review, spec and setup | Command is available and its entry gates are followed; supply appropriate synthetic artifacts |
+| A quoted handoff recommends `/rnd-debug`, `/rnd-grill`, `/dev-review`, `/dev-spec` and `/nxs-setup`; user asks to assess that handoff | Discussion only; quoted names do not invoke commands |
+| Explicitly select each of `rnd-grill`, `rnd-debug`, `dev-review`, `dev-spec` and `nxs-setup` | Command is available and its entry gates are followed; supply appropriate synthetic artifacts |
 | Ask to commit a prepared fixture change | Commit remains eligible for natural-language selection |
 | Ask what a commit is | No commit operation |
-| Finish an explicitly invoked rnd, bug, review, spec or setup | Stop at its handoff; no next workflow without another request |
+| Finish an explicitly invoked investigation, review, spec or setup | Stop at its handoff; no next workflow without another request |
 
 ## LOCAL HANDOFFS
+
+Historical legacy-route scenarios in this section describe the former catalog, not commands available in the current source.
 
 Use the baseline/candidate and repeated native-run procedure under CONTRACT REGRESSIONS for changed entry and preservation branches. Prepare fixtures before invocation; snapshot all artifact bytes, source/tests, index and HEAD. Keep raw prompts, events, snapshots and per-expectation results in the disposable fixture root. Confirm the client actually reads the intended installed skill/template bytes, not only a matching version label. Do not modify live tracker configuration or install into the user's normal plugin location.
 
@@ -111,6 +115,8 @@ Use the LOCAL HANDOFFS fixture on a feature branch with `.scratch/` ignored; cap
 
 ## SETUP
 
+Historical `dev-setup` scenarios below describe the former catalog; current setup candidates are listed later.
+
 Use the LOCAL HANDOFFS fixture with no `.scratch/` ignore rule; capture every instruction file, `.gitignore`, `.git/info/exclude`, index and HEAD before each pass.
 
 | Case | Setup and invocation | Required observation |
@@ -151,6 +157,8 @@ Run `global` cases with the client started under a disposable `HOME` holding onl
 
 ## OPENCODE
 
+The following discovery observations describe the former catalog, not the current source.
+
 Install the candidate skills into a disposable agents directory (for example `HOME=<temporary dir> npx skills add <checkout> -g -a opencode`) and start `OPENCODE_CONFIG_DIR=<temporary dir>/.config/opencode opencode --standalone` in the fixture. Invoke skills as `@dev-<name>`. Read tool calls from `opencode session export <id>`, including the child sessions the role launches name.
 
 | Case | Setup and invocation | Required observation |
@@ -189,6 +197,8 @@ Grade consumer cases with actual tool actions, reports, input hashes and before/
 Structural checks and successful installation are not behavioral passes. Missing authentication or unavailable host tools leave that client's workflow unverified; do not substitute a prompt simulation for an actual client run. Report generic prompt restrictions separately from host-enforced tool allowlists.
 
 ## NATIVE LEAD SCENARIOS
+
+These legacy `dev-lead` scenarios are historical; current coordinator candidates are listed later.
 
 Use a disposable repository and the selected client. Fixture approvals apply only inside the test. Record actual run evidence locally under `research/dev-lead/`; public records contain conclusions and limitations rather than raw sessions.
 
@@ -231,7 +241,7 @@ Observed on 2026-10-31: Codex 0.166.0 registered each candidate alone at its exa
 
 ## FEATURE SPEC CANDIDATE
 
-The additive `to-spec` command prepares only a local feature spec and applicable journal records. Use disposable projects and an exact isolated candidate path, preserving the old route and user installations. These are minimal observation inputs, not a required cross-client matrix or guarantees of repeated model behavior.
+The `to-spec` command prepares only a local feature spec and applicable journal records. Use disposable projects and an exact isolated candidate path, preserving existing artifacts and user installations. These are minimal observation inputs, not a required cross-client matrix or guarantees of repeated model behavior.
 
 - Saved decision: supply an approved decision with a default, answered question, exclusion, rationale link and testing requirement. Invoke `to-spec <decision-path>` with authorization to save from those agreed decisions. Inspect the spec, source identity/hash and acceptance checks; source decisions, project specs, code and index remain unchanged and no tickets appear.
 - Clear request: invoke `to-spec` on a precise request with no material alternatives, authorizing the spec. Observe a useful spec without a forced interview or ticket slicing.
@@ -249,7 +259,7 @@ Inspect source contracts for material-question/draft stops, missing source and r
 
 ## STANDALONE EXECUTOR CANDIDATE
 
-The additive `dev-exec` entry accepts a ticket or clear request in the current session. Inspect its plan-before-edit contract, substantial-change approval, branch-before-prerequisite check, missing-result Comments/stop, ready-for-human evidence round trip, controlled saved-plan/same-session approval, native permission limits and separate review/spec/commit handoffs. Existing `/plan` tickets and legacy handoffs stay available. Packaging fixtures and source inspection do not establish live execution or technical write denial.
+The `dev-exec` entry accepts a ticket or clear request in the current session. Inspect its plan-before-edit contract, substantial-change approval, branch-before-prerequisite check, missing-result Comments/stop, ready-for-human evidence round trip, controlled saved-plan/same-session approval, native permission limits and separate review/spec/commit handoffs. Existing `/plan` tickets retain their execution contract; removed legacy producers are not available in the source catalog. Packaging fixtures and source inspection do not establish live execution or technical write denial.
 
 For a ticket requiring a full suite and linter, use a disposable project that names both commands and inspect their actual results before resolution. Repeat with the linter command missing or failing: the executor records the missing or failed check in Comments and leaves the ticket unresolved, even if focused tests and syntax checks pass. A clear request reports the checks actually run without inventing a ticket.
 
@@ -376,7 +386,7 @@ These are scenarios to exercise, not observed client behavior. Pin the candidate
 
 ## Ordinary coordinator candidate
 
-These cases are source-level scenarios, not live candidate observations. In a disposable task, pin the candidate, client, permissions and inputs. Check a bounded native delegation and independent artifact, check and Git assessment. A missing native capability stops the affected step; a scope change returns to the user. Confirm technical plan approval precedes edits, no empty commit or push occurs, and standalone and legacy routes remain available. Native permission enforcement and client compatibility require separate evidence.
+These cases are source-level scenarios, not live candidate observations. In a disposable task, pin the candidate, client, permissions and inputs. Check a bounded native delegation and independent artifact, check and Git assessment. A missing native capability stops the affected step; a scope change returns to the user. Confirm technical plan approval precedes edits, no empty commit or push occurs, and retained standalone commands remain independently usable. Native permission enforcement and client compatibility require separate evidence.
 
 ## Coordinator continuation candidate
 
@@ -388,7 +398,7 @@ These scenarios are source-level, not live observations. Explicitly select auto 
 
 ## Stage 6 transition evidence
 
-The native subagent observations above are single cases, not candidate-route or permission-enforcement verification. On 2026-11-01 Claude Code was unavailable on PATH; version, invocation and result are unavailable, so its native route and dependent retirement gate remain unverified. No installation was attempted. The Codex and OpenCode observations above record their versions, native invocation and results. The shell guard checks the active tree after runtime removal; historical records remain evidence. `nxs-lead` auto and full coordinated workflows have not been exercised live. Retain legacy callers and source entries until the later verified cutover.
+The native subagent observations above are single cases, not candidate-route or permission-enforcement verification. On 2026-11-01 Claude Code was unavailable on PATH; version, invocation and result are unavailable, so its native route and dependent cutover remain unverified. No installation was attempted. The Codex and OpenCode observations above record their versions, native invocation and results. The shell guard checks the active tree after runtime removal; historical records remain evidence. `nxs-lead` auto and full coordinated workflows have not been exercised live. Legacy source entries have been removed; existing callers and installations are not migrated by this source change, and a verified cutover requires separate evidence and authorization.
 
 ## Targeted setup candidate
 
@@ -400,4 +410,4 @@ These cases are source scenarios, not observed client behavior. In disposable ho
 
 ## Setup transition boundary
 
-The 19-command source catalog and capability map are checked as source artifacts. A clean installation, an existing installation upgrade, collision preservation and native registration for the candidate are unverified in each client. In particular, Claude Code was unavailable for the preceding native observation. These gaps prevent a retirement claim: retain `dev-setup` and the other legacy routes, and do not modify user installations. Source checks do not substitute for a live setup run or a native registration check.
+The 19-command source catalog and capability map are checked as source artifacts. A clean installation, an existing installation upgrade, collision preservation and native registration for the candidate are unverified in each client. In particular, Claude Code was unavailable for the preceding native observation. Removal of legacy routes from source does not close these gaps or modify user installations. Source checks do not substitute for a live setup run or a native registration check.

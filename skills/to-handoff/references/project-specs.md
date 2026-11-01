@@ -1,6 +1,6 @@
 # PROJECT SPECS
 
-Read this reference before using project specs. It is the reader contract: `dev-lead`, `dev-rnd`, `dev-bug` and `dev-review` read specs; only `dev-spec` writes them.
+Read this reference before using project specs. It is the reader contract for skills using project specs; only `dev-spec` writes them.
 
 ## FILES
 

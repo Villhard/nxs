@@ -1,6 +1,6 @@
 # nxs
 
-Development skills for coding agents, from investigation and decisions through execution, review, project specs and commits. Commands are independently invoked; an artifact or approval for one stage does not start the next. The source catalog is additive and the final route and installation cutover has not happened. [Client scenarios](tests/client-scenarios.md) distinguish observed behavior from unverified routes.
+Development skills for coding agents, from investigation and decisions through execution, review, project specs and commits. Commands are independently invoked; an artifact or approval for one stage does not start the next. Removal from source does not establish a route or installation cutover. [Client scenarios](tests/client-scenarios.md) distinguish observed behavior from unverified routes.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
@@ -69,7 +69,7 @@ A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to
   <img alt="Discussion can end in dialogue; an approved decision can feed a feature spec and tickets through separately requested steps." src="docs/images/grill-light.svg">
 </picture>
 
-For a failure, `rnd-debug` records evidence and an eligible confirmed cause can be passed to `to-tickets`; uncertain causes do not produce ready work. The retained `dev-bug` route has its own ticket behavior.
+For a failure, `rnd-debug` records evidence and an eligible confirmed cause can be passed to `to-tickets`; uncertain causes do not produce ready work.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/bug-dark.svg">
@@ -92,7 +92,7 @@ Ticket status and executor evidence are distinct from coordinator acceptance and
 
 ## Coordination
 
-`nxs-lead` is an additive coordinator. It delegates bounded work through the selected client's native subagent facility, waits for results and independently checks them. Ordinary mode relays substantive decisions; guarded auto requires explicit selection and approvals described in its [contract](skills/nxs-lead/SKILL.md). Native permission enforcement is client-dependent. Recorded Codex and OpenCode observations are limited cases; Claude Code, guarded auto and full coordinated workflows remain unverified. The retained `dev-lead` route has its own [contract](skills/dev-lead/SKILL.md).
+`nxs-lead` delegates bounded work through the selected client's native subagent facility, waits for results and independently checks them. Ordinary mode relays substantive decisions; guarded auto requires explicit selection and approvals described in its [contract](skills/nxs-lead/SKILL.md). Native permission enforcement is client-dependent. Recorded Codex and OpenCode observations are limited cases; Claude Code, guarded auto and full coordinated workflows remain unverified.
 
 ## Setup and installation
 
@@ -101,11 +101,6 @@ Ticket status and executor evidence are distinct from coordinator acceptance and
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/setup-dark.svg">
   <img alt="nxs-setup audits a goal, project or global setup, proposes a package and applies approved changes. Readiness requires project or global and only reports." src="docs/images/setup-light.svg">
-</picture>
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/bundles-dark.svg">
-  <img alt="The nxs-setup capability map points to nxs commands without companion bundles; dev-setup's bundle offer is a retained legacy route." src="docs/images/bundles-light.svg">
 </picture>
 
 The skills CLI can install selected source skills, for example `npx skills@latest add -g Villhard/nxs`, and update installed skills with `npx skills@latest update -g`. The new catalog's clean and existing installation paths, collision handling and native registration have not passed the live cutover gate. Inspect installed paths and provenance before running either command; do not assume a same-name skill can be replaced safely.
