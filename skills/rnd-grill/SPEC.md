@@ -6,7 +6,7 @@ Investigate uncertainty and agree on a solution through proportionate evidence a
 
 ## Ownership
 
-Own discussion, domain modeling, optional evidence and isolated-experiment guidance, and direct approved decision, feature-description, glossary/ADR and participant-questionnaire saving. Bundle the references and templates needed for independent installation. Project-spec reader rules remain owned by `dev-spec`.
+Own discussion, domain modeling, optional evidence and isolated-experiment guidance, and direct approved decision, feature-description, glossary and participant-questionnaire saving. Durable decisions belong to project specs owned by `dev-spec`, not to separate architecture-decision records. Bundle the references and templates needed for independent installation. Project-spec reader rules remain owned by `dev-spec`.
 
 ## Boundaries
 
