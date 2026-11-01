@@ -8,6 +8,7 @@
 #   - review role files;
 #   - byte-identical shared resources;
 #   - the fenced ticket Done when copy;
+#   - current ticket template and review handoff use dev-exec, not /plan;
 #   - links stay inside the owning skill;
 #   - no bundled link escapes an installed skill;
 #   - CHANGELOG release headings keep their dated shape.
@@ -269,6 +270,39 @@ check_done_when() {
   done
 }
 
+check_ticket_handoff() {
+  local template=skills/to-tickets/assets/ticket.md review=skills/dev-review/SKILL.md producer=skills/to-tickets/SKILL.md
+  if grep -Fq '/plan' "$template" "$review"; then
+    fail "current ticket template and review instructions must not recommend /plan"
+  fi
+  grep -Fq 'Execute this ticket directly with `/dev-exec <this file>`.' "$template" ||
+    fail "$template: missing dev-exec handoff"
+  grep -Fq 'suggest `/dev-exec <ticket-path>`' "$review" ||
+    fail "$review: missing dev-exec handoff"
+  grep -Fq 'Copy the template' "$producer" || fail "$producer: missing template copy instruction"
+  if grep -Eq 'both executor examples|no-commit semantics' "$producer"; then
+    fail "$producer: obsolete executor examples or no-commit template semantics"
+  fi
+  grep -Fq 'authorized checkpoint rules' "$producer" || fail "$producer: missing checkpoint contract"
+}
+
+check_checkpoint_handoff() {
+  local executor=skills/dev-exec/SKILL.md lead=skills/nxs-lead/SKILL.md
+  local review=skills/dev-review/SKILL.md spec=skills/dev-spec/SKILL.md path
+  grep -Fq 'pre-checkpoint HEAD, each verified commit and parent OID' "$executor" ||
+    fail "$executor: missing checkpoint identity handoff"
+  grep -Fq 'Pass the complete checkpoint handoff' "$lead" ||
+    fail "$lead: missing checkpoint handoff to selected stages"
+  grep -Fq 'Staged scope excludes committed checkpoints; stop without a report' "$review" ||
+    fail "$review: missing staged checkpoint coverage stop"
+  grep -Fq 'A checkpoint already on the base is outside this input' "$spec" ||
+    fail "$spec: missing base checkpoint coverage stop"
+  for path in "$review" "$spec"; do
+    grep -Fq 'An ancestor check or path list alone is not proof' "$path" ||
+      fail "$path: missing net-change coverage check"
+  done
+}
+
 normalize_path() {
   local path=$1 part
   local -a parts out
@@ -374,6 +408,8 @@ done
 check_roles
 check_shared
 check_done_when
+check_ticket_handoff
+check_checkpoint_handoff
 check_links
 check_runtime_paths
 check_changelog

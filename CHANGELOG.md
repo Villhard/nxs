@@ -15,6 +15,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- `dev-review` (2026-11-01) suggests `dev-exec` for eligible created or covered tickets instead of `/plan`, without starting execution.
+- `to-tickets`, `dev-review`, `dev-exec` and `nxs-setup` (2026-11-01) use `dev-exec` in new ticket templates and preserve existing ticket execution text and prohibitions.
+- `dev-review` (2026-11-01) permits prompt-only reviewer restrictions when host enforcement is unavailable, with mandatory repository state comparisons and explicit protection limits; client scenarios cover the unverified route.
+- `dev-exec` (2026-11-01) applies authorized, checked `dev-commit` checkpoints in its own session; work without selected commits and existing ticket prohibitions continues without checkpoints.
+- `nxs-lead` and bundled controlled-run references (2026-11-01) delegate executor checkpoints and retain independent acceptance and review after the ticket.
+- `to-tickets`, `dev-review`, `dev-exec` and `nxs-setup` ticket templates (2026-11-01) distinguish approved executor checkpoints from retained no-commit tickets and `/plan`.
+- `nxs-lead` (2026-11-01) selected research from material uncertainty and checkpointed accepted logical blocks through authorized atomic commits before checkpoint ownership moved to `dev-exec`.
 - README and diagrams (2026-11-01) map skill entry points, conditional handoffs, task records and setup routes with current authorization boundaries.
 - README catalog and workflow diagrams (2026-11-01) group skills by purpose and show conditional paths between them.
 - README, CONTRIBUTING, GLOSSARY, project spec, client scenarios and diagrams describe the additive catalog, retained legacy routes and unverified cutover.
@@ -22,6 +29,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
+- `dev-review` (2026-11-01) checks checkpoint handoff before the empty-scope stop or staging suggestion, preserving unrelated files and the selected scope.
+- `dev-exec`, `nxs-lead`, `dev-review` and `dev-spec` (2026-11-01) carry checkpoint scope and stop when a stage's default diff omits or cannot establish coverage of the intended work.
+- `to-tickets` (2026-11-01) aligns ticket copy instructions with the current `dev-exec` checkpoint template; source scenarios and the structural checker guard against obsolete wording.
+- `dev-exec` and `nxs-lead` (2026-11-01) propose and check explicit checkpoint scopes by default while preserving user approval and no-commit choices.
+- `dev-exec` (2026-11-01) permits a reconciled fresh bounded run after plan approval when native session continuation is undocumented, preserving the approved plan and boundaries.
+- `dev-commit` (2026-11-01) returns an authorized same-session checkpoint result to `dev-exec` while retaining the standalone stop.
 - Shell skill checker validates frontmatter scalars and release dates and rejects empty release entries.
 - README distinguishes same-name nxs and companion skills before choosing a route.
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.

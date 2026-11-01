@@ -42,7 +42,7 @@ Show proposed ticket titles, scope, criteria, dependencies, every `**Branch:**` 
 
 ## SAVE AND VERIFY
 
-Save only authorized new tickets or specifically approved revisions in the resolved `issues/` directory. Copy the template's complete English `## Done when` verbatim, retaining both executor examples and branch, blocker-result, ready-for-human and no-commit semantics. Preserve existing execution text on repeats; do not migrate old tickets to a new executor.
+Save only authorized new tickets or specifically approved revisions in the resolved `issues/` directory. Copy the template's complete English `## Done when` verbatim, including its `dev-exec` handoff, branch and blocker-result gates, ready-for-human round trip and authorized checkpoint rules. Preserve existing execution text and prohibitions on repeats; do not migrate old tickets to a new executor.
 
 Re-read saved files against the approved breakdown and current source; for review input apply its report-link exception. Verify numbering, dependency order, branches, criteria and exact execution block; compare all preserved issue bytes with their pre-write state. Journal the source identity/path/hash, local spec hash when applicable, approval/scope, created and reused paths, dependency evidence, limitations and no-op reuse. Pins belong in the journal and handoff without adding a Parent section or rewriting an unchanged spec/ticket.
 
