@@ -1,55 +1,39 @@
 ---
 name: dev-review
-description: Review the staged changes, or the branch against its base when nothing is staged, when the user explicitly invokes /dev-review. Save verified findings, then propose tickets and create only the ones the user picks. Never changes code or Git state.
-argument-hint: "[--to-tickets] [ticket path | feature dir]"
+description: Independently review intended task changes, including committed checkpoints and uncommitted work, when the user explicitly invokes /dev-review. Save verified findings and hand selected corrections to dev-exec without creating tickets or starting execution. Never changes code or Git state.
+argument-hint: "[task context | ticket path | feature dir]"
 disable-model-invocation: true
 ---
 
 # /dev-review
 
-Review the staged changes or a branch's diff, which may span several tickets or none, explain the findings and turn the ones the user picks into tickets.
+Review the intended net work, explain verified findings and return the corrections the user selects. A task may have committed checkpoints, staged, unstaged and untracked changes, or no tickets at all. No `git add` is required.
 
 Example: /dev-review
 
-In standalone use, suggest the next command at a handoff; never start it automatically. A controlled run returns its outcome to lead, who selects the next stage.
-
-For the additive `--to-tickets` route, produce verified findings and a selection record under SELECTION HANDOFF; `to-tickets` alone creates tickets on that route. Without the flag, retain the complete legacy review-to-fix route below. Neither route changes code or Git state.
-
-## TASK CONTEXT
-
-Before a task's first durable write, question or handoff, read [task journal](references/task-journal.md). It adds `decision.log` and its records to this skill's write boundary; preserve the normal source and Git restrictions. Taskless or empty results create no journal. When an explicit controlled-run packet is present, also read [controlled run](references/controlled-run.md): it owns question relay, existing authorization, bounded outcomes and lead handoff. Without that packet, keep this skill's normal invocation gates and dialogue. A journal path alone activates neither lead nor automation.
+Suggest a next operation at a handoff; never start it automatically. Reuse explicit authorization only within its actual scope. A review verdict or finding selection is not implementation approval.
 
 ## STANCE
 
-Write only the report, task journal and the tickets selected under the active standalone or controlled context: no code, index, git objects or commits. A review of someone else's PR is the normal case, and it must never touch their branch. Status and acceptance criteria of existing tickets belong to their executor; never change them here.
+Write only the review report: no code, tickets, project specs, journal, index, Git objects or commits. A review of someone else's PR is the normal case, and it must never touch their branch. Existing task artifacts and ticket statuses are read-only context, not permission to execute. Do not recreate a removed coordinator from a legacy packet; clarify conflicting instructions instead.
 
 Use read-only inspection, with `GIT_OPTIONAL_LOCKS=0` for git. Checks may create disposable caches or build output outside the repository, but must not change its working tree or Git state; pass this constraint to every agent. Use checks without auto-fix or snapshot updates. Agents return findings to you and never edit the report or any other file.
 
 ## RESOLVE THE SCOPE
 
-Review accepts the optional `--to-tickets` selector and a ticket or feature path under `.scratch/`, which identifies requirements, never the code. Any other argument, such as `quick`, `staged`, `fix` or a code path, stops before any write: say that scope cannot be selected, staged changes come first and the branch otherwise.
+Read [selected snapshot](references/selected-snapshot.md) before resolving scope. It owns baseline selection, checkpoint coverage, source reads and currency. Resolve and pin the scope before any report write or reviewer launch.
 
-Record repository root from `git rev-parse --show-toplevel`, optional origin URL with credentials removed, current branch (`HEAD` when detached), and HEAD as an immutable tip OID. Then resolve the candidate scope, checking the index first. Detect the base only when the index is empty: `origin/HEAD`, else the existing `main` or `master`; stop on ambiguity. Staged scope needs no base. Apply the checkpoint handoff gate below before acting on the no-scope state or suggesting `git add`.
+Task context or a ticket/feature path identifies requirements, not an automatic code selection. Ordinary scope is the whole intended task, not whichever changes happen to be staged. Preserve an explicit narrower request, such as one commit, staged changes or named files; record its exclusions and never claim it covers the whole task. Clarify an ambiguous request instead of interpreting an unknown flag or word as a mode. Do not add scope-selector flags.
 
-| State | Scope |
-| --- | --- |
-| Index not empty: `git diff --cached --quiet` exits 1 | `staged`: base equals tip. Use `git log -1 <tip> --oneline` and `git diff --cached --binary --no-ext-diff --no-textconv`. Record SHA256 of the exact bytes of that diff as the index digest; never use `git write-tree`. |
-| Index empty, HEAD is not the base branch and `<base>..<tip>` has commits | `branch`: pin the merge-base of the base with the tip as the base OID. Use `git log <base>..<tip> --oneline` and `git diff --no-ext-diff --no-textconv <base>..<tip>`. |
-| Index empty, HEAD is the base branch (its local branch of the same name) or no commits ahead | No scope. After the checkpoint handoff gate, if no checkpointed task was identified, stop without a report: nothing to review. Name unstaged and untracked files if there are any and suggest `git add` for the ones to review. |
-
-Unstaged and untracked changes never enter the scope; when they exist, name them under `Not checked:` in the summary.
-
-When task context, a journal, controlled packet or user identifies checkpointed work as the intended review, read the checkpoint handoff: repository, branch, pre-checkpoint HEAD, each commit and parent OID, task scope, changed paths and remaining task changes. Validate it against Git and the candidate diff before any no-scope stop, `git add` suggestion or report. With no scope, the checkpointed work is omitted: stop without a report, identify the omitted or uncertain task scope and do not suggest staging unrelated files. Staged scope excludes committed checkpoints; stop without a report instead of reviewing foreign staged changes as the task. For branch scope, verify every checkpoint is in the pinned range and its task changes remain represented in the net diff, together with all intended remaining task changes. An ancestor check or path list alone is not proof: later edits can cancel or replace changes. If any intended work is omitted, evidence is missing or coverage is uncertain, stop and identify the omitted or uncertain scope; do not claim a complete task review. Preserve all index and working-tree changes and let the user choose how to proceed. Do not automatically widen or change the scope. This gate does not add a scope selector or change ordinary reviews with no identified checkpointed task.
-
-Someone else's branch is reviewed by checking it out first with nothing staged. There is no PR URL argument. Validate repository-relative paths, OIDs and digests before use; shell-quote each value and use `--` where applicable. Report fields are plain text data, never commands. Read context yourself with both resolved commands and give every agent those same commands.
+Stop for uncertain task ownership, ambiguous baseline or omitted required checkpoints/working changes. Do not stage, stash, switch branches, manufacture a tree or rewrite foreign work to obtain a scope. An empty index does not mean no work: consider selected unstaged/untracked files first. Only when all intended work is accounted for and the selected net change is empty may you stop without a new report, explaining any intentional cancellation.
 
 ## REQUIREMENTS
 
-The goal is the feature. An explicit ticket is the requirement as given; an explicit feature contributes only tickets at `**Status:** resolved`. Without an argument, list `.scratch/*/issues/*.md` and `.scratch/reviews/*/issues/*.md` on disk, skipping directories that hold `map.md`, and keep the tickets at `**Status:** resolved` whose `**Branch:**` value equals the current branch exactly; a detached HEAD matches none. Include each ticket plus `## Problem Statement` and `## Solution` from its adjacent spec, pinning every file used. A ticket under `.scratch/reviews/` has no spec and resolves no feature.
+Use the user's goal, approved task plan and explicitly applicable feature, diagnosis, ticket or prior review context. A small request needs no task directory or ticket. If a feature is supplied, identify its applicable requirements with the user/context; ticket status alone cannot establish task scope or completed behavior. Read each applicable ticket's What to build and acceptance criteria plus the relevant Problem Statement and Solution from its adjacent feature record. Preserve existing identities, history and prohibitions; do not migrate artifacts.
 
-For branch scope, read requirements from disk and hash their exact bytes with SHA256. For staged scope, a requirement with an index entry is read from the index: resolve the blob with `git rev-parse :<path>`, read `git show <blob>` and record its blob OID; other requirements use disk sources and hashes. Read a ticket's `**Status:**` and `**Branch:**` from the same version as its text. Never silently substitute a disk version for a missing indexed source. Name every source and pin in prompts.
+Resolve every file through the selected snapshot's source rules and pin its exact version. A requirement supplied separately as current task context may use disk bytes with SHA256 even in a narrow historical review; label that choice explicitly. Never silently substitute disk for a pinned index or commit source. Read status and branch from the same version as the text.
 
-Preserve an explicit user goal. Without one, state the goal from the resolved ticket's What to build and spec; with neither, use `no stated goal`. Never infer intent from commit subjects, branch names or the diff; a `**Branch:**` field binds a ticket, the branch name alone never does. Preserve the actual goal sentence in the report.
+Preserve an explicit user goal. Without one, state the goal from the applicable requirements; with neither, use `no stated goal`. Never infer intent or ownership from commit subjects, branch names or the diff. Preserve the actual goal sentence and its authorization source in the report. Missing material requirements stop before launch, not with an invented acceptance criterion.
 
 ## EXISTING REPORT
 
@@ -65,7 +49,7 @@ Preserve open follow-ups with origin before overwriting. A request to use review
 
 ## LAUNCH THE AGENTS
 
-Before mutating the report for an agent-based sweep, read [agent launch](references/agent-launch.md) and complete its capability check for every required role. Use the selected native subagent facility and its complete reviewer packet for every launch. Before any launch or direct pass, read [findings](references/findings.md): its SEVERITY BAR is the bar for every reviewer, for LEAD CHECKS and for VERIFY, and its VERIFY A FINDING decides every verdict.
+Before mutating the report for an agent-based sweep, read [agent launch](references/agent-launch.md) and complete its capability check for every required role. Use the selected native subagent facility and its complete reviewer packet for every launch. Before any launch or direct pass, read [findings](references/findings.md): its SEVERITY BAR is the bar for every reviewer, for ORCHESTRATOR CHECKS and for VERIFY, and its VERIFY A FINDING decides every verdict.
 
 Before any agent launch or direct pass, write Scope, Requirements and `sweep: incomplete` to the report, retaining carried follow-ups. Use the review report FORMAT. Never leave the old complete report in place while a new sweep runs.
 
@@ -79,20 +63,20 @@ The fourth role, `review-verify`, runs under VERIFY after every finder has retur
 
 Wait for every launched agent and complete the before/after checks in agent launch before verification, another launch or further writes. A failed or incomplete check stops the sweep; preserve changes and report the limitation without resetting them.
 
-## LEAD CHECKS
+## ORCHESTRATOR CHECKS
 
-Check requirements, documentation and conventions yourself, against the same bar; the tickets and the diff are already in your context. Search before calling anything missing or unwired: a registration may live in a file the diff never opened, and a caller may be a route table or a string.
+Check requirements, documentation and conventions yourself, against the same bar. These are orchestrator checks, not a separate coordination stage. Search before calling anything missing or unwired: a registration may live in a file the diff never opened, and a caller may be a route table or a string.
 
-- Requirements: walk each ticket's What to build and every acceptance criterion, both `- [ ]` and `- [x]`, against the diff. Check wiring (registered, routed, configured), a stub or TODO at a load-bearing spot, and work no requirement asked for: unrelated changes, a new dependency, a changed public contract, a migration. On staged scope, a requirement the diff does not touch is not a finding by itself: earlier commits may hold it. Under `no stated goal`, check only wiring and completeness, and say so.
-- Documentation: README, a `docs/` site, diagrams and their captions and accessibility text, CHANGELOG, `--help` text, `CLAUDE.md` or `AGENTS.md`, a domain glossary and decision records. For a changed command or route, search the old and new names in affected documentation, including outside the diff; distinguish an obsolete description from a still-valid legacy or historical use. Search and read the selected snapshot for changed and unchanged documentation: the index for staged scope, the pinned tip for branch scope. Treat deleted index entries as absent; never read unstaged or untracked files as scoped documentation. Report what the diff made wrong and what it should have added: a new flag, endpoint, option, dependency, user-visible behavior or project convention left undocumented, a renamed or redefined glossary term, a contradicted accepted decision. A concept the glossary never covered is not a finding. Report a ticket item the diff contradicts.
-- Project specs: read them per [project specs](references/project-specs.md) for the changed paths. A changed line that contradicts a spec statement is a finding; quote the statement with its spec path. A missing spec, an uncovered module, behavior the diff adds that no spec mentions yet (that is `/dev-spec` work) and a contradiction with an `(unconfirmed)` statement are not findings. Nor is an agreed spec change: a contradiction with a statement that a requirement, as given or resolved, replaces by naming the new behavior, when the diff matches that behavior, such as an approved correction or decision that reopened the statement. List it under Follow-ups as `pending dev-spec` with the requirement ticket's path as origin and the quoted statement with its spec path, also when the verifier refuted a candidate on this ground. The exception covers only that statement: a ticket naming the spec path without the replacing behavior, another contradicted statement of the same spec, a diff that does not match the replacement and a code defect in the same lines stay findings.
+- Requirements: walk the approved behavior and every acceptance criterion, both `- [ ]` and `- [x]` when present, against the selected net work and its surrounding code. Check wiring (registered, routed, configured), a stub or TODO at a load-bearing spot, and work no requirement asked for: unrelated changes, a new dependency, a changed public contract, a migration. In a narrow review, an untouched requirement is not a finding by itself: other work may hold it. Under `no stated goal`, check only wiring and completeness, and say so.
+- Documentation: README, a `docs/` site, diagrams and their captions and accessibility text, CHANGELOG, `--help` text, `CLAUDE.md` or `AGENTS.md`, a domain glossary and decision records. For a changed command or route, search the old and new names in affected documentation, including outside the diff; distinguish an obsolete description from a still-valid legacy or historical use. Search and read changed and unchanged documentation through the selected snapshot, including selected unstaged and untracked files; never fall back to tip/index versions that omit them or include excluded working changes. Report what the diff made wrong and what it should have added: a new flag, endpoint, option, dependency, user-visible behavior or project convention left undocumented, a renamed or redefined glossary term, a contradicted accepted decision. A concept the glossary never covered is not a finding. Report a requirement the diff contradicts.
+- Project specs: read them per [project specs](references/project-specs.md) for the changed paths, applying its exact-name listings and reads to the selected snapshot rather than unrelated disk versions. Explicitly applicable private `.SPEC.md` context uses pinned disk bytes. A changed line that contradicts a spec statement is a finding; quote the statement with its spec path. A missing spec, an uncovered module, behavior the diff adds that no spec mentions yet (that is `/dev-spec` work) and a contradiction with an `(unconfirmed)` statement are not findings. Nor is an agreed spec change: a contradiction with a requirement that replaces the statement by naming the new behavior, when the diff matches that behavior, such as an approved correction or decision that reopened the statement. List it under Follow-ups as `pending dev-spec` with the requirement path or exact user instruction as origin and the quoted statement with its spec path, also when the verifier refuted a candidate on this ground. The exception covers only that statement: naming the spec path without the replacing behavior, another contradicted statement of the same spec, a diff that does not match the replacement and a code defect in the same lines stay findings.
 - Conventions: read the `CLAUDE.md`, `CLAUDE.local.md`, `AGENTS.md` and `AGENTS.override.md` files that govern the changed files: the repository root's and those in a directory that is an ancestor of a changed file, which apply only at or below it. Report a changed line that clearly breaks a rule they state. Quote the rule with its file path and the line that breaks it; no style preference and no "spirit of the document" inference. A rule the diff makes wrong is a documentation finding instead.
 
 Your proposals go through VERIFY like the agents'.
 
 ## VERIFY
 
-The finders and LEAD CHECKS propose; the verifier decides what is real. Merge duplicates under VERIFY A FINDING and move a candidate beyond the reviewed scope to Follow-ups. Give every remaining candidate an id and send all of them, your LEAD CHECKS included, to one `review-verify` launch with the packet from agent launch; never tell it which role raised a candidate. Wait for its result.
+The finders and ORCHESTRATOR CHECKS propose; the verifier decides what is real. Merge duplicates under VERIFY A FINDING and move a candidate beyond the reviewed scope to Follow-ups. Give every remaining candidate an id and send all of them, your own checks included, to one `review-verify` launch with the packet from agent launch; never tell it which role raised a candidate. Wait for its result.
 
 Apply every verdict as given; never refute, confirm or drop a candidate yourself.
 
@@ -109,11 +93,11 @@ Persist each finding's location, problem, verdict and evidence, including dismis
 
 ## ARTIFACT
 
-Write `.scratch/<feature-slug>/review.md` when one feature resolves from the argument or the matched tickets; a ticket under `.scratch/reviews/` resolves none. Never create a feature directory for a report. Several candidate features require a choice before writing. With none, use `.scratch/reviews/<branch-slug>/review.md`; derive a filesystem-safe slug from the branch (`detached-<tip>` when detached). Never write into a directory holding `map.md`; validate that the destination stays inside the repository, including symlinks.
+Write `.scratch/<feature-slug>/review.md` when one existing feature resolves unambiguously from the explicit task context; a ticket under `.scratch/reviews/` resolves none. Never create a feature directory for a report. Several candidate features require a choice before writing. With none, use `.scratch/reviews/<branch-slug>/review.md`; derive a filesystem-safe slug from the branch (`detached-<tip>` when detached). Never write into a directory holding `map.md`; validate that the destination stays inside the repository, including symlinks. If the default destination is itself reviewed work or owned by another writer, agree on a safe repository-local report path or stop.
 
-Overwrite one report with the latest run; retain open follow-ups with the run that raised them and `not re-verified`. Do not silently drop them on a scope change. Write the review report FORMAT with each finding's `ticket:` set to `proposed` and the finding numbers of its group from PROPOSE TICKETS, or to the path of the open ticket that already covers it.
+Overwrite one report with the latest run; retain open follow-ups with the run that raised them and `not re-verified`. Do not silently drop them on a scope change. Preserve prior ticket references only as historical context, never as a request to create, update or execute a ticket.
 
-After VERIFY, re-resolve repository identity, branch, scope, merge-base, HEAD, staged digest when applicable, goal and all requirement sources and pins. Compare with the facts captured before the sweep. Write findings either way, but mark `sweep: complete` only when every fact still matches and all reviewers, the verifier included, finished. If anything moved or the run was interrupted, retain `sweep: incomplete` and name what changed or remains unfinished. A hard kill leaves the incomplete report already on disk.
+After VERIFY, re-resolve the selected snapshot, baseline, checkpoint coverage, repository identity, branch, HEAD, index digest, goal and all requirement/context pins under review report CURRENCY. Write findings either way, but mark `sweep: complete` only when every fact still matches, the mandatory state comparisons passed and all required reviewers finished. If anything moved or the run was interrupted, retain `sweep: incomplete` and name what changed or remains unfinished. A hard kill leaves the incomplete report already on disk. After an unexpected state change, do not overwrite unfamiliar report edits; report the limitation without discarding any changes.
 
 ## SUMMARY
 
@@ -127,71 +111,27 @@ Write for a reader who has never seen this code: short sentences, everyday words
    - **If we skip it:** what happens to users or data.
 
    A plausible finding has `(plausible)` after its title and a fifth part, **What would confirm it:**.
-3. `Verdict: ship.` or `Verdict: fix 1 and 3 first.` A plausible finding counts toward the verdict like a confirmed one. An auth, payment, crypto or migration diff never gets `ship`: say it needs manual security review beyond this pass.
+3. `Verdict: ship.` or `Verdict: fix 1 and 3 first.` A plausible finding counts toward the verdict like a confirmed one. A narrow review qualifies the verdict with its boundary; it never approves the whole task. An incomplete sweep never gets `ship`. An auth, payment, crypto or migration diff never gets `ship`: say it needs manual security review beyond this pass.
 4. `Dismissed: N`, with the count of refuted candidates.
-5. `Not checked:` in one line, when something mattered and could not be checked, including unstaged changes.
+5. `Not checked:` in one line, when something mattered and could not be checked, plus explicit scope exclusions. Selected unstaged and untracked changes are reviewed, not automatically excluded here.
 6. The report path.
 
-With no findings: `What this change does:`, then `Looks good. Ship.` (or the security-review verdict), `Dismissed: N`, `Not checked:` when needed and the report path. Nothing is proposed.
+With no findings, use `Looks good. Ship.` only for a complete full-task sweep with no security-review limitation. Otherwise state the narrow boundary, security requirement or incomplete status. Include the dismissal count, relevant limitations and report path. Nothing is proposed when there are no kept findings.
 
-## PROPOSE TICKETS
+## SELECTED CORRECTIONS
 
-Before grouping, read the open tickets, any status but `resolved` and `wontfix`, in `.scratch/reviews/<branch-slug>/issues/` and, when the report resolved to a feature, in that feature's `issues/`. A finding whose fix an open ticket's What to build or criteria already require is covered: set its `ticket:` to that ticket's path and leave the ticket unchanged. List covered findings in the summary under `Already ticketed:`, one `- <number>: <ticket path>` line each; they join no group. When every finding is covered, skip `Recommended tickets:` and the question.
+When corrections are wanted, use the finding numbers from this report. Reuse an explicit existing selection; otherwise ask for numbers, `all` or `none`. Clarify unknown or ambiguous numbers and material fix choices. A refuted candidate or unverified follow-up is not a verified finding. Do not create tickets, selection files or report copies, or modify existing tickets.
 
-The user picks findings by their numbers; tickets have no labels of their own. End the summary with `Recommended tickets:`, one group per line, led by its finding numbers:
+Before handoff, recheck report CURRENCY and require a complete sweep. If it is stale, incomplete or has been replaced since the selection, stop and resolve the evidence/selection rather than reusing numbers from another sweep.
 
-```text
-- 1, 2, 5 (major): <title> - <reason for grouping>
-- 3, 4 (minor): <title> - choice for 4: <question>; recommended: <option>
-```
-
-A ticket is one change suitable for one `dev-exec` session. Commit checkpoints require explicit approval and follow the executor's rules. Every uncovered finding belongs to exactly one group; a group takes the severity of its worst finding. Group in this order:
-
-1. Each critical or major finding opens its own group. Join two of them only for a reason named in the line: one cause, one fix, edits in one place, or one end-to-end path that a single check proves.
-2. A minor finding joins the critical or major group whose fix touches the same command, module or file.
-3. The remaining minor findings form one group. Split it by area (command, module, test surface) only when it would not fit one session; never a group per minor finding.
-4. A finding whose fix needs the user's choice names that choice and your recommendation in its group's line.
-
-Expect about one group per critical or major finding plus one or two for the minor findings; this is a guide, not a cap.
-
-In a controlled run, return the proposed groups to lead for selection within the approved feature plan; a material choice still goes to the user. In standalone use, ask the user to answer with finding numbers, for example "1, 3", "1-6", "all", "7 separately", "1 and 3 together", "4: <option>" or "none", and stop until the answer arrives.
-
-## SELECTION HANDOFF
-
-With `--to-tickets`, after PROPOSE TICKETS collect the user selection and grouping choices using the same answer rules below. Unknown, covered or ambiguous numbers require clarification before writing. Save an exact report snapshot as `review-selection-source.md` beside the report and a separate `review-selection.md` with the report path, snapshot path and SHA256, selected finding IDs, exact grouping and reasons, choices and their approval source, and covered ticket paths. Include an explicit empty selection for `none`. Recheck the report currency and requirement pins before saving; if stale or incomplete, stop. Return the report and selection paths and suggest an explicit `to-tickets` invocation. Do not create or modify tickets or change report ticket links on this route. A controlled run returns selection evidence to lead.
-
-Without `--to-tickets`, follow CREATE TICKETS and NEXT as the retained legacy route.
-
-## CREATE TICKETS
-
-Create tickets only for the findings the answer selects:
-
-| Answer | Tickets |
-| --- | --- |
-| Numbers or ranges: "1, 3", "1-6" | The selected findings, split by their recommended groups; an unselected finding stays out of its group's ticket. |
-| "all" | Every recommended group. |
-| "7 separately" | Finding 7 gets its own ticket; the other selected findings keep their groups. |
-| "1 and 3 together" | One ticket for those findings, whatever their groups. |
-| "4: <option>", "with the recommendation" | The choice is settled. A selected finding whose choice the answer leaves open gets its own `needs-info` ticket; its group stays `ready-for-agent`. |
-| "none" | Nothing. |
-
-An answer naming an unknown or already covered finding, or one you cannot read unambiguously, gets one question back before any write.
-
-Read [ticket](references/ticket.md) and follow its TEMPLATE, NUMBERING and FIELDS, with these values:
-
-- Location: `issues/` of the feature the report resolved to, else `.scratch/reviews/<branch-slug>/issues/`; never a directory holding `map.md`.
-- `**What to build:**` the corrected behavior, then one numbered line per finding with its location and its Problem: the input or situation and the wrong result. A plausible finding's line ends with `plausible; confirm: <what would confirm it>`.
-- `**Blocked by:**` `None (can start immediately)` unless another open ticket in the same `issues/` must land first; then its number.
-- `**Branch:**` the current branch, the base branch included; drop the line only on a detached HEAD.
-- `**Status:**` `ready-for-agent`, with an answered choice written into `**What to build:**`; or, for the split-off ticket of an open choice, `needs-info` with that choice as a `[NEEDS CLARIFICATION: ...]` marker in the ticket body.
-- The first criterion, verbatim: `- [ ] Each finding reproduced before the change, with evidence under ## Comments; a finding that did not reproduce is named there and its criteria removed; if none reproduced, set **Status** to wontfix and stop.` Then one criterion per finding from its Fix and its observable result, plus a regression test when the project has a test suite.
-
-After writing, change only `ticket: proposed` entries in the report: the created path for a selected finding, `none` for the rest. A covered finding keeps its ticket path. Change nothing else in the report.
+Return the report path, its SHA256 at handoff, selected finding numbers, goal, scope/head/base/tip and snapshot pins, verdicts, evidence, remaining confirmation steps and settled/open choices in the response. Keep unselected findings in the report. `none` ends the review without a fix handoff. These are inputs to `dev-exec`, not a new artifact protocol or permission to start it.
 
 ## STOP CONDITIONS
 
-A finding beyond the reviewed scope goes to Follow-ups and gets no proposed ticket. Missing or ambiguous scope or requirements stop before launch; incomplete verification keeps the sweep incomplete.
+A finding beyond the reviewed scope goes to Follow-ups. Missing or ambiguous scope, ownership, baseline or material requirements stop before launch; incomplete verification or a failed state check keeps the sweep incomplete. Preserve unfamiliar changes and never reset, clean or overwrite them.
 
 ## NEXT
 
-On the ordinary ticket route, after the answer, give the created ticket paths and suggest `/dev-exec <ticket-path>` only for ready non-decision tickets with resolved, inspected prerequisite results and no material open questions. For blocked or `needs-info` tickets, report the blocker or question instead. When every finding was already covered, apply the same eligibility checks to covering tickets and preserve them unchanged. Do not start execution. Commit, push and MR/PR creation require the user's explicit request.
+Suggest `dev-exec` with the report and selected finding numbers directly; no ticket is required. Execution must obtain applicable fix/plan approval, inspect current prerequisites and reproduce or otherwise confirm each selected finding before changing code. A plausible finding still needs its named confirmation. If a finding does not reproduce, retain that result and evidence as unconfirmed, not silently fixed; do not implement its proposed fix. Confirmed corrections need focused verification and a regression test where practical. Open material choices or missing prerequisites remain blockers.
+
+Never start execution automatically. A selection, `ship` verdict or saved report authorizes neither implementation nor commit, push or MR/PR creation. An existing explicit instruction covering several operations may be reused only within its actual approved scope.

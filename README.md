@@ -1,117 +1,89 @@
 # nxs
 
-Development skills for coding agents, from investigation and decisions through execution, review, project specs and commits. Commands are independently invoked; an artifact or approval for one stage does not start the next. Removal from source does not establish a route or installation cutover. [Client scenarios](tests/client-scenarios.md) distinguish observed behavior from unverified routes.
+Seven independently invoked skills for coding agents. Discuss an uncertain idea with `rnd-grill`, diagnose a failure with `rnd-debug`, or bring a clear request directly to `dev-exec`. Review the intended changes, record material project contracts when needed, and commit only within explicit authorization. Setup is a separate support operation.
+
+## Skill catalog
+
+| Skill | Result |
+| --- | --- |
+| [rnd-grill](skills/rnd-grill/SKILL.md) | Investigate uncertainty, compare alternatives and agree on a solution; directly save useful approved results when requested. |
+| [rnd-debug](skills/rnd-debug/SKILL.md) | Reproduce a failure and save a confirmed cause or the exact missing evidence, without implementing a fix. |
+| [dev-exec](skills/dev-exec/SKILL.md) | Establish acceptance criteria, obtain approval for a concrete plan, implement and verify; decompose or save a handoff when useful. |
+| [dev-review](skills/dev-review/SKILL.md) | Independently review intended changes, verify findings and return selected corrections to execution without creating tickets. |
+| [dev-spec](skills/dev-spec/SKILL.md) | Optionally record material built-work contracts in project `SPEC.md` or private `.SPEC.md`. |
+| [dev-commit](skills/dev-commit/SKILL.md) | Make authorized atomic commits while preserving unrelated working and staged changes. |
+| [nxs-setup](skills/nxs-setup/SKILL.md) | Audit a scoped goal, project or global setup and apply its exact approved package, or report readiness without writes. |
+
+The six skills other than `dev-commit` require explicit selection or an instruction explicitly covering their work. `dev-commit` also accepts a direct commit request, not a discussion about commits. Use the selected client's skill invocation, such as `/dev-exec` or `@dev-exec` where supported. Source presence does not establish native registration or live compatibility; see [client scenarios](tests/client-scenarios.md).
+
+## Development flow
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/workflow-dark.svg">
-  <img alt="An idea, failure, existing changes or clear request can enter different commands. An approved feature spec, eligible confirmed cause and selected review findings can feed to-tickets. Ready to-tickets work can be handed to dev-exec." src="docs/images/workflow-light.svg">
+  <img alt="rnd-grill, rnd-debug or a clear request feed dev-exec, followed by dev-review, optional dev-spec and authorized dev-commit. Selected review corrections return to dev-exec. nxs-setup stands outside the chain." src="docs/images/workflow-light.svg">
 </picture>
 
-Blue names are commands; orange labels are records and grey labels are conditions or results. Dashed arrows show possible conditional handoffs, not automatic actions. The example is one route, not a required sequence: a clear request can also enter execution directly, and investigation can end with evidence or a decision. A saved artifact does not authorize the next operation by itself. An existing instruction or approval can authorize several operations within its scope; otherwise the applicable request or approval is needed.
+Arrows are possible handoffs, not automatic launches or new authorization. Dashed routes are conditional or return paths. Reuse an instruction already explicitly covering several operations only within its actual scope. Implementation can finish without a commit; authorized checkpoints may also occur during execution.
 
-Start with the result you need:
+- **Uncertain idea:** use `rnd-grill` for evidence and meaningful choices. Research, dependent-question mapping, opportunity surveys, selected-boundary design and explicitly scoped isolated experiments are techniques, not mandatory stages.
+- **Failure:** use `rnd-debug`. A confirmed eligible cause goes directly to `dev-exec`; uncertain causes stop with missing evidence, not a ready fix.
+- **Clear request:** use `dev-exec` directly. A small task needs no feature spec, ticket, task directory or journal. Execution still presents a concrete plan and waits for applicable approval before implementation.
+- **Existing changes:** use `dev-review`. Ordinary review covers the whole intended net task, including relevant committed checkpoints and remaining staged, unstaged and untracked changes. It requires no `git add`. Explicit narrower scope stays narrow; ambiguous ownership or missing coverage stops the affected review.
+- **Selected corrections:** pass the review report and finding numbers directly to `dev-exec`. Selection or a verdict alone does not authorize a fix. Execution obtains applicable plan/fix approval and reproduces or confirms each selected finding first; a nonreproduced finding stays documented, not silently fixed.
+- **Material built intent:** use `dev-spec` when a durable project contract needs recording. No durable change means no spec edit, only after intended-work coverage is established.
+- **Commit:** use `dev-commit` for authorized remaining changes or approved execution checkpoints. Existing `Do not commit` instructions remain binding.
 
-- "I have a broad goal and do not know which questions to answer first" - use `rnd-map`.
-- "This behavior fails and I need evidence of the cause" - use `rnd-debug`; an eligible confirmed cause can inform tickets.
-- "I have an approved feature spec and need executable work" - use `to-tickets`.
-- "Implement this clear request" - use `dev-exec` for a plan and execution in the current session.
-- "Review these changes" - use `dev-review`; its ordinary route can create selected tickets and suggest `dev-exec` for eligible work, while `--to-tickets` saves a selection for a separate `to-tickets` step.
-
-## Target catalog
-
-These 19 commands are in the source tree. Presence and shell checks do not prove registration or live behavior in a client. Invoke explicitly using `/` in supported clients or `@` in OpenCode; `dev-commit` also accepts a direct commit request. Read the linked contract for inputs, approvals and stops.
-
-### Investigation and decisions
-
-| Command | Purpose |
-| --- | --- |
-| [rnd-map](skills/rnd-map/SKILL.md) | Map an uncertain goal into linked decision questions and dependencies. |
-| [rnd-grill](skills/rnd-grill/SKILL.md) | Discuss an idea or plan through evidence-backed choices, ending in dialogue or a request to save. |
-| [rnd-research](skills/rnd-research/SKILL.md) | Investigate a question and save attributable findings and limits without making the user's decision. |
-| [rnd-prototype](skills/rnd-prototype/SKILL.md) | Test one hypothesis with a retained temporary prototype and an evidence-backed verdict. |
-| [rnd-debug](skills/rnd-debug/SKILL.md) | Investigate a failure and save a confirmed root cause or the missing evidence. |
-| [rnd-audit](skills/rnd-audit/SKILL.md) | Survey a project and rank evidence-backed architecture opportunities. |
-| [rnd-design](skills/rnd-design/SKILL.md) | Design an explicitly selected module or seam and save an agreed interface decision. |
-
-### Artifacts
-
-| Command | Purpose |
-| --- | --- |
-| [to-decision](skills/to-decision/SKILL.md) | Show and explicitly save approved conclusions or unfinished discussion. |
-| [to-spec](skills/to-spec/SKILL.md) | Turn a saved decision or clear request into a feature spec with questions and acceptance checks. |
-| [to-tickets](skills/to-tickets/SKILL.md) | Create or revise executable tickets from an approved feature spec, eligible confirmed cause or selected review findings. |
-| [to-questionnaire](skills/to-questionnaire/SKILL.md) | Prepare recipient-specific questions for missing facts or decisions without sending them. |
-| [to-handoff](skills/to-handoff/SKILL.md) | Save resumable context, separating accepted, open and unverified state. |
-
-### Development
-
-| Command | Purpose |
-| --- | --- |
-| [dev-exec](skills/dev-exec/SKILL.md) | Execute a ticket or clear request in the current session through an approved plan and checks. |
-| [dev-review](skills/dev-review/SKILL.md) | Review changes and verify findings; `--to-tickets` saves a selection for a separate ticket step. |
-| [dev-spec](skills/dev-spec/SKILL.md) | Record durable project specs from built work. |
-| [dev-commit](skills/dev-commit/SKILL.md) | Commit existing changes in atomic groups. |
-
-### Support and coordination
-
-| Command | Purpose |
-| --- | --- |
-| [nxs-lead](skills/nxs-lead/SKILL.md) | Coordinate entrusted work using bounded native subagents and independently checked handoffs. |
-| [nxs-setup](skills/nxs-setup/SKILL.md) | Audit a setup goal and apply an approved package, or report readiness. |
-| [nxs-retro](skills/nxs-retro/SKILL.md) | Review one session and save evidence-based improvement proposals. |
-
-## Using the stages
-
-A possible independent route is `rnd-grill` -> `to-decision` -> `to-spec` -> `to-tickets` -> `dev-exec`; continue only within the authorization already given or after obtaining any missing request or approval. A clear request can go directly to `dev-exec`, which presents a plan before implementation. `dev-exec` applies `dev-commit` in its own session for checked checkpoints within explicitly approved commit scope; existing ticket prohibitions remain binding. Review and recording built project intent are separate stages.
+## Discussion and diagnosis
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/grill-dark.svg">
-  <img alt="Discussion can end in dialogue; an approved decision can feed a feature spec and tickets through separately requested steps." src="docs/images/grill-light.svg">
+  <img alt="rnd-grill can finish in dialogue, directly save an approved useful record, or suggest dev-exec for sufficient agreed scope; saving and implementation have separate approval boundaries." src="docs/images/grill-light.svg">
 </picture>
 
-For a failure, `rnd-debug` records evidence and an eligible confirmed cause can be passed to `to-tickets`; uncertain causes do not produce ready work.
+Agreement can stay in dialogue. A requested save shows content and destination and reuses only matching approval. Choose the useful record, not one of every kind: a decision, feature description, evidence report or participant questionnaire. Glossary and ADR proposals require their own concrete approval; a questionnaire authorizes no sending. An experiment remains isolated and retained; success authorizes no production transfer, reuse or deletion.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/bug-dark.svg">
-  <img alt="Diagnosis records evidence and classifies a cause; an eligible confirmed cause can be passed to to-tickets, while a feature returns to discussion and uncertainty stops the handoff." src="docs/images/bug-light.svg">
+  <img alt="rnd-debug saves root-cause evidence. A confirmed right cause can feed dev-exec; silent and wrong require intent agreement, feature returns to rnd-grill, and unconfirmed causes need another probe." src="docs/images/bug-light.svg">
 </picture>
 
-`rnd-map` records linked decision questions. Its decision tickets are not implementation tickets; resolving a map does not authorize implementation. Research and prototypes can inform a decision, and a later feature spec and tickets require their own scope.
+Diagnosis records observed evidence separately from intended behavior. `right` means records establish intent and the code differs; `silent` needs agreement on intent, and `wrong` needs agreement on correcting the record. `feature` means changing a decided behavior and returns to discussion. Project-spec corrections belong to `dev-spec` after the fix, not diagnosis.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/wayfinder-dark.svg">
-  <img alt="rnd-map links decision questions by dependencies. Research or prototypes can supply evidence; resolving questions recomputes the frontier. Implementation requires separate scope." src="docs/images/wayfinder-light.svg">
-</picture>
+## Optional tickets and continuation
 
-Ticket status and executor evidence are distinct from coordinator acceptance and commit checkpoints. See [ticket rules](skills/to-tickets/references/ticket.md) and [execution](skills/dev-exec/SKILL.md).
+`dev-exec` owns [ticket rules](skills/dev-exec/references/ticket.md), the [template](skills/dev-exec/assets/ticket.md), optional decomposition and [handoff saving](skills/dev-exec/references/handoff.md). Large work can use independently checkable units and real prerequisites. Saving tickets is not approval to implement them. Existing ticket identities, numbering, branches, execution text, prohibitions and history stay intact.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/ticket-status-dark.svg">
-  <img alt="Tickets can need information, be ready for an agent, wait for a human, resolve or be closed as wontfix; the executor checks prerequisites and records evidence." src="docs/images/ticket-status-light.svg">
+  <img alt="Optional tickets move from needs-info to ready-for-agent, may wait in ready-for-human, and resolve only after criteria and required checks pass. Returning from a human step requires actual result verification; wontfix needs a user decision or an existing ticket exception." src="docs/images/ticket-status-light.svg">
 </picture>
 
-## Coordination
+Status alone proves no prerequisite result. The executor checks the selected working tree and environment, including after a human step. An install, migration or external action needs approval covering the concrete action and target plus native permissions; otherwise the affected work stops with expected evidence. Interrupted or uncertain effects are reconciled before retrying.
 
-`nxs-lead` delegates bounded work through the selected client's native subagent facility, waits for results and independently checks them. Ordinary mode relays substantive decisions; guarded auto requires explicit selection and approvals described in its [contract](skills/nxs-lead/SKILL.md). Native permission enforcement is client-dependent. Recorded Codex and OpenCode observations are limited cases; Claude Code, guarded auto and full coordinated workflows remain unverified.
+A saved handoff is optional and carries the goal, approved scope, decisions, open questions, relevant paths, verification, actual Git/checkpoint state and next authorized action. It promises no cross-client session recovery. Old task records remain context, not a live coordination protocol or fresh authorization.
 
-## Setup and installation
-
-`nxs-setup` supports a specific goal, project or global setup, and report-only readiness. It audits first, shows a coherent proposal and applies the approved package. It does not offer or install companion bundles; its [capability map](skills/nxs-setup/references/capabilities.md) describes source coverage, not registration. Setup and upgrade behavior are not live verified.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/setup-dark.svg">
-  <img alt="nxs-setup audits a goal, project or global setup, proposes a package and applies approved changes. Readiness requires project or global and only reports." src="docs/images/setup-light.svg">
-</picture>
-
-The Skills CLI can install from the published GitHub source, for example `npx skills@latest add -g Villhard/nxs`, with interactive skill and agent selection. After the desired changes are published, update specific globally installed skills by name, for example `npx skills@latest update -g nxs-lead`; list additional intended names explicitly. An update uses the recorded installation source, not the current checkout, and selecting by name is not a source filter. Even with a name filter, an interactive update may offer to remove other skills from the same source and ref; inspect the proposed removals and do not confirm unplanned deletions. Inspect installed paths and provenance first; do not assume a same-name skill can be replaced safely. The new catalog's clean and existing installation paths, source migration, collision handling, targeted update effects and native registration have not passed the live cutover gate. For an unpublished local candidate, retain the separate disposable preview in [CONTRIBUTING](CONTRIBUTING.md#local-development-and-release).
-
-## Artifacts
-
-Feature records typically live under `.scratch/<feature-slug>/`: decisions, research, feature specs, tickets and handoffs retain their own evidence and history. Existing paths take precedence over defaults. Project `SPEC.md` or private `.SPEC.md` records built intent; `dev-spec` is its only writer. Glossary and ADRs record domain terms and decisions.
+## Artifacts and ownership
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/artifacts-dark.svg">
-  <img alt="Feature records contain decisions, research, specs, tickets and handoffs; project specs record built intent and glossary and ADRs record domain decisions." src="docs/images/artifacts-light.svg">
+  <img alt="rnd-grill owns approved preparation and domain records, rnd-debug diagnosis, dev-exec optional tickets and handoffs, dev-review its report, and dev-spec built-work project specs. No universal artifact chain is required." src="docs/images/artifacts-light.svg">
 </picture>
+
+Reuse established paths. When durable local task records are needed, `.scratch/<feature-slug>/` is the default, not an entry requirement. A lowercase feature `spec.md` describes proposed behavior; project `SPEC.md` or private `.SPEC.md` records built intent and belongs exclusively to `dev-spec` in normal execution. [GLOSSARY.md](GLOSSARY.md) and ADRs record terms and decisions. Preserve existing artifacts and history rather than migrating them as a side effect of a source update.
+
+## Setup and installation
+
+`nxs-setup` is useful independently, not a required development stage. It audits a concrete goal, `project` or `global`, shows one coherent package and writes only the approved diff. Decline changes nothing; an already-current setup is a no-op. `project --readiness` and `global --readiness` only report relevant prerequisites. Native review workers are not a prerequisite for ordinary discussion or execution. The [capability map](skills/nxs-setup/references/capabilities.md) describes source coverage, not registration or a live compatibility result.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/setup-dark.svg">
+  <img alt="nxs-setup audits a goal, project or global target, shows an exact package and applies only approved changes. Readiness takes project or global and stops with a report; decline and current repeats write nothing." src="docs/images/setup-light.svg">
+</picture>
+
+Source edits do not update installed copies or personal settings. Setup neither installs the catalog nor offers companion bundles. After publication, the Skills CLI can install from the published source, for example `npx skills@latest add -g Villhard/nxs`, with interactive skill and agent selection. A scoped update can name a retained skill, for example `npx skills@latest update -g dev-exec`; list other intended names explicitly. Inspect installed paths, provenance and proposed changes first: a name filter is not a source filter, and an interactive update may offer to remove other entries from the same source/ref. Do not confirm unplanned deletions or same-name replacements. Clean installation, upgrade effects and native registration for the simplified contracts remain unverified. Use the separate disposable preview in [CONTRIBUTING](CONTRIBUTING.md#local-development-and-release) for an unpublished candidate.
+
+## History and verification
+
+[ADR 0009](docs/adr/0009-seven-skill-direct-flow.md) records the seven-skill decision and supersedes the former coordination and mandatory journaling design. There is no lead/auto or retrospective stage. Independent review's finder/verifier workers remain. Historical ADRs, releases and [earlier client observations](docs/history/client-scenarios-before-0.77.md) are preserved; none proves the changed contracts. The simplified flow and both diagram themes require separate verification.
 
 [CONTRIBUTING.md](CONTRIBUTING.md) documents source conventions and checks. [CHANGELOG.md](CHANGELOG.md) records history.

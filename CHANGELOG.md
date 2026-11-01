@@ -1,10 +1,12 @@
 # Changelog
 
-All notable changes to the `dev` skills are documented in this file. Releases before 0.17.0 shipped under the name `nxs`; releases up to 0.43.0 shipped as the `dev` plugin.
+All notable changes to the nxs skills are documented in this file. Releases before 0.17.0 shipped under the name `nxs`; releases up to 0.43.0 shipped as the `dev` plugin.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+The entries in this section preserve earlier pending work and design history. The dated seven-skill contract below supersedes their obsolete routes; this file does not establish publication or installation cutover.
 
 ### Added
 
@@ -15,6 +17,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- `dev-commit` (2026-11-01) removes the mandatory journal context and reconciles uncertain commits before proceeding.
+- `rnd-debug` (2026-11-01) hands eligible confirmed causes directly to `dev-exec`.
+- `dev-exec` execution context (2026-11-01) allows directly approved environment actions and makes task directories optional.
+- `dev-spec` (2026-11-01) removes mandatory coordination context and requires intended-work coverage before writing.
 - `dev-review` (2026-11-01) suggests `dev-exec` for eligible created or covered tickets instead of `/plan`, without starting execution.
 - `to-tickets`, `dev-review`, `dev-exec` and `nxs-setup` (2026-11-01) use `dev-exec` in new ticket templates and preserve existing ticket execution text and prohibitions.
 - `dev-review` (2026-11-01) permits prompt-only reviewer restrictions when host enforcement is unavailable, with mandatory repository state comparisons and explicit protection limits; client scenarios cover the unverified route.
@@ -38,6 +44,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Shell skill checker validates frontmatter scalars and release dates and rejects empty release entries.
 - README distinguishes same-name nxs and companion skills before choosing a route.
 - Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
+
+## [0.77.0] - 2026-11-01
+
+### Added
+
+- ADR 0009 (2026-11-01) records the approved seven-skill direct flow and explicitly supersedes earlier coordination/journal decisions without changing historical ADRs.
+- Client scenario archive (2026-11-01) preserves the complete earlier protocol and version-specific observations separately from current expectations.
+
+### Changed
+
+- `rnd-grill` (2026-11-01) owns proportionate research, dependent-question discussion, surveys, selected-boundary design, isolated experiments and direct approved preparation/domain saves without mandatory artifact stages.
+- `rnd-debug` (2026-11-01) hands eligible confirmed evidence directly to `dev-exec`, retaining intended-behavior agreement, uncertain-cause stops and diagnosis/ticket preservation.
+- `dev-exec` (2026-11-01) owns optional decomposition, ticket rules/template and handoff saving, direct environment-action approval and selected-finding corrections while preserving concrete plan approval, checks and commit boundaries.
+- `dev-review` and reviewer roles (2026-11-01) pin the complete intended net task including committed checkpoints and staged, unstaged and untracked work; preserve independent finder/verifier protection and hand selected corrections directly to execution.
+- `dev-spec` (2026-11-01) records optional material built-work contracts only after intended-work coverage, retaining private/visible mode and foreign-content protection.
+- `dev-commit` (2026-11-01) retains explicit scope authorization, atomic staging and foreign-index safety without mandatory coordination context or uncertain-effect replay.
+- `nxs-setup` (2026-11-01) uses the seven-skill ownership/capability model and relevant report-only readiness without lead prerequisites or mandatory journal injection.
+- README, CONTRIBUTING, SPEC and GLOSSARY (2026-11-01) describe seven independent skills, direct authorized handoffs, actual resource owners, optional artifacts and source-versus-installation boundaries.
+- Workflow, discussion, diagnosis, artifact, setup and ticket-state SVG pairs (2026-11-01) show the reduced flow in light/dark Mono themes with aligned captions and accessibility descriptions; render verification is pending.
+- Client scenarios (2026-11-01) focus on direct entry, optional saving/tickets, full-task review/spec coverage, selected fixes, checkpoint preservation and isolated setup; simplified-contract verification is NOT RUN.
+
+### Fixed
+
+- `dev-review` role `review-simplification` (2026-11-01) explicitly prohibits report and all file writes and repository/Git mutation using accepted common prohibition wording without changing the checker.
+- `CONTRIBUTING.md` (2026-11-01) limits the obsolete-route scan claim to skill sources under `skills/`, not root guides.
+
+### Removed
+
+- `rnd-map`, `rnd-research`, `rnd-prototype`, `rnd-audit`, `rnd-design`, `to-decision`, `to-spec` and `to-questionnaire` command surfaces (2026-11-01) consolidate useful preparation into `rnd-grill` without aliases or a hidden mandatory subflow.
+- `to-tickets` and `to-handoff` command surfaces (2026-11-01) consolidate optional decomposition and continuation into `dev-exec`.
+- `nxs-lead`, `nxs-retro`, lead/auto coordination, mandatory journals/controlled-run envelopes and the review ticket-export route (2026-11-01) leave active contracts; existing user records and historical releases remain unchanged.
+- Orphan bundle/map SVG pairs (2026-11-01) are removed after their only map embed is replaced; unrelated artwork and historical task records are retained.
 
 ## [0.76.0] - 2026-11-01
 

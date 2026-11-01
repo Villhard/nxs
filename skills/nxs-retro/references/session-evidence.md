@@ -1,3 +1,0 @@
-# SESSION EVIDENCE
-
-The current conversation and artifacts visible to the host are evidence only for the portion actually accessible. An explicitly selected session needs a supported source that identifies that session; a path, timestamp or listing alone does not prove transcript completeness or recent activity. Name the selected source, inspected coverage and missing portions. When prior retrospectives are supplied or present in already relevant task artifacts, consult them without assuming that all prior results have been discovered. Do not create an index, scan time periods or inspect other session transcripts. Protect private configuration, secrets and raw conversations from unnecessary reproduction or disclosure.

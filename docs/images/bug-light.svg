@@ -1,45 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" role="img" aria-labelledby="nxs-bug-light-title nxs-bug-light-desc">
-<title id="nxs-bug-light-title">Diagnosis and possible next steps</title>
-<desc id="nxs-bug-light-desc">A confirmed cause is classified as right, silent, wrong or feature. Silent and wrong require agreement before ticket eligibility; feature returns to discussion. Unconfirmed causes need evidence.</desc>
-<defs><marker id="nxs-bug-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
-<rect width="960" height="500" fill="#eeeeee"/>
-<text x="32" y="39" fill="#262626" font-family="system-ui,sans-serif" font-size="22" font-weight="650">Diagnosis and possible next steps</text>
-<text x="32" y="63" fill="#626262" font-family="system-ui,sans-serif" font-size="12">Diagnosis saves evidence; a later ticket step is separately authorized.</text>
-<path d="M222 210 H245 V133 H272" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
-<path d="M222 255 H272" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
-<path d="M482 229 H510 V141 H540" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
-<path d="M482 252 H540" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
-<path d="M482 275 H510 V351 H540" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
-<path d="M725 141 H748 V180 H770" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
-<path d="M725 246 H748 V220 H770" fill="none" stroke="#626262" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#nxs-bug-light-arrow)"/>
-<rect x="32" y="190" width="190" height="92" rx="6" fill="#e4e4e4" stroke="#0061d2" stroke-width="1.2"/>
-<text x="46" y="209" fill="#0061d2" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
-<text x="46" y="232" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/rnd-debug</text>
-<text x="46" y="251" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Reproduce and probe</text>
-<text x="46" y="267" fill="#262626" font-family="system-ui,sans-serif" font-size="11">save root-cause.md</text>
-<rect x="272" y="92" width="210" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
-<text x="286" y="111" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
-<text x="286" y="134" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Unconfirmed</text>
-<text x="286" y="153" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Missing evidence and next probe</text>
-<rect x="272" y="210" width="210" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
-<text x="286" y="229" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
-<text x="286" y="252" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">Confirmed cause</text>
-<text x="286" y="271" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Classify against project intent</text>
-<rect x="540" y="100" width="185" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
-<text x="554" y="119" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
-<text x="554" y="142" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">right</text>
-<text x="554" y="161" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Eligible for tickets</text>
-<rect x="540" y="205" width="185" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
-<text x="554" y="224" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
-<text x="554" y="247" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">silent / wrong</text>
-<text x="554" y="266" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Agree intent or correction first</text>
-<rect x="540" y="310" width="185" height="82" rx="6" fill="#e4e4e4" stroke="#626262" stroke-width="1.2"/>
-<text x="554" y="329" fill="#626262" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">OUTCOME</text>
-<text x="554" y="352" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">feature</text>
-<text x="554" y="371" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Decision change: /rnd-grill</text>
-<rect x="770" y="155" width="158" height="90" rx="6" fill="#e4e4e4" stroke="#0061d2" stroke-width="1.2"/>
-<text x="784" y="174" fill="#0061d2" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="1">COMMAND</text>
-<text x="784" y="197" fill="#262626" font-family="system-ui,sans-serif" font-size="15" font-weight="650">/to-tickets</text>
-<text x="784" y="216" fill="#262626" font-family="system-ui,sans-serif" font-size="11">Eligible cause only</text>
-<text x="784" y="232" fill="#262626" font-family="system-ui,sans-serif" font-size="11">No fix is executed</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="584" viewBox="0 0 960 584" role="img" aria-labelledby="bug-light-title bug-light-desc">
+<title id="bug-light-title">Diagnosis feeds execution directly</title>
+<desc id="bug-light-desc">rnd-debug saves evidence; a confirmed right cause or agreed silent or wrong cause may feed dev-exec directly, feature returns to rnd-grill and unconfirmed causes stop with missing evidence.</desc>
+<defs><marker id="bug-light-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#626262"/></marker></defs>
+<style>text{font-family:'Geist',system-ui,sans-serif;fill:#262626}.title{font-family:'Instrument Serif',Georgia,serif;font-size:28px}.name{font-size:16px;font-weight:600}.cmd{font-family:'Geist Mono',ui-monospace,monospace}.sub{font-size:13px;fill:#626262}.node{fill:#eeeeee;stroke:#626262;stroke-width:1.2}.optional{stroke-dasharray:5 4}.edge{fill:none;stroke:#626262;stroke-width:1.5;marker-end:url(#bug-light-arrow)}</style>
+<rect width="960" height="584" fill="#eeeeee"/>
+<text class="title" x="40" y="48">Confirm the cause before choosing a fix</text>
+<text class="sub" x="40" y="76">Diagnosis records evidence and intended behavior; it creates no patch or ticket.</text>
+<path class="edge" d="M140 256 V192"/>
+<path class="edge" d="M240 304 H336"/>
+<path class="edge" d="M544 304 H624"/>
+<path class="edge optional" d="M496 256 V168 Q496 160 504 160 H624"/>
+<path class="edge optional" d="M772 352 V416"/>
+<rect class="node" x="40" y="112" width="240" height="80" rx="20"/>
+<text class="name" x="60" y="144">Unconfirmed</text><text class="sub" x="60" y="168">Missing evidence; next probe.</text>
+<rect class="node" x="40" y="256" width="200" height="96" rx="6"/>
+<text class="name cmd" x="60" y="288">rnd-debug</text><text class="sub" x="60" y="312">Reproduce and probe.</text><text class="sub cmd" x="60" y="332">Save root-cause.md.</text>
+<rect class="node" x="336" y="256" width="208" height="80" rx="6"/>
+<text class="name" x="356" y="288">Confirmed cause</text><text class="sub" x="356" y="312">Classify against intent.</text>
+<rect class="node" x="624" y="112" width="296" height="80" rx="6"/>
+<text class="name cmd" x="644" y="144">feature: rnd-grill</text><text class="sub" x="644" y="168">Decided behavior: discuss the change.</text>
+<rect class="node" x="624" y="256" width="296" height="96" rx="6"/>
+<text class="name cmd" x="644" y="288">right / silent / wrong</text><text class="sub" x="644" y="312">right: code differs from recorded intent.</text><text class="sub" x="644" y="332">silent / wrong: agree intent first.</text>
+<rect class="node optional" x="624" y="416" width="296" height="80" rx="6"/>
+<text class="name cmd" x="644" y="448">dev-exec</text><text class="sub" x="644" y="472">Eligible evidence, then plan approval.</text>
+<text class="name" x="40" y="424">No ready fix from uncertainty</text><text class="sub" x="40" y="452">Cause confirmation is not implementation approval</text><text class="sub" x="40" y="476">or proof that prerequisites are satisfied.</text>
+<path d="M40 520 H920" stroke="#d7d7d7"/>
+<text class="sub" x="40" y="548">Dashed: conditional handoff, never an automatic launch. Preserve existing diagnoses, tickets and history.</text>
+<text class="sub" x="40" y="572">Only dev-spec corrects project specs after a material built-work change.</text>
 </svg>

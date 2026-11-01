@@ -9,7 +9,7 @@ How the engineering skills consume a repository's domain documentation while exp
 - `docs/adr/`: read the ADRs that touch the area you are about to work in. In a multi-context repository, also check `src/<context>/docs/adr/` for context-scoped decisions.
 - `SPEC.md` and `.SPEC.md` project specs on the path of the files you touch, found by exact name in a directory listing.
 
-When these files are absent, proceed silently: do not flag their absence or suggest creating them upfront. `/to-decision` creates the glossary and ADRs when terms or decisions get resolved.
+When these files are absent, proceed silently: do not flag their absence or suggest creating them upfront. `rnd-grill` can propose and directly save separately approved glossary entries and worthwhile ADRs. Agreement alone authorizes no save; project specs remain `dev-spec`-owned.
 
 ## File structure
 
@@ -45,7 +45,7 @@ Treat a repository as single-context unless a root `GLOSSARY-MAP.md` says otherw
 
 When your output names a domain concept (an issue title, a refactor proposal, a hypothesis, a test name), use the term `GLOSSARY.md` defines, not a synonym it avoids.
 
-A concept missing from the glossary is a signal: either the language is invented (reconsider it) or there is a real gap (note it for `/to-decision`).
+A concept missing from the glossary is a signal: either the language is invented (reconsider it) or there is a real gap (note it for a concrete domain proposal in `rnd-grill`).
 
 ## Flag ADR conflicts
 

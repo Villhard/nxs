@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # /nxs-setup
 
-Give the user's agents and a repository the settings the other dev skills rely on: an executor reads project specs on its path, tickets name a `**Branch:**` from the project's branch rule, a ticket's `Done when` runs "the full test suite and linter", and feature records under `.scratch/` stay out of Git. Audit, show one diff, write only what the user approves, then stop.
+Audit a concrete setup goal, project instructions or shared global configuration. Keep useful project-spec reading, branch conventions, actual check commands and private local artifacts aligned with the requested scope. Tickets and saved feature records are optional, not prerequisites for development. Show one exact diff package, write only what the user approves, then stop. Setup is a separate support operation, not a required development stage.
 
 Accepted input: `project`, `global` or a concrete goal; `project --readiness` and `global --readiness` run a report-only audit.
 
@@ -19,7 +19,7 @@ Handle `project --readiness` and `global --readiness` before normal setup: read 
 
 ## CONTRACT
 
-Both modes follow these rules. Each mode's STANCE names the files it writes, its owned sections and its questions; its AUDIT names the files whose headings it counts and when it has nothing to propose.
+Every setup scope follows these rules. Each mode's STANCE names the files it writes, its owned sections and its questions; its AUDIT names the files whose headings it counts and when it has nothing to propose.
 
 - Approval: write nothing before the user approves the shown diff, and write exactly that diff, or a diff changed as the user asked and shown again. On decline, write nothing and report that every file is unchanged.
 - Owned section: it runs from its heading line to the line before the next `#` or `##` heading, or to the end of the file. More than one heading of an owned section across the audited files stops the run: name the files and line numbers; the user merges them by hand.
@@ -28,6 +28,8 @@ Both modes follow these rules. Each mode's STANCE names the files it writes, its
 - An audit with nothing to propose shows no diff: report "already set up" and stop.
 - After writing, run the mode's CHECK and fix what fails before reporting.
 - Report a missing item; never invent a command, rule or skill name to fill it.
+- Reconcile source and target changes before applying the package. A stale diff cannot overwrite concurrent edits; show and obtain approval for uncovered revisions. Preserve unrelated bytes, symlinks and settings, and keep secrets and private configuration out of shared files.
+- Do not install, update or remove skills, add client hooks, migrate user task records or rewrite personal configuration merely because source contracts changed. Report relevant installation provenance separately; source presence and wiring do not prove native registration or workflow compatibility.
 
 ## MODE
 

@@ -4,23 +4,23 @@ Read this reference before reading feature input or writing a feature artifact. 
 
 ## LOCATION
 
-One feature is one local directory under `.scratch/`. `<feature-slug>` is two to four lowercase english words from the request or report, hyphenated; a tracker key names the directory instead - `.scratch/<KEY>-<slug>/` - so the feature stays navigable by the key. Write into the directory the input names when it has one.
+Reuse an explicit or established feature directory before choosing a new one. For new diagnostic artifacts, use `.scratch/<feature-slug>/`, with two to four lowercase English words from the request or report, hyphenated; a tracker key prefixes the slug - `.scratch/<KEY>-<slug>/`. A source under a feature's `research/` belongs to that feature, not a new nested directory. Ask when several tasks, destinations or owners fit; a branch alone does not establish task identity.
 
-Never write into a `.scratch/<x>/` that holds a `map.md`: that directory holds another tool's decision work. Pick another slug and say why in one line.
+Inspect the destination before writing. A `map.md` or typed decision record is existing context, not permission to alter it and not a reason to force a separate workflow. Save diagnosis in the selected feature only when ownership and scope are clear. Preserve map/decision files, identities, answers and history; do not claim, renumber, convert or reset decision tickets. Ask or choose a distinct destination if another worker's ownership conflicts.
 
 ## LOCAL STORAGE
 
-Always save Markdown under `.scratch/`. Do not look up repository/global tracker preferences or ask for a storage backend or separate local-storage consent. An unrelated tracker preference does not redirect this workflow. Content approval and the command's own gates still apply. Do not change settings, run setup or publish/synchronize remote issues.
+Save new diagnostic Markdown under `.scratch/` by default; reuse an explicitly supplied existing diagnostic artifact in place. Create only the diagnosis and useful probe evidence, not prerequisite feature specs, tickets or journals. Do not look up repository/global tracker preferences or ask for a storage backend or separate local-storage consent. An unrelated tracker preference does not redirect this workflow. The skill's own approval and preservation gates still apply. Do not change settings, run setup or publish/synchronize remote issues. Keep secrets, private configuration and raw session transcripts out of saved evidence.
 
 ## TRACKER INPUT
 
 A tracker key or URL is read before anything else through an available read interface; otherwise ask the user to paste the ticket. Never infer its content from the key.
 
-For remote input, establish the source identity, applicable parent decisions/comments (or that no parent applies) and blocker state through an available read interface or supplied content. Ask for missing facts; a key, a ready label or an omitted blocker field is not evidence of no blockers. A known open remote blocker needs a verified mapping to a local ticket in the target feature; retain that local dependency and use the local resolution rules. Never interpret a remote issue number as a local ticket number or resolve a local ticket from a remote label. Unknown or unmapped blockers prevent a ready handoff. Verified closed remote blockers may be recorded as satisfied context.
+For remote input, establish the source identity, applicable parent decisions/comments (or that no parent applies) and relevant blocker state through an available read interface or supplied content. Ask for missing facts; a key, a ready label or an omitted blocker field is not evidence of no blockers. Preserve known prerequisites and their required results; if local tickets already represent them, retain their identities and verified mapping. Do not manufacture a local ticket to diagnose the failure. Never interpret a remote issue number as a local ticket number or resolve a local ticket from a remote label. Unknown or unsatisfied prerequisites prevent claiming affected work ready; verify the actual needed result rather than relying on status alone. Independent safe diagnosis can continue within its authorization. Record verified closed blockers with their supporting evidence.
 
-## EXTERNAL SPEC
+## SOURCE PRESERVATION
 
-Keep a source spec unchanged. Reuse an existing local feature `spec.md` in place. For a source outside the target feature, include preserving its applicable content - decisions, exclusions, testing requirements and answers - in the proposed local `spec.md` before approval to write. Copy a compatible spec unchanged; adapt another layout to the headings of the [spec template](../assets/spec.md), keeping Problem Statement and Solution and omitting only empty optional sections. Inspect the target first: reuse an identical existing spec, but a different existing spec requires a concrete revision decision, never an overwrite. Apply LOCATION before any copy.
+Read an existing feature `spec.md`, decision or external source as evidence without copying or rewriting it. Carry applicable intent, conditions, answers, exclusions, testing requirements and source links into the diagnosis where relevant. Saving `root-cause.md` requires no intermediate feature spec. A separately requested feature-description or domain-record save belongs to `rnd-grill`; project specs remain `dev-spec`-owned.
 
 Check unresolved questions in the source as well as local documents. Approval of a spec does not clear an open question, and only new contradictory evidence reopens a settled decision.
 
