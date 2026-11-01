@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - `nxs-retro` presents each evidence-backed problem with a concrete solution in the saved report and final response.
+- `nxs-lead` waits for required worker results, reports remaining worktrees after branch work and guards cleanup; README and client scenarios document scoped Skills CLI updates and verification limits.
 
 ## [0.75.0] - 2026-11-01
 
