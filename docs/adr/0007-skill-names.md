@@ -1,9 +1,9 @@
-# Skill names stay short words the user already understands
+# Имена скиллов - короткие понятные слова
 
-A skill name is a command the user types, so it is chosen for recognition at a glance rather than for a naming scheme. The rule is `dev-` plus one short lowercase word: `/dev-review`, `/dev-commit`. A verb is welcome and not required. `dev-rnd` and `dev-spec` keep their names because the user reads them faster than a rewritten action name, and renaming all seven currently costs 686 references in 84 files without changing what any skill does.
+Имя вводит пользователь, поэтому важнее узнаваемость, не схема. Правило: `dev-` и короткое lowercase слово (`/dev-review`, `/dev-commit`), глагол необязателен. `dev-rnd`/`dev-spec` остаются: пользователь быстрее их читает, переименование всех семи стоит 686 ссылок в 84 файлах без изменения работы.
 
-The `dev-` prefix is the namespace. No installed companion skill uses it, so a name stays clear of a skill from mattpocock/skills or anthropics/skills and of a client built-in command such as `/review`. The word after it carries the work. A bare-word set reads like a team's task list (`spec`, `bug`, `cr`, `commit`) but gives up that separation, and in the case of `spec` it moves a word that already means durable project specs onto feature specs.
+`dev-` - namespace, которого нет у установленных companions; он отличает от mattpocock/skills, anthropics/skills и client `/review`. Слово после - работа. Голые `spec`, `bug`, `cr`, `commit` похожи на список дел команды, но теряют разделение, а `spec` переносит термин постоянной project spec на feature spec.
 
-Rejected alternatives: `to-<artifact>` names in the Pocock style (`to-spec`, `to-tickets`) state the output well but collide with the installed mattpocock copies and read poorly for process skills (`to-delivery`, `to-setup`); verb-object names (`shape-feature`, `commit-changes`) are unambiguous but longer than anything the user says.
+Отклонено: `to-<artifact>` в стиле Pocock (`to-spec`, `to-tickets`) хорошо называет результат, но конфликтует с установленными копиями и плохо подходит процессам (`to-delivery`, `to-setup`); verb-object (`shape-feature`, `commit-changes`) ясны, но длиннее речи пользователя.
 
-Existing names are precedents rather than exceptions to fix later. Propose a rename only when a name hides what the skill does, state its cost and let the user decide. New skills follow the rule from the start: the word is chosen with the user, checked against the shared agents directory and the client's built-in commands, and kept for the artifact the skill reads or writes.
+Текущие имена - прецеденты, не отложенные ошибки. Переименование предлагай лишь при скрытом назначении, с ценой и решением пользователя. Новое имя выбирай с пользователем по правилу, проверь shared agents/client commands и сохраняй для читаемого/записываемого артефакта.

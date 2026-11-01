@@ -1,1188 +1,1189 @@
-# Changelog
+# История изменений
 
-All notable changes to the nxs skills are documented in this file. Releases before 0.17.0 shipped under the name `nxs`; releases up to 0.43.0 shipped as the `dev` plugin.
+Значимые изменения nxs. До `0.17.0` продукт назывался `nxs`, до `0.43.0` включительно поставлялся как plugin `dev`.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+Формат - [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), версии - [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-The entries in this section preserve earlier pending work and design history. The dated seven-skill contract below supersedes their obsolete routes; this file does not establish publication or installation cutover.
+Прежние незавершенные работы и история дизайна. Датированный контракт семи скиллов ниже заменяет устаревшие маршруты; журнал не доказывает публикацию/cutover.
 
-### Added
+### Добавлено
 
-- Lead design records (2026-10-30) define coordinator, plan and decision-log terms, autonomy and reapproval boundaries, model policy, approved environment steps, optional companions, focused R&D, parallel worktree integration, shared task journaling and Codex-first verification.
-- Lead reliability design (2026-10-30) prioritizes a sequential full cycle and recovery, bounded structured worker outcomes and deterministic helpers, and states the limits of journaling manually invoked companion skills.
-- Companion integration decision (2026-10-30) distinguishes manual dialogue from verified lead execution contracts and records selective adoption into nxs as a future investigation.
-- `CONTRIBUTING.md` states the skill name rule - `dev-` plus one short word the user recognizes, in a namespace that stays clear of companion skills and client commands - and [ADR 0007](docs/adr/0007-skill-names.md) records why the existing names stay.
+- Записи дизайна lead (2026-10-30): координатор, plan/decision-log, autonomy/reapproval, модели, одобренные environment steps, companions, узкое R&D, parallel worktrees, общий журнал и Codex-first проверка.
+- Дизайн надежности lead (2026-10-30): сначала последовательный цикл/восстановление, ограниченные структурированные outcomes/helpers; названы пределы журнала ручных companions.
+- Решение интеграции companions (2026-10-30) отличает ручной диалог от проверенного lead execution и оставляет выборочный перенос в nxs будущему исследованию.
+- `CONTRIBUTING.md` задает правило `dev-` и короткого узнаваемого слова без конфликтов companions/client commands; [ADR 0007](docs/adr/0007-skill-names.md) объясняет сохраненные имена.
 
-### Changed
+### Изменено
 
-- `dev-commit` (2026-11-01) removes the mandatory journal context and reconciles uncertain commits before proceeding.
-- `rnd-debug` (2026-11-01) hands eligible confirmed causes directly to `dev-exec`.
-- `dev-exec` execution context (2026-11-01) allows directly approved environment actions and makes task directories optional.
-- `dev-spec` (2026-11-01) removes mandatory coordination context and requires intended-work coverage before writing.
-- `dev-review` (2026-11-01) suggests `dev-exec` for eligible created or covered tickets instead of `/plan`, without starting execution.
-- `to-tickets`, `dev-review`, `dev-exec` and `nxs-setup` (2026-11-01) use `dev-exec` in new ticket templates and preserve existing ticket execution text and prohibitions.
-- `dev-review` (2026-11-01) permits prompt-only reviewer restrictions when host enforcement is unavailable, with mandatory repository state comparisons and explicit protection limits; client scenarios cover the unverified route.
-- `dev-exec` (2026-11-01) applies authorized, checked `dev-commit` checkpoints in its own session; work without selected commits and existing ticket prohibitions continues without checkpoints.
-- `nxs-lead` and bundled controlled-run references (2026-11-01) delegate executor checkpoints and retain independent acceptance and review after the ticket.
-- `to-tickets`, `dev-review`, `dev-exec` and `nxs-setup` ticket templates (2026-11-01) distinguish approved executor checkpoints from retained no-commit tickets and `/plan`.
-- `nxs-lead` (2026-11-01) selected research from material uncertainty and checkpointed accepted logical blocks through authorized atomic commits before checkpoint ownership moved to `dev-exec`.
-- README and diagrams (2026-11-01) map skill entry points, conditional handoffs, task records and setup routes with current authorization boundaries.
-- README catalog and workflow diagrams (2026-11-01) group skills by purpose and show conditional paths between them.
-- README, CONTRIBUTING, GLOSSARY, project spec, client scenarios and diagrams describe the additive catalog, retained legacy routes and unverified cutover.
-- README "Run a ticket" says what to do when the executor stops on a missing blocker result.
+- `dev-commit` (2026-11-01) убирает обязательный journal context и сверяет сомнительные коммиты перед продолжением.
+- `rnd-debug` (2026-11-01) передает подходящие подтвержденные причины прямо `dev-exec`.
+- Execution context `dev-exec` (2026-11-01) допускает прямо одобренные environment actions и необязательные каталоги задачи.
+- `dev-spec` (2026-11-01) убирает обязательную координацию, требует покрытия работы до записи.
+- `dev-review` (2026-11-01) предлагает `dev-exec` для подходящих новых/покрытых tickets вместо `/plan`, не запускает исполнение.
+- `to-tickets`, `dev-review`, `dev-exec`, `nxs-setup` (2026-11-01) используют `dev-exec` в новых шаблонах, сохраняя прежнее исполнение/запреты.
+- `dev-review` (2026-11-01) допускает prompt-only при отсутствии host enforcement, с обязательной сверкой repo и честными пределами; сценарии покрывают непроверенный маршрут.
+- `dev-exec` (2026-11-01) выполняет разрешенные проверенные checkpoint через `dev-commit` в своей сессии; без выбранных коммитов/при запрете продолжает без них.
+- `nxs-lead` и controlled-run references (2026-11-01) делегируют checkpoint исполнителю, сохраняют независимую приемку/review после ticket.
+- Ticket templates `to-tickets`, `dev-review`, `dev-exec`, `nxs-setup` (2026-11-01) различают approved checkpoints, старые no-commit tickets и `/plan`.
+- `nxs-lead` (2026-11-01) выбирал исследование при существенной неопределенности и коммитил принятые блоки до переноса checkpoint в `dev-exec`.
+- README/схемы (2026-11-01) показывают входы, условные передачи, записи и setup с текущими разрешениями.
+- Каталог README/схемы (2026-11-01) группируют скиллы по назначению/условным переходам.
+- README, CONTRIBUTING, GLOSSARY, project spec, сценарии/схемы описывают дополнительный каталог, сохраненные legacy routes и непроверенный cutover.
+- README "Run a ticket" объясняет остановку при недостающем результате блокера.
 
-### Fixed
+### Исправлено
 
-- `dev-review` (2026-11-01) checks checkpoint handoff before the empty-scope stop or staging suggestion, preserving unrelated files and the selected scope.
-- `dev-exec`, `nxs-lead`, `dev-review` and `dev-spec` (2026-11-01) carry checkpoint scope and stop when a stage's default diff omits or cannot establish coverage of the intended work.
-- `to-tickets` (2026-11-01) aligns ticket copy instructions with the current `dev-exec` checkpoint template; source scenarios and the structural checker guard against obsolete wording.
-- `dev-exec` and `nxs-lead` (2026-11-01) propose and check explicit checkpoint scopes by default while preserving user approval and no-commit choices.
-- `dev-exec` (2026-11-01) permits a reconciled fresh bounded run after plan approval when native session continuation is undocumented, preserving the approved plan and boundaries.
-- `dev-commit` (2026-11-01) returns an authorized same-session checkpoint result to `dev-exec` while retaining the standalone stop.
-- Shell skill checker validates frontmatter scalars and release dates and rejects empty release entries.
-- README distinguishes same-name nxs and companion skills before choosing a route.
-- Ticket template and `dev-setup` tracker template `## Done when` record a missing blocker result in one `## Comments` line and stop instead of asking, so Claude Code plan mode writes the line after the plan is approved.
+- `dev-review` (2026-11-01) проверяет checkpoint handoff до empty-scope stop/staging suggestion, сохраняя чужое и охват.
+- `dev-exec`, `nxs-lead`, `dev-review`, `dev-spec` (2026-11-01) передают checkpoint scope и останавливаются при пропуске/неясном покрытии задачи в default diff.
+- `to-tickets` (2026-11-01) согласует копирование checkpoint template; сценарии/checker защищают от старой формулировки.
+- `dev-exec`, `nxs-lead` (2026-11-01) по умолчанию предлагают/проверяют явные checkpoint scopes, сохраняя approval/no-commit.
+- `dev-exec` (2026-11-01) допускает свежий bounded run после сверки/одобрения при недокументированном continuation, сохраняя план/границы.
+- `dev-commit` (2026-11-01) возвращает same-session checkpoint в `dev-exec`, сохраняя самостоятельную остановку.
+- Shell checker валидирует frontmatter scalars/даты и запрещает пустые releases.
+- README различает одноименные nxs/companion skills до выбора маршрута.
+- `## Done when` ticket/трекера `dev-setup` записывает missing blocker одной строкой `## Comments` и останавливается без вопроса, чтобы Claude Code Plan Mode записал ее после одобрения плана.
 
 ## [0.78.0] - 2026-11-01
 
-### Changed
+### Изменено
 
 - Семь скиллов, reviewer roles, references и шаблоны переведены на русский и сокращены без удаления условий работы; пользовательские артефакты и установки не меняются.
 - Заголовки новых артефактов стали русскими; читатели принимают прежние английские заголовки. Служебные поля и статусы сохранены; изменение формата требует minor release.
 - `CONTRIBUTING.md` задает русский язык инструкций; `check-skills.sh` проверяет русские формы с прежними гарантиями безопасности и структуры.
 - README, GLOSSARY, AGENTS/CLAUDE, PR template и обе темы шести SVG-схем переведены; README сокращен до выбора команд, примеров и основных границ со ссылками на полные правила.
+- ADR, архив клиентских сценариев и CHANGELOG переведены с сохранением решений, версий, дат, наблюдений и ограничений доказательств.
 
 ## [0.77.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- ADR 0009 (2026-11-01) records the approved seven-skill direct flow and explicitly supersedes earlier coordination/journal decisions without changing historical ADRs.
-- Client scenario archive (2026-11-01) preserves the complete earlier protocol and version-specific observations separately from current expectations.
+- ADR 0009 (2026-11-01) фиксирует семь прямых скиллов вместо прежней координации/журнала, сохраняя исторические ADR.
+- Архив сценариев (2026-11-01) сохраняет прежний протокол/наблюдения отдельно от текущих ожиданий.
 
-### Changed
+### Изменено
 
-- `rnd-grill` (2026-11-01) owns proportionate research, dependent-question discussion, surveys, selected-boundary design, isolated experiments and direct approved preparation/domain saves without mandatory artifact stages.
-- `rnd-debug` (2026-11-01) hands eligible confirmed evidence directly to `dev-exec`, retaining intended-behavior agreement, uncertain-cause stops and diagnosis/ticket preservation.
-- `dev-exec` (2026-11-01) owns optional decomposition, ticket rules/template and handoff saving, direct environment-action approval and selected-finding corrections while preserving concrete plan approval, checks and commit boundaries.
-- `dev-review` and reviewer roles (2026-11-01) pin the complete intended net task including committed checkpoints and staged, unstaged and untracked work; preserve independent finder/verifier protection and hand selected corrections directly to execution.
-- `dev-spec` (2026-11-01) records optional material built-work contracts only after intended-work coverage, retaining private/visible mode and foreign-content protection.
-- `dev-commit` (2026-11-01) retains explicit scope authorization, atomic staging and foreign-index safety without mandatory coordination context or uncertain-effect replay.
-- `nxs-setup` (2026-11-01) uses the seven-skill ownership/capability model and relevant report-only readiness without lead prerequisites or mandatory journal injection.
-- README, CONTRIBUTING, SPEC and GLOSSARY (2026-11-01) describe seven independent skills, direct authorized handoffs, actual resource owners, optional artifacts and source-versus-installation boundaries.
-- Workflow, discussion, diagnosis, artifact, setup and ticket-state SVG pairs (2026-11-01) show the reduced flow in light/dark Mono themes with aligned captions and accessibility descriptions; render verification is pending.
-- Client scenarios (2026-11-01) focus on direct entry, optional saving/tickets, full-task review/spec coverage, selected fixes, checkpoint preservation and isolated setup; simplified-contract verification is NOT RUN.
+- `rnd-grill` (2026-11-01) объединяет соразмерное исследование, зависимые вопросы, обзоры, дизайн границы, изолированные опыты и прямое одобренное сохранение без обязательных стадий.
+- `rnd-debug` (2026-11-01) передает подтвержденное прямо `dev-exec`, сохраняя intent agreement, uncertain stops, диагноз/ticket.
+- `dev-exec` (2026-11-01) владеет делением, tickets/handoff, прямыми environment approvals и selected fixes с plan/check/commit boundaries.
+- `dev-review`/roles (2026-11-01) закрепляют полный итог с committed/staged/unstaged/untracked, независимых finders/verifier и прямую передачу исправлений.
+- `dev-spec` (2026-11-01) записывает существенное лишь после покрытия работы, сохраняя private/visible и защиту постороннего.
+- `dev-commit` (2026-11-01) сохраняет scope approval, atomic staging/foreign-index safety без обязательной координации/повтора неизвестного.
+- `nxs-setup` (2026-11-01) использует семь владельцев и нужный report-only readiness без lead/journal.
+- README, `CONTRIBUTING.md`, SPEC, GLOSSARY (2026-11-01) описывают семь скиллов, прямую передачу, владельцев, необязательные записи и source/install границы.
+- Шесть пар SVG (2026-11-01) показывают сокращенный процесс, обсуждение, диагноз, записи, setup и ticket states в Mono; подписи/accessibility согласованы, render verification pending.
+- Сценарии (2026-11-01) покрывают прямой вход, необязательные записи/tickets, полный review/spec, fixes, checkpoint safety/setup; behavioral verification NOT RUN.
 
-### Fixed
+### Исправлено
 
-- `dev-review` role `review-simplification` (2026-11-01) explicitly prohibits report and all file writes and repository/Git mutation using accepted common prohibition wording without changing the checker.
-- `CONTRIBUTING.md` (2026-11-01) limits the obsolete-route scan claim to skill sources under `skills/`, not root guides.
+- `review-simplification` (2026-11-01) явно запрещает любые файлы/отчет/Git принятой общей формулировкой без изменения checker.
+- CONTRIBUTING (2026-11-01) ограничивает obsolete-route scan исходниками `skills/`, не root guides.
 
-### Removed
+### Удалено
 
-- `rnd-map`, `rnd-research`, `rnd-prototype`, `rnd-audit`, `rnd-design`, `to-decision`, `to-spec` and `to-questionnaire` command surfaces (2026-11-01) consolidate useful preparation into `rnd-grill` without aliases or a hidden mandatory subflow.
-- `to-tickets` and `to-handoff` command surfaces (2026-11-01) consolidate optional decomposition and continuation into `dev-exec`.
-- `nxs-lead`, `nxs-retro`, lead/auto coordination, mandatory journals/controlled-run envelopes and the review ticket-export route (2026-11-01) leave active contracts; existing user records and historical releases remain unchanged.
-- Orphan bundle/map SVG pairs (2026-11-01) are removed after their only map embed is replaced; unrelated artwork and historical task records are retained.
+- Команды `rnd-map`, `rnd-research`, `rnd-prototype`, `rnd-audit`, `rnd-design`, `to-decision`, `to-spec`, `to-questionnaire` (2026-11-01) объединены в `rnd-grill` без aliases/скрытого процесса.
+- `to-tickets`, `to-handoff` (2026-11-01) объединены в `dev-exec`.
+- `nxs-lead`, `nxs-retro`, lead/auto, обязательные journals/controlled envelopes, review ticket-export (2026-11-01) удалены из active contracts; пользовательские записи/история сохранены.
+- Осиротевшие bundle/map SVG пары (2026-11-01) удалены после замены единственного embed; посторонние изображения/история сохранены.
 
 ## [0.76.0] - 2026-11-01
 
-### Changed
+### Изменено
 
-- `nxs-retro` presents each evidence-backed problem with a concrete solution in the saved report and final response.
-- `nxs-lead` waits for required worker results, reports remaining worktrees after branch work and guards cleanup; README and client scenarios document scoped Skills CLI updates and verification limits.
+- `nxs-retro` дает каждой доказанной проблеме конкретное решение в отчете/ответе.
+- `nxs-lead` ждет обязательные результаты, перечисляет оставшиеся worktrees и защищает cleanup; README/сценарии описывают scoped update/пределы.
 
 ## [0.75.0] - 2026-11-01
 
-### Removed
+### Удалено
 
-- `dev-rnd`, `dev-bug`, `dev-lead` and `dev-setup` are removed from the source catalog; this does not change installed copies or verify cutover.
+- `dev-rnd`, `dev-bug`, `dev-lead`, `dev-setup` из source catalog без смены установок/доказательства cutover.
 
-### Changed
+### Изменено
 
-- Shared project-spec, controlled-run and ticket references use retained owners and commands; historical recovery paths are preserved.
-- `rnd-debug`, `dev-review`, `dev-spec`, `dev-exec` and `to-spec` no longer describe removed commands as active routes.
-- Structural checks, CI, README, CONTRIBUTING, GLOSSARY and client scenarios reflect the source removal and outstanding verification.
+- Shared project-spec/controlled-run/ticket references используют сохраненных владельцев, старые recovery paths сохранены.
+- `rnd-debug`, `dev-review`, `dev-spec`, `dev-exec`, `to-spec` не называют удаленные команды действующими.
+- Checker, CI, README, CONTRIBUTING, GLOSSARY, сценарии отражают удаление/непроверенное.
 
 ## [0.74.2] - 2026-11-01
 
-### Changed
+### Изменено
 
-- `dev-review` checks affected diagrams and accessibility text when command routes change, distinguishing current and legacy behavior.
-- Client scenarios pin final ticket fixtures and resources and keep changed-resource observations unverified until rechecked.
+- `dev-review` проверяет схемы/accessibility при смене команд, отличает current/legacy.
+- Сценарии закрепляют финальные fixtures/resources и требуют повторной проверки измененного.
 
 ## [0.74.1] - 2026-11-01
 
-### Fixed
+### Исправлено
 
-- Ticket status diagrams show the selected executor after a human step; the workflow diagram and README emphasize the current `dev-exec` handoff and remove the legacy section.
+- Ticket-state схемы показывают выбранного исполнителя после человека; workflow/README выделяют `dev-exec`, убирают legacy section.
 
 ## [0.74.0] - 2026-11-01
 
-### Changed
+### Изменено
 
-- `to-tickets` hands eligible ready work to `dev-exec`; the shared ticket, setup tracker and triage label templates support both that executor and retained `/plan` routes, including the human-step return.
-- README, CONTRIBUTING and client scenarios describe the selected handoff and observed verification limits.
+- `to-tickets` передает готовое `dev-exec`; ticket/setup/triage поддерживают его и старый `/plan`, включая human return.
+- README, CONTRIBUTING, сценарии описывают передачу и реальные пределы проверки.
 
 ## [0.73.1] - 2026-11-01
 
-### Changed
+### Изменено
 
-- Project and `to-tickets` specs reconcile the additive workflow and its verification limits.
+- Project/`to-tickets` specs согласуют дополнительный процесс и непроверенное.
 
-### Fixed
+### Исправлено
 
-- Shell skill checks reject malformed or duplicate frontmatter, invalid invocation policy blocks and broken reference-style resource links.
-- Pre-commit hook checks the staged snapshot so partial staging cannot bypass the structural checks.
-- README places installation collision and verification guidance before install and update commands.
+- Shell checks отклоняют неверный/дублированный frontmatter, invocation policy, reference-style links.
+- Pre-commit проверяет staged snapshot против обхода partial staging.
+- README помещает collisions/ограничения до install/update.
 
 ## [0.73.0] - 2026-11-01
 
-### Changed
+### Изменено
 
-- `nxs-setup` source catalog and upgrade guidance distinguish the 19 agreed commands from retained routes and unverified registration.
+- Каталог/upgrade `nxs-setup` различают 19 команд, retained routes и непроверенную регистрацию.
 
 ## [0.72.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `nxs-setup` adds independent global configuration and a 15-capability source map.
+- `nxs-setup`: независимый global config и source map 15 возможностей.
 
 ## [0.71.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `nxs-setup` adds scoped goal and project setup with approved changes and report-only readiness; `nxs-retro` shares its writing guidance.
+- `nxs-setup`: scoped goal/project setup с одобрением и report-only readiness; `nxs-retro` использует общие writing rules.
 
 ## [0.70.0] - 2026-11-01
 
-### Changed
+### Изменено
 
-- Shared controlled-run references recognize explicit `nxs-lead` authorization alongside the retained lead.
-- `dev-review` and contributor guidance name native subagents for retained routes.
+- Shared controlled-run принимает явное разрешение `nxs-lead` наряду со старым lead.
+- `dev-review`/contributor guide называют native subagents сохраненных маршрутов.
 
 ## [0.69.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `nxs-lead` defines explicit guarded auto and a local HTML defense.
+- `nxs-lead`: явный guarded auto и локальная HTML-защита.
 
 ## [0.68.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `nxs-lead` defines evidence-based continuation without a recovery engine.
+- `nxs-lead`: продолжение по доказательствам без recovery engine.
 
 ## [0.67.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `nxs-lead` adds an explicit ordinary native-subagent coordinator candidate.
+- `nxs-lead`: явный ordinary native-subagent coordinator candidate.
 
 ## [0.66.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `nxs-retro` reviews one session and proposes evidence-based improvements within authorization boundaries.
+- `nxs-retro`: разбор одной сессии и доказанные улучшения в пределах разрешения.
 
 ## [0.65.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `to-handoff` saves resumable context with or without a task journal.
+- `to-handoff`: контекст продолжения с журналом или без.
 
 ## [0.64.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `to-questionnaire` prepares recipient-specific questions without unsolicited sending or invented answers.
+- `to-questionnaire`: вопросы адресату без незапрошенной отправки/выдуманных ответов.
 
 ## [0.63.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `rnd-map` charts and resumes local decision maps with explicit per-question permission and preserved dependencies.
+- `rnd-map`: локальные decision maps с разрешением на каждый вопрос/сохранением зависимостей.
 
 ## [0.62.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `rnd-audit` saves a prioritized architecture survey or evidence-limited no-change result without implementing an opportunity.
+- `rnd-audit`: приоритетный architecture survey или ограниченный доказательствами no-change без реализации.
 
 ## [0.61.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `rnd-design` compares and saves an agreed design for a selected module without implementing it.
+- `rnd-design`: сравнение/сохранение согласованного дизайна выбранного модуля без реализации.
 
 ## [0.60.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `rnd-prototype` tests a hypothesis with a retained local experiment and verdict without authorizing production changes.
+- `rnd-prototype`: гипотеза, сохраненный опыт/вывод без разрешения product changes.
 
 ## [0.59.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `rnd-research` saves source-linked findings and limitations for a question as an additive candidate without deciding or starting a further stage.
+- `rnd-research`: результаты с источниками/пределами как дополнительный candidate без решения/следующей стадии.
 
 ## [0.58.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `dev-review` offers an additive selection handoff to `to-tickets`, which creates tickets from current selected findings; the legacy review-to-fix route remains available.
+- `dev-review`: дополнительная передача выбора в `to-tickets`, который создает tickets по актуальным findings; старый review-to-fix сохранен.
 
 ## [0.57.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `rnd-debug` records evidenced diagnosis without creating fix tickets; `to-tickets` accepts eligible confirmed causes as an additive candidate.
+- `rnd-debug`: доказанный диагноз без fix tickets; `to-tickets` принимает подходящие причины как дополнительный candidate.
 
 ## [0.56.0] - 2026-11-01
 
-### Fixed
+### Исправлено
 
-- `dev-exec` records and runs the full checks a ticket requires and leaves it unresolved when a required test or linter command is missing or fails; `tests/client-scenarios.md` covers the completion gate.
+- `dev-exec` записывает/выполняет полные обязательные проверки, оставляет unresolved при missing/failing test/linter; `tests/client-scenarios.md` покрывает завершение.
 
 ## [0.55.0] - 2026-11-01
 
-### Added
+### Добавлено
 
-- `dev-lead` delegates bounded steps to the selected client's native subagents through `references/subagents.md`, and keeps progress and questions in ordinary local files through `references/questions.md`; missing capability stops the affected step.
-- `dev-review` launches finder and verifier roles only through native subagents, with host-enforced permissions and prompt prohibitions reported separately.
-- Shell structural checks in `.github/scripts/check-skills.sh` and a runtime guard in `.github/scripts/check-no-runtime.sh` replace the Python checker; both run in CI and the pre-commit hook.
-- [ADR 0008](docs/adr/0008-native-subagent-coordination.md) records native-subagent coordination and the removal of the custom runtime.
-- `tests/client-scenarios.md` covers native-subagent delegation, local questions, capability stops and the structural checks.
+- `dev-lead` делегирует bounded steps native subagents через `references/subagents.md`, хранит вопросы/прогресс обычными файлами через `references/questions.md`; missing capability останавливает шаг.
+- `dev-review` запускает finders/verifier только native subagents, отличает host permissions от prompt.
+- `.github/scripts/check-skills.sh` и `.github/scripts/check-no-runtime.sh` заменяют Python checker в CI/pre-commit.
+- [ADR 0008](docs/adr/0008-native-subagent-coordination.md): native coordination и удаление custom runtime.
+- `tests/client-scenarios.md` покрывает delegation, local questions, capability stops и source checks.
 
-### Changed
+### Изменено
 
-- `dev-lead`, `dev-review`, `dev-setup` readiness, `README.md`, `SPEC.md` and `CONTRIBUTING.md` no longer require Python 3, a terminal session, a controller, a HUD, a nested CLI runner or the removed terminal app.
-- Task journals and controlled-run packets use plain append-only files; the shared ticket `## Done when` block and the `dev-setup` tracker copy record the journal and native-continuation rules.
-- Setup and workflow diagrams and their alternative text describe native subagents and the current readiness checks.
+- `dev-lead`, `dev-review`, readiness `dev-setup`, `README.md`, `SPEC.md`, `CONTRIBUTING.md` не требуют Python 3, terminal session/controller/HUD, nested CLI и старое terminal app.
+- Journals/controlled packets - append-only текст; ticket `## Done when`/setup copy фиксируют journal/native continuation.
+- Setup/workflow схемы и alt описывают native subagents/current readiness.
 
-### Removed
+### Удалено
 
-- All repository Python: the `dev-lead` runner, approval, status, inventory, harness, outcome, mechanics and commit helpers, the `dev-review` adapter copies, every bundled `journal.py`, the Python checker and its regression suite, and `tests/test_dev_lead.py` and `tests/test_harnesses.py`.
-- Bundled `scripts/` and `__pycache__` directories, the bounded CLI review route and the terminal identity, HUD, questionnaire-waiter and owned-terminal cleanup contracts.
+- Весь Python репозитория: lead runner/approval/status/inventory/harness/outcome/mechanics/commit helpers, review adapters, все journal.py, checker/regressions, `tests/test_dev_lead.py`, `tests/test_harnesses.py`.
+- Bundled scripts/__pycache__, bounded CLI review и terminal identity/HUD/questionnaire waiter/owned cleanup contracts.
 
 ## [0.54.0] - 2026-10-31
 
-### Added
+### Добавлено
 
-- `dev-exec` adds an explicit standalone ticket/clear-request executor candidate with plan approval, prerequisite-result checks, human-step gates and separate review/spec/commit handoffs.
+- `dev-exec`: standalone ticket/clear-request executor с plan approval, prerequisites/human gates и отдельными review/spec/commit.
 
-### Changed
+### Изменено
 
-- Checker catalog and fixtures include `dev-exec` policies and self-contained shared resources while preserving existing ticket templates and `/plan` routes.
-- README, CONTRIBUTING and client scenarios document the additive executor, resource propagation and proportionate verification limits.
+- Checker/fixtures включают dev-exec policies/self-contained resources, сохраняя templates/`/plan`.
+- README, CONTRIBUTING, сценарии описывают дополнительного исполнителя, копии и соразмерные пределы.
 
 ## [0.53.0] - 2026-10-31
 
-### Added
+### Добавлено
 
-- `to-tickets` adds explicit independent feature-spec slicing, history-preserving reuse, dependency evidence and authorized revision gates with the retained `/plan` handoff.
+- `to-tickets`: независимое деление feature spec, сохранение истории, зависимости/одобренные правки со старым `/plan`.
 
-### Changed
+### Изменено
 
-- `to-tickets` owns the byte-identical ticket rules/template consumed by `dev-rnd`, `dev-bug` and `dev-review`; existing routes and execution text remain available.
-- Checker catalog, shared-copy expectations, tracker Done when source and regression fixtures include the self-contained `to-tickets` candidate.
-- README, CONTRIBUTING and client scenarios document the additive ticket candidate, canonical propagation and proportionate observation limits.
+- `to-tickets` владеет идентичными ticket rules/template для dev-rnd/dev-bug/dev-review, старые маршруты/исполнение сохранены.
+- Checker/shared expectations/tracker block/regressions включают candidate.
+- README, CONTRIBUTING, сценарии описывают tickets, источник копий/пределы наблюдений.
 
 ## [0.52.0] - 2026-10-31
 
-### Added
+### Добавлено
 
-- `to-spec` adds explicit independent feature spec preparation from decisions or clear requests, authorized drafts, source/dependency evidence and preservation gates, without ticket slicing.
+- `to-spec`: отдельная подготовка feature spec по решению/запросу, разрешенные drafts/source/dependencies/safety, без tickets.
 
-### Changed
+### Изменено
 
-- Checker catalog and fixtures include `to-spec` policies and self-contained shared resources; `to-spec` owns the byte-identical feature spec template while legacy routes stay available.
-- README, CONTRIBUTING and client scenarios document the additive spec candidate, resource ownership and proportionate observation boundaries.
+- Checker/fixtures включают policies/self-contained resources; feature template у to-spec, legacy routes сохранены.
+- README, CONTRIBUTING, сценарии описывают candidate, владельцев/пределы наблюдений.
 
 ## [0.51.0] - 2026-10-31
 
-### Added
+### Добавлено
 
-- `rnd-grill` adds an explicit discussion-only candidate with evidence-backed choice rounds, shared discussion/domain rules and resume boundaries.
-- `to-decision` adds explicit approved or unfinished decision saving, approved glossary/ADR proposals, direct domain-only requests within invoked scope and preservation on repeat saves.
-- Checker fixtures and client scenarios cover the additive candidates, explicit policies and self-contained shared resources; existing manual and coordinator routes remain available.
+- `rnd-grill`: discussion-only candidate с доказанными раундами выбора, общими discussion/domain rules и resume boundaries.
+- `to-decision`: согласованное/незавершенное сохранение, glossary/ADR, прямые доменные запросы и сохранность повторов.
+- Checker/сценарии покрывают candidates, explicit policies/self-containment; manual/coordinator routes сохранены.
 
-### Changed
+### Изменено
 
-- README documents candidate usage and separate saving approval; CONTRIBUTING records canonical resource ownership and the independent-workflow naming extension.
+- README описывает вызов/отдельное согласие сохранения, CONTRIBUTING - владельцев/расширение имен независимых процессов.
 
 ## [0.50.0] - 2026-10-31
 
-### Changed
+### Изменено
 
-- `dev-lead` explicitly finishes HUD presentation before releasing its controller, preserving final local status, foreign UI and non-replayed close evidence across recovery.
+- `dev-lead` завершает HUD до release controller, сохраняя final status, чужой UI и non-replayed close evidence при recovery.
 
 ## [0.49.0] - 2026-10-31
 
-### Added
+### Добавлено
 
-- `dev-lead` adds lead-only timestamped status/HUD presentation and durable bounded questionnaire transport, with recoverable ownership of updated HUDs, genuine approval/form regressions and release-controlled pending fixtures; the lead retains approval and workflow decisions.
-- `dev-setup` adds explicit global/project `--readiness` reports with bundled native discovery, actual requirement diagnoses and remedies, without setup writes or installation.
+- `dev-lead`: lead-only timestamped status/HUD и durable bounded questionnaire transport, recovery ownership обновленного HUD, реальные approval/form regressions и release-controlled pending fixtures; решения остаются lead.
+- `dev-setup`: явный global/project `--readiness` с native discovery, реальными диагнозами/советами без setup writes/install.
 
-### Changed
+### Изменено
 
-- `dev-lead` checkpoints each accepted implementation and its verified review corrections through checks, scoped review, built-work specs and atomic commits before the next independent ticket, retaining conservative commit recovery and final whole-feature review. README and all eight light/dark diagram pairs show agterm-only delegation alongside manual routes, report-only readiness, local status/journal/run records and distinct ticket/checkpoint acceptance, with matching Mono surfaces and readable labels.
-- Runtime tests and client scenarios cover checkpoint composition, lost commit responses, foreign index preservation and readiness/setup boundaries, separating mechanics fixtures from consumer and live verification.
+- `dev-lead` проверяет, review/spec/commit-ит принятые реализации/fixes до следующего независимого ticket, сохраняет conservative commit recovery/final feature review. README/восемь SVG пар показывают agterm-only delegation, manual routes, readiness, local status/journal/runs, отдельные ticket/checkpoint acceptance, Mono/читаемые подписи.
+- Runtime tests/сценарии покрывают checkpoint composition, lost commit replies, foreign index, readiness/setup, отличают fixtures от consumer/live.
 
-### Fixed
+### Исправлено
 
-- `dev-lead` outcome packets, schema descriptions and shared controlled-run instructions clarify existing status fields and file artifacts for native emitters.
-- `dev-lead` and the bundled `dev-review` runner recheck accepted artifacts and command evidence after terminal observation, preserving journal-prefix growth; disposable regressions cover changed or missing evidence before cleanup.
-- `dev-lead` generated-form regression executes the extracted submit script with existing Node and checks decoded choice/text payloads; absent Node skips only JavaScript coverage, while controls and probe checks still run.
+- Lead outcome packets/schema/controlled rules уточняют status fields/file artifacts native emitters.
+- `dev-lead`/`dev-review` runner заново проверяют артефакты/команды после terminal observation с journal-prefix growth; regressions покрывают missing/changed evidence до cleanup.
+- Generated-form regression запускает submit script существующим Node, проверяет decoded choice/text; без Node пропускается лишь JS, controls/probes работают.
 
 ## [0.48.0] - 2026-10-30
 
-### Fixed
+### Исправлено
 
-- `dev-lead` and the bundled `dev-review` runner (2026-10-30) require stopped recorded processes and groups before continuation or another launch, including successful CLI exits; runtime regressions cover surviving children and worker destination rejection.
+- `dev-lead`/`dev-review` runner (2026-10-30) требуют stopped processes/groups до продолжения/launch, в том числе после exit 0; regressions - surviving children/destination rejection.
 
-### Changed
+### Изменено
 
-- `dev-lead` requires verified agterm entry before coordination side effects and pins worker destinations and normalized unique labels in run records.
-- `dev-lead` and the bundled `dev-review` runner retain terminal and primary-pane ownership separately from native sessions and close verified stopped shell/command-wait terminals, including answered and resolved blocked turns tied explicitly to accepted exact continuations, through recorded, non-replayed cleanup.
-- Runtime tests and client scenarios cover agterm identity failures, focus changes, naming collisions, owned cleanup and lost close responses, distinguishing fixtures from live verification.
+- Lead требует verified agterm entry до эффектов координации, закрепляет destinations/normalized unique labels.
+- Lead/review runner отдельно хранят terminal/pane ownership и native session, закрывают проверенно остановленные shell/command-wait terminals, включая answered/resolved blocked turns принятого exact continuation, с recorded non-replayed cleanup.
+- Runtime tests/сценарии: identity/focus/names/cleanup/lost close reply, fixtures отдельно от live.
 
 ## [0.47.0] - 2026-10-30
 
-### Changed
+### Изменено
 
-- `dev-lead` supports native Claude Code, Codex and OpenCode v2 discovery, model effort validation, bounded outcomes and exact-session continuation without silent runtime substitution.
-- `dev-review` bundles the native CLI adapter for all finder and verifier roles, with enforced repository write denial on Claude Code and OpenCode read-only runs.
-- Lead packets, guides and client scenarios distinguish native registration from pinned candidate context, native permissions, protocol tests and live verification; shared helper and CI checks cover every adapter.
+- `dev-lead` поддерживает native Claude Code/Codex/OpenCode v2 discovery, effort validation, outcomes и exact-session continuation без подмены runtime.
+- `dev-review` содержит native CLI adapter всех ролей с enforced write denial в Claude Code/OpenCode read-only runs.
+- Packets/guides/сценарии различают registration/pinned context, native permissions, protocol/live; shared helpers/CI покрывают адаптеры.
 
 ## [0.46.0] - 2026-10-30
 
-### Added
+### Добавлено
 
-- `dev-lead` adds an explicit Codex-only sequential coordinator with feature and ticket plan approval, visible agterm workers, bounded outcomes and independent acceptance checks.
-- `dev-lead` helpers discover actual skills and models, persist launch and commit intent, validate outcomes and reconcile interrupted work without replaying unknown effects.
-- Task journal and controlled-run resources are bundled identically in `dev-lead`, `dev-rnd`, `dev-bug`, `dev-review`, `dev-spec` and `dev-commit`.
-- Sequential lead regressions cover question continuation, invalid results, discovery failure, locking, interrupted runs, lost responses, duplicate prevention and stale evidence.
+- `dev-lead`: Codex-only последовательный координатор с feature/ticket approval, видимыми agterm workers, bounded outcomes, независимой приемкой.
+- Lead helpers обнаруживают реальные skills/models, сохраняют launch/commit intent, проверяют outcomes/recovery без повтора неизвестного.
+- Идентичные journal/controlled resources в dev-lead/dev-rnd/dev-bug/dev-review/dev-spec/dev-commit.
+- Регрессии: вопросы, неверные результаты, обнаружение возможностей, блокировки, прерывания, потерянные ответы, дубли и устаревшие доказательства.
 
-### Changed
+### Изменено
 
-- `dev-rnd --decision-only` saves a research conclusion, evidence and remaining questions without implementation tickets; normal invocation retains spec and ticket slicing.
-- Ticket executor and tracker templates record task outcomes and accept lead ticket-plan approval only in an explicit authorized controlled context.
-- `dev-review` bundles a Codex read-only finder and verifier launch route while retaining all existing roles and orchestrator report ownership.
-- `dev-spec` and `dev-commit` retain source and Git boundaries while recording task journal events; project-spec readers include `dev-lead`.
-- `SPEC.md` records the built controller, journal and independent acceptance boundaries.
-- `dev-setup` global and project templates propose journal rules without changing the user's installation during source development.
-- README, CONTRIBUTING and client scenarios document the lead, invocation boundaries, local artifacts and verification limits.
-- Skill-tree checks validate the seventh skill, shared journal and runner copies and runtime resource isolation; CI retains `House style + frontmatter` and runs lead regressions.
+- `dev-rnd --decision-only` сохраняет вывод/доказательства/вопросы без tickets; обычный вызов сохраняет spec/slicing.
+- Executor/tracker записывают outcomes, принимают lead approval лишь в явно разрешенном controlled context.
+- Review содержит Codex read-only finders/verifier со старыми ролями/владельцем отчета.
+- Spec/commit сохраняют source/Git boundaries, записывая journal events; spec readers включают lead.
+- `SPEC.md` фиксирует построенные controller/journal/acceptance boundaries.
+- Шаблоны `dev-setup` предлагают journal rules без изменения установки при source development.
+- README, CONTRIBUTING, сценарии описывают lead, invocation, local artifacts/пределы.
+- Checker валидирует седьмой skill/shared runner/journal/runtime isolation; CI сохраняет `House style + frontmatter` и lead regressions.
 
-### Fixed
+### Исправлено
 
-- CI declares `pull_request` beside `push`, so pull requests can trigger the required checks.
+- CI объявляет `pull_request` вместе с `push`, чтобы PR запускал обязательные checks.
 
 ## [0.45.0] - 2026-10-28
 
-### Added
+### Добавлено
 
-- `dev-spec` records durable project specs from landed work: committed `SPEC.md`, or private `.SPEC.md` kept out of Git through the clone's exclude file.
-- `dev-setup project` audits a repository and, through one approved diff, writes a `## nxs` instruction section with the branch rule and the test, lint and typecheck commands, and ignores `.scratch/`.
-- `dev-setup` accepts `global` or `project`; without an argument it asks inside a Git repository and uses `global` outside one.
-- `dev-setup global` wires Claude Code, Codex and OpenCode to `~/.agents/AGENTS.md`, merging existing client files into it instead of replacing them, and through one approved diff adds a `## nxs` section (read project specs on the path, branch rule) and the rule groups the user accepts from a bundled template.
-- `dev-setup global` offers mattpocock/skills as a recommended Core bundle (grilling, domain modeling, `to-spec` and `to-tickets`) plus Wayfinding, Architecture and Sessions bundles, adds the skills a chosen skill depends on and names each as required by it, checks the names against the upstream listing, installs the chosen ones after approval, and writes an `## Engineering skill defaults` section and `~/.agents/docs/{issue-tracker,triage-labels,domain}.md` for local `.scratch/` tickets numbered after the existing ones.
-- `dev-setup global` skips a `## nxs` line whose rule the source already states elsewhere and reports it as covered; a section left empty is not created.
-- `dev-setup global` counts a client path that resolves to the source as wired and never links over it, links a copy identical to the source without merging it, strips `## nxs` and `## Engineering skill defaults` from merged content, and merges a file reached through several client paths once.
-- `dev-setup` treats its owned sections as template-owned: `global` and `project` say that an edit inside `## nxs` is replaced on the next run and custom rules go outside it, where the audit reports them as covered with the stating line; `global` puts merged content under its own `## Merged from <path>` heading, so it never joins a `## nxs` section that ends the source.
-- `dev-setup project` resolves `AGENTS.md` and `CLAUDE.md` with `realpath` and counts `## nxs` headings per real file, so a repeat on `CLAUDE.md -> AGENTS.md` updates the one section instead of stopping on a duplicate heading.
-- Shared `project-specs` reference: how `dev-rnd`, `dev-bug`, `dev-review` and `dev-spec` find and read project specs.
+- `dev-spec` записывает постоянные specs построенного: committed SPEC.md или private .SPEC.md через exclude клона.
+- `dev-setup project` одним approved diff пишет `## nxs`, правило веток, test/lint/typecheck и ignore .scratch/.
+- Setup принимает global/project, без аргумента спрашивает внутри Git и выбирает global снаружи.
+- `dev-setup global` соединяет Claude Code/Codex/OpenCode с `~/.agents/AGENTS.md`, объединяя старое вместо замены, добавляет nxs (spec reading/ветки) и выбранные rule groups одним diff.
+- Global предлагает `mattpocock/skills` Core (grilling/domain/to-spec/to-tickets), Wayfinding/Architecture/Sessions; добавляет/объясняет зависимости, сверяет upstream, устанавливает одобренное, пишет `## Engineering skill defaults` и `~/.agents/docs/{issue-tracker,triage-labels,domain}.md` с local .scratch/ и нумерацией после старых.
+- Global пропускает покрытые вне секции правила nxs с указанием источника; пустая секция не создается.
+- Global считает path->source wired, не заменяет его; identical copy связывает без merge, удаляет owned headings из merge, один real file объединяет раз.
+- Setup секции принадлежат template: правка внутри nxs заменяется повтором, личное снаружи учитывается covered. Merge под своим `## Merged from <path>`, не внутри конечного nxs.
+- Project использует realpath `AGENTS.md`/`CLAUDE.md` и считает nxs по реальным файлам, повтор `CLAUDE.md -> AGENTS.md` обновляет одну секцию.
+- Shared project-specs задает чтение dev-rnd/dev-bug/dev-review/dev-spec.
 
-### Changed
+### Изменено
 
-- Ticket template, `dev-setup` tracker template and triage labels make `ready-for-human` a round trip: the human does the step, sets `ready-for-agent` back and reruns `/plan`, and the executor verifies the result in the current environment instead of repeating the step; the `ticket` reference says so.
-- Ticket template and `dev-setup` tracker template `## Done when` have the executor confirm each direct blocker's result in the working tree before the first implementation edit; `resolved` alone no longer suffices, and the `ticket` reference says so.
-- CONTRIBUTING allows a setup skill to write rules and config into client instructions only through an approved diff.
-- `dev-spec` creates no module spec in a directory that holds a foreign `SPEC.md` and reports the module as skipped.
-- `dev-bug` classifies a confirmed cause as `right`, `silent`, `wrong` or `feature` against domain documents and specs; `feature` writes no fix ticket and hands off to `dev-rnd`.
-- `dev-bug` fix ticket for a `wrong` cause names a spec record only as context; `dev-spec` corrects the spec after the fix lands.
-- `dev-rnd` accepts a `root-cause.md` path as a request source.
-- `dev-review` reports a diff that contradicts a project spec.
-- `dev-review` lists a spec contradiction that a requirement replaces, with a matching diff, as a `pending dev-spec` follow-up instead of a finding; the verifier packet carries the same rule.
-- `feature-directory` reference counts project specs as domain documents.
-- `dev-rnd` clarifies in rounds of independent questions instead of one question at a time, frames options as observable behavior and decides internal-only choices itself, recording the reason in the spec.
-- Checker test covers every shared copy.
-- Checker fails when the fenced `## Done when` block in `dev-setup`'s `issue-tracker` template differs from `dev-rnd`'s ticket template; its test covers the drift.
-- `dev-setup` states the approval, owned-section, repeat, "already set up" and check rules once in a CONTRACT section that both modes follow; `global` rule groups reuse the `## nxs` coverage table, and the `project` section template points to AUDIT step 3 for the branch rule.
-- `dev-setup global` counts a mattpocock skill as installed only from a lock entry with source `mattpocock/skills`; a same-name skill directory without it is reported as unverified, kept out of the install command and never overwritten, and the skills that need it are reported as blocked.
-- `dev-setup` `issue-tracker` template numbers wayfinder child tickets after the existing tickets in `issues/`.
-- README names Claude Code, Codex and OpenCode as target clients and links `tests/client-scenarios.md` for verified flows instead of claiming identical behavior.
+- Ticket/tracker/triage: человек выполняет шаг `ready-for-human`, возвращает ready-for-agent, повторяет /plan; исполнитель проверяет среду, не повторяет шаг.
+- Ticket/tracker `## Done when` проверяют реальный результат каждого прямого блокера до правок; одного resolved мало, reference обновлен.
+- CONTRIBUTING разрешает setup писать config/rules в client instructions лишь approved diff.
+- Dev-spec не создает module spec рядом с foreign SPEC.md, сообщает пропуск.
+- Dev-bug классифицирует right/silent/wrong/feature по domain/specs; feature без ticket идет в dev-rnd.
+- Wrong fix ticket использует spec лишь контекстом, dev-spec исправляет после кода.
+- Dev-rnd принимает root-cause.md источником.
+- Review сообщает spec contradiction.
+- Согласованную matching замену spec review сохраняет pending dev-spec с тем же verifier rule, не finding.
+- Feature-directory считает specs доменными документами.
+- Dev-rnd группирует independent questions, варианты как поведение, внутреннее решает сам с причиной в spec.
+- Checker test покрывает все shared copies.
+- Checker/test ловят различие fenced Done when setup tracker и dev-rnd template.
+- Setup единым CONTRACT задает approval/ownership/repeat/no-op/checks; global использует coverage table, project template ссылается на AUDIT step 3.
+- Global считает mattpocock установленным лишь по lock source, same-name без него unverified/не перезаписывает/не устанавливает и блокирует dependents.
+- Setup tracker нумерует wayfinder child tickets после старых в `issues/`.
+- README называет целевых клиентов и `tests/client-scenarios.md` вместо одинакового поведения.
 
-### Fixed
+### Исправлено
 
-- CI runs the skills CLI discovery check on Node 22, which the skills CLI requires.
+- CI использует требуемый skills CLI Node 22.
 
 ## [0.44.0] - 2026-10-27
 
-### Changed
+### Изменено
 
-- Distribution moves from the `dev` plugin (marketplaces and the OpenCode installer) to standalone agent skills installed with the skills CLI; each skill installs into the shared agents skills directory and is linked per client.
-- Commands are renamed: `rnd`, `bug`, `review` and `commit` become `dev-rnd`, `dev-bug`, `dev-review` and `dev-commit`.
-- Skills declare frontmatter `name` and bundle their references, templates and reviewer roles inside their own directories.
-- Agent launch keeps a single generic route: any host tool that starts a fresh-context agent with a complete prompt; plugin-registered agent identities and the installer route are removed.
+- Поставка переходит с plugin dev (marketplaces/OpenCode installer) на standalone skills через skills CLI в shared agents directory с client links.
+- rnd/bug/review/commit переименованы в dev-rnd/dev-bug/dev-review/dev-commit.
+- Skills объявляют name/frontmatter, содержат свои references/templates/roles.
+- Agent launch оставляет generic fresh-context/full-prompt route; plugin agent identities/installer route удалены.
 
-### Removed
+### Удалено
 
-- The `plugins/dev` packaging, the `nxs` marketplace manifest and the OpenCode installer.
+- Упаковка plugins/dev, nxs marketplace manifest, OpenCode installer.
 
 ## [0.43.0] - 2026-10-26
 
-### Changed
+### Изменено
 
-- `rnd` stops after laying out approaches and runs stress and shows the proposed spec only after the user chooses; a reply asks one thing.
-- `rnd` shows all four stress parts in the reply before the proposed spec.
+- Rnd останавливается после вариантов, stress/spec показывает лишь после выбора; один вопрос в ответе.
+- Rnd показывает все четыре части stress перед spec.
 
-### Fixed
+### Исправлено
 
-- `rnd` stops after offering `/plan` for a request that makes the spec ceremony, without drafting a spec or tickets.
-- Ticket `**Branch:**` is proposed even when the project has no branch rule.
-- `review` tickets always carry `**Blocked by:**`.
+- Rnd после предложения /plan для слишком простой для spec задачи останавливается без spec/tickets.
+- `**Branch:**` предлагается и без project branch rule.
+- Review tickets всегда содержат `**Blocked by:**`.
 
 ## [0.42.0] - 2026-10-23
 
-### Changed
+### Изменено
 
-- OpenCode invokes `rnd`, `bug`, `review` and `commit` as `@<name>` skill mentions.
+- OpenCode вызывает rnd/bug/review/commit через `@<name>`.
 
-### Removed
+### Удалено
 
-- OpenCode installer no longer generates the `/dev/rnd`, `/dev/bug`, `/dev/review` and `/dev/commit` commands; updating removes them.
+- OpenCode installer больше не создает `/dev/rnd`, `/dev/bug`, `/dev/review`, `/dev/commit`; update их удаляет.
 
 ## [0.41.1] - 2026-10-23
 
-### Changed
+### Изменено
 
-- `commit` states each rule once and ends with the step 5 report.
-- `commit` message format lists plain verbs without a banned-verb list.
-- `rnd` and `bug` keep the handoff rule only in the introduction; `rnd` clarifies code first, then a fuzzy domain term.
-- `review-quality` and `review-testing` defer naming findings to the severity bar; `review-simplification` reports large in-scope fixes in reviewer terms.
-- Agent launch reference drops client-testing guidance, now in the dev contributing guide.
-- `review` heading uses the lowercase command name.
+- Commit формулирует правило один раз, заканчивает отчетом шага 5.
+- Commit format дает простые глаголы без списка запрещенных.
+- Rnd/bug оставляют handoff лишь во введении; rnd сначала изучает код, затем неясный термин.
+- `review-quality`/`review-testing` передают naming findings severity bar; `review-simplification` описывает большие in-scope fixes как reviewer.
+- Client-testing guidance перенесен из agent launch в contributor guide.
+- Заголовок review использует lowercase имя команды.
 
 ## [0.41.0] - 2026-10-23
 
-### Changed
+### Изменено
 
-- `commit` description covers requests with limits such as "commit only X" and routes every commit through the skill.
+- Commit description охватывает ограниченные запросы ("commit only X") и все коммиты ведет через скилл.
 
-### Fixed
+### Исправлено
 
-- `bug` repeat rule leaves `root-cause.md` and the open ticket unchanged on the same confirmed cause.
-- `commit` message format forbids body and trailer lines unless requested.
+- Bug сохраняет `root-cause.md`/open ticket при той же подтвержденной причине.
+- Commit format запрещает body/trailers без запроса.
 
 ## [0.40.1] - 2026-10-22
 
-### Changed
+### Изменено
 
-- README no longer describes the optional `revdiff-planning` companion.
+- README больше не описывает необязательный revdiff-planning.
 
 ## [0.40.0] - 2026-10-21
 
-### Added
+### Добавлено
 
-- OpenCode 2 installer `opencode/install.py`: copies this version into the OpenCode config directory, registers its skills and writes the `dev/review-*` subagents, the `/dev/<name>` commands and a `/plan` command when none exists.
-- `agent launch` OpenCode route: the `subagent` tool with the installed `dev/<role>` agents and their host-enforced permissions.
-- Client scenarios for OpenCode installation, invocation, the `/plan` handoff and the review launch.
+- OpenCode 2 installer `opencode/install.py`: копирует версию в config, регистрирует skills, `dev/review-*` subagents, `/dev/<name>` и `/plan`, если его нет.
+- Agent launch OpenCode: subagent с установленными `dev/<role>` и host permissions.
+- Сценарии установки, invocation, /plan и review launch OpenCode.
 
-### Changed
+### Изменено
 
-- `rnd`, `bug`, `review` and `commit` descriptions name the OpenCode `/dev/<name>` invocation.
-- `rnd` and `bug` suggest `/plan <ticket-path>` in OpenCode too.
-- README covers OpenCode installation and the steps verified in OpenCode.
+- Rnd/bug/review/commit descriptions называют OpenCode `/dev/<name>`.
+- Rnd/bug предлагают `/plan <ticket-path>` и в OpenCode.
+- README описывает установку/проверенные шаги OpenCode.
 
 ## [0.39.0] - 2026-10-21
 
-### Added
+### Добавлено
 
-- `review-verify` role: one verifier checks every merged `review` candidate and returns confirmed, plausible or refuted with quoted evidence.
-- `review` keeps plausible findings, at most major, with what would confirm them; the summary and tickets mark them.
-- `review` lead conventions check: a changed line that breaks a quoted rule of a governing `CLAUDE.md` or `AGENTS.md`.
-- `review-simplification` checks reuse of existing helpers and fixes at the wrong depth.
-- `review-quality` checks moved code that lost a guard and wrappers that bypass the wrapped instance.
+- Review-verify проверяет каждого объединенного кандидата, возвращает confirmed/plausible/refuted с цитатой.
+- Review сохраняет plausible не выше major, с подтверждением в summary/tickets.
+- Собственная conventions check цитирует правило `CLAUDE.md`/`AGENTS.md` и нарушенную строку.
+- `review-simplification` проверяет reuse и неверный уровень fix.
+- `review-quality` проверяет потерянные при переносе guards и wrappers, обходящие экземпляр.
 
-### Changed
+### Изменено
 
-- `review` VERIFY applies the verifier's verdicts instead of the orchestrator's own checks.
-- Finder roles report a `Scenario:` line; `review-quality` passes an uncertain trigger to verification instead of dropping it.
-- Review report requires `verdict:` on findings and dismissals; reports without it are invalid and start a new sweep.
+- Review VERIFY применяет verdict verifier вместо собственных проверок.
+- Finders дают `Scenario:`; quality передает неясный trigger verifier вместо удаления.
+- Report требует `verdict:` у findings/dismissals, старый без verdict невалиден и запускает новый проход.
 
 ## [0.38.3] - 2026-10-18
 
-### Changed
+### Изменено
 
-- README names the steps verified in Codex and adds the one-command Claude Code install.
-- `rnd`, `bug`, `review` and `commit` descriptions name the Codex `$dev:<name>` invocation.
+- README называет проверенные Codex шаги и однокомандную установку Claude Code.
+- Descriptions rnd/bug/review/commit называют Codex `$dev:<name>`.
 
-### Removed
+### Удалено
 
-- Author email from the Claude Code manifest.
+- Email автора из Claude Code manifest.
 
 ## [0.38.2] - 2026-10-17
 
-### Added
+### Добавлено
 
-- README names revdiff-planning as an optional `/plan` companion, verified in Claude Code.
+- README называет revdiff-planning необязательным /plan companion, проверенным Claude Code.
 
 ## [0.38.1] - 2026-10-16
 
-### Fixed
+### Исправлено
 
-- Client scenarios for `review` restore the fixture's `.scratch/` before each ticket answer and ignore `.scratch/` entirely.
-- Client scenarios ask for a fresh sweep on repeated `review` runs, and "Checked requirements" stages a diff on a feature branch.
-- Client scenarios expect the feature's `spec.md` with the resolved ticket in `review` Requirements.
+- Review scenarios восстанавливают fixture .scratch/ перед каждым ticket answer, полностью игнорируют .scratch/.
+- Повторное review явно запрашивает fresh sweep; Checked requirements stage-ит diff feature branch.
+- Requirements ожидает spec.md вместе с resolved ticket.
 
 ## [0.38.0] - 2026-10-16
 
-### Changed
+### Изменено
 
-- `review` tickets list each finding's location and Problem under What to build.
-- `review` writes `Branch:` on the base branch too; only a detached HEAD drops it.
-- `review` checks findings against open tickets under `.scratch/reviews/<branch-slug>/issues/` and in the resolved feature's `issues/`.
-- `bug` stops and asks on a repeat with a new confirmed cause while the fix ticket is open: update its criteria or close it.
-- The `ticket` reference no longer lists command branch values; `bug` takes the project's branch rule with `<type>` `fix`.
+- Review tickets включают location/Problem каждого finding в What to build.
+- `Branch:` записывается и на base branch, опускается только detached HEAD.
+- Review ищет покрытие в открытых `.scratch/reviews/<branch-slug>/issues/` и `issues/` установленной функции.
+- Bug при новой причине и open fix ticket спрашивает до записи: обновить приемку или закрыть.
+- Ticket reference убирает список command branch values; bug берет project rule с `<type>` = fix.
 
-### Fixed
+### Исправлено
 
-- Staged `review` and its report currency no longer depend on `origin/HEAD`, `main` or `master`.
-- Staged `review` reads a ticket's status and `Branch:` from the same version as its text.
-- `review` keeps the ticket path of a covered finding after the answer instead of setting `none`.
+- Staged review/currency не зависят от origin/HEAD/main/master.
+- Status/Branch ticket читаются из той же staged-версии текста.
+- Покрытый finding сохраняет ticket path после ответа вместо none.
 
 ## [0.37.1] - 2026-10-16
 
-### Fixed
+### Исправлено
 
-- Ticket reference no longer requires one branch for every ticket of a feature, matching the `Branch:` values `bug` and `review` write.
+- Ticket reference не требует общей ветки всех tickets, соответствует `Branch:`, записанным bug/review.
 
 ## [0.37.0] - 2026-10-16
 
-### Changed
+### Изменено
 
-- `bug` writes the next fix ticket on a repeat when the existing one is `resolved` or `wontfix`.
-- Client scenarios cover the `bug` repeat after a resolved ticket, `ready-for-human` and clarification markers in plan mode, the clear-request handoff to `/plan`, `review` of a feature or ticket path, the lead documentation check and tickets on the base branch.
+- Bug пишет следующий fix ticket, если прежний resolved/wontfix.
+- Сценарии покрывают resolved repeat, `ready-for-human`/clarification в Plan Mode, clear-request /plan, review feature/ticket, documentation check, base-branch tickets.
 
 ## [0.36.0] - 2026-10-16
 
-### Changed
+### Изменено
 
-- `review` tickets start with a criterion checkable at close: each finding reproduced before the change, a finding that did not is named and its criteria removed, `wontfix` only when none reproduced.
-- The `ticket` reference lets the executor remove the criteria of a review finding that did not reproduce and set `wontfix` only when none did.
-- `review` without an argument also reads resolved tickets of the current branch under `.scratch/reviews/<branch-slug>/issues/`.
-- `review` links a finding an open ticket already covers to that ticket under `Already ticketed:` instead of proposing it again; `review.md` records that path in `ticket:`.
-- `agent launch` no longer mentions saved notes in the reviewer packet.
+- Review ticket начинает приемку с воспроизведения до fix; невоспроизведенное названо/критерии сняты, wontfix лишь если ничто не воспроизвелось.
+- Ticket reference разрешает исполнителю снять такие критерии, wontfix лишь при полном невоспроизведении.
+- Review без аргумента читает resolved tickets текущей ветки в `.scratch/reviews/<branch-slug>/issues/`.
+- Покрытое открытым ticket уходит в `Already ticketed:` вместо нового предложения, `review.md` сохраняет путь в `ticket:`.
+- Agent launch убирает saved notes из пакета reviewer.
 
 ## [0.35.0] - 2026-10-16
 
-### Changed
+### Изменено
 
-- `review` ends with recommended tickets as groups of finding numbers: one per critical or major finding unless a named reason joins them, a minor finding with the major one that touches the same place, and the remaining minor findings together.
-- `review` takes the answer as finding numbers ("1, 3", "all", "7 separately", "1 and 3 together", "none"); selected findings follow their recommended groups.
-- `review` names an open user choice with a recommendation and splits the finding into its own `needs-info` ticket only when the answer leaves the choice open.
-- `review.md` records `ticket: proposed <finding numbers>` until the answer.
+- Review предлагает группы номеров: отдельный critical/major без причины объединения, minor с major того же места, остальные minor вместе.
+- Ответ - номера ("1, 3", "all", "7 separately", "1 and 3 together", "none"), выбранное следует группам.
+- Review показывает открытый выбор/рекомендацию; нерешенное замечание получает отдельный needs-info.
+- `review.md` до ответа хранит `ticket: proposed <finding numbers>`.
 
-### Removed
+### Удалено
 
-- `T<n>` labels of proposed tickets in `review`.
+- Метки `T<n>` предлагаемых tickets.
 
 ## [0.34.0] - 2026-10-16
 
-### Changed
+### Изменено
 
-- `rnd` sends an already clear task to the client's `/plan` instead of `/dev:plan`.
-- `commit` and the `commit format` reference serve standalone commits only.
-- `agent launch` covers only the three review roles.
-- The `ticket` reference no longer mentions `## Implementation`; the executor under `Done when` alone sets `ready-for-human` and `resolved`.
+- Rnd передает ясное клиентскому /plan вместо /dev:plan.
+- Commit/commit format только для самостоятельных коммитов.
+- Agent launch покрывает лишь три review roles.
+- Ticket reference не упоминает `## Implementation`; статусы ready-for-human/resolved ставит executor Done when.
 
-### Removed
+### Удалено
 
-- `plan` and `exec` commands, with the implementation template and the `exec no commits` option.
-- `worker` role.
-- `checks/` directory of the feature.
+- Команды `plan`/`exec`, шаблон реализации и режим `exec no commits`.
+- Роль `worker`.
+- Каталог `checks/` функции.
 
 ## [0.33.0] - 2026-10-16
 
-### Added
+### Добавлено
 
-- `review` ends with proposed tickets, combining findings with one cause, one fix or overlapping edits, and creates only the ones the user picks in text.
-- `ticket:` field on each finding in `review.md`.
-- Expected-load check in `review-quality`.
+- Review предлагает tickets, объединяя общую причину/fix/перекрытие, создает лишь выбранное текстом.
+- Поле `ticket:` у каждого finding в `review.md`.
+- Проверка ожидаемой нагрузки в `review-quality`.
 
-### Changed
+### Изменено
 
-- `review` has one mode: staged changes, otherwise the branch against its base; it stops on the base branch with nothing staged.
-- `review` checks requirements and documentation itself and summarizes findings with what, problem, fix and the cost of skipping it.
-- `review` finds requirements through the resolved tickets whose `Branch:` field names the current branch.
-- `review.md` replaces `## Mode` with `## Sweep`.
-- The `ticket` reference lets the executor set `wontfix` under the first criterion of a review ticket.
+- Один review mode: staged, иначе branch против base; empty index на базе останавливает.
+- Review сам проверяет требования/docs, summary дает назначение, проблему, fix, цену отказа.
+- Требования находятся по resolved tickets с `Branch:` текущей ветки.
+- Report заменяет `## Mode` на `## Sweep`.
+- Ticket reference допускает wontfix по первому критерию review ticket.
 
-### Removed
+### Удалено
 
-- `fix` command.
-- `review quick`, the `staged` and code path selectors and the `fix` argument.
-- `review-implementation` and `review-documentation` roles.
-- `fix:`, `fixed at:`, `re-check:`, `result:` and `mode:` fields of `review.md`, and the `review_phase: recheck` marker.
+- Команда `fix`.
+- Режим `review quick`, селекторы staged/пути и аргумент fix.
+- Роли `review-implementation`/`review-documentation`.
+- Поля `fix:`, `fixed at:`, `re-check:`, `result:`, `mode:` и marker `review_phase: recheck`.
 
 ## [0.32.0] - 2026-10-16
 
-### Added
+### Добавлено
 
-- `ticket` reference owning the ticket template, numbering, fields and statuses for `rnd`, `bug` and `plan`.
-- Optional `Branch:` field and a verbatim `Done when` section in the ticket template, so harness plan mode can execute a ticket with `/plan <ticket-path>`.
+- Ticket reference владеет template, номерами, полями/статусами rnd/bug/plan.
+- Необязательный `Branch:` и дословный Done when для `/plan <ticket-path>` в harness Plan Mode.
 
-### Changed
+### Изменено
 
-- `bug` writes one fix ticket for a confirmed cause and none for an unconfirmed one.
-- `rnd` and `bug` suggest `/plan <ticket-path>` at the handoff.
-- `rnd` proposes a `Branch:` line for each ticket; `bug` sets `fix/<feature-slug>`.
-- `plan` drafts new tickets by the `ticket` reference.
-- `exec` does not apply a ticket's `Done when` section.
+- Bug пишет один fix ticket подтвержденной причины, ни одного неподтвержденной.
+- Rnd/bug предлагают `/plan <ticket-path>`.
+- Rnd предлагает `Branch:` каждому ticket; bug ставит `fix/<feature-slug>`.
+- Plan пишет новые tickets по reference.
+- Exec не исполняет Done when ticket.
 
 ## [0.31.0] - 2026-10-16
 
-### Changed
+### Изменено
 
-- `review quick` runs `review-quality` and `review-implementation` with their normal bounds and no longer covers tests, simplification or documentation.
-- `fix` commits with a scoped `fix(<scope>): address review findings` message.
+- Review quick запускает `review-quality`/`review-implementation` в обычных границах без tests/simplification/docs.
+- Fix коммитит `fix(<scope>): address review findings`.
 
-### Removed
+### Удалено
 
-- The `review_mode: quick` prompt marker and the quick-mode sections of `review-quality` and `review-implementation`.
+- Prompt marker review_mode: quick и quick-mode секции ролей quality/implementation.
 
 ## [0.30.1] - 2026-10-16
 
-### Changed
+### Изменено
 
-- `review` and `fix` read the severity bar and finding verification from the `findings` reference.
-- `review` and `fix` read the report format, validation and currency rules from the `review-report` reference.
-- `commit` and `exec` read the message format and Git rules from the `commit-format` reference.
-- `rnd`, `plan` and `bug` read feature location, local storage, tracker input, external specs and domain documents from the `feature-directory` reference.
-- The `agent-launch` reviewer packet is the single packet definition for `review` and `fix` and carries the read-only check rule.
+- Review/fix читают severity/verification из findings.
+- Review/fix читают format/validation/currency из review-report.
+- Commit/exec читают message/Git rules из commit-format.
+- Rnd/plan/bug читают location/storage/tracker/external specs/domain из feature-directory.
+- Agent-launch - единый reviewer packet review/fix с read-only checks.
 
 ## [0.30.0] - 2026-10-16
 
-### Added
+### Добавлено
 
-- `rnd` saves research results and their raw data under the feature's `research/` directory.
-- `bug` saves investigation probes under the feature's `research/` directory.
-- `plan` places a ticket's local checks in the feature's `checks/<NN>-<slug>/` directory.
+- Rnd сохраняет исследование/raw data в research/ функции.
+- Bug сохраняет probes в research/.
+- Plan кладет local checks в `checks/<NN>-<slug>/`.
 
-### Changed
+### Изменено
 
-- `exec` records a `Branch:` line in the ticket for every new start with commits.
-- `review` finds resolved tickets of an ignored `.scratch/` by their `Branch:` line.
+- Exec пишет `Branch:` для каждого нового старта с коммитами.
+- Review находит resolved tickets ignored .scratch/ по `Branch:`.
 
 ## [0.29.3] - 2026-10-14
 
-### Changed
+### Изменено
 
-- `commit` derives the message scope from the changed area and stops only on an unclear type.
+- Commit определяет scope по области, останавливается лишь при неясном type.
 
-### Removed
+### Удалено
 
-- `commit` no longer restates the branch naming rule.
+- Повтор branch naming rule в commit.
 
 ## [0.29.2] - 2026-10-14
 
-### Added
+### Добавлено
 
-- `review-quality` checks the contracts that comments on the changed code state.
-- `review-quality` checks retries, restarts, concurrent instances, unenforced assumptions and unvalidated data from files, the network, subprocesses and the environment.
+- `review-quality` проверяет контракты комментариев измененного кода.
+- `review-quality` проверяет retries/restarts/instances, необеспеченные допущения и непроверенные входы file/network/subprocess/environment.
 
 ## [0.29.1] - 2026-10-13
 
-### Fixed
+### Исправлено
 
-- Codex plugin metadata enables discovery of the seven dev commands in BB.
+- Codex plugin metadata включает discovery семи dev commands в BB.
 
 ## [0.29.0] - 2026-10-08
 
-### Changed
+### Изменено
 
-- `exec` names the next ticket from a fresh read, with `plan` for an unplanned ticket and `exec` for a planned one.
-- `exec` asks once before committing a new start on the review base branch.
-- `plan` writes without a separate approval turn when invoked on an existing ticket path with no open question.
-- `plan` pairs each acceptance criterion with its task checkbox before writing and asks when their literal values differ.
-- `plan` proposes a concrete spec revision when an answer changes a recorded decision.
-- Client scenarios cover unplanned tickets at `exec`, the next-ticket handoff, default-branch starts, named-ticket plans and spec revisions.
+- Exec заново читает следующий ticket: plan для непланированного, exec для планированного.
+- Exec один раз спрашивает перед новым committing start на review base branch.
+- Plan пишет по существующему ticket без отдельного approval turn, если вопросов нет.
+- Plan перед записью сопоставляет приемку/task checkboxes, спрашивает при буквальном несовпадении.
+- Plan предлагает точную spec revision, когда ответ меняет принятое решение.
+- Сценарии покрывают unplanned/next-ticket/base starts/named plans/spec revision.
 
 ## [0.28.0] - 2026-10-05
 
-### Changed
+### Изменено
 
-- `rnd`, `plan` and `bug` read an existing domain glossary and decision records for the affected area, read-only.
-- `rnd` marks an approach that contradicts a recorded decision; `plan` carries applicable terms and decisions into Conventions.
-- `review-documentation`, and `review-implementation` in quick mode, report a glossary or decision record the diff made stale.
+- Rnd/bug/plan read-only читают существующие глоссарий/решения затронутой области.
+- Rnd показывает противоречащий решению подход; plan переносит термины/решения в Conventions.
+- `review-documentation` и `review-implementation` в quick сообщают устаревший из-за diff glossary/decision record.
 
 ## [0.27.2] - 2026-09-18
 
-### Changed
+### Изменено
 
-- Condense every changelog entry to one-line bullets and state the entry format in CONTRIBUTING.
+- CHANGELOG сокращен до однострочных bullets, формат задан CONTRIBUTING.
 
 ## [0.27.1] - 2026-09-18
 
-### Fixed
+### Исправлено
 
-- `rnd` skips tickets with bare or bold Type fields when selecting an implementation ticket for the plan handoff.
+- Rnd пропускает ordinary/bold Type при выборе implementation ticket для plan handoff.
 
 ## [0.27.0] - 2026-09-18
 
-### Changed
+### Изменено
 
-- `rnd` and `plan` use local Markdown storage only, with no tracker configuration, backend selection or assumed external commands.
-- `rnd` accepts approved specs and compatible local artifacts and preserves decisions, blockers and existing history during slicing.
-- `rnd` classifies decision inputs, requires remote source, parent and blocker evidence, and rejects breakdowns that pass checks only at final integration.
-- `plan` reports missing execution plans from observed state.
+- Rnd/plan только local Markdown, без tracker config/backend/выдуманных внешних команд.
+- Rnd принимает approved specs/совместимые артефакты, сохраняет решения/блокеры/историю при slicing.
+- Rnd классифицирует decision inputs, требует source/parent/blocker evidence, отвергает части, проверяемые лишь финальной интеграцией.
+- Plan сообщает missing execution plans по наблюдаемому.
 
 ## [0.26.0] - 2026-09-18
 
-### Changed
+### Изменено
 
-- Simplify the user and contributor guides around command selection.
-- `plan` separates new-ticket planning from frontier selection, blocks fix plans on unconfirmed causes and keeps unresolved hypotheses until evidence rejects them.
-- `exec` checks clarification markers before starting and reconciles completed commits before re-running checks.
-- `exec` requires complete worker packets and stops on partial results.
-- `review` and `fix` read checked acceptance criteria as requirements and share report gates.
-- `commit` activates only for standalone requests and preserves unrelated staged and unstaged changes.
-- Guides document instruction contracts and repeatable scenarios instead of line-count targets.
+- Руководства упрощены вокруг выбора команды.
+- Plan отделяет new-ticket planning от frontier, блокирует fix неподтвержденной причины, сохраняет гипотезы до опровержения.
+- Exec проверяет clarification до старта, сверяет completed commits до повторных checks.
+- Exec требует полных worker packets, останавливается при partial result.
+- Review/fix читают отмеченную приемку как требования, разделяют report gates.
+- Commit только standalone, сохраняет постороннее staged/unstaged.
+- Guides описывают контракты/повторяемые сценарии вместо line-count targets.
 
 ## [0.25.0] - 2026-09-17
 
-### Changed
+### Изменено
 
-- `exec`, `review` and `fix` share explicit context packets and capability checks, with fresh-context launches beside native named agents.
-- `review` schedules every required reviewer within available agent capacity.
-- Guides document prompt-only tool restrictions, client compatibility limits and reproducible client scenarios.
+- Exec/review/fix используют явные packets/capability checks, fresh-context наряду с native named agents.
+- Review планирует всех обязательных reviewers по доступной емкости.
+- Guides описывают prompt-only, пределы клиентов и воспроизводимые сценарии.
 
 ## [0.24.0] - 2026-09-17
 
-### Changed
+### Изменено
 
-- `rnd`, `bug`, `plan`, `exec`, `review` and `fix` require explicit invocation in Codex as in Claude Code; `commit` still accepts natural-language commit requests.
-- Discussion, quotations and handoffs never invoke a command.
+- Rnd/bug/plan/exec/review/fix требуют явного вызова Codex, как Claude Code; commit принимает natural-language requests.
+- Обсуждение, цитаты и handoff не вызывают команды.
 
 ## [0.23.4] - 2026-09-10
 
-### Changed
+### Изменено
 
-- `rnd` and `plan` templates move into skill-local assets.
+- Rnd/plan templates перенесены в skill-local assets.
 
 ## [0.23.3] - 2026-09-10
 
-### Changed
+### Изменено
 
-- Guides are rewritten concisely with centralized client setup and links to the owning instructions.
+- Guides кратко переписаны с централизованным client setup/ссылками на владельцев правил.
 
 ## [0.23.2] - 2026-09-10
 
-### Changed
+### Изменено
 
-- Guides add Codex setup, skill invocation and isolated local preview instructions.
+- Guides добавляют Codex setup, invocation, isolated preview.
 
 ## [0.23.1] - 2026-09-10
 
-### Changed
+### Изменено
 
-- Guides document installation in both clients, command routing, no-commit execution, review scope and commit activation.
+- Guides описывают оба клиента, routing/no-commit/review scope/commit activation.
 
 ## [0.23.0] - 2026-09-07
 
-### Added
+### Добавлено
 
-- `exec` saves worker decisions and deviations in the ticket's Comments and passes them to later workers.
-- `exec` records the current task, git mode, starting commit and remaining step, and reconciles interrupted work on the next invocation.
+- Exec сохраняет worker decisions/deviations в Comments и передает следующим.
+- Exec записывает task/git mode/start commit/остаток и сверяет прерванное при новом вызове.
 
-### Changed
+### Изменено
 
-- `exec` resumes preserve `no commits` and stop on changes not attributable to the interrupted work.
-- Tracked tickets use the task commit as their receipt without a separate bookkeeping commit.
+- Resume exec сохраняет no commits, останавливается при неатрибутируемых изменениях.
+- Tracked ticket получает task commit как receipt, без bookkeeping commit.
 
 ## [0.22.2] - 2026-09-07
 
-### Changed
+### Изменено
 
-- `rnd` shows current behavior, change points and reusable code before discussing approaches and records findings in the spec.
-- `plan` carries applicable decisions and exclusions into task text or Conventions.
+- Rnd до подходов показывает поведение, точки правки/reuse и пишет находки в spec.
+- Plan переносит решения/исключения в task text или Conventions.
 
 ## [0.22.1] - 2026-09-07
 
-### Changed
+### Изменено
 
-- `review` and `fix` share one severity bar passed to every reviewer.
-- Verification traces reachable triggers, cites evidence and separates demonstrated defects from inferred consequences.
-- Unclear or misspelled identifiers are minor findings; style alone is not a finding.
+- Review/fix используют одну severity bar каждому reviewer.
+- Verification прослеживает reachable triggers, цитирует, отличает доказанное от выведенного.
+- Неясные/ошибочные identifiers - minor; стиль сам не finding.
 
 ## [0.22.0] - 2026-09-06
 
-### Added
+### Добавлено
 
-- `fix` applies a saved review report, verifies open findings and commits code before recording the outcome.
-- `review` persists confirmed findings, dismissal reasons and follow-ups in `review.md` across sessions.
-- `review quick` runs two reviewers with wider duties and records that mode.
+- Fix применяет saved report, проверяет open findings, коммитит код до записи результата.
+- Review сохраняет confirmed/dismissals/follow-ups в `review.md` между сессиями.
+- Review quick запускает двух более широких reviewers, пишет mode.
 
-### Changed
+### Изменено
 
-- `review` writes only the report; `fix` owns the bounded re-check.
-- `review-quality` and `review-implementation` accept `review_phase: recheck`.
-- Test runs may create disposable caches and build output while tracked files stay untouched.
+- Review пишет лишь report; fix владеет bounded re-check.
+- `review-quality`/`review-implementation` принимают `review_phase: recheck`.
+- Test runs могут создавать disposable caches/build, tracked не меняются.
 
-### Removed
+### Удалено
 
-- `fix` as a `review` argument.
+- Fix как argument review.
 
 ## [0.21.0] - 2026-09-06
 
-### Added
+### Добавлено
 
-- `exec` reopens a `resolved` ticket passed as the argument after naming the invalidated criteria and asking.
-- `exec` passes each worker the acceptance criteria its task serves as `Serves:` lines and checks the task's changes against them before the commit.
-- `review` accepts a ticket path or feature directory as the goal.
-- `worker` reports each verification command exactly as run and whether it ran after the last edit.
+- Exec переоткрывает переданный resolved ticket после называния нарушенной приемки/вопроса.
+- Exec передает связанную приемку как `Serves:` и сверяет task changes до commit.
+- Review принимает ticket/feature как цель.
+- Worker сообщает точные команды и запуск после последней правки.
 
-### Changed
+### Изменено
 
-- `exec` closes the ticket before the last task's commit and runs the full suite and linter once at the close.
-- `exec` does not re-run a passing task test the worker already ran after its last edit.
-- `plan` drops the `3-7 tasks` bound and the final verify task, offers a direct edit for single-step requests, and owns the `needs-info` and `ready-for-agent` status values.
-- `review` records the base commit for the `staged` scope, reads resolved tickets from the diff, and ends after the third re-check with remaining findings reported as unresolved.
-- `bug` drops the `3-5 hypotheses` floor.
+- Exec закрывает ticket до последнего task commit, полный suite/linter один раз при закрытии.
+- Exec не повторяет уже успешный после последней worker edit тест.
+- Plan убирает 3-7 tasks/final verify task, предлагает direct edit для одношагового, владеет needs-info/ready-for-agent.
+- Review пишет base для staged, читает resolved из diff, после третьего re-check остаток unresolved.
+- Bug убирает минимум 3-5 гипотез.
 
 ## [0.20.1] - 2026-09-05
 
-### Changed
+### Изменено
 
-- Worker results may include `Decisions` and `Deviations`; `exec` and `review fix` carry them into final reports.
-- `review` passes finding verification and fix history to both re-check agents.
+- Worker results могут содержать Decisions/Deviations, exec/review fix передают в final report.
+- Review передает verification/fix history обоим re-check agents.
 
 ## [0.20.0] - 2026-08-29
 
-### Added
+### Добавлено
 
-- `rnd` slices the spec into tickets written as `issues/NN-<slug>.md` in dependency order.
-- `exec` walks the ticket frontier, takes one ticket per run and writes `**Status:**` values (`claimed`, `resolved`, `ready-for-human`, `needs-info`).
-- `rnd` and `plan` check the tracker configuration before the first write into a new feature directory.
-- `rnd`, `bug` and `plan` never write into a directory that holds a `map.md`.
-- `plan` self-checks task headings, checkbox placement and blocker order.
+- Rnd делит spec на `issues/NN-<slug>.md` по зависимостям.
+- Exec идет по frontier, один ticket/run, пишет `**Status:**` claimed/resolved/ready-for-human/needs-info.
+- Rnd/plan проверяют tracker config до первой записи новой функции.
+- Rnd/bug/plan не пишут в каталог с map.md.
+- Plan сам проверяет headings/checkboxes/blocker order.
 
-### Changed
+### Изменено
 
-- Artifacts move to `.scratch/<feature-slug>/`: `spec.md`, `root-cause.md` and tickets under `issues/`.
-- `rnd` writes `spec.md` with seven fixed headings.
-- `plan` appends `## Conventions` and `## Implementation` to one ticket instead of writing a plan file.
-- `exec` commits code and ticket together when git tracks the ticket, and code alone otherwise.
-- `review` takes the goal from the ticket and writes no status line.
-- README and CONTRIBUTING describe features, tickets, status values and the frontier rule.
+- Артефакты в `.scratch/<feature-slug>/`: `spec.md`, `root-cause.md`, `issues/`.
+- Rnd пишет spec с семью заголовками.
+- Plan добавляет `## Conventions`/`## Implementation` в ticket вместо plan file.
+- Exec коммитит code+tracked ticket вместе, иначе только code.
+- Review берет цель ticket без status line.
+- README/CONTRIBUTING описывают features/tickets/status/frontier.
 
-### Deprecated
+### Устарело
 
-- The story directory, with no migration.
+- Story directory, без миграции.
 
 ## [0.19.2] - 2026-08-11
 
-### Added
+### Добавлено
 
-- `review-quality` checks what each deleted or replaced line took away.
+- `review-quality` проверяет смысл каждой удаленной/замененной строки.
 
-### Changed
+### Изменено
 
-- `review-quality` reads the enclosing function in full and names concrete correctness traps.
-- `review-testing` covers mismatched setup and teardown.
+- `review-quality` читает enclosing function целиком и называет конкретные ловушки.
+- `review-testing` покрывает несовпадающие setup/teardown.
 
 ## [0.19.1] - 2026-08-11
 
-### Changed
+### Изменено
 
-- `rnd`, `bug` and `plan` accept a local ticket path on the `- Tracker:` line.
+- Rnd/bug/plan принимают local ticket на строке `- Tracker:`.
 
 ## [0.19.0] - 2026-08-09
 
-### Added
+### Добавлено
 
-- `review` is read-only by default; `review fix` applies confirmed findings through a `worker`, commits and re-checks.
-- `review` ends with a report that names dismissed findings.
+- Review read-only по умолчанию; review fix применяет confirmed через worker, коммитит/re-check.
+- Report review называет dismissed.
 
-### Changed
+### Изменено
 
-- `review` runs a five-agent sweep and a two-agent re-check gated on confirmed critical or major findings.
-- `worker` accepts a list of confirmed review findings as a unit of work.
-- `exec` and `plan` point to `review fix` beside `review`.
+- Review: пять agents, затем два re-check лишь при confirmed critical/major.
+- Worker принимает список confirmed findings единицей работы.
+- Exec/plan указывают review fix рядом с review.
 
-### Fixed
+### Исправлено
 
-- `review` scope selectors (`staged`, a path) reach the agents; the `PR / MR URL` selector is removed.
-- `review-implementation` and `review-documentation` handle a branch with no plan or stated goal.
-- `plan` fills `## Conventions` and passes it through the `plan -> exec` contract.
+- Selectors staged/path доходят reviewers; `PR / MR URL` удален.
+- `review-implementation`/`review-documentation` работают с branch без plan/цели.
+- Plan заполняет `## Conventions`, передает plan -> exec.
 
 ## [0.18.0] - 2026-08-09
 
-### Changed
+### Изменено
 
-- `rnd`, `bug`, `plan`, `exec` and `review` become type-only (`disable-model-invocation: true`); `commit` keeps model invocation.
-- `rnd`, `bug` and `plan` carry the tracker-ticket rule again.
+- Rnd/bug/plan/exec/review type-only (disable-model-invocation: true), commit сохраняет model invocation.
+- Rnd/bug/plan снова несут tracker-ticket rule.
 
-### Removed
+### Удалено
 
-- The SessionStart hook and `hooks/`.
+- SessionStart hook и hooks/.
 
 ## [0.17.0] - 2026-08-08
 
-### Changed
+### Изменено
 
-- The plugin is renamed from `nxs` to `dev` and moves to `plugins/dev/`; commands read `/dev:<name>` and agents `dev:<name>`.
-- CONTRIBUTING and README are scoped to the plugin; repository-wide rules move to the root.
-- `docs/nxs/` stays as the artifact path.
+- Plugin nxs -> dev в `plugins/dev/`; команды `/dev:<name>`, agents `dev:<name>`.
+- CONTRIBUTING/README ограничены plugin, repository-wide rules в корне.
+- docs/nxs/ остается путем артефактов.
 
-### Fixed
+### Исправлено
 
-- `review-simplification` frontmatter parses again.
+- Frontmatter review-simplification снова валиден.
 
 ## [0.16.1] - 2026-08-08
 
-### Changed
+### Изменено
 
-- `commit` description names its trigger: any request to commit work outside `exec`.
+- Commit description называет trigger: просьба коммитить вне exec.
 
 ## [0.16.0] - 2026-08-08
 
-### Changed
+### Изменено
 
-- CONTRIBUTING gains a ubiquitous-language table and covers all three handoff contracts.
-- `rnd` and `bug` name the story, slug and date rules; `task` becomes `request` in `rnd`.
-- `plan` reads the source artifact by its headings and never overwrites an existing `plan.md` silently.
-- `review-implementation` accepts requirements from the root cause.
+- CONTRIBUTING добавляет ubiquitous-language table и все три handoff contracts.
+- Rnd/bug называют story/slug/date rules; task в rnd становится request.
+- Plan читает source по заголовкам, не затирает plan.md молча.
+- `review-implementation` принимает требования root cause.
 
-### Removed
+### Удалено
 
-- The archiving rule from `plan` and `exec`; archiving is a user action.
+- Archiving rule plan/exec; архивирует пользователь.
 
 ## [0.15.0] - 2026-08-08
 
-### Changed
+### Изменено
 
-- `review` launches five agents in parallel, verifies candidates, fixes confirmed findings and commits, up to three rounds.
-- `plan` absorbs `plancheck` and `plan-conventions`, including the template and decomposition rules.
-- `exec` runs the plan straight through, committing each green task.
-- `commit` absorbs `commit-conventions`.
-- `rnd` and `bug` are shortened.
+- Review запускает пять agents параллельно, проверяет, исправляет confirmed/коммитит до трех раундов.
+- Plan поглощает plancheck/plan-conventions с template/decomposition.
+- Exec выполняет план целиком, коммитит каждую green task.
+- Commit поглощает commit-conventions.
+- Rnd/bug сокращены.
 
-### Added
+### Добавлено
 
-- `review-quality`, `review-implementation`, `review-testing`, `review-simplification` and `review-documentation` as self-contained read-only reviewers.
+- `review-quality`, `review-implementation`, `review-testing`, `review-simplification`, `review-documentation` - самодостаточные read-only reviewers.
 
-### Removed
+### Удалено
 
-- The background skill tier, `plancheck`, `plan-reviewer`, the two old review lenses, the development approaches, the review step inside `exec` and `examples/`.
+- Background skill tier, plancheck, plan-reviewer, две старые review lenses, development approaches, review внутри exec, examples/.
 
 ## [0.14.0] - 2026-07-31
 
-### Changed
+### Изменено
 
-- A plan task is one complete capability across every layer; `plan-conventions` targets 2-5 tasks with 7 as the ceiling and names the split criteria.
-- `exec` measures the large-diff stop against the task's Files block and raises the review-fix cap to five rounds.
-- `plancheck` treats slicing as a NIT, never a BLOCK.
+- Plan task - полная способность через слои; plan-conventions нацелен на 2-5 задач, потолок 7, задает критерии деления.
+- Exec сравнивает large diff с Files задачи, поднимает review-fix до пяти раундов.
+- Plancheck считает slicing NIT, не BLOCK.
 
-### Removed
+### Удалено
 
-- The `~5 checkboxes per task` target and its split and merge thresholds.
+- Цель ~5 checkboxes/task и split/merge thresholds.
 
 ## [0.13.1] - 2026-07-28
 
-### Removed
+### Удалено
 
-- `## RULES` recap sections, duplicated `exec` sections, essence summaries in `plan-conventions` and redundant self-description lines in skills.
+- Recaps `## RULES`, дубли exec, essence summaries plan-conventions, лишнее self-description.
 
-### Changed
+### Изменено
 
-- Reviewer agents use plain imperative wording; one term per concept.
+- Reviewer instructions - простые повелительные фразы, термин один на понятие.
 
 ## [0.13.0] - 2026-07-28
 
-### Added
+### Добавлено
 
-- `plancheck` gains a plan review policy with a plan-shaped BLOCK / NIT / DROP bar and fixture plans.
-- `review-fit-reviewer` replaces the implementation and simplification reviewers.
-- `review` splits the axes reference out of the review policy.
+- Plancheck: plan review policy BLOCK/NIT/DROP и fixtures.
+- Review-fit-reviewer заменяет implementation/simplification.
+- Review выносит axes reference из policy.
 
-### Changed
+### Изменено
 
-- `plancheck` classifies candidates and requires an `Impact:` naming an end state.
-- `review-quality-reviewer` also owns test coverage and quality.
-- `review` and `plancheck` reports open with the verdict, counts and scope.
+- Plancheck классифицирует, требует `Impact:` с конечным состоянием.
+- `review-quality-reviewer` владеет также test coverage/quality.
+- Review/plancheck reports начинаются с verdict/counts/scope.
 
-### Removed
+### Удалено
 
-- `review-implementation-reviewer`, `review-testing-reviewer` and `review-simplification-reviewer`.
+- Роли `review-implementation-reviewer`, `review-testing-reviewer`, `review-simplification-reviewer`.
 
 ## [0.12.0] - 2026-07-28
 
-### Added
+### Добавлено
 
-- A read-only fallback to the old `docs/nxs/briefs/` and `docs/nxs/plans/` layout in the Spec axis.
+- Read-only fallback на docs/nxs/briefs/ и docs/nxs/plans/ в Spec axis.
 
-### Changed
+### Изменено
 
-- Artifacts live in one story directory `docs/nxs/stories/YYYYMMDD-<slug>/` holding `brief.md`, `root-cause.md` and `plan.md`.
-- `plancheck` and `exec` resolve the latest story containing a `plan.md`.
+- Один story directory `docs/nxs/stories/YYYYMMDD-<slug>/` с `brief.md`/`root-cause.md`/`plan.md`.
+- Plancheck/exec выбирают последнюю story с plan.md.
 
 ## [0.11.0] - 2026-07-23
 
-### Added
+### Добавлено
 
-- `commit` commits working changes as atomic conventional commits.
-- A SessionStart hook injects the `using-nxs` discipline.
+- Commit делает atomic conventional commits рабочих правок.
+- SessionStart hook внедряет using-nxs discipline.
 
-### Changed
+### Изменено
 
-- `commit-conventions` is a pure convention; the exec commit gate lives in `exec`.
-- `rnd`, `bug` and `plan` drop their `INTAKE` sections.
+- Commit-conventions - только соглашение, exec commit gate у exec.
+- Rnd/bug/plan убирают INTAKE.
 
-### Removed
+### Удалено
 
-- The `intake` background skill.
+- Фоновый скилл `intake`.
 
 ## [0.10.1] - 2026-07-22
 
-### Fixed
+### Исправлено
 
-- The plan source-artifact section has one name, `## SOURCE ARTIFACTS`.
-- `review` and `plancheck` resolve the protocol path inside the plugin.
-- `exec` keys TDD mode off the `## DEVELOPMENT APPROACH` section.
-- Section names, template fields and skill self-descriptions match each other.
+- Source section plan имеет одно имя `## SOURCE ARTIFACTS`.
+- Review/plancheck разрешают protocol path внутри plugin.
+- Exec определяет TDD по `## DEVELOPMENT APPROACH`.
+- Headings/template fields/self-descriptions согласованы.
 
-### Removed
+### Удалено
 
-- `examples/epic-sample.md`, `examples/adr-sample.md` and the duplicated output block in `plan-reviewer`.
+- examples/epic-sample.md, examples/adr-sample.md, повторный output block plan-reviewer.
 
-### Changed
+### Изменено
 
-- `rnd` and `bug` accept input without a tracker key.
-- CONTRIBUTING documents agent frontmatter and the full repository layout.
+- Rnd/bug принимают вход без tracker key.
+- CONTRIBUTING описывает agent frontmatter/полную структуру.
 
 ## [0.10.0] - 2026-07-22
 
-### Changed
+### Изменено
 
-- Brief files carry the writing command as a suffix: `-rnd.md` and `-bug.md`.
+- Brief suffix называет автора-команду: -rnd.md/-bug.md.
 
 ## [0.9.2] - 2026-07-22
 
-### Removed
+### Удалено
 
-- The Fowler smell baseline reference.
+- Справочник исходных code smells Fowler.
 
-### Changed
+### Изменено
 
-- The review flow is shortened to what the model cannot infer about the project.
+- Review сокращен до того, что модель не может вывести из проекта.
 
 ## [0.9.1] - 2026-07-22
 
-### Changed
+### Изменено
 
-- `review` and `plancheck` findings use `Issue:` / `Impact:` / `Fix:`.
-- `review-protocol` verification is four steps; unconfirmed findings are discarded.
-- `plan-reviewer` checks the plan against the repository and records the command it ran.
-- CONTRIBUTING is in English.
+- Review/plancheck findings используют `Issue:`/`Impact:`/`Fix:`.
+- Review-protocol: четыре шага verification, unconfirmed удаляются.
+- Plan-reviewer сверяет план с repo, пишет реальную команду.
+- CONTRIBUTING переведен на английский.
 
 ## [0.9.0] - 2026-07-22
 
-### Removed
+### Удалено
 
-- Commands `dialectic`, `wrong`, `epic`, `explain`, `clean`, `recommit`, `techdoc` and `userdoc`.
-- Background skills `stress-test`, `doc-draft` and `decision-log`.
-- Agents `explorer` and `diagnose-investigator`.
-- The `exec` default / auto mode split.
+- Команды `dialectic`, `wrong`, `epic`, `explain`, `clean`, `recommit`, `techdoc`, `userdoc`.
+- Фоновые скиллы `stress-test`, `doc-draft`, `decision-log`.
+- Агенты `explorer`, `diagnose-investigator`.
+- Разделение `exec` на default/auto.
 
-### Changed
+### Изменено
 
-- `plancheck` uses one `plan-reviewer` agent.
-- `exec` and `commit-conventions` fold their references into `SKILL.md`.
-- Artifacts move to `docs/nxs/plans/` and `docs/nxs/briefs/`.
+- Plancheck использует одного plan-reviewer.
+- Exec/commit-conventions вносят references в SKILL.md.
+- Артефакты в docs/nxs/plans/ и docs/nxs/briefs/.
 
 ## [0.8.0] - 2026-07-22
 
-### Added
+### Добавлено
 
-- An optional `## CONVENTIONS` plan section.
+- Необязательный `## CONVENTIONS` в plan.
 
-### Changed
+### Изменено
 
-- `exec` passes the task, its acceptance criteria and the conventions set to each worker.
-- `worker` follows the passed conventions and matches surrounding code where they are silent.
+- Exec передает task/приемку/conventions каждому worker.
+- Worker следует переданному, остальное берет из окружающего кода.
 
 ## [0.7.0] - 2026-07-14
 
-### Added
+### Добавлено
 
-- `epic` gains a `Tasks` section with statuses, a map header, invocation modes, a notes folder and a closure step.
-- `clean` archives completed epic maps.
-- `examples/epic-sample.md`.
+- Epic получает Tasks/statuses/map header/modes/notes/closure.
+- Clean архивирует завершенные epic maps.
+- Образец `examples/epic-sample.md`.
 
-### Changed
+### Изменено
 
-- `epic` map names carry the epic's tracker key; Frontier `task` items become `prep`.
-- `plan` confirms all blockers are done before planning an epic task.
+- Имя epic map с tracker key, Frontier task -> prep.
+- Plan проверяет все блокеры до планирования epic task.
 
 ## [0.6.0] - 2026-07-13
 
-### Changed
+### Изменено
 
-- `bug` root-cause brief names include the tracker identifier.
+- Bug root-cause brief содержит tracker ID в имени.
 
 ## [0.5.0] - 2026-07-13
 
-### Added
+### Добавлено
 
-- `rnd` writes an inline brief skeleton with an `Acceptance criteria` section and offers a full-collapse escape hatch.
+- Rnd пишет inline brief skeleton с Acceptance criteria и предлагает full-collapse escape hatch.
 
-### Changed
+### Изменено
 
-- Brief and plan file names include the tracker identifier.
+- Brief/plan names содержат tracker ID.
 
-### Fixed
+### Исправлено
 
-- Acceptance criteria from `rnd` have a fixed home in the brief.
+- Приемка rnd имеет фиксированное место в brief.
 
 ## [0.4.0] - 2026-07-11
 
-### Added
+### Добавлено
 
-- MIT `LICENSE`, manifest metadata, `CHANGELOG.md`, a versioning convention, CI validation and a pull-request template.
-- `examples/` with a `CLAUDE.md.sample` and sample artifacts.
-- `doc-draft` warns when `docs/` is not gitignored.
+- MIT LICENSE, manifest metadata, `CHANGELOG.md`/version convention, CI и PR template.
+- `examples/` с CLAUDE.md.sample и образцами артефактов.
+- Doc-draft предупреждает, если docs/ не ignored Git.
 
-### Changed
+### Изменено
 
-- Review lenses are tool-enforced read-only.
-- Skill descriptions state when-to-use triggers and each command gains an `Example` line.
+- Review lenses технически read-only.
+- Descriptions задают triggers, каждая команда получает Example.
 
-### Fixed
+### Исправлено
 
-- Duplicated commit and review rules, legacy skill self-names and contradictions in `exec` and `doc-draft`.
+- Дубли commit/review, старые self-names, противоречия exec/doc-draft.
 
 ## [0.3.0] - 2026-07-09
 
-### Added
+### Добавлено
 
-- `epic` entry point for multi-session efforts.
-- Fowler code-smell baseline in the review quality and simplification lenses.
+- Epic для многосессионной работы.
+- Fowler code-smell baseline в quality/simplification.
 
 ## [0.2.0] - 2026-07-08
 
-### Changed
+### Изменено
 
-- The orchestrator injects one protocol kernel into every lens agent.
-- Shared kernels are extracted for stress-testing, doc drafting, TDD and bug diagnosis.
-- Skills name a tool-agnostic "tracker".
+- Orchestrator внедряет единый protocol kernel каждому lens agent.
+- Shared kernels для stress/doc drafting/TDD/bug diagnosis.
+- Skills используют tool-agnostic tracker.
 
 ## [0.1.0] - 2026-07-06
 
-### Added
+### Добавлено
 
-- Initial release with `/nxs:*` command skills, background rule skills and read-only review and plan agents.
+- Первый выпуск /nxs:* command skills, background rules и read-only review/plan agents.

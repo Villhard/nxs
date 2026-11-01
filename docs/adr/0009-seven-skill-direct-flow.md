@@ -1,79 +1,79 @@
-# Seven skills with direct, explicitly authorized handoffs
+# Семь скиллов с прямой явно разрешенной передачей
 
-Status: accepted. Date: 2026-11-01.
+Статус: принято. Дата: 2026-11-01.
 
-This decision supersedes the earlier lead/auto coordination, mandatory shared-journal and artifact-command design. It records a source-contract transition, not publication, installation migration or a live compatibility result.
+Решение заменяет прежние lead/auto, обязательный общий журнал и команды артефактов. Это переход контракта исходников, не публикация, миграция установок или live compatibility.
 
-## Context
+## Контекст
 
-Separate commands for every evidence method and saved record made simple work look like a mandatory workflow. The useful engineering actions remain needed, but their entry points and coordination protocol are not prerequisites for every task. Investigation, implementation, independent review, project-spec recording and commit safety have different approval/write boundaries worth retaining.
+Команда для каждого метода/документа делала простую работу похожей на обязательную цепочку. Полезные инженерные действия нужны, но их точки входа и координационный протокол не обязательны каждой задаче. Исследование, реализация, независимое review, project specs и коммиты имеют разные полезные границы записи/согласования.
 
-## Decision
+## Решение
 
-Retain exactly seven independently installable skills:
+Ровно семь независимо устанавливаемых скиллов:
 
-| Owner | Intent and result |
+| Владелец | Намерение и результат |
 | --- | --- |
-| `rnd-grill` | Investigate uncertainty, discuss alternatives and agree on a solution; directly save useful approved preparation/domain records on request. |
-| `rnd-debug` | Reproduce a failure, establish intent and confirm its cause or save missing evidence before choosing a fix. |
-| `dev-exec` | Establish acceptance criteria, obtain approval for a concrete plan, optionally decompose, implement and verify. Own optional tickets and handoff saving. |
-| `dev-review` | Independently review intended changes, verify findings and return selected corrections without creating tickets. |
-| `dev-spec` | Optionally record material built-work contracts; remain the exclusive normal writer of project `SPEC.md` and `.SPEC.md`. |
-| `dev-commit` | Make explicitly authorized atomic commits while preserving unrelated staged and working changes. |
-| `nxs-setup` | Independently audit and apply an exact approved setup package, or report relevant prerequisites without writes. |
+| `rnd-grill` | Разобрать неопределенность, сравнить варианты, согласовать решение; прямо сохранить полезную одобренную подготовку/доменные записи по запросу. |
+| `rnd-debug` | Воспроизвести сбой, установить намерение, подтвердить причину либо сохранить пробелы до выбора исправления. |
+| `dev-exec` | Приемка, одобрение конкретного плана, необязательное деление, реализация/проверка; владелец tickets/handoff. |
+| `dev-review` | Независимо проверить итог, подтвердить замечания и вернуть выбранное без tickets. |
+| `dev-spec` | Необязательно записать существенные контракты построенного; единственный обычный writer `SPEC.md`/`.SPEC.md`. |
+| `dev-commit` | Явно разрешенные атомарные коммиты с сохранением чужих staged/working правок. |
+| `nxs-setup` | Отдельно проверить/применить точный одобренный пакет либо только сообщить нужные предпосылки. |
 
 ```text
 rnd-grill ----+
               |
 rnd-debug ----+--> dev-exec --> dev-review --> [dev-spec] --> dev-commit
               |       ^             |
-clear request +       +-- selected corrections
+ясный запрос +       +-- выбранные исправления
 
-nxs-setup: separate support, not a development stage.
+nxs-setup: отдельная помощь, не стадия разработки.
 ```
 
-The spec stage is conditional. A direct authorized review of existing changes is also valid. Arrows never implicitly invoke a skill or create authorization. Reuse explicit approval covering multiple operations only within its actual scope. Execution presents a concrete plan and waits for applicable approval. Checkpoint commits may occur during execution only with explicit commit-scope approval through the complete commit safety procedure; no commit is required to finish implementation. Existing `Do not commit` remains binding.
+Spec условен, прямое разрешенное review существующих правок допустимо. Стрелка не запускает скилл/не дает полномочий. Используй явное согласие на несколько операций лишь в его пределах. Исполнение показывает конкретный план и ждет подходящего одобрения. Checkpoint во время исполнения - только с явным охватом через полную процедуру commit safety; закончить можно без коммита. `Do not commit` сохраняет силу.
 
-Small clear work requires no decision, feature description, ticket, task directory or journal. Save only useful authorized artifacts, reusing established paths before `.scratch/<feature>/` defaults. Agreement alone saves nothing. Content/destination approval, source preservation and concurrent-change reconciliation still apply. Domain-record approval is separate from other saves. Isolated prototypes require concrete authorization and remain retained; success authorizes no production transfer, reuse or deletion. Questionnaire preparation authorizes no contact or sending.
+Малому ясному запросу не нужны decision/feature description/ticket/каталог/журнал. Сохраняй лишь полезное разрешенное, предпочитая установленные пути `.scratch/<feature>/` по умолчанию. Согласие само ничего не пишет. Одобрение содержания/места, сохранность и concurrent-change reconciliation обязательны; domain approvals отдельные. Изолированный прототип требует конкретного разрешения и сохраняется; успех не разрешает перенос/reuse/удаление. Опросник не разрешает контакт/отправку.
 
-Ordinary review covers intended net work: relevant committed checkpoints and remaining staged, unstaged and untracked task changes. A nonempty index cannot narrow it. Pin baseline, requirements and actual source view first; preserve explicit narrower scope and its exclusions. Review and spec recording stop for omitted work or uncertain ownership/coverage without staging, stashing or rewriting foreign changes. Work already on a normal base needs an agreed earlier boundary. Finders and the independent verifier remain, with native restrictions described honestly and mandatory state comparisons preserved. Their presence is not a separate lead workflow.
+Обычное review покрывает весь итог: нужные committed checkpoint и оставшиеся staged/unstaged/untracked задачи. Непустой index не сужает. Сначала закрепи baseline/requirements/actual source view, сохрани явное сужение/исключения. Review/spec останавливаются при пропуске работы, неясном владении/покрытии без stage/stash/перезаписи чужого. Задаче уже на обычной базе нужна более ранняя согласованная граница. Native finders/verifier остаются, с честным видом защиты и обязательными state comparisons, не отдельным lead-процессом.
 
-Selected findings carry report identity and source/scope evidence directly to execution. A verdict or selection is not implementation approval. Confirm/reproduce before fixing and use regressions where practical; a nonreproduced finding stays documented and unconfirmed. No selection snapshot or mandatory fix ticket is introduced.
+Выбранные замечания передают identity отчета и source/scope evidence прямо в исполнение. Verdict/выбор не разрешают fix. Сначала repro/confirmation, по возможности регрессия; невоспроизведение остается записанным unconfirmed. Нет selection snapshot/обязательного fix ticket.
 
-An install, migration or external action requires concrete action/target approval plus native permissions directly, not a lead packet. Verify prerequisites and returned human-step results in the actual working tree/environment; status is not evidence. Reconcile interrupted or uncertain effects before retrying. An optional handoff records approved scope, accepted/open/unverified state, verification, actual Git/checkpoints and next authorized action, without promising cross-client session recovery.
+Установка, миграция, внешнее действие требуют прямого action/target approval и native permissions, не lead packet. Проверяй предпосылки и результат человеческого шага в реальном дереве/среде; статус не доказательство. Сомнительные эффекты сверь до повтора. Handoff необязателен: охват, принятое/открытое/непроверенное, проверки, Git/checkpoint, следующий шаг; без обещания cross-client recovery.
 
-## Consolidation and removal
+## Объединение и удаление
 
-The following names are historical migration context, not supported command routes or aliases:
+Имена ниже - исторический контекст, не команды/aliases:
 
-| Former commands | Retained capability |
+| Прежнее | Сохраненная возможность |
 | --- | --- |
-| `rnd-map`, `rnd-research`, `rnd-prototype`, `rnd-audit`, `rnd-design` | Optional `rnd-grill` dependent-question discussion, attributable research, isolated experiment, requested survey and selected-boundary design. No mandatory typed decision state machine. |
-| `to-decision`, `to-spec`, `to-questionnaire` | Direct approved `rnd-grill` decision/unfinished-state, feature-description and participant-question saving. |
-| `to-tickets`, `to-handoff` | Optional `dev-exec` decomposition/tickets and resumable handoff. |
-| `nxs-lead`, `nxs-retro` | Removed without replacement commands; no lead/auto or retrospective stage. |
+| `rnd-map`, `rnd-research`, `rnd-prototype`, `rnd-audit`, `rnd-design` | Необязательные зависимые вопросы, исследование с источниками, изолированный опыт, запрошенный обзор, выбранная граница в `rnd-grill`; без обязательной typed decision state machine. |
+| `to-decision`, `to-spec`, `to-questionnaire` | Прямое одобренное сохранение решения/незавершенного обсуждения, описания функции, вопросов в `rnd-grill`. |
+| `to-tickets`, `to-handoff` | Необязательные tickets/деление и контекст `dev-exec`. |
+| `nxs-lead`, `nxs-retro` | Удалены без команд-замен; нет lead/auto и ретроспективы. |
 
-No hidden routing skill, compatibility alias, nested client runner, background hook or universal workflow engine replaces these commands. Installed copies, global instructions, settings, locks, existing tickets, journals, prototypes and worktrees are not automatically changed or cleaned up.
+Нет скрытого routing skill, alias, nested client, background hook и универсального engine вместо них. Установки, global instructions, settings/locks, старые tickets, журналы, прототипы и worktrees не меняются/не чистятся автоматически.
 
-## Superseded decisions and retained principles
+## Замененные решения и сохраненные принципы
 
-Earlier ADR files remain unchanged as historical records. For current contracts, this record takes precedence as follows:
+Прежние ADR сохраняются как история. Для текущего контракта эта запись имеет приоритет:
 
-| Earlier record | Superseded scope | Retained principle |
+| ADR | Заменено | Сохранено |
 | --- | --- | --- |
-| [0001](0001-dev-lead-boundaries.md) | Lead-owned routing, technical approval, worker launch and workflow progression. | Scope/decision approval, concrete environment authority and evidence-limited compatibility. |
-| [0002](0002-shared-task-journal.md) | Mandatory shared journal and its setup injection/transfer protocol. | Preserve useful context and reconcile it against actual artifacts/state. |
-| [0003](0003-parallel-worktree-integration.md) | Lead-managed parallel branches, integration and commit ownership. No replacement integration mode is introduced. | Prerequisite results must exist where work runs; isolated success does not prove combined behavior. |
-| [0004](0004-dev-rnd-decision-only.md) | Separate decision-only mode and later ticket-slicing chain. | Focused investigation can end with conclusions and open questions, without implementation. |
-| [0005](0005-bounded-runs-and-recovery-first.md) | Autonomous lead cycle, structured worker envelope, manual-skill journaling and recovery machinery. | Completion needs actual evidence; uncertain effects are not blindly replayed. |
-| [0006](0006-companion-skill-integration.md) | Lead runner/integration and shared-journal prerequisites. | No required companion dependency or unverified compatibility assumption; no implied installation change. |
-| [0007](0007-skill-names.md) | Fixed `dev-` prefix and former catalog scope. Retain the approved seven names without new aliases. | Short recognizable collision-aware names; rename only for a real intent problem. |
-| [0008](0008-native-subagent-coordination.md) | Lead delegation and append-only coordination-state requirements. | No custom orchestration runtime or nested client fallback; native review remains capability-dependent and evidence-scoped. |
+| [0001](0001-dev-lead-boundaries.md) | Lead routing, техническое одобрение, launch и переходы. | Согласие на охват/решения, реальная среда/полномочия, доказанная совместимость. |
+| [0002](0002-shared-task-journal.md) | Обязательный журнал/setup injection/transfer. | Полезный контекст и сверка с артефактами/реальностью. |
+| [0003](0003-parallel-worktree-integration.md) | Lead parallel branches/integration/commit ownership; нового integration mode нет. | Результаты предпосылок нужны в месте исполнения, изоляция не доказывает combined behavior. |
+| [0004](0004-dev-rnd-decision-only.md) | Отдельный decision-only и последующая цепочка tickets. | Исследование заканчивается выводами/вопросами без реализации. |
+| [0005](0005-bounded-runs-and-recovery-first.md) | Autonomous lead cycle, worker envelope, ручной journal/recovery. | Завершение по доказательствам, неизвестное не повторяется вслепую. |
+| [0006](0006-companion-skill-integration.md) | Lead runner/integration/journal prerequisites. | Нет обязательных companions и выдуманной совместимости/изменения установки. |
+| [0007](0007-skill-names.md) | Фиксированный `dev-` и прежний каталог; сохраняются семь имен без aliases. | Короткие узнаваемые имена без конфликтов; rename только при реальной проблеме. |
+| [0008](0008-native-subagent-coordination.md) | Lead delegation/append-only coordination state. | Нет custom runtime/nested fallback; native review зависит от возможностей/доказательств. |
 
-## Consequences
+## Последствия
 
-Runtime guidance stays in self-contained skills, not root documents. `rnd-grill` owns preparation templates; `dev-exec` owns ticket rules/template and handoff; `dev-review` owns review resources/roles; `dev-spec` owns project-spec reader/template; `dev-commit` owns commit safety; setup owns setup/writing resources. Copy only genuinely shared resources to actual consumers and keep them identical.
+Runtime rules в самодостаточных скиллах, не root docs. Подготовительные шаблоны у `rnd-grill`, tickets/handoff у `dev-exec`, review resources/roles у `dev-review`, spec reader/template у `dev-spec`, commits у `dev-commit`, setup/writing у настройки. Копируй только реально общее реальным потребителям, побайтово одинаково.
 
-Historical ADRs, releases and client observations remain history, not current-route proof. Updated source/packaging checks, focused behavioral observations and light/dark diagram verification are separate evidence. This implementation-only documentation change claims none of them passed. The contract change warrants minor version `0.77.0` under the project's `0.x` rule; publication and installation cutover require separate authorization.
+Старые ADR/версии/client observations - история, не доказательство нового маршрута. Source/packaging checks, поведенческие наблюдения и обе темы схем проверяются отдельно. Эта прежняя implementation-only правка не заявляла успешных проверок. Смена контракта требует `0.77.0` по правилу `0.x`; публикация/cutover отдельно разрешаются.
 
-Rejected alternatives: keeping aliases or hidden mandatory modes preserves the old command surface; requiring all saved artifacts recreates the pipeline; replacing the lead with another coordinator recreates its complexity; dropping independent reviewer protections or commit safety loses useful boundaries rather than simplifying entry.
+Отклонено: aliases и скрытые обязательные режимы сохраняют старую сложность; обязательные артефакты воссоздают цепочку; новый координатор повторяет старый; удаление независимого reviewer/commit safety теряет полезные границы, а не упрощает вход.

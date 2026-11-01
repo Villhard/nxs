@@ -1,11 +1,11 @@
-# Companion automation requires a verified execution contract
+# Автоматизация companions требует проверенного контракта
 
-Manual invocation of mattpocock/skills keeps each upstream skill's dialogue, approval gates and outputs. An unmodified companion skill is not required to emit nxs worker outcomes or JSON. Shared journal instructions remain useful, but their presence alone does not establish a complete history; takeover follows the reconciliation rule in the [task journal decision](0002-shared-task-journal.md).
+Ручной mattpocock/skills сохраняет upstream-диалог, согласования и результаты. Неизмененный companion не обязан выдавать nxs outcomes/JSON. Общие journal instructions полезны, но не гарантируют полноту; перехват следует [правилу сверки](0002-shared-task-journal.md).
 
-Autonomous invocation through the lead requires a supported, verified integration for the particular skill. Define its input context, completion conditions, question relay, expected artifacts and structured runner outcome: `done`, `needs_input` or `blocked`. This is the nxs execution contract around the invocation, not an assumed upstream contract. Skill discovery establishes availability, not workflow compatibility. A context-dependent skill must receive the relevant agreed decisions and evidence explicitly when launched in a fresh session.
+Автономный вызов lead требует поддержанной проверенной интеграции конкретного скилла: входной контекст, завершение, передача вопросов, артефакты, outcome `done`/`needs_input`/`blocked`. Это nxs execution contract вокруг вызова, не вымышленное upstream-правило. Discovery доказывает доступность, не совместимость процесса. Context-dependent скиллу в свежей сессии явно передают принятые решения/доказательства.
 
-The baseline workflow remains usable with nxs alone. Establish the [sequential cycle and recovery](0005-bounded-runs-and-recovery-first.md) before adding companion integrations. This decision does not require editing or replacing installed companion skills.
+База работает на одном nxs. До companions проверь [цикл и восстановление](0005-bounded-runs-and-recovery-first.md). Установленные companions менять/заменять не требуется.
 
-## Future investigation
+## Будущее исследование
 
-Study how the user actually uses mattpocock/skills, identify the useful parts and overlap with nxs, and assess bringing selected skills into nxs under contracts aligned with the user's workflow and vision. Adoption may include changes and need not include the whole skillset. The selection, changes and maintenance approach remain undecided; this is a follow-up investigation, not approval of a particular migration.
+Изучи реальное использование mattpocock/skills, пользу/пересечение с nxs и выборочный перенос под процесс/видение пользователя. Допустимы изменения и неполный набор. Выбор, правки и сопровождение не решены; исследование не одобряет конкретную миграцию.

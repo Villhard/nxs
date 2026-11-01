@@ -1,7 +1,7 @@
-# Focused R&D resolves questions before ticket slicing
+# Узкое R&D отвечает на вопросы до tickets
 
-Add an explicit decision-only mode to `dev-rnd`. It reuses code investigation, clarification, approach comparison and stress testing, but completes with an agreed conclusion, supporting evidence and any remaining questions, without implementation tickets. The normal `dev-rnd` invocation keeps its full flow.
+Добавить `dev-rnd` явный decision-only режим: изучение кода, уточнения, сравнение подходов и stress test, затем согласованный вывод, доказательства и вопросы без implementation tickets. Обычный вызов сохраняет полный процесс.
 
-The lead can delegate the needed focused investigations, relay their questions to the user and combine their results into an agreed solution and feature plan before implementation tickets are prepared. This keeps nxs usable without mattpocock/skills and avoids duplicating a full interview contract inside the lead. Available companion grilling skills may perform focused investigations as an optional route.
+Lead поручает нужные исследования, передает вопросы пользователю и объединяет результаты в решение/feature plan до tickets. Nxs работает без mattpocock/skills, lead не дублирует полный интервью-контракт. Доступные companion grilling skills могут быть необязательным маршрутом.
 
-The mode's exact invocation syntax and output format remain implementation details to settle before shipping. This record approves the design direction; it does not change the current skill contract.
+Точные синтаксис вызова и формат результата нужно установить до выпуска. Одобрено направление, не изменение текущего контракта.

@@ -1,15 +1,15 @@
-# A shared task journal supports manual work and lead handoff
+# Общий журнал для ручной работы и передачи lead
 
-The task's `decision.log` is a shared artifact maintained by the skills participating in the work, including when they are invoked without `dev-lead`. A journal written only by the lead could not reliably support joining a task already in progress.
+`decision.log` задачи ведут участвующие скиллы, в том числе без `dev-lead`. Журнал только от lead не позволил бы надежно подключаться к начатой вручную задаче.
 
-The journal records decisions and concise progress entries: the current stage, an awaited question or result, links to existing artifacts and the next action. Specs, tickets and review reports keep their own content; the journal links to them. It supports continuing with another coordinator or harness without treating the previous conversation as the only record of the work.
+Он хранит решения и короткий прогресс: стадию, ожидаемый вопрос/результат, ссылки на артефакты и следующий шаг. Specs, tickets, review reports содержат свое, журнал ссылается. Так другой координатор/harness продолжит работу без единственной опоры на прошлый чат.
 
-The intended integration puts the journal rule directly in nxs task skills and the ticket executor contract. A general rule installed through `dev-setup` in global agent instructions also applies to companion skills working on the task; the lead additionally passes the journal path to its executors. This does not require modifying the companion skills themselves.
+Правило журнала предполагается встроить в nxs task skills и ticket executor. Общая инструкция, устанавливаемая `dev-setup`, охватывает companions без их правок; lead также передает путь исполнителям.
 
-The journal contract is explicit and checkable for nxs and controlled lead launches. A global instruction alone cannot guarantee a complete journal for manually invoked companion skills. When taking over that work, reconcile the available journal with artifacts and actual state, and resolve missing context before proceeding. Do not assume that the recorded history is complete.
+Контракт явный/проверяемый для nxs и controlled lead launches. Одна global instruction не гарантирует полноты для ручных companions. При перехвате сверяй журнал с артефактами/реальностью, восстанавливай пробелы до продолжения; не считай историю полной.
 
-Record meaningful decisions and state changes: an open question, an answer, a completed stage, a blocker or a handoff. Do not record every technical action. Taskless global setup, an empty review and a declined write proposal do not require a task-journal entry.
+Пиши значимые решения/переходы: вопрос, ответ, завершенную стадию, блокер, передачу, не каждое техническое действие. Taskless global setup, пустое review и отказ от записи не требуют записи задачи.
 
-Resolve the journal from an explicit ticket or task-directory path, or unambiguous conversation context. Ask when multiple tasks fit; a Git branch name alone is not enough to select a task. Pass the same journal path when handing the work to the lead or another executor.
+Путь устанавливай по явному ticket/task directory или однозначному разговору; несколько задач требуют выбора, ветки недостаточно. Передавай тот же путь lead/следующему исполнителю.
 
-Journal placement when no task directory exists, format, concurrent writes and verification on resume remain open. This is an accepted design direction, not a change to the existing skills' write boundaries.
+Место без каталога, формат, конкурентная запись и проверка продолжения пока открыты. Это принятое направление дизайна, не смена write boundaries текущих скиллов.
