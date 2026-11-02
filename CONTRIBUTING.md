@@ -4,92 +4,79 @@
 
 ## Структура
 
-Скилл - самостоятельный каталог, устанавливаемый отдельно:
+Skill - самостоятельный каталог, устанавливаемый отдельно:
 
 ```text
 skills/<name>/
-  SKILL.md                     # frontmatter: name, description; необязательные argument-hint, disable-model-invocation
-  agents/openai.yaml           # необязательная политика вызова Codex
-  references/                  # правила, читаемые по необходимости
+  SKILL.md                     # frontmatter: name, description; invocation policy
+  agents/openai.yaml           # необязательная политика явного вызова Codex
+  references/                  # правила по месту использования
   assets/                      # шаблоны документов
-  roles/                       # независимые reviewer roles dev-review
 README.md CONTRIBUTING.md SPEC.md GLOSSARY.md
-docs/images/                   # диаграммы README в двух темах
 ```
 
-Ссылки скилла ведут только внутрь его каталога. Общие ресурсы копируй реальным потребителям побайтово, без зависимости от developer checkout, helper или другой установки.
+Каталог: ровно `rnd-grill`, `to-spec`, `to-tickets`, `dev-exec`, `dev-review`, `rnd-debug`, `sync-spec`, `dev-commit`, `nxs-setup`. Не вводи aliases и дополнительные обязательные стадии. Имя - отдельное пользовательское намерение, а не запуск следующей команды. При совпадении имени проверь provenance установленного skill.
 
-| Владелец | Ресурсы |
+Ссылки skill ведут только внутрь его каталога. Установленный skill не зависит от developer checkout или чужой установки. Bundled procedure разрешает исполнение правил без отдельно установленного skill-владельца.
+
+| Владелец | Ресурс и реальные потребители |
 | --- | --- |
-| `rnd-grill` | Обсуждение, предметная область, методы исследования/опыты, шаблоны решения, описания функции и опросника. |
+| `sync-spec` | `references/project-specs.md`; одинаковые копии у `rnd-grill`, `to-spec`, `to-tickets`, `dev-exec`, `dev-review`, `rnd-debug`. Шаблон project spec только у владельца. |
+| `nxs-setup` | `references/tracker.md`; одинаковые копии у `to-spec`, `to-tickets`, `dev-exec`, `rnd-debug`, `dev-review`. Setup templates/readiness/capabilities принадлежат setup. |
+| `to-tickets` | `references/ticket.md`; одинаковая копия у `dev-exec`. Шаблон нового ticket только у владельца. |
+| `dev-commit` | `references/commit-format.md`; одинаковая копия у `dev-exec`. |
+| `to-spec` | Семисекционный шаблон спеки задачи. |
 | `rnd-debug` | Диагностика и поиск каталога функции. |
-| `dev-exec` | Контекст исполнения, деление работы, tickets и handoff с правилами/шаблонами. |
-| `dev-review` | Снимок, замечания, отчет, native launch и четыре роли; не создает tickets. |
-| `dev-spec` | Чтение проектных спецификаций и их шаблон. |
-| `dev-commit` | Безопасность/формат коммитов. |
-| `nxs-setup` | Шаблоны настройки, готовность, возможности и написание инструкций. |
+| `dev-exec` | Исполнение ticket и человеческие шаги. |
+| `rnd-grill` | Компактное интервью в SKILL.md, без отдельной подсистемы сохранения. |
+| `dev-review` | Два reviewer prompts в SKILL.md, без roles/verifier pipeline. |
 
-`skills/dev-spec/references/project-specs.md` копируй в `rnd-grill`, `rnd-debug`, `dev-exec`, `dev-review`. Ticket rules/template только у `dev-exec`, feature-description template - у `rnd-grill`, не диагностики. Не требуй общих копий без потребителей. Блок "Условия завершения" для setup tracker копируй дословно из `skills/dev-exec/assets/ticket.md` в `skills/nxs-setup/assets/issue-tracker.md`. Каталог потребителей checker обновляй при переносе ресурсов.
-
-Сохраняй пользовательские данные и чужие правки. Изменение исходников скиллов не разрешает миграцию или удаление пользовательских записей.
-
-Правила процесса держи у владельца/роли, общие - в одной shared reference с одинаковыми копиями. Личные предпочтения - в client/project instructions. Исключение setup: он пишет правила/config туда только точным одобренным diff. Не добавляй background skills, cross-skill injection и hooks. Новый скилл нужен лишь для отдельного устоявшегося частого намерения; иначе расширяй имеющийся.
-
-## Имена
-
-Имя - команда пользователя: короткое, понятное с первого взгляда, без конфликтов с клиентом/установленными скиллами. Пространства: `rnd-` для исследования, `dev-` для разработки, `nxs-` для настройки. При совпадении проверь путь/provenance; имя не запускает следующую стадию. Семь имен сохранены вместо прежнего фиксированного префикса и каталога.
+Общие ресурсы копируй побайтово только реальным потребителям. Не размножай полную политику исполнения в шаблонах setup. Сохраняй пользовательские данные и чужие изменения: source cutover не разрешает миграцию records, установок, Git settings или внешних сервисов.
 
 ## Язык и безопасность
 
-Пиши кратко и по-русски, с ASCII-дефисом и прямыми кавычками. Заголовки инструкций - ПРОПИСНЫМИ, README и остальные руководства - обычным регистром. Заголовки артефактов тоже русские; служебные ключи, статусы, пути и технические термины сохраняются. Старые артефакты читаются с прежними заголовками без автоматической миграции.
+Пиши кратко и по-русски, с ASCII-дефисом и прямыми кавычками. Заголовки инструкций - ПРОПИСНЫМИ, руководств и артефактов - обычным регистром. Идентификаторы, статусы, пути и технические термины сохраняй. Старые записи читай без автоматической миграции заголовков.
 
-Не публикуй частные пути/remotes, tracker IDs, секреты, environment values, личные контакты и raw sessions. Примеры нейтральные.
+Не публикуй частные пути/remotes, tracker IDs, секреты, environment values, личные контакты и raw sessions. Примеры нейтральные. Личные предпочтения принадлежат client/project instructions; setup пишет их только точным одобренным diff.
 
 ## Контракты инструкций
 
-README объясняет использование, CONTRIBUTING - изменение. Полные правила исполнения принадлежат skills/roles/references: ссылайся вместо пересказа. Имена моделей и оценки не включай в руководства.
+README объясняет использование, CONTRIBUTING - изменение, SPEC - реализованные контракты и существенное обоснование. Полные операционные правила принадлежат skills/references; не пересказывай их во всех документах.
 
-- Укажи вход, проверки входа, порядок, результат, остановки и передачу. Исключения рядом с шагом, конкурирующие состояния таблицей.
-- Description задает конкретный trigger, результат и отличие соседних команд; вызов отделен от обсуждения/внутреннего действия.
-- Поля шаблона помечай обязательными/необязательными; структурные имена сохраняй, выполненное отличай от удаленного требования.
-- Установленный скилл самодостаточен, bundled resources читаются по месту нужды; root docs не runtime context.
-- Используй согласие в его пределах, недостающие доказательства называй.
-- Проверяй обычное и неверное прочтение по действиям/артефактам: строки и structural lint не доказывают качество.
+- Укажи вход, проверки входа, действия, результат, остановки и передачу. Исключения держи рядом с шагом.
+- Description различает намерения соседних команд. Явный вызов отделен от обсуждения и внутренних действий.
+- Шаблон различает обязательные/необязательные поля, выполненное и отмененное требование.
+- Ресурсы читаются по месту нужды; root docs не обязательный runtime context.
+- Используй согласие в его пределах. Вызов dev-exec разрешает проверенные атомарные коммиты ticket, но не push/review/sync-spec. Неизвестный эффект сверяй до повтора.
+- Не добавляй runtime, hooks, background skills, cross-skill injection, программные adapters или автоматическую установку.
+- Project SPEC описывает только реализованное. Спека задачи хранит намерение; отдельного ADR writer и автоматической записи glossary нет.
 
 <a id="checks"></a>
 
 ## Проверки
 
-Из корня с Git и Bash:
+Проверяй соразмерно измененному поведению. Новых CI workflows, hooks и специальных source checkers нет.
 
-```bash
-bash .github/scripts/check-skills.sh
-bash .github/scripts/check-no-runtime.sh
-bash .github/scripts/lint-house-style.sh
-git diff --check
-```
+- Discovery: `npx --yes skills@latest add . -l`, ровно девять имен выше.
+- Разово проверь frontmatter, явную invocation policy, внутренние relative links и одинаковые bundled copies. Проверка формы не доказывает поведение модели.
+- Для инструкций запусти измененный skill в реальном доступном клиенте на disposable fixture; наблюдай результат, а не только чтение prompt. Включи обычный вход, остановки и сохранность чужих данных. Для dev-exec проверь каждый атомарный commit и итоговую приемку.
+- Для review нужны два независимых native subagents Standards/Spec и единый охват committed/staged/unstaged/untracked. Host-enforced read-only используй, где доступен; иначе сообщай prompt-only. Недоступный reviewer дает incomplete, не single-agent или nested-client fallback. Обсуждение и исполнение subagents не требуют.
+- Для tracker проверь реально используемые операции и недоступную настройку без silent fallback. Local backend не доказывает remote API.
+- Просмотри итоговый diff и ссылки. Отделяй source/packaging от live observations; неизвестную регистрацию/permissions/совместимость не объявляй проверенной.
 
-Structural checker только читает рабочее дерево. Его каталог содержит ровно семь README skills, не допускает лишних. Покрывай frontmatter/invocation, роли, реальные shared copies, tracker execution block, заголовки шаблонов, self-contained links и external-path boundaries. Runtime guard запрещает bundled runtime и упоминания удаленной Python-связки в активных документах. Link checker не проверяет anchors/весь Markdown: просмотри вручную. Untracked Markdown явно передай style script. Source pass не доказывает live behavior/permissions/registration.
-
-[Pre-commit hook](.githooks/pre-commit) запускает обе structural checks на временном staged snapshot во всех клиентах. Включение на клон: `git config core.hooksPath .githooks`.
-
-Только независимому review нужен выбранный native reviewer route; обсуждению/исполнению subagents не нужны. Сохрани три finder и независимый verifier; direct pass лишь для разрешенного trivial case. Возможности узнавай без hardcoded model/effort. Доступные host-enforced restrictions используй, иначе честно prompt-only. Before/after state checks обязательны в обоих случаях: видят persistent differences, не все попытки/отмененные записи. Нет nested-client fallback. Live observations отделяй от source/protocol fixtures, missing CLI оставляет клиент непроверенным. Только disposable repos/fixture approvals, не установка пользователя.
-
-Для поведения используй соразмерные наблюдения выбранного клиента, для docs - соразмерные source/command/link checks, без повторных workflows. Review/spec cases включают checkpoint и нужные staged/unstaged/untracked без staged-only default. При явно одобренной implementation-only работе с отдельным проверяющим не запускай исключенные checks/renders/diff audit: укажи NOT RUN, оставь verification pending. Иначе просмотри diff и обе темы измененных диаграмм, captions/accessibility, сохранность истории.
+Используй только disposable repos и ограниченные approvals. Не меняй пользовательские установки ради smoke. Не добавляй постоянные tests на формулировки prompt, побайтовые копии или шаблонную проводку.
 
 <a id="local-development-and-release"></a>
 
 ## Локальная разработка и публикация
 
-Проверяй candidate в одноразовом agents directory:
+Candidate установка в одноразовый agents directory:
 
 ```bash
 home=$(mktemp -d)
 HOME="$home" npx skills@latest add "$PWD" -g -y -s '*' -a claude-code
 ```
 
-Запусти клиент с этим HOME, затем удали временный каталог; credentials вне Git. После правок повтори add для обновления копий. Во временном HOME нет обычных auth/settings; при нужде войди.
+Проверь файлы и bundled relative links. Это packaging check, не доказательство совместимости Claude Code. Клиент с временным HOME не получает обычные credentials/settings. Для реального smoke передай candidate SKILL.md и абсолютную resource base явно; не подменяй его старой установленной версией. После проверки удали только созданный временный каталог.
 
-Публикация: push в `main` до обновления установок; пользователь обновляет `npx skills update`. Не меняй установленные скиллы при source edits без запроса.
-
-Каталог - семь скиллов. `rnd-grill`, подходящий диагноз и выбранные замечания прямо передаются `dev-exec`, без обязательной цепочки документов. `dev-spec` необязателен, коммиты требуют явного охвата. Source edits не обновляют установки/регистрацию; setup не предлагает companions/установку каталога. Текущие границы/доказательства - в [README](README.md) и [SPEC](SPEC.md).
+Публикация и обновление установок - отдельные действия пользователя. Source edits не требуют push и не обновляют установленные skills. Основной маршрут: rnd-grill → to-spec → to-tickets → dev-exec одного ticket; review и sync-spec отдельно. Небольшой согласованный вход можно передать to-tickets без промежуточного файла.

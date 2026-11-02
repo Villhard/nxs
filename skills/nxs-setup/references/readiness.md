@@ -16,8 +16,8 @@
 | --- | --- | --- |
 | Project setup | cwd/repo, читаемые instructions и realpaths, конфликты секций, источники веток/проверок, ignore локальных артефактов. | Назови доступ/неясного владельца/конфликт. Не init/configure Git и не выдумывай команды. |
 | Global/узкая настройка | Цели/полномочия, текст, symlink targets/shared source, приватность, наблюдаемая поддержка wiring. | Назови конфликт/непроверенную возможность; не merge частное, не меняй links/config. |
-| Выбранный dev skill | Только его enabled registration и читаемые candidate/resources, если exposed; нужные permission limits. | Раздели missing, disabled, unreadable, ambiguous, undiscoverable. Не требуй все семь ради одной операции. |
-| Независимое review с workers | Native fresh-context launch/completion, все роли, capacity, доставка контекста, ограничения. Допустимый trivial direct pass без worker. | Назови пробел, останови лишь этот маршрут. Host-enforced отдельно от prompt-only; здесь никого не запускай. |
+| Выбранный skill | Только его enabled registration и читаемые candidate/resources, если exposed; нужные permission limits и операции настроенного трекера. | Раздели missing, disabled, unreadable, ambiguous, undiscoverable; planning не требует reviewer route. |
+| `dev-review` | Два независимых native subagents Standards и Spec: fresh-context launch/completion, capacity, доставка одинакового охвата и ограничения. | Назови пробел; без завершения обоих review неполон. Host-enforced отдельно от prompt-only; здесь никого не запускай. |
 | Явно выбранная модель/вариант | Реальный ID каталога клиента и объявленные variant/effort metadata, если exposed. | Нет metadata - unknown support, не выдуманный default. Не выбирай модель и не требуй discovery для обычного setup. |
 
 Обсуждение/обычное исполнение не требуют native subagents. CLI, каталог моделей и посторонние установки не универсальные условия. Знакомое имя tool не доказывает schema, completion semantics и enforced permissions.
