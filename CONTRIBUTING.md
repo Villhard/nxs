@@ -4,7 +4,7 @@
 
 ## Структура
 
-Каждый из [девяти skills](README.md#какой-скилл-выбрать) устанавливается отдельно:
+Каждый из [восьми skills](README.md#какой-скилл-выбрать) устанавливается отдельно:
 
 ```text
 skills/<name>/
@@ -20,17 +20,17 @@ README.md CONTRIBUTING.md SPEC.md GLOSSARY.md
 | Владелец | Shared reference и потребители одинаковых копий |
 | --- | --- |
 | `sync-spec` | `project-specs.md`: `rnd-grill`, `to-spec`, `to-tickets`, `dev-exec`, `dev-review`, `rnd-debug` |
-| `nxs-setup` | `tracker.md`: `to-spec`, `to-tickets`, `dev-exec`, `rnd-debug`, `dev-review` |
+| `to-spec` | `tracker.md`: `to-tickets`, `dev-exec`, `rnd-debug`, `dev-review` |
 | `to-tickets` | `ticket.md`: `dev-exec` |
 | `dev-commit` | `commit-format.md`: `dev-exec` |
 
-References лежат в `references/`. Меняй владельца и побайтовые копии только реальных потребителей вместе. Bundled procedure не требует установки владельца. Шаблоны принадлежат: task spec - `to-spec`, project spec - `sync-spec`, ticket - `to-tickets`; setup assets/readiness/capabilities - `nxs-setup`. Не размножай политику исполнения в setup templates.
+References лежат в `references/`. Меняй владельца и побайтовые копии только реальных потребителей вместе. Bundled procedure не требует установки владельца. Шаблоны принадлежат: task spec - `to-spec`, project spec - `sync-spec`, ticket - `to-tickets`.
 
 ## Язык и безопасность
 
 Пиши кратко, по-русски, с ASCII-дефисом и прямыми кавычками. Заголовки инструкций - ПРОПИСНЫМИ, руководств/артефактов - обычным регистром. Идентификаторы, статусы и пути сохраняй; старые заголовки/records не мигрируй ради формы.
 
-Не публикуй частные пути/remotes, tracker IDs, секреты, environment values, контакты и raw sessions. Примеры нейтральные. Личные предпочтения принадлежат client/project instructions; setup меняет их только точным одобренным diff. Сохраняй пользовательские данные и чужие изменения.
+Не публикуй частные пути/remotes, tracker IDs, секреты, environment values, контакты и raw sessions. Примеры нейтральные. Личные предпочтения принадлежат client/project instructions. Сохраняй пользовательские данные и чужие изменения.
 
 ## Контракты инструкций
 
@@ -50,7 +50,7 @@ README - использование, CONTRIBUTING - изменение, SPEC - �
 
 Проверяй соразмерно поведению, без новых CI workflows, hooks и source checkers:
 
-- `npx --yes skills@latest add . -l`: ровно девять имен каталога.
+- `npx --yes skills@latest add . -l`: ровно восемь имен каталога.
 - Разово проверь frontmatter, invocation policy, внутренние links и одинаковые bundled copies.
 - Измененный skill запусти в доступном реальном клиенте на disposable fixture: обычный вход, остановки, сохранность чужого. Для dev-exec проверь каждый атомарный commit и итоговую приемку.
 - Review: два независимых native Standards/Spec subagents, общий committed/staged/unstaged/untracked охват. Используй host-enforced read-only, иначе сообщи prompt-only. Недоступный reviewer - incomplete, без single-agent/nested-client fallback. Обсуждение/исполнение subagents не требуют.
