@@ -14,7 +14,7 @@
 
 ```bash
 git ls-files -z --cached --others --exclude-standard -- ':(glob)**/SPEC.md' ':(glob)**/.SPEC.md'
-git ls-files -z --others --ignored --exclude-standard --directory   # оставь записи с basename .SPEC.md
+git ls-files -z --others --ignored --exclude-standard   # оставь записи с basename .SPEC.md
 ```
 
 Посторонние `SPEC.md` не учитывай. Если среди остальных есть оба имени, в одном или разных каталогах, виды смешаны.
