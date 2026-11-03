@@ -25,30 +25,7 @@ Pointer также может находиться в применимых globa
 
 ### Подготовка Backlog.md
 
-Для подготовки нужен отдельно доступный Backlog.md; CLI рекомендуется для агентов, человеку достаточно TUI, MCP и Web UI не обязательны. Установка инструмента - отдельное решение пользователя.
-
-Пример для Backlog.md 1.53.0: только в корне нового или одноразового проекта, изменения которого явно разрешены, и только если там и в родительских каталогах нет существующего backlog. Сначала сохрани чужие файлы и убедись, что выбранные `backlog/`, `.backlog/` и `backlog.config.yml` не заняты. Затем:
-
-```bash
-env -u BACKLOG_CWD backlog init "My Project" \
-  --defaults --no-git --integration-mode none \
-  --check-branches false --include-remote false \
-  --bypass-git-hooks false --auto-open-browser false \
-  --backlog-dir backlog --config-location folder
-```
-
-Init создает `backlog/` и `backlog/config.yml`. Флаги выбирают filesystem-only без Git-интеграции tracker и без клиентских инструкций; обычный init может записывать инструкции и выполнять Git-действия. Не добавляй к `--integration-mode none` флаги `--agent-instructions` или `--install-claude-agent`: версия 1.53.0 не принимает это сочетание. Не включай tracker auto-commit, bypass hooks, remote operations или callbacks смены статуса, в том числе на отдельных задачах. Разрешенные отдельным вызовом `dev-exec` коммиты реализации от этого не отменяются.
-
-В созданном `backlog/config.yml` измени только `statuses` и `default_status`, сохранив остальные поля:
-
-```yaml
-statuses: [needs-info, ready-for-human, ready-for-agent, wontfix, resolved]
-default_status: needs-info
-```
-
-В Backlog.md последний статус считается завершением, поэтому только `resolved` означает выполненную приемку и обязательные проверки; `wontfix` не выполняет blocker. Безопасный default не разрешает создание черновика: указывай статус каждой задачи явно, а `needs-info` используй только для явно разрешенного черновика. Готовность tracker по зависимостям сама по себе не разрешает исполнение: нужен `ready-for-agent`, а для каждого blocker - `resolved` и требуемый результат в выбранном worktree. Архивация не доказывает выполнение.
-
-Не запускай этот setup поверх существующего backlog и не включай его молча: в 1.53.0 даже обычные команды чтения могут автоматически мигрировать старую конфигурацию и записи. Неясное или старое хранилище требует отдельного решения человека до команд tracker. Filesystem-only видит локальные файлы выбранного worktree, не объединяет живое состояние linked worktrees и не предотвращает коллизии IDs независимых clones.
+Подготовка хранилища - отдельное действие человека по [разделу профиля](../trackers/backlog.md#подготовка-человеком); агент не выполняет setup автоматически. Раздел входит в сам профиль и доступен после копирования без checkout nxs.
 
 Скопируй [профиль](../trackers/backlog.md) в `docs/tracker.md` своего проекта, затем добавь в применимые project instructions pointer из примера выше. Например, из корня проекта, если исходный checkout уже доступен:
 
