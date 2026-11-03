@@ -12,7 +12,7 @@ skills/<name>/
   agents/openai.yaml    # необязательная invocation policy Codex
   references/           # правила по месту нужды
   assets/               # шаблоны
-README.md CONTRIBUTING.md SPEC.md GLOSSARY.md
+README.md CONTRIBUTING.md SPEC.md
 ```
 
 Ссылки skill ведут только внутрь его каталога, без зависимости от checkout или чужой установки. Не вводи aliases и обязательные стадии. При совпадении имени проверь provenance.
@@ -34,7 +34,7 @@ References лежат в `references/`. Меняй владельца и поб�
 
 ## Контракты инструкций
 
-README - использование, CONTRIBUTING - изменение, SPEC - реализованные контракты и обоснование, GLOSSARY - определения. Операционные правила принадлежат skills/references; не пересказывай их повсюду.
+README - использование, CONTRIBUTING - изменение, SPEC - реализованные контракты и обоснование. Операционные правила принадлежат skills/references; не пересказывай их повсюду.
 
 - Укажи вход, проверки, действия, результат, остановки и передачу; исключения рядом с шагом.
 - Description различает намерения; явный вызов отделен от обсуждения/внутренних действий.
@@ -42,7 +42,7 @@ README - использование, CONTRIBUTING - изменение, SPEC - �
 - Resources читаются по месту нужды; root docs не обязательный runtime context.
 - Согласие действует в своих пределах: dev-exec разрешает проверенные коммиты ticket, не push/review/sync-spec. Неизвестный эффект сверяй до повтора.
 - Не добавляй runtime, hooks, background skills, cross-skill injection, adapters или автоустановку.
-- Project SPEC описывает реализованное, task spec - намерение. Отдельного ADR writer/автозаписи glossary нет. Source cutover не мигрирует records/установки/settings/сервисы.
+- Project SPEC описывает реализованное, task spec - намерение. Прочая документация проекта служит релевантным контекстом, а не отдельной обязательной стадией nxs; отдельного ADR writer нет. Source cutover не мигрирует records/установки/settings/сервисы.
 
 <a id="checks"></a>
 
