@@ -12,6 +12,8 @@
 
 [Tracker instruction](skills/to-spec/references/tracker.md) - [Markdown-инструкция](GLOSSARY.md#термины) над доступными CLI/MCP/API, не программный adapter. Project pointer `Трекер:` важнее global; без настройки используется `.scratch`, предварительная настройка и секция `## nxs` не требуются. Иной tracker подключается через подготовленную пользователем или агентом инструкцию и необязательный pointer в уже применимых instructions; их загрузка и предоставление доступа к tracker находятся вне ответственности skills. Недоступная настроенная инструкция или операция останавливает работу без fallback; явный путь записи не переключает backend.
 
+Необязательный [профиль Backlog.md](trackers/backlog.md) сохраняет local-first работу без внешнего сервиса: после явного подключения новые task specs находятся в docs, tickets - в tasks со ссылками на документы, без зеркал в `.scratch`. Markdown остается основной записью, общей для агента и человека в TUI. Project specs, диагнозы и evidence не переносятся в tracker. Профиль копируется как самостоятельная инструкция; установка skills не подключает его и не мигрирует записи.
+
 ## Границы
 
 - Каждый вызов ограничен выбранным намерением и данным согласием; следующая команда автоматически не запускается.
@@ -20,9 +22,17 @@
 - [dev-review](skills/dev-review/SKILL.md) использует двух независимых native reviewers Standards/Spec с одинаковым закрепленным охватом committed/staged/unstaged/untracked. Подтвержденное отсутствие spec дает skipped, не pass; недоступный reviewer или изменение охвата - incomplete, без single-agent fallback. Review и sync-spec не подменяют выбранную историческую версию рабочим файлом.
 - Source edits не публикуют изменения и не меняют установки, пользовательские records, Git settings или внешние сервисы. Согласие на запись относится только к выбранной цели; неизвестный эффект сначала проверяется чтением.
 
+## Контракты
+
+Профиль Backlog.md использует native поля как единственные редактируемые источники статуса, blockers и приемки, Comments - для истории исполнения, без конкурирующих дублей в body. Готовность `isReady` и архивация не разрешают исполнение: нужен точный назначенный `ready-for-agent` ticket, а для каждого blocker - однозначный `resolved` и проверенный результат в выбранном worktree. `wontfix` не удовлетворяет зависимость.
+
+Профиль требует заранее подготовленное локальное хранилище без remote operations, tracker auto-commit, обхода hooks и status callbacks. Даже чтение через CLI может запустить миграцию старого хранилища, поэтому неясная конфигурация останавливает работу до отдельного решения человека. Это не запрещает commits реализации, разрешенные явным `dev-exec`. Локальное состояние worktree не считается общим для linked worktrees; профиль рассчитан на заранее распределенные tickets, не на atomic claim или предотвращение коллизий IDs независимых clones.
+
 ## Известные ограничения
 
-В истории проекта описаны source-skill smoke в omp на disposable local fixtures и packaging для Claude Code. Это не доказывает native регистрацию, live compatibility Claude Code или других клиентов, remote tracker API либо непрерывный multi-turn resume. Ограничения smoke были prompt-only, не sandbox; прежние результаты не являются проверкой текущих изменений.
+В истории проекта описаны source-skill smoke в omp на disposable local fixtures и packaging для Claude Code. Это не доказывает native регистрацию, live compatibility Claude Code или других клиентов, remote tracker API либо непрерывный multi-turn resume. Ограничения этих smoke были prompt-only, не sandbox; прежние результаты не являются проверкой текущих изменений.
+
+Отдельная [проверенная область Backlog.md](trackers/backlog.md#проверенная-область) включает source-вызовы в Codex CLI и реальный TUI на disposable fixtures. Native sandbox этих проверок не превращает prompt-only ограничения в host-enforced запреты. Проверено общее чтение tracker для `rnd-debug` и `dev-review`, не полные процедуры; MCP, Web UI, миграция и конкурентные clones/worktrees не подтверждены.
 
 Частный `.SPEC.md` существует только в рабочем дереве и теряется при fresh clone или `git clean -x`. Комментарии ticket дают контекст продолжения, но не гарантируют session recovery между клиентами.
 
