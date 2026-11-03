@@ -20,7 +20,6 @@ README.md CONTRIBUTING.md SPEC.md
 | Владелец | Shared reference и потребители одинаковых копий |
 | --- | --- |
 | `sync-spec` | `project-specs.md`: `rnd-grill`, `to-spec`, `to-tickets`, `dev-exec`, `dev-review`, `rnd-debug` |
-| `to-spec` | `tracker.md`: `to-tickets`, `dev-exec`, `rnd-debug`, `dev-review` |
 | `to-tickets` | `ticket.md`: `dev-exec` |
 | `dev-commit` | `commit-format.md`: `dev-exec` |
 
@@ -30,7 +29,7 @@ References лежат в `references/`. Меняй владельца и поб�
 
 Пиши кратко, по-русски, с ASCII-дефисом и прямыми кавычками. Заголовки инструкций - ПРОПИСНЫМИ, руководств/артефактов - обычным регистром. Идентификаторы, статусы и пути сохраняй; старые заголовки/records не мигрируй ради формы.
 
-Не публикуй частные пути/remotes, tracker IDs, секреты, environment values, контакты и raw sessions. Примеры нейтральные. Личные предпочтения принадлежат client/project instructions. Сохраняй пользовательские данные и чужие изменения.
+Не публикуй частные пути/remotes, идентификаторы частных задач, секреты, environment values, контакты и raw sessions. Примеры нейтральные. Личные предпочтения принадлежат client/project instructions. Сохраняй пользовательские данные и чужие изменения.
 
 ## Контракты инструкций
 
@@ -54,7 +53,7 @@ README - использование, CONTRIBUTING - изменение, SPEC - �
 - Разово проверь frontmatter, invocation policy, внутренние links и одинаковые bundled copies.
 - Измененный skill запусти в доступном реальном клиенте на disposable fixture: обычный вход, остановки, сохранность чужого. Для dev-exec проверь каждый атомарный commit и итоговую приемку.
 - Review: два независимых native Standards/Spec subagents, общий committed/staged/unstaged/untracked охват. Используй host-enforced read-only, иначе сообщи prompt-only. Недоступный reviewer - incomplete, без single-agent/nested-client fallback. Обсуждение/исполнение subagents не требуют.
-- Tracker: реальные операции и недоступная настройка без silent fallback. Local backend не доказывает remote API.
+- Файловые records: создание и повтор без дубликатов, сохранность существующих документов, остановка при недоступном явном источнике и проверка локальных blockers без изменения чужих записей.
 - Просмотри diff/links. Source/packaging не доказывают live invocation, регистрацию, permissions или совместимость.
 
 Только disposable repos и ограниченные approvals, без изменения пользовательских установок. Не добавляй постоянные tests формулировок, копий или шаблонной проводки.

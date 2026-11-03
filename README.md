@@ -38,6 +38,6 @@ npx skills@latest add -g Villhard/nxs
 
 ## Документация
 
-Без настройки tracker записи хранятся в `.scratch`; предварительная настройка не нужна. [Подключение другого tracker и Backlog.md](docs/trackers.md).
+Спеки задач хранятся в `.scratch/<feature-slug>/spec.md`, tickets - в `.scratch/<feature-slug>/issues/<NN>-<slug>.md`. Предварительная настройка не нужна.
 
 [SPEC](SPEC.md) - контракты и ограничения; [CONTRIBUTING](CONTRIBUTING.md) - изменение и проверки.
