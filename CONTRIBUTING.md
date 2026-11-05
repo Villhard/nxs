@@ -21,6 +21,7 @@ README.md CONTRIBUTING.md SPEC.md
 | --- | --- |
 | `sync-spec` | `project-specs.md`: `rnd-grill`, `to-spec`, `to-tickets`, `dev-exec`, `dev-review`, `rnd-debug` |
 | `to-tickets` | `ticket.md`: `dev-exec` |
+| `to-tickets` | `branch-context.md`: `to-spec`, `dev-exec` |
 | `dev-commit` | `commit-format.md`: `dev-exec` |
 
 References лежат в `references/`. Меняй владельца и побайтовые копии только реальных потребителей вместе. Bundled procedure не требует установки владельца. Шаблоны принадлежат: task spec - `to-spec`, project spec - `sync-spec`, ticket - `to-tickets`.
