@@ -1,43 +1,40 @@
 # nxs
 
-Восемь самостоятельных skills для обсуждения, подготовки и выполнения задач coding agents.
+Восемь самостоятельных skills для основного flow разработки с coding agents. Инструкции задают цель и этапы; способ выполнения выбирает модель.
 
-## Установка
+## Установка и обновление
 
 ```bash
 npx skills@latest add -g Villhard/nxs
 ```
 
-Выбери skills и клиента в меню. Устанавливается опубликованная версия; подробности - в [инструкции установки и обновления](docs/installation.md).
+В меню выбираются skills и клиент. Устанавливается опубликованная версия. Обновление выбранного skill:
+
+```bash
+npx skills@latest update -g dev-exec
+```
+
+Источник и предлагаемый diff показывают, какая установка изменится. Локальная разработка описана в [CONTRIBUTING](CONTRIBUTING.md#local-development-and-release).
 
 ## Какой скилл выбрать
 
 | Скилл | Назначение |
 | --- | --- |
-| [rnd-grill](skills/rnd-grill/SKILL.md) | Обсудить решение без записи. |
-| [to-spec](skills/to-spec/SKILL.md) | Сохранить согласованную спеку задачи. |
-| [to-tickets](skills/to-tickets/SKILL.md) | Подготовить tickets с одним самостоятельно проверяемым результатом в каждом. |
-| [dev-exec](skills/dev-exec/SKILL.md) | Выполнить один ticket с проверками и коммитами. |
-| [dev-review](skills/dev-review/SKILL.md) | Независимые Standards/Spec reviewers, без правок. |
-| [rnd-debug](skills/rnd-debug/SKILL.md) | Подтвердить причину сбоя без исправления кода. |
-| [sync-spec](skills/sync-spec/SKILL.md) | Обновить проектную спецификацию по реализованному. |
-| [dev-commit](skills/dev-commit/SKILL.md) | Закоммитить выбранные существующие правки. |
+| [rnd-grill](skills/rnd-grill/SKILL.md) | Обсудить задачу и согласовать решения. |
+| [to-spec](skills/to-spec/SKILL.md) | Сохранить проблему, решение и приемку. |
+| [to-tickets](skills/to-tickets/SKILL.md) | Подготовить самостоятельные результаты, зависимости и ветки. |
+| [dev-exec](skills/dev-exec/SKILL.md) | Выполнить ticket в отдельном worktree с проверками и коммитами. |
+| [dev-review](skills/dev-review/SKILL.md) | Проверить результат по стандартам и требованиям. |
+| [sync-spec](skills/sync-spec/SKILL.md) | Обновить project specs по реализованному. |
+| [rnd-debug](skills/rnd-debug/SKILL.md) | Исследовать сбой и сохранить диагноз. |
+| [dev-commit](skills/dev-commit/SKILL.md) | Закоммитить выбранные существующие изменения. |
 
-## Пример работы
+## Порядок работы
 
-```text
-/rnd-grill Как лучше ограничить число запросов к API?
-/to-spec Сохрани согласованное в .scratch/rate-limit/spec.md
-/to-tickets .scratch/rate-limit/spec.md
-/dev-exec .scratch/rate-limit/issues/01-limit.md
-```
+Обсуждение → task spec при необходимости → tickets → исполнение → review → исправления и повторная проверка → sync реализованного. Диагностика дает дополнительный вход в подготовку; commit доступен отдельно.
 
-Это пример, не обязательная цепочка: skills самостоятельны и вызываются отдельно, следующие автоматически не запускаются. Синтаксис `/` или `@` зависит от клиента.
+Skills вызываются независимо, подходящие этапы выбираются по задаче. Синтаксис `/` или `@` зависит от клиента.
 
-`dev-exec` до выбора ветки и реализации проверяет границу результата и доступность собственной приемки, затем коммитит проверенные шаги без автоматического push. При разрастании scope он останавливается, сохраняя выполненное и остаток. Для переразбиения открытого ticket нужен отдельный явный вызов `to-tickets` с его точным путем; после согласованного разбиения исполнитель вызывается отдельно для выбранного ticket.
+По умолчанию records лежат в `.scratch/<feature-slug>/`: `spec.md`, `branch.md`, `issues/<NN>-<slug>.md`, `root-cause.md`. Предварительная настройка не требуется.
 
-## Документация
-
-Спеки задач хранятся в `.scratch/<feature-slug>/spec.md`, tickets - в `.scratch/<feature-slug>/issues/<NN>-<slug>.md`. Предварительная настройка не нужна.
-
-[SPEC](SPEC.md) - контракты и ограничения; [CONTRIBUTING](CONTRIBUTING.md) - изменение и проверки.
+[SPEC](SPEC.md) описывает контракты; [CONTRIBUTING](CONTRIBUTING.md) - структуру и проверки. Проверки исходников сами по себе не доказывают совместимость всех клиентов.
