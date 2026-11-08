@@ -1,2 +1,5 @@
+interface:
+  short_description: "Независимый review ticket/feature; skip review ticket"
+
 policy:
   allow_implicit_invocation: false
