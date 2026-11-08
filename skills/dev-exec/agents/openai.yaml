@@ -1,2 +1,5 @@
+interface:
+  short_description: "Ticket: исполнение; интеграция после человеческого approve"
+
 policy:
   allow_implicit_invocation: false
